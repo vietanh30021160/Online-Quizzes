@@ -1,26 +1,33 @@
-package Entity;
+package com.swp.online_quizz.Entity;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "QuestionAttempts")
-public class QuestionAttempts {
+@Table(name = "QuizProgress")
+public class QuizProgress {
     @Id
+    @Column(name = "ProgressID")
+    private Integer progressId;
+
     @Column(name = "AttemptID")
     private Integer attemptId;
 
-    @Id
     @Column(name = "QuestionID")
     private Integer questionId;
-
-    @Column(name = "Answer")
-    private String answer;
 
     @Column(name = "IsAnswered")
     private Boolean isAnswered;
 
-    @Column(name = "IsCorrect")
-    private Boolean isCorrect;
+    @Column(name = "Answer")
+    private String answer;
+
+    public Integer getProgressId() {
+        return this.progressId;
+    }
+
+    public void setProgressId(Integer progressId) {
+        this.progressId = progressId;
+    }
 
     public Integer getAttemptId() {
         return this.attemptId;
@@ -38,14 +45,6 @@ public class QuestionAttempts {
         this.questionId = questionId;
     }
 
-    public String getAnswer() {
-        return this.answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
     public Boolean getIsAnswered() {
         return this.isAnswered;
     }
@@ -54,11 +53,11 @@ public class QuestionAttempts {
         this.isAnswered = isAnswered;
     }
 
-    public Boolean getIsCorrect() {
-        return this.isCorrect;
+    public String getAnswer() {
+        return this.answer;
     }
 
-    public void setIsCorrect(Boolean isCorrect) {
-        this.isCorrect = isCorrect;
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 }

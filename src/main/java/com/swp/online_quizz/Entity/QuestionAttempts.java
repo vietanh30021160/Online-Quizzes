@@ -1,33 +1,26 @@
-package Entity;
+package com.swp.online_quizz.Entity;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "QuizProgress")
-public class QuizProgress {
+@Table(name = "QuestionAttempts")
+public class QuestionAttempts {
     @Id
-    @Column(name = "ProgressID")
-    private Integer progressId;
-
     @Column(name = "AttemptID")
     private Integer attemptId;
 
+    @Id
     @Column(name = "QuestionID")
     private Integer questionId;
-
-    @Column(name = "IsAnswered")
-    private Boolean isAnswered;
 
     @Column(name = "Answer")
     private String answer;
 
-    public Integer getProgressId() {
-        return this.progressId;
-    }
+    @Column(name = "IsAnswered")
+    private Boolean isAnswered;
 
-    public void setProgressId(Integer progressId) {
-        this.progressId = progressId;
-    }
+    @Column(name = "IsCorrect")
+    private Boolean isCorrect;
 
     public Integer getAttemptId() {
         return this.attemptId;
@@ -45,6 +38,14 @@ public class QuizProgress {
         this.questionId = questionId;
     }
 
+    public String getAnswer() {
+        return this.answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
     public Boolean getIsAnswered() {
         return this.isAnswered;
     }
@@ -53,11 +54,11 @@ public class QuizProgress {
         this.isAnswered = isAnswered;
     }
 
-    public String getAnswer() {
-        return this.answer;
+    public Boolean getIsCorrect() {
+        return this.isCorrect;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setIsCorrect(Boolean isCorrect) {
+        this.isCorrect = isCorrect;
     }
 }

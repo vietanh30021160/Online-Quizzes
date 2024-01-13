@@ -1,4 +1,4 @@
-package Entity;
+package com.swp.online_quizz.Entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
