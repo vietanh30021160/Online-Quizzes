@@ -1,9 +1,20 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Feedback")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Feedback {
     @Id
     @Column(name = "FeedbackID")
@@ -18,35 +29,4 @@ public class Feedback {
     @Column(name = "Comment")
     private String comment;
 
-    public Integer getFeedbackId() {
-        return this.feedbackId;
-    }
-
-    public void setFeedbackId(Integer feedbackId) {
-        this.feedbackId = feedbackId;
-    }
-
-    public Integer getAttemptId() {
-        return this.attemptId;
-    }
-
-    public void setAttemptId(Integer attemptId) {
-        this.attemptId = attemptId;
-    }
-
-    public Integer getUserId() {
-        return this.userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getComment() {
-        return this.comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
 }

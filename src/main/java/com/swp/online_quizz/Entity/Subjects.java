@@ -1,9 +1,20 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Subjects")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Subjects {
     @Id
     @Column(name = "SubjectID")
@@ -15,27 +26,4 @@ public class Subjects {
     @Column(name = "Description")
     private String description;
 
-    public Integer getSubjectId() {
-        return this.subjectId;
-    }
-
-    public void setSubjectId(Integer subjectId) {
-        this.subjectId = subjectId;
-    }
-
-    public String getSubjectName() {
-        return this.subjectName;
-    }
-
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

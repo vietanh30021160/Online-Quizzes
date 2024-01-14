@@ -1,11 +1,22 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "LoginHistory")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoginHistory {
     @Id
     @Column(name = "LoginHistoryID")
@@ -20,35 +31,4 @@ public class LoginHistory {
     @Column(name = "LogoutTime")
     private LocalDateTime logoutTime;
 
-    public Integer getLoginHistoryId() {
-        return this.loginHistoryId;
-    }
-
-    public void setLoginHistoryId(Integer loginHistoryId) {
-        this.loginHistoryId = loginHistoryId;
-    }
-
-    public Integer getUserId() {
-        return this.userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public LocalDateTime getLoginTime() {
-        return this.loginTime;
-    }
-
-    public void setLoginTime(LocalDateTime loginTime) {
-        this.loginTime = loginTime;
-    }
-
-    public LocalDateTime getLogoutTime() {
-        return this.logoutTime;
-    }
-
-    public void setLogoutTime(LocalDateTime logoutTime) {
-        this.logoutTime = logoutTime;
-    }
 }

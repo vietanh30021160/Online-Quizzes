@@ -1,9 +1,20 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Questions")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Questions {
     @Id
     @Column(name = "QuestionID")
@@ -24,51 +35,4 @@ public class Questions {
     @Column(name = "VideoURL")
     private String videoUrl;
 
-    public Integer getQuestionId() {
-        return this.questionId;
-    }
-
-    public void setQuestionId(Integer questionId) {
-        this.questionId = questionId;
-    }
-
-    public Integer getQuizId() {
-        return this.quizId;
-    }
-
-    public void setQuizId(Integer quizId) {
-        this.quizId = quizId;
-    }
-
-    public String getQuestionContent() {
-        return this.questionContent;
-    }
-
-    public void setQuestionContent(String questionContent) {
-        this.questionContent = questionContent;
-    }
-
-    public String getQuestionType() {
-        return this.questionType;
-    }
-
-    public void setQuestionType(String questionType) {
-        this.questionType = questionType;
-    }
-
-    public String getImageUrl() {
-        return this.imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getVideoUrl() {
-        return this.videoUrl;
-    }
-
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
-    }
 }

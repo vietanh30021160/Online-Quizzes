@@ -1,9 +1,20 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Quizzes")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Quizzes {
     @Id
     @Column(name = "QuizID")
@@ -24,51 +35,4 @@ public class Quizzes {
     @Column(name = "IsCompleted")
     private Boolean isCompleted;
 
-    public Integer getQuizId() {
-        return this.quizId;
-    }
-
-    public void setQuizId(Integer quizId) {
-        this.quizId = quizId;
-    }
-
-    public Integer getTeacherId() {
-        return this.teacherId;
-    }
-
-    public void setTeacherId(Integer teacherId) {
-        this.teacherId = teacherId;
-    }
-
-    public Integer getSubjectId() {
-        return this.subjectId;
-    }
-
-    public void setSubjectId(Integer subjectId) {
-        this.subjectId = subjectId;
-    }
-
-    public String getQuizName() {
-        return this.quizName;
-    }
-
-    public void setQuizName(String quizName) {
-        this.quizName = quizName;
-    }
-
-    public Integer getTimeLimit() {
-        return this.timeLimit;
-    }
-
-    public void setTimeLimit(Integer timeLimit) {
-        this.timeLimit = timeLimit;
-    }
-
-    public Boolean getIsCompleted() {
-        return this.isCompleted;
-    }
-
-    public void setIsCompleted(Boolean isCompleted) {
-        this.isCompleted = isCompleted;
-    }
 }

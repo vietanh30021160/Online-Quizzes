@@ -1,11 +1,22 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "QuizAttempts")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class QuizAttempts {
     @Id
     @Column(name = "AttemptID")
@@ -32,67 +43,4 @@ public class QuizAttempts {
     @Column(name = "CurrentQuestionID")
     private Integer currentQuestionId;
 
-    public Integer getAttemptId() {
-        return this.attemptId;
-    }
-
-    public void setAttemptId(Integer attemptId) {
-        this.attemptId = attemptId;
-    }
-
-    public Integer getUserId() {
-        return this.userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getQuizId() {
-        return this.quizId;
-    }
-
-    public void setQuizId(Integer quizId) {
-        this.quizId = quizId;
-    }
-
-    public LocalDateTime getStartTime() {
-        return this.startTime;
-    }
-
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalDateTime getEndTime() {
-        return this.endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public Integer getMarks() {
-        return this.marks;
-    }
-
-    public void setMarks(Integer marks) {
-        this.marks = marks;
-    }
-
-    public Boolean getIsCompleted() {
-        return this.isCompleted;
-    }
-
-    public void setIsCompleted(Boolean isCompleted) {
-        this.isCompleted = isCompleted;
-    }
-
-    public Integer getCurrentQuestionId() {
-        return this.currentQuestionId;
-    }
-
-    public void setCurrentQuestionId(Integer currentQuestionId) {
-        this.currentQuestionId = currentQuestionId;
-    }
 }

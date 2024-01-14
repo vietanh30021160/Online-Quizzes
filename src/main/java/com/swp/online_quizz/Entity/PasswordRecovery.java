@@ -1,11 +1,22 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "PasswordRecovery")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PasswordRecovery {
     @Id
     @Column(name = "RecoveryID")
@@ -20,35 +31,4 @@ public class PasswordRecovery {
     @Column(name = "ExpiryTime")
     private LocalDateTime expiryTime;
 
-    public Integer getRecoveryId() {
-        return this.recoveryId;
-    }
-
-    public void setRecoveryId(Integer recoveryId) {
-        this.recoveryId = recoveryId;
-    }
-
-    public Integer getUserId() {
-        return this.userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getToken() {
-        return this.token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public LocalDateTime getExpiryTime() {
-        return this.expiryTime;
-    }
-
-    public void setExpiryTime(LocalDateTime expiryTime) {
-        this.expiryTime = expiryTime;
-    }
 }

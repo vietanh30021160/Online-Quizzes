@@ -1,9 +1,20 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "ClassEnrollments")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ClassEnrollments {
     @Id
     @Column(name = "EnrollmentID")
@@ -15,27 +26,4 @@ public class ClassEnrollments {
     @Column(name = "StudentID")
     private Integer studentId;
 
-    public Integer getEnrollmentId() {
-        return this.enrollmentId;
-    }
-
-    public void setEnrollmentId(Integer enrollmentId) {
-        this.enrollmentId = enrollmentId;
-    }
-
-    public Integer getClassId() {
-        return this.classId;
-    }
-
-    public void setClassId(Integer classId) {
-        this.classId = classId;
-    }
-
-    public Integer getStudentId() {
-        return this.studentId;
-    }
-
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
-    }
 }

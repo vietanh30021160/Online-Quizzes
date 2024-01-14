@@ -1,9 +1,20 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Answers")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Answers {
     @Id
     @Column(name = "AnswerID")
@@ -18,35 +29,4 @@ public class Answers {
     @Column(name = "IsCorrect")
     private Boolean isCorrect;
 
-    public Integer getAnswerId() {
-        return this.answerId;
-    }
-
-    public void setAnswerId(Integer answerId) {
-        this.answerId = answerId;
-    }
-
-    public Integer getQuestionId() {
-        return this.questionId;
-    }
-
-    public void setQuestionId(Integer questionId) {
-        this.questionId = questionId;
-    }
-
-    public String getAnswerContent() {
-        return this.answerContent;
-    }
-
-    public void setAnswerContent(String answerContent) {
-        this.answerContent = answerContent;
-    }
-
-    public Boolean getIsCorrect() {
-        return this.isCorrect;
-    }
-
-    public void setIsCorrect(Boolean isCorrect) {
-        this.isCorrect = isCorrect;
-    }
 }

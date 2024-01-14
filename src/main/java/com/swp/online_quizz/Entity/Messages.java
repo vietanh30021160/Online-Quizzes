@@ -1,11 +1,22 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "Messages")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Messages {
     @Id
     @Column(name = "MessageID")
@@ -26,51 +37,4 @@ public class Messages {
     @Column(name = "IsRead")
     private Boolean isRead;
 
-    public Integer getMessageId() {
-        return this.messageId;
-    }
-
-    public void setMessageId(Integer messageId) {
-        this.messageId = messageId;
-    }
-
-    public Integer getSenderId() {
-        return this.senderId;
-    }
-
-    public void setSenderId(Integer senderId) {
-        this.senderId = senderId;
-    }
-
-    public String getMessageType() {
-        return this.messageType;
-    }
-
-    public void setMessageType(String messageType) {
-        this.messageType = messageType;
-    }
-
-    public String getMessageContent() {
-        return this.messageContent;
-    }
-
-    public void setMessageContent(String messageContent) {
-        this.messageContent = messageContent;
-    }
-
-    public LocalDateTime getSendTime() {
-        return this.sendTime;
-    }
-
-    public void setSendTime(LocalDateTime sendTime) {
-        this.sendTime = sendTime;
-    }
-
-    public Boolean getIsRead() {
-        return this.isRead;
-    }
-
-    public void setIsRead(Boolean isRead) {
-        this.isRead = isRead;
-    }
 }
