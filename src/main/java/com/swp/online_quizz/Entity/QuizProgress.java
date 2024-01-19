@@ -29,6 +29,9 @@ public class QuizProgress {
     @Column(name = "IsAnswered")
     private Boolean isAnswered;
 
+    @Column(name = "QuestionOrder")
+    private Integer questionOrder;
+
     @Column(name = "Answer")
     private String answer;
 

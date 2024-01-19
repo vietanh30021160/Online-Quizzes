@@ -1,0 +1,30 @@
+body{
+    margin: 0 20px 0 20px ;
+}
+.qtext  h1 {
+    font-size: 50px;
+    font-weight: 600;
+    line-height: 2rem;
+}
+.card-contenain {
+    display: flex;
+}
+.card-contenain .card {
+    display: flex;
+    width: 100%;
+}
+
+.card-contenain .card .info {
+    width: 15%;
+    margin-right: 20px;
+    border-right: solid 0.5px #808080;
+}
+.card-contenain .card .content {
+    width: 55%;
+    flex-grow: 1;
+}
+.card-contenain .block__fake {
+    margin-left: 20px;
+    width: 30%;
+    flex-grow: 1;
+}

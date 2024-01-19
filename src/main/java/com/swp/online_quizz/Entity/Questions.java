@@ -1,8 +1,17 @@
 package com.swp.online_quizz.Entity;
 
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,8 +29,10 @@ public class Questions {
     @Column(name = "QuestionID")
     private Integer questionId;
 
-    @Column(name = "QuizID")
-    private Integer quizId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "QuizID")
+    @JsonBackReference
+    private Quizzes quiz;
 
     @Column(name = "QuestionContent")
     private String questionContent;
@@ -35,4 +46,7 @@ public class Questions {
     @Column(name = "VideoURL")
     private String videoUrl;
 
+    @OneToMany(mappedBy = "question")
+    @JsonManagedReference
+    private Set<Answers> listAnswer;
 }
