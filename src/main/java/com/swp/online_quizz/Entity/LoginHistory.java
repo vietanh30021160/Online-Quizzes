@@ -1,34 +1,27 @@
 package com.swp.online_quizz.Entity;
 
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "LoginHistory")
+import java.time.Instant;
+
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
 public class LoginHistory {
     @Id
-    @Column(name = "LoginHistoryID")
-    private Integer loginHistoryId;
+    @Column(name = "LoginHistoryID", nullable = false)
+    private Integer id;
 
-    @Column(name = "UserID")
-    private Integer userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UserID")
+    private User userID;
 
     @Column(name = "LoginTime")
-    private LocalDateTime loginTime;
+    private Instant loginTime;
 
     @Column(name = "LogoutTime")
-    private LocalDateTime logoutTime;
+    private Instant logoutTime;
 
 }

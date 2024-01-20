@@ -1,14 +1,13 @@
 package com.swp.online_quizz.Controller.HomePage;
 
-import com.swp.online_quizz.Entity.Quizzes;
-import com.swp.online_quizz.Entity.Subjects;
+import com.swp.online_quizz.Entity.Quiz;
+import com.swp.online_quizz.Entity.Subject;
 import com.swp.online_quizz.Service.QuizzesService;
-import com.swp.online_quizz.Service.SubjectsService;
+import com.swp.online_quizz.Service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -16,14 +15,14 @@ import java.util.List;
 @Controller
 public class HomeController {
     @Autowired
-    private SubjectsService subjectsService;
+    private SubjectService SubjectService;
     @Autowired
     private QuizzesService quizzesService;
     @RequestMapping
     public String Home(Model model){
-        List<Subjects> listSubject = subjectsService.getAll();
-        List<Quizzes> listQuiz = quizzesService.getAll();
-        model.addAttribute("listSubjects",listSubject);
+        List<Subject> listSubject = SubjectService.getAll();
+        List<Quiz> listQuiz = quizzesService.getAll();
+        model.addAttribute("listSubject",listSubject);
         model.addAttribute("listQuizzes",listQuiz);
         return "html/index";
     }

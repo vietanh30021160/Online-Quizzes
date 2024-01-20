@@ -1,64 +1,61 @@
 package com.swp.online_quizz.Entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "Users")
+import java.time.Instant;
+import java.time.LocalDate;
+
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Users {
+@Entity
+@Table(name = "Users")
+public class User {
     @Id
-    @Column(name = "UserID")
-    private Integer userId;
+    @Column(name = "UserID", nullable = false)
+    private Integer id;
 
-    @Column(name = "Username")
+    @Column(name = "Username", nullable = false, length = 50)
     private String username;
 
-    @Column(name = "PasswordHash")
+    @Column(name = "PasswordHash", nullable = false, length = 100)
     private String passwordHash;
 
-    @Column(name = "Email")
+    @Column(name = "Email", nullable = false, length = 100)
     private String email;
 
-    @Column(name = "Role")
+    @Column(name = "Role", nullable = false, length = 20)
     private String role;
 
     @Column(name = "JoinDate")
-    private LocalDateTime joinDate;
+    private Instant joinDate;
 
-    @Column(name = "FirstName")
+    @Column(name = "FirstName", length = 50)
     private String firstName;
 
-    @Column(name = "LastName")
+    @Column(name = "LastName", length = 50)
     private String lastName;
 
     @Column(name = "DateOfBirth")
     private LocalDate dateOfBirth;
 
-    @Column(name = "PhoneNumber")
+    @Column(name = "PhoneNumber", length = 20)
     private String phoneNumber;
 
     @Column(name = "Address")
     private String address;
 
-    @Column(name = "Gender")
+    @Column(name = "Gender", length = 10)
     private String gender;
 
     @Column(name = "ProfilePictureURL")
-    private String profilePictureUrl;
+    private String profilePictureURL;
 
     @Column(name = "IsActive")
     private Boolean isActive;
+
 }

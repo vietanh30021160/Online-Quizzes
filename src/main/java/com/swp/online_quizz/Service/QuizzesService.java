@@ -1,14 +1,14 @@
 package com.swp.online_quizz.Service;
 
-import com.swp.online_quizz.Entity.Quizzes;
-import com.swp.online_quizz.Entity.Subjects;
+import com.swp.online_quizz.Entity.Quiz;
+import com.swp.online_quizz.Entity.Subject;
 
 import java.util.List;
 
 public interface QuizzesService {
-    List<Quizzes> getAll();
-    public boolean create(Quizzes quizzes);
-    public Subjects find(Integer quizId);
-    public Boolean update(Quizzes quizzes);
+    List<Quiz> getAll();
+    public boolean create(Quiz quizzes);
+    public Subject find(Integer quizId);
+    public Boolean update(Quiz quizzes);
     public Boolean delete(Integer quizId);
 }

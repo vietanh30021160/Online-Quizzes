@@ -1,8 +1,7 @@
 package com.swp.online_quizz.Service;
 
-import com.swp.online_quizz.Entity.Subjects;
-import com.swp.online_quizz.Repository.SubjectsRepository;
-import lombok.AllArgsConstructor;
+import com.swp.online_quizz.Entity.Subject;
+import com.swp.online_quizz.Repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,18 +9,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
-public class SubjectServiceElmpl implements SubjectsService {
+public class SubjecterviceElmpl implements SubjectService {
     @Autowired
-    private final SubjectsRepository subrepository;
+    private final SubjectRepository subrepository;
     @Override
-    public List<Subjects> getAll() {
+    public List<Subject> getAll() {
         return subrepository.findAll();
     }
 
     @Override
-    public boolean create(Subjects subjects) {
+    public boolean create(Subject Subject) {
         try {
-    this.subrepository.save(subjects);
+    this.subrepository.save(Subject);
     return true;
         }catch (Exception e){
           e.printStackTrace();
@@ -30,12 +29,12 @@ public class SubjectServiceElmpl implements SubjectsService {
     }
 
     @Override
-    public Subjects find(Integer subjectID) {
+    public Subject find(Integer subjectID) {
         return null;
     }
 
     @Override
-    public Boolean update(Subjects subjects) {
+    public Boolean update(Subject Subject) {
         return null;
     }
 

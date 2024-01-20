@@ -50,7 +50,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation" th:each="subject : ${listSubjects}">
+                        <li class="nav-item" role="presentation" th:each="subject : ${listSubject}">
                             <button class="nav-link active"
                                     id="design-tab" data-bs-toggle="tab"
                                     data-bs-target="#design-tab-pane"
@@ -83,7 +83,7 @@
                                             <div class="d-flex">
                                                 <div>
                                                     <h5 class="mb-2" th:text="${quizzes.quizName}"></h5>
-                                                    <p class="mb-0" th:text="${quizzes.subjects.subjectName}"></p>
+                                                    <p class="mb-0" th:text="${quizzes.Subject.subjectName}"></p>
                                                     <p class="mb-0" th:text="${quizzes.timeLimit}+ ' minute'"></p>
                                                 </div>
                                             </div>
