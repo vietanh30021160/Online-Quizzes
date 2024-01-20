@@ -2,10 +2,7 @@ package com.swp.online_quizz.Entity;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,14 +16,16 @@ import lombok.Setter;
 @AllArgsConstructor
 public class QuizAttempts {
     @Id
-    @Column(name = "AttemptID")
+    @Column(name = "AttemptID", nullable = false)
     private Integer attemptId;
 
-    @Column(name = "UserID")
-    private Integer userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UserID")
+    private Users user;
 
-    @Column(name = "QuizID")
-    private Integer quizId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "QuizID")
+    private Quizzes quiz;
 
     @Column(name = "StartTime")
     private LocalDateTime startTime;
@@ -40,7 +39,8 @@ public class QuizAttempts {
     @Column(name = "IsCompleted")
     private Boolean isCompleted;
 
-    @Column(name = "CurrentQuestionID")
-    private Integer currentQuestionId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CurrentQuestionID")
+    private Questions currentQuestion;
 
 }

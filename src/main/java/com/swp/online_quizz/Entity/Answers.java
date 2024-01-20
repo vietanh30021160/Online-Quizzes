@@ -1,9 +1,6 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,11 +14,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Answers {
     @Id
-    @Column(name = "AnswerID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "AnswerID", nullable = false)
     private Integer answerId;
 
-    @Column(name = "QuestionID")
-    private Integer questionId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "QuestionID")
+    private Questions question;
 
     @Column(name = "AnswerContent")
     private String answerContent;
