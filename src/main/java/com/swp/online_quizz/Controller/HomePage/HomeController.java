@@ -18,12 +18,12 @@ public class HomeController {
     private SubjectService SubjectService;
     @Autowired
     private QuizzesService quizzesService;
-    @RequestMapping
+    @RequestMapping("")
     public String Home(Model model){
         List<Subject> listSubject = SubjectService.getAll();
         List<Quiz> listQuiz = quizzesService.getAll();
         model.addAttribute("listSubject",listSubject);
         model.addAttribute("listQuizzes",listQuiz);
-        return "html/index";
+        return "HomePage";
     }
 }
