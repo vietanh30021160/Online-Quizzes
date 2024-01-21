@@ -1,6 +1,8 @@
 package com.swp.online_quizz.Service;
 
+import com.swp.online_quizz.Entity.Quiz;
 import com.swp.online_quizz.Entity.Subject;
+import com.swp.online_quizz.Repository.QuizzesRepository;
 import com.swp.online_quizz.Repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import java.util.List;
 public class SubjecterviceElmpl implements SubjectService {
     @Autowired
     private final SubjectRepository subrepository;
+    @Autowired
+    private final QuizzesRepository quizRepository;
     @Override
     public List<Subject> getAll() {
         return subrepository.findAll();
@@ -41,5 +45,11 @@ public class SubjecterviceElmpl implements SubjectService {
     @Override
     public Boolean delete(Integer subjectID) {
         return null;
+    }
+
+
+    @Override
+    public List<Quiz> getQuizzesBySubjectId(Integer subjectId) {
+            return quizRepository.findBySubjectId(subjectId);
     }
 }

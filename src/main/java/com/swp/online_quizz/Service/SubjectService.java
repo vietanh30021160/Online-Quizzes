@@ -1,5 +1,6 @@
 package com.swp.online_quizz.Service;
 
+import com.swp.online_quizz.Entity.Quiz;
 import com.swp.online_quizz.Entity.Subject;
 
 import java.util.List;
@@ -10,4 +11,7 @@ public interface SubjectService {
     public Subject find(Integer subjectID);
     public Boolean update(Subject Subject);
     public Boolean delete(Integer subjectID);
+
+
+    List<Quiz> getQuizzesBySubjectId(Integer subjectId);
 }

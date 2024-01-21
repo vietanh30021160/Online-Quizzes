@@ -50,12 +50,13 @@
             <div class="container-fluid">
                 <div class="row">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation" th:each = "subject : ${listSubjects}">
+                        <li class="nav-item" role="presentation" th:each = "subject : ${listSubject}">
                             <button class="nav-link active"
                                     id="design-tab" data-bs-toggle="tab"
                                     data-bs-target="#design-tab-pane"
                                     type="submit" role="tab"
                                     aria-controls="design-tab-pane"
+                                    th:href="@{{subjectId}(subjectId=${subject.id})}"
                                     th:text="${subject.subjectName}"
                                     style="color: black;"
 
@@ -70,14 +71,14 @@
             </div>
         </form>
 
-        <div class="container"  th:each = "quizzes : ${listQuizzes}" >
+        <div class="container"   >
             <div class="row" >
 
                 <div class="col-12" >
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="design-tab-pane" role="tabpanel" aria-labelledby="design-tab" tabindex="0">
                             <div class="row" >
-                                <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">
+                                <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0" th:each = "quizzes : ${listQuizzes}">
                                     <div class="custom-block bg-white shadow-lg" >
                                         <a href="topics-detail.html" >
                                             <div class="d-flex">
@@ -88,7 +89,7 @@
                                                 </div>
                                             </div>
 
-                                            <img th:src="@{/Img/topics/undraw_Remote_design_team_re_urdx.png}" class="custom-block-image img-fluid" alt="">
+                                            <img th:src="@{/images/topics/undraw_Remote_design_team_re_urdx.png}" class="custom-block-image img-fluid" alt="">
                                         </a>
                                     </div>
                                 </div>
@@ -112,7 +113,7 @@
                                                 <span class="badge bg-advertising rounded-pill ms-auto">30</span>
                                             </div>
 
-                                            <img th:src="@{/Img/topics/undraw_online_ad_re_ol62.png}" class="custom-block-image img-fluid" alt="">
+                                            <img th:src="@{/images/topics/undraw_online_ad_re_ol62.png}" class="custom-block-image img-fluid" alt="">
                                         </a>
                                     </div>
                                 </div>
@@ -130,7 +131,7 @@
                                                 <span class="badge bg-advertising rounded-pill ms-auto">65</span>
                                             </div>
 
-                                            <img th:src="@{/Img/topics/undraw_Group_video_re_btu7.png}" class="custom-block-image img-fluid" alt="">
+                                            <img th:src="@{/images/topics/undraw_Group_video_re_btu7.png}" class="custom-block-image img-fluid" alt="">
                                         </a>
                                     </div>
                                 </div>
@@ -148,7 +149,7 @@
                                                 <span class="badge bg-advertising rounded-pill ms-auto">50</span>
                                             </div>
 
-                                            <img th:src="@{/Img/topics/undraw_viral_tweet_gndb.png}" class="custom-block-image img-fluid" alt="">
+                                            <img th:src="@{/images/topics/undraw_viral_tweet_gndb.png}" class="custom-block-image img-fluid" alt="">
                                         </a>
                                     </div>
                                 </div>
@@ -169,7 +170,7 @@
                                             <span class="badge bg-finance rounded-pill ms-auto">30</span>
                                         </div>
 
-                                        <img th:src="@{/Img/topics/undraw_Finance_re_gnv2.png}" class="custom-block-image img-fluid" alt="">
+                                        <img th:src="@{/images/topics/undraw_Finance_re_gnv2.png}" class="custom-block-image img-fluid" alt="">
                                     </a>
                                 </div>
                             </div>
@@ -233,7 +234,7 @@
                                                 <span class="badge bg-music rounded-pill ms-auto">45</span>
                                             </div>
 
-                                            <img th:src="@{/Img/topics/undraw_Compose_music_re_wpiw.png}" class="custom-block-image img-fluid" alt="">
+                                            <img th:src="@{/images/topics/undraw_Compose_music_re_wpiw.png}" class="custom-block-image img-fluid" alt="">
                                         </a>
                                     </div>
                                 </div>
@@ -251,7 +252,7 @@
                                                 <span class="badge bg-music rounded-pill ms-auto">45</span>
                                             </div>
 
-                                            <img th:src="@{/Img/topics/undraw_happy_music_g6wc.png}" class="custom-block-image img-fluid" alt="">
+                                            <img th:src="@{/images/topics/undraw_happy_music_g6wc.png}" class="custom-block-image img-fluid" alt="">
                                         </a>
                                     </div>
                                 </div>
@@ -269,7 +270,7 @@
                                                 <span class="badge bg-music rounded-pill ms-auto">20</span>
                                             </div>
 
-                                            <img th:src="@{/Img/topics/undraw_Podcast_audience_re_4i5q.png}" class="custom-block-image img-fluid" alt="">
+                                            <img th:src="@{/images/topics/undraw_Podcast_audience_re_4i5q.png}" class="custom-block-image img-fluid" alt="">
                                         </a>
                                     </div>
                                 </div>
@@ -291,7 +292,7 @@
                                                 <span class="badge bg-education rounded-pill ms-auto">80</span>
                                             </div>
 
-                                            <img th:src="@{/Img/topics/undraw_Graduation_re_gthn.png}" class="custom-block-image img-fluid" alt="">
+                                            <img th:src="@{/images/topics/undraw_Graduation_re_gthn.png}" class="custom-block-image img-fluid" alt="">
                                         </a>
                                     </div>
                                 </div>
@@ -309,7 +310,7 @@
                                                 <span class="badge bg-education rounded-pill ms-auto">75</span>
                                             </div>
 
-                                            <img th:src="@{/Img/topics/undraw_Educator_re_ju47.png}" class="custom-block-image img-fluid" alt="">
+                                            <img th:src="@{/images/topics/undraw_Educator_re_ju47.png}" class="custom-block-image img-fluid" alt="">
                                         </a>
                                     </div>
                                 </div>

@@ -38,4 +38,9 @@ public class QuizzesServiceElmpl implements QuizzesService{
     public Boolean delete(Integer quizId) {
         return null;
     }
+
+    @Override
+    public List<Quiz> searchQuizzes(String keyword) {
+        return quizzesRepository.findByKeywordContainingIgnoreCase(keyword);
+    }
 }

@@ -11,4 +11,5 @@ public interface QuizzesService {
     public Subject find(Integer quizId);
     public Boolean update(Quiz quizzes);
     public Boolean delete(Integer quizId);
+    public List<Quiz> searchQuizzes(String keyword);
 }

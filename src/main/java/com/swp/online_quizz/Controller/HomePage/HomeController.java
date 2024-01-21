@@ -7,23 +7,31 @@ import com.swp.online_quizz.Service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
-@Controller
+@RestController
 public class HomeController {
     @Autowired
-    private SubjectService SubjectService;
+    private SubjectService subjectService;
     @Autowired
     private QuizzesService quizzesService;
     @RequestMapping("")
     public String Home(Model model){
-        List<Subject> listSubject = SubjectService.getAll();
+        List<Subject> listSubject = subjectService.getAll();
         List<Quiz> listQuiz = quizzesService.getAll();
         model.addAttribute("listSubject",listSubject);
         model.addAttribute("listQuizzes",listQuiz);
         return "HomePage";
+    }
+    @GetMapping("/{subjectId}")
+    public List<Quiz> getQuizzesBySubjectId(@PathVariable Integer subjectId) {
+        return subjectService.getQuizzesBySubjectId(subjectId);
+    }
+    @GetMapping("/search")
+    public List<Quiz> searchQuizzes(@RequestParam String keyword) {
+        return quizzesService.searchQuizzes(keyword);
     }
 }
