@@ -50,4 +50,7 @@ public class Quizzes {
     @JsonManagedReference
     private Set<Questions> listQuestions;
 
+    @OneToMany(mappedBy = "quiz")
+    @JsonManagedReference
+    private Set<QuizAttempts> listQuizAttemps;
 }

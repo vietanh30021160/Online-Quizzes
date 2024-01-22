@@ -1,0 +1,12 @@
+package com.swp.online_quizz.Service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.swp.online_quizz.Entity.Questions;
+
+@Service
+public interface IQuestionsService {
+    public List<Questions> getAllQuestions();
+}
