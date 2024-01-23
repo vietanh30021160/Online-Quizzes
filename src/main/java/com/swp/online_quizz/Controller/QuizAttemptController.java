@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import com.swp.online_quizz.Service.IQuizzesService;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
+@Controller
 @RequestMapping(path = "/attempt")
 public class QuizAttemptController {
     @Autowired
@@ -35,7 +37,7 @@ public class QuizAttemptController {
 
     @GetMapping("")
     public String test() {
-        return "quizzInfo";
+        return "quizzInfo.html";
     }
 
     @GetMapping("/question")
@@ -49,7 +51,7 @@ public class QuizAttemptController {
     }
 
     @GetMapping("/attemptQuiz/{quizId}")
-    public String getMethodName(@RequestParam Integer quizId, HttpSession session) {
+    public String attemptQuizz(@RequestParam Integer quizId, HttpSession session) {
         Users user = (Users) session.getAttribute("user");
         if (user != null) {
             Quizzes quizz = iQuizzesService.getOneQuizz(quizId);
@@ -66,13 +68,10 @@ public class QuizAttemptController {
     public List<Questions> getRandomQuestionsFromSet(@PathVariable Integer quizId, @PathVariable Integer n) {
         Set<Questions> questionsSet = iQuizzesService.getOneQuizz(quizId).getListQuestions();
         List<Questions> questionsList = new ArrayList<>(questionsSet);
-
         Collections.shuffle(questionsList);
-
         // Lấy n câu hỏi từ đầu danh sách (hoặc ít hơn n nếu danh sách không đủ n phần
         // tử)
         List<Questions> randomQuestions = questionsList.subList(0, Math.min(n, questionsList.size()));
-
         return randomQuestions;
     }
 }
