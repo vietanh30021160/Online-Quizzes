@@ -1,7 +1,10 @@
 package com.swp.online_quizz.Controller;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,4 +63,16 @@ public class QuizAttemptController {
         return "Complete";
     }
 
+    public List<Questions> getRandomQuestionsFromSet(@PathVariable Integer quizId, @PathVariable Integer n) {
+        Set<Questions> questionsSet = iQuizzesService.getOneQuizz(quizId).getListQuestions();
+        List<Questions> questionsList = new ArrayList<>(questionsSet);
+
+        Collections.shuffle(questionsList);
+
+        // Lấy n câu hỏi từ đầu danh sách (hoặc ít hơn n nếu danh sách không đủ n phần
+        // tử)
+        List<Questions> randomQuestions = questionsList.subList(0, Math.min(n, questionsList.size()));
+
+        return randomQuestions;
+    }
 }
