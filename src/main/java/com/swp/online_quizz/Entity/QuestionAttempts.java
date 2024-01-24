@@ -24,12 +24,14 @@ import lombok.Setter;
 @AllArgsConstructor
 public class QuestionAttempts implements Serializable {
     @Id
+    @Column(name = "QuestionAttemptID")
+    private Integer questionAttemptID;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AttemptID")
     @JsonBackReference
     private QuizAttempts attempt;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "QuestionID")
     @JsonBackReference
@@ -40,6 +42,9 @@ public class QuestionAttempts implements Serializable {
 
     @Column(name = "IsAnswered")
     private Boolean isAnswered;
+
+    @Column(name = "QuestionOrder")
+    private Integer questionOrder;
 
     @Column(name = "IsCorrect")
     private Boolean isCorrect;

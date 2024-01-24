@@ -13,4 +13,5 @@ public interface IQuizzesService {
     public Quizzes getOneQuizz(Integer quizId);
 
     public List<Quizzes> getAllQuizzes();
+
 }
