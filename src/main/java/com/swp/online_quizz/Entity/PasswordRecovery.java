@@ -1,34 +1,27 @@
 package com.swp.online_quizz.Entity;
 
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "PasswordRecovery")
+import java.time.Instant;
+
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
 public class PasswordRecovery {
     @Id
-    @Column(name = "RecoveryID")
-    private Integer recoveryId;
+    @Column(name = "RecoveryID", nullable = false)
+    private Integer id;
 
-    @Column(name = "UserID")
-    private Integer userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UserID")
+    private User userID;
 
-    @Column(name = "Token")
+    @Column(name = "Token", length = 100)
     private String token;
 
     @Column(name = "ExpiryTime")
-    private LocalDateTime expiryTime;
+    private Instant expiryTime;
 
 }
