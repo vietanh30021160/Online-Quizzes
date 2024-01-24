@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg" th:fragment="header">
 
     <div class="container">
-        <a class="navbar-brand" href="">
+        <a class="navbar-brand" th:href="@{/}">
             <i class="bi-back"></i>
             <span>QuizTest</span>
         </a>
@@ -10,7 +10,8 @@
             <a href="#top" class="navbar-icon bi-person smoothscroll"></a>
         </div>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -32,32 +33,38 @@
                     <a class="nav-link click-scroll" href="#section_5">Contact</a>
                 </li>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
-
-                    <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                        <li><a class="dropdown-item" href="topics-listing.html">Topics Listing</a></li>
-
-                        <li><a class="dropdown-item" href="contact.html">Contact Form</a></li>
-                    </ul>
-                </li>
             </ul>
-            <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
-                <div class="input-group input-group-lg">
-                                    <span class="input-group-text bi-search" id="basic-addon1">
-
-                                    </span>
-
-                    <input name="keyword" type="search" class="form-control" id="keyword"  aria-label="Search">
-
-                    <button type="submit" class="form-control">Search</button>
-
+            <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5 inline-block-div" role="search" >
+                <div class="input-group input-group-sm hidden-xs" style="width: 400px;" >
+                    <input type="text" name="keyword" class="form-control pull-right" placeholder="Search">
+                    <div class="input-group-btn">
+                        <button  type="submit" class="btn btn-default"><i class="fa fa-search"></i> Search</button>
+                    </div>
                 </div>
             </form>
-            <div class="d-none d-lg-block">
+
+            <div class="dropdown notifications-menu navbar-icon inline-block-div "  >
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-bell-o"></i>
+
+                </a>
+                <ul class="dropdown-menu">
+                    <li class="header">You have 10 notifications</li>
+                    <li>
+                        <ul class="menu">
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="footer"><a href="#">View all</a></li>
+                </ul>
+            </div>
+            <div class="d-none d-lg-block inline-block-div"  >
                 <a href="#top" class="navbar-icon bi-person smoothscroll"></a>
             </div>
-
 
         </div>
     </div>

@@ -21,7 +21,7 @@ $.each(sectionArray, function(index, value){
      });
     
     $('.click-scroll').eq(index).click(function(e){
-        var offsetClick = $('#' + 'section_' + value).offset().top - 75;
+        var offsetClick = $('#' + 'section_' + value).offset().top-50;
         e.preventDefault();
         $('html, body').animate({
             'scrollTop':offsetClick

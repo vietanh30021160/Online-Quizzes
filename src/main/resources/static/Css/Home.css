@@ -1,0 +1,36 @@
+.inline-block-div {
+    display: inline-block;
+    margin-right: 20px; /* Khoảng cách giữa các div */
+}
+.box-footer {
+
+    padding: 10px;
+    text-align: center;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination li {
+    display: inline;
+    margin-right: 5px;
+}
+
+.pagination a {
+    color: #333;
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.pagination a:hover {
+    background-color: #ddd;
+}
+
+.pagination .active {
+    background-color: #337ab7;
+    color: #fff;
+
+}
