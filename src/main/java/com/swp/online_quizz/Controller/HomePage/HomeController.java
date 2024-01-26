@@ -2,8 +2,8 @@ package com.swp.online_quizz.Controller.HomePage;
 
 import com.swp.online_quizz.Entity.Quiz;
 import com.swp.online_quizz.Entity.Subject;
-import com.swp.online_quizz.Service.QuizzesService;
-import com.swp.online_quizz.Service.SubjectService;
+import com.swp.online_quizz.Service.IQuizzesService;
+import com.swp.online_quizz.Service.ISubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
@@ -17,16 +17,16 @@ import java.util.List;
 @Controller
 public class HomeController {
     @Autowired
-    private SubjectService subjectService;
+    private ISubjectService ISubjectService;
     @Autowired
-    private QuizzesService quizzesService;
+    private IQuizzesService IQuizzesService;
 
     @RequestMapping("")
     public String Home(Model model, @Param("keyword") String keyword, @RequestParam(name = "pageNo",defaultValue = "1") Integer pageNo) {
-        List<Subject> listSubject = subjectService.getAll();
-        Page<Quiz> listQuiz =  quizzesService.getAll(pageNo);
+        List<Subject> listSubject = ISubjectService.getAll();
+        Page<Quiz> listQuiz =  IQuizzesService.getAll(pageNo);
         if(keyword != null){
-            listQuiz = quizzesService.searchQuizzes(keyword,pageNo);
+            listQuiz = IQuizzesService.searchQuizzes(keyword,pageNo);
             model.addAttribute("keyword", keyword);
         }
         model.addAttribute("totalPage",listQuiz.getTotalPages());

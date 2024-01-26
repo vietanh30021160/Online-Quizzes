@@ -17,7 +17,6 @@ public class Quiz {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "TeacherID")
-
     private User teacher;
 
     @ManyToOne(fetch = FetchType.LAZY)

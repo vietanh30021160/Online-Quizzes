@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="en">
-<head th:replace="HomeHead :: head"></head>
+<head th:replace="~{HomeHead :: head}"></head>
 
 <body id="top">
 
 <main>
-    <div th:replace="HomeHeader :: header"></div>
+    <div th:replace="~{HomeHeader :: header}"></div>
 
 
     <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
@@ -241,9 +241,9 @@
 </main>
 
 
-<div th:replace="HomeFooter :: footer"></div>
+<div th:replace="~{HomeFooter :: footer}"></div>
 
-<div th:replace="HomeScript :: script"></div>
+<div th:replace="~{HomeScript :: script}"></div>
 
 
 </body>
