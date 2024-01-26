@@ -18,14 +18,15 @@ public class Quizzes {
     private Integer quizId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TeacherID")
+    @JoinColumn(name
+            = "TeacherID")
     private Users teacher;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SubjectID")
     private Subjects subject;
 
-    @Column(name = "QuizName")
+    @Column(name = "QuizName", length = 100)
     private String quizName;
 
     @Column(name = "TimeLimit")

@@ -3,6 +3,10 @@ package com.swp.online_quizz.Service;
 import com.swp.online_quizz.Entity.QuizAttempts;
 import com.swp.online_quizz.Repository.QuizAttemptsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +39,7 @@ public class QuizAttemptsServiceElmpl implements QuizAttemptsService{
         return null;
     }
 
+
     @Override
     public Boolean update(QuizAttempts quizAttempts) {
         return null;
@@ -43,5 +48,31 @@ public class QuizAttemptsServiceElmpl implements QuizAttemptsService{
     @Override
     public Boolean delete(Integer AttemptsID) {
         return null;
+    }
+
+    @Override
+    public List<QuizAttempts> findQuizAttemptsByQuizID(Integer QuizID) {
+        return this.quizAttemptsRepository.findQuizAttemptsByQuizID(QuizID);
+    }
+
+    @Override
+    public List<QuizAttempts> searchUseByName(String useName) {
+        return this.quizAttemptsRepository.searchUseByName(useName);
+    }
+
+    @Override
+    public Page<QuizAttempts> getAll(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo-1,5);
+        return this.quizAttemptsRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<QuizAttempts> searchUseByName(String useName, Integer pageNo) {
+        List<QuizAttempts> list = this.searchUseByName(useName);
+        Pageable pageable = PageRequest.of(pageNo-1,5);
+        Integer start = (int) pageable.getOffset();
+        Integer end = ( start +pageable.getPageSize()) > list.size() ? list.size() : ( start +pageable.getPageSize());
+        list  = list.subList(start,end);
+        return new PageImpl<QuizAttempts>(list,pageable,this.searchUseByName(useName).size());
     }
 }

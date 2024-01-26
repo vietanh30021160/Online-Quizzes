@@ -1,10 +1,10 @@
 body {
     font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    background-color: #3c373e;
+    background-color: #898f8f;
     font-weight: 300; }
 
 p {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(182, 179, 179, 0.5);
     font-weight: 300; }
 
 h1, h2, h3, h4, h5, h6,
@@ -28,15 +28,16 @@ h2 {
 .custom-table {
     min-width: 900px; }
 .custom-table thead tr, .custom-table thead th {
+
     padding-bottom: 30px;
     border-top: none;
     border-bottom: none !important;
-    color: #fff;
-    font-size: 11px;
+    color: #ffffff;
+    font-size: 12px;
     text-transform: uppercase;
     letter-spacing: .2rem; }
 .custom-table tbody th, .custom-table tbody td {
-    color: #777;
+    color: #b7b6b6;
     font-weight: 400;
     padding-bottom: 20px;
     padding-top: 20px;
@@ -75,3 +76,53 @@ h2 {
     margin-bottom: 15px; }
 .custom-table .box td, .custom-table .box th {
     border: none !important; }
+/*From search*/
+.pagination-outer{ text-align: center; }
+.pagination{
+    font-family: 'Poppins', sans-serif;
+    display: inline-flex;
+    position: relative;
+}
+.pagination li a.page-link{
+    color: #555;
+    background-color: #eee;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 38px;
+    height: 35px;
+    width: 35px;
+    padding: 0;
+    margin: 0 5px;
+    border-radius: 3px;
+    border: 3px solid #555;
+    position: relative;
+    z-index: 1;
+    transition: all 0.4s ease 0s;
+}
+.pagination li:first-child a.page-link,
+.pagination li:last-child a.page-link{
+    font-size: 25px;
+    line-height: 35px;
+    font-weight: 500;
+}
+.pagination li a.page-link:hover,
+.pagination li a.page-link:focus,
+.pagination li.active a.page-link:hover,
+.pagination li.active a.page-link{
+    color: rgb(6,98,134);
+    background-color: #eee;
+    line-height: 30px;
+    border: 3px solid rgb(6,98,134);
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+@media only screen and (max-width: 480px){
+    .pagination{
+        font-size: 0;
+        display: inline-block;
+    }
+    .pagination li{
+        display: inline-block;
+        vertical-align: top;
+        margin: 10px 0;
+    }
+}

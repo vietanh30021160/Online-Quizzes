@@ -30,6 +30,11 @@ public class QuizzesServiceElmpl implements QuizzesService{
     }
 
     @Override
+    public Quizzes findByID(Integer quizID) {
+        return null;
+    }
+
+    @Override
     public Boolean update(Quizzes quizzes) {
         return null;
     }
@@ -38,4 +43,10 @@ public class QuizzesServiceElmpl implements QuizzesService{
     public Boolean delete(Integer quizId) {
         return null;
     }
+
+    @Override
+    public Quizzes QuizzAndSubjectBySubjectID(Integer SubjectID) {
+        return quizzesRepository.findQuizzesBySubjectID(SubjectID);
+    }
+
 }

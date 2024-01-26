@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <head th:replace="Home/Head :: head"></head>
+
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="fonts/icomoon/style.css">
+    <link rel="stylesheet" th:href="@{../fonts/icomoon/style.css}">
 
     <link rel="stylesheet" th:href="@{../Css/owl.carousel.min.css}">
 
@@ -16,15 +16,99 @@
     <!-- Style -->
     <link rel="stylesheet" th:href="@{../Css/mark.css}">
 
-    <title>Table #6</title>
+    <title>Mark Class</title>
+
 </head>
-<body>
-
-
-<div class="content">
+<body id="top">
+<nav class="navbar navbar-expand-lg" th:fragment="header">
 
     <div class="container">
-        <h2 class="mb-5">Table #6</h2>
+        <a class="navbar-brand" href="/">
+            <i class="bi-back"></i>
+            <span>QuizTest</span>
+        </a>
+
+        <div class="d-lg-none ms-auto me-4">
+            <a href="#top" class="navbar-icon bi-person smoothscroll"></a>
+        </div>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                <li class="nav-item">
+                    <a class="nav-link click-scroll" href="#section_1">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link click-scroll" href="#section_2">List Quizzes</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link click-scroll" href="#section_3">How it works</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link click-scroll" href="#section_5">Contact</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
+
+                    <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
+                        <li><a class="dropdown-item" href="topics-listing.html">Topics Listing</a></li>
+
+                        <li><a class="dropdown-item" href="contact.html">Contact Form</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="d-none d-lg-block">
+                <a href="#top" class="navbar-icon bi-person smoothscroll"></a>
+            </div>
+
+
+        </div>
+    </div>
+</nav>
+
+<h1 class="d-flex justify-content-center p-3" >Mark Class</h1>
+<div class="container">
+    <div class="row">
+        <div th:object="${QuizzAndSubjectById}" class="col-sm-8">
+            <div class="row ">
+                <h4 >Subject : <small th:text="*{subject.subjectName}" class="text-muted " ></small></h4>
+            </div>
+            <div class="row ">
+                <h4 >Quizz Name : <small th:text="*{quizName}" class="text-muted " ></small></h4>
+            </div>
+            <div class="row ">
+                <h4 >Teacher : <small th:text="*{teacher.username}" class="text-muted " ></small></h4>
+            </div>
+            <div class="row ">
+                <h4 >TimeLimit : <small th:text="*{timeLimit}" class="text-muted " ></small><small class="text-muted " > Min</small></h4>
+            </div>
+
+        </div>
+        <div class="price-range col-sm-4 d-flex align-items-end">
+            <form  method="get" class="mx-sm-3" >
+                <div class="input-group" >
+                    <input style="border-radius: 10px " name="usename" th:value="${usename}" class="form-control form-control-lg" type="text" placeholder="Search Name ..." aria-describedby="button-addon2" autofocus>
+                    <button style="border-radius: 10px" class="btn btn-secondary" id="button-addon2" type="submit" >Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="content p-1">
+    <div class="container">
+        <h2 class="mb-5"></h2>
 
 
         <div class="table-responsive">
@@ -33,118 +117,58 @@
                 <thead>
                 <tr>
 
-                    <th scope="col">Order</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Occupation</th>
-                    <th scope="col">Contact</th>
-                    <th scope="col">Education</th>
-                    <th scope="col"></th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Student</th>
+                    <th scope="col">Email Address</th>
+                    <th scope="col">State</th>
+                    <th scope="col">Started On</th>
+                    <th scope="col">Completed</th>
+                    <th scope="col">Time Taken</th>
+                    <th scope="col">Grade</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr scope="row">
+                <tr scope="row" th:each="markClass : ${QuizAttempts}">
+                    <td th:text="${markClass.attemptId}"></td>
+                    <td th:text="${markClass.user.username}"></td>
+                    <td th:text="${markClass.user.email}">
 
 
-
-                    <td>
-                        1392
                     </td>
-                    <td><a href="#">James Yates</a></td>
-                    <td>
-                        Web Designer
-                        <small class="d-block">Far far away, behind the word mountains</small>
-                    </td>
-                    <td>+63 983 0962 971</td>
-                    <td>NY University</td>
-                    <td><a href="#" class="more">Details</a></td>
+                    <td th:text="${markClass.isCompleted}"></td>
+                    <td th:text="${markClass.startTime}"></td>
+                    <td th:text="${markClass.endTime}"><a href="#" class="more"></a></td>
+                    <td></td>
+                    <td th:text="${markClass.marks}"><a href="#" class="more"></a></td>
 
                 </tr>
-
-                <tr>
-
-                    <td>4616</td>
-                    <td><a href="#">Matthew Wasil</a></td>
-                    <td>
-                        Graphic Designer
-                        <small class="d-block">Far far away, behind the word mountains</small>
-                    </td>
-                    <td>+02 020 3994 929</td>
-                    <td>London College</td>
-                    <td><a href="#" class="more">Details</a></td>
-                </tr>
-                <tr>
-
-                    <td>9841</td>
-                    <td><a href="#">Sampson Murphy</a></td>
-                    <td>
-                        Mobile Dev
-                        <small class="d-block">Far far away, behind the word mountains</small>
-                    </td>
-                    <td>+01 352 1125 0192</td>
-                    <td>Senior High</td>
-                    <td><a href="#" class="more">Details</a></td>
-                </tr>
-                <tr>
-
-                    <td>9548</td>
-                    <td><a href="#">Gaspar Semenov</a></td>
-                    <td>
-                        Illustrator
-                        <small class="d-block">Far far away, behind the word mountains</small>
-                    </td>
-                    <td>+92 020 3994 929</td>
-                    <td>College</td>
-                    <td><a href="#" class="more">Details</a></td>
-                </tr>
-
-                <tr>
-
-                    <td>4616</td>
-                    <td><a href="#">Matthew Wasil</a></td>
-                    <td>
-                        Graphic Designer
-                        <small class="d-block">Far far away, behind the word mountains</small>
-                    </td>
-                    <td>+02 020 3994 929</td>
-                    <td>London College</td>
-                    <td><a href="#" class="more">Details</a></td>
-                </tr>
-                <tr>
-
-                    <td>9841</td>
-                    <td><a href="#">Sampson Murphy</a></td>
-                    <td>
-                        Mobile Dev
-                        <small class="d-block">Far far away, behind the word mountains</small>
-                    </td>
-                    <td>+01 352 1125 0192</td>
-                    <td>Senior High</td>
-                    <td><a href="#" class="more">Details</a></td>
-                </tr>
-                <tr>
-
-                    <td>9548</td>
-                    <td><a href="#">Gaspar Semenov</a></td>
-                    <td>
-                        Illustrator
-                        <small class="d-block">Far far away, behind the word mountains</small>
-                    </td>
-                    <td>+92 020 3994 929</td>
-                    <td>College</td>
-                    <td><a href="#" class="more">Details</a></td>
-                </tr>
-
                 </tbody>
             </table>
         </div>
 
 
     </div>
+<!--    pagination-outer -->
+    <div class="demo">
+        <nav class="pagination-outer" aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item" th:if="${currentPage > 1}" id="movePaging">
+                    <a th:href="@{'?pageNo='+${currentPage - 1}}"  class="page-link" aria-label="Previous">
+                        <span aria-hidden="true">«</span>
+                    </a>
+                </li>
+                <li class="page-item " th:each="i:${#numbers.sequence(1,totalPage)}" th:classappend="${i == currentPage ? 'active' : ''}"><a class="page-link" th:href="@{${usename != null && usename != '' ? '?usename=' + usename + '&' : '?'} + 'pageNo='+${i}}" th:text="${i}"></a></li>
+                <li class="page-item" th:if="${currentPage < totalPage}">
+                    <a th:href="@{'?pageNo='+${currentPage + 1}}" class="page-link" aria-label="Next" id="nextPaging">
+                        <span aria-hidden="true">»</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
-</div>
-
-
-<div th:replace = "../Home/Script :: script"></div>
+</div>>
+<div th:replace="Home/Script :: script"></div>
 
 </body>
 </html>
