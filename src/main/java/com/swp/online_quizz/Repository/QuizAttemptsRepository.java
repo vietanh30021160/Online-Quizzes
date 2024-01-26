@@ -15,7 +15,7 @@ public interface QuizAttemptsRepository extends JpaRepository<QuizAttempts, Inte
     @Query("SELECT qa FROM QuizAttempts qa WHERE qa.quiz.quizId = :quizId AND qa.user.userId = :userId")
     List<QuizAttempts> findByQuizIdAndUserId(@Param("quizId") Integer quizId, @Param("userId") Integer userId);
 
-    @Query("SELECT qa FROM QuizAttempts qa WHERE qa.quiz.quizId = :quizId AND qa.user.userId = :userId AND qa.startTime = :startTime")
+    @Query("SELECT qa FROM QuizAttempts qa WHERE qa.quiz.quizId = :quizId AND qa.user.userId = :userId AND qa.startTime >= :startTime")
     List<QuizAttempts> findByQuizIdAndUserIdAndStartTime(@Param("quizId") Integer quizId,
             @Param("userId") Integer userId, @Param("startTime") Timestamp startTime);
 }

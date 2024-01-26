@@ -19,4 +19,19 @@ public class QuesstionAttemptsService implements IQuesstionAttemptsService{
         }
         return false;
     }
+
+    @Override
+    public Boolean updateQuesstionAttempts(Integer id, QuestionAttempts questionAttempts) {
+        try {
+            QuestionAttempts uQuestionAttempts = questionAttemptsRepository.getReferenceById(id);
+            uQuestionAttempts.setAnswer(questionAttempts.getAnswer());
+            uQuestionAttempts.setIsAnswered(questionAttempts.getIsAnswered());
+            uQuestionAttempts.setIsCorrect(questionAttempts.getIsCorrect());
+            this.questionAttemptsRepository.save(uQuestionAttempts);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }

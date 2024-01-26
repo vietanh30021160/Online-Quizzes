@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -27,6 +29,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class QuizAttempts {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AttemptID")
     private Integer attemptId;
 
@@ -55,6 +58,21 @@ public class QuizAttempts {
     @Column(name = "CurrentQuestionID")
     private Integer currentQuestionId;
 
+    public QuizAttempts(Users user, Quizzes quiz, Timestamp startTime, Timestamp endTime, Integer marks,
+            Boolean isCompleted, Integer currentQuestionId, Set<Feedback> listFeedbacks,
+            Set<QuestionAttempts> listQuestionAttempts, Set<QuizProgress> listQuizzProgress) {
+        this.user = user;
+        this.quiz = quiz;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.marks = marks;
+        this.isCompleted = isCompleted;
+        this.currentQuestionId = currentQuestionId;
+        this.listFeedbacks = listFeedbacks;
+        this.listQuestionAttempts = listQuestionAttempts;
+        this.listQuizzProgress = listQuizzProgress;
+    }
+
     @OneToMany(mappedBy = "attempt")
     @JsonManagedReference
     private Set<Feedback> listFeedbacks;
@@ -66,4 +84,5 @@ public class QuizAttempts {
     @OneToMany(mappedBy = "attempt")
     @JsonManagedReference
     private Set<QuizProgress> listQuizzProgress;
+
 }

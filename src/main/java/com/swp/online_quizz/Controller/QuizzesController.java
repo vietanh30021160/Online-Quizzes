@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.swp.online_quizz.Entity.Questions;
 import com.swp.online_quizz.Entity.QuizAttempts;
@@ -20,7 +20,7 @@ import com.swp.online_quizz.Service.IUsersService;
 
 import jakarta.servlet.http.HttpSession;
 
-@RestController
+@Controller
 @RequestMapping(path = "/quizzes")
 public class QuizzesController {
     @Autowired
@@ -31,7 +31,7 @@ public class QuizzesController {
     private IQuizzesService iQuizzesService;
 
     @GetMapping("/{quizID}")
-    public String test(@PathVariable Integer quizID, HttpSession session, Model model) {
+    public String quizInfo(@PathVariable Integer quizID, HttpSession session, Model model) {
         Users user = (Users) session.getAttribute("user");
         Users user1 = iUsersService.getUsersByID(8);
         Quizzes quiz = iQuizzesService.getOneQuizz(quizID);

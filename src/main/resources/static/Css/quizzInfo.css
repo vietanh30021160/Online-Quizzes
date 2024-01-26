@@ -269,6 +269,12 @@ td {
     margin-bottom: 200px;
 }
 
+.button-load a {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .button-load .button {
     height: 50px;
     width: 200px;

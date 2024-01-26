@@ -21,4 +21,18 @@ public class QuizProgressService implements IQuizProgressService {
         }
         return false;
     }
+
+    @Override
+    public Boolean updateQuizProgress(Integer id, QuizProgress quizProgress) {
+        try {
+            QuizProgress uQuizProgress = quizProgressRepository.getReferenceById(id);
+            uQuizProgress.setAnswer(quizProgress.getAnswer());
+            uQuizProgress.setIsAnswered(quizProgress.getIsAnswered());
+            this.quizProgressRepository.save(uQuizProgress);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }

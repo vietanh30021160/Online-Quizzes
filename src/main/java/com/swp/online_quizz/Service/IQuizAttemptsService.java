@@ -15,6 +15,8 @@ public interface IQuizAttemptsService {
 
     public boolean createQuizzAttempt(QuizAttempts attempt);
 
+    public QuizAttempts updateAttempts(Integer id, QuizAttempts attempt);
+
     public List<QuizAttempts> getAttemptByUserIdAndQuizzId(Quizzes quiz, Users user);
 
     public List<QuizAttempts> findByQuizIdAndUserIdAndStartTime(Quizzes quiz, Users user, Timestamp startTime);
