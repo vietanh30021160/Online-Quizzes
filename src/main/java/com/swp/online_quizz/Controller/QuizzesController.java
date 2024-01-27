@@ -32,7 +32,6 @@ public class QuizzesController {
 
     @GetMapping("/{quizID}")
     public String quizInfo(@PathVariable Integer quizID, HttpSession session, Model model) {
-        Users user = (Users) session.getAttribute("user");
         Users user1 = iUsersService.getUsersByID(8);
         Quizzes quiz = iQuizzesService.getOneQuizz(quizID);
         List<QuizAttempts> listAttempts = iQuizAttemptsService.getAttemptByUserIdAndQuizzId(quiz, user1);

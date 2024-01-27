@@ -137,6 +137,9 @@ public class QuizAttemptController {
             model.addAttribute("quiz", quiz);
             model.addAttribute("question", question);
             model.addAttribute("listQProg", listQProg);
+            model.addAttribute("startTime", attemp.getStartTime());
+            model.addAttribute("endTime", attemp.getEndTime().getTime());
+
             model.addAttribute("QuizProgress", new QuizProgress());
             return "doQuizz";
         } else {
@@ -181,7 +184,9 @@ public class QuizAttemptController {
             }
         }
         if (previous != null) {
-            if (page > 1) {
+            if (page == 1) {
+                page = attemp.getListQuizzProgress().size();
+            } else if (page > 1) {
                 page -= 1;
             }
             return new RedirectView(
@@ -191,6 +196,8 @@ public class QuizAttemptController {
         if (next != null) {
             if (page < attemp.getListQuizzProgress().size()) {
                 page += 1;
+            } else if (page == attemp.getListQuizzProgress().size()) {
+                page = 1;
             }
             return new RedirectView(
                     "/attempt/attemptQuiz/" + attemp.getQuiz().getQuizId() + "/" + attemp.getAttemptId() + "/"
@@ -215,7 +222,8 @@ public class QuizAttemptController {
                 count++;
             }
         }
-        attempt.setMarks((Integer) (count / attempt.getListQuestionAttempts().size()));
+        double mark = ((double) count / attempt.getListQuestionAttempts().size()) * 100;
+        attempt.setMarks((int) mark);
         iQuizAttemptsService.updateAttempts(attemptID, attempt);
         return new RedirectView("/quizzes/{quizId}");
     }

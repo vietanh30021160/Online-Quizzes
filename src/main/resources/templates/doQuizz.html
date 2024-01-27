@@ -16,6 +16,7 @@
         <div class="qtext">
             <h1 th:text = "${quiz.getQuizName()} + ' - ' + ${quiz.getSubject().getSubjectName()}"></h1>
         </div>
+        <div id="timeRemaining"></div>
         <!-----Nội dung câu hỏi------>
         <div class="card-contenain">
             <div class="card">
@@ -26,8 +27,18 @@
                     <h2 class="question" th:text = "${question.getQuestionContent()}"></h2>
                     <div class="answer" th:each = "answer, answerIndex : ${question.getListAnswer()}">
                         <div class="r0">
-                            <input type="radio" name="answer" th:field="*{answer}" th:value="${answer.getAnswerId()}" id="q1034657:1_answer0"
-                                th:checked="${answerProg == answer.getAnswerId()} ? 'checked' : ''">
+                            <input type="radio" name="answer" th:field="*{answer}" th:value="${answer.getAnswerId()}" th:id="'answer_' + ${answerIndex.index}">
+                            <script th:inline="javascript">
+                                /*<![CDATA[*/
+                                var answerProg = /*[[${answerProg}]]*/ null; // Assuming answerProg is a variable from the server-side
+                                var answerId = /*[[${answer.getAnswerId()}]]*/ null; // Get the answer ID from Thymeleaf
+                                // Check the radio button if answerProg is equal to the answer ID
+                                if (answerProg !== null && answerId !== null && answerProg === answerId) {
+                                    // Use the dynamically generated ID based on the answer index
+                                    document.getElementById('answer_' + /*[[${answerIndex.index}]]*/ '').checked = true;
+                                }
+                                /*]]>*/
+                            </script>
                             <label for="q1034657:1_answer0" class="m-l-1">
                                 <span class="answernumber" th:text="${answerIndex.index + 1} + '. '"></span>
                                 <span  th:text = "${answer.getAnswerContent()}"></span>
@@ -41,21 +52,44 @@
                 aria-labelledby="instance-0-header">
                 <div class="card-body p-3">
                     <div class="card-text content mt-3">
-                        <div class="qn_buttons clearfix multipages">
-                            <a class="qnbutton complete free btn btn-secondary thispage" id="quiznavbutton1" title="Not answered" data-quiz-page="0" href="#">
+                        <div class="qn_buttons clearfix multipages" th:each = "quizProgress2, quizProgress2Index : ${listQProg}" >
+                            <a class="qnbutton complete free btn btn-secondary thispage" id="quiznavbutton1" title="Not answered" data-quiz-page="0" 
+                            href="/attempt/test" th:href="@{/attempt/attemptQuiz/{quizID}/{attemptID}/{page}(quizID = ${quiz.getQuizId()}, attemptID = ${attemp.getAttemptId()}, page = ${quizProgress2.getQuestionOrder()})}">
                                 <span class="thispageholder"></span>
                                 <span class="trafficlight"></span>
-                                <span class="accesshide">Question </span>1<span class="accesshide"><span
+                                <span class="accesshide" th:text="'Question' + ${quizProgress2.getQuestionOrder()}"></span><span class="accesshide"><span
                                         class="flagstate"></span></span>
                                     </a>
-                            </div>
+                        </div>
                         <div class="othernav">
-                            <a class="mod_quiz-next-nav"
-                                href="/attempt/test" th:href="@{/attempt/attemptQuiz/{quizID}/{attemptID}/finish(quizID = ${quiz.getQuizId()}, attemptID = ${attemp.getAttemptId()})}">Finish quiz</a></div>
-                        <div class="footer"></div>
-            
-                    </div>
-            
+                            <a id="submitButton" onclick="submitQuiz()" class="mod_quiz-next-nav"
+                                href="/attempt/test" th:href="@{/attempt/attemptQuiz/{quizID}/{attemptID}/finish(quizID = ${quiz.getQuizId()}, attemptID = ${attemp.getAttemptId()})}">Finish quiz</a>
+                                <script th:inline="javascript">
+                                    /*<![CDATA[*/
+                                    // Đặt thời gian kết thúc (đọc từ model hoặc server)
+                                    var endTime = /*[[${endTime}]]*/ 0;
+                                    // Cập nhật thời gian còn lại mỗi giây
+                                    var countdownInterval = setInterval(function () {
+                                        var now = new Date().getTime();
+                                        var timeRemaining = endTime - now;
+                                        // Tính toán phút và giây còn lại
+                                        var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                                        var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+                                        // Hiển thị thời gian còn lại
+                                        document.getElementById("timeRemaining").innerHTML = "Time Remaining: " + minutes + "m " + seconds + "s ";
+                                        if (timeRemaining <= 0) {
+                                            clearInterval(countdownInterval);
+                                            submitQuiz();
+                                            document.getElementById("submitQuizLink").style.pointerEvents = "none";
+                                        }
+                                    }, 1000);
+                                    function submitQuiz() {
+                                        document.getElementById("submitButton").click();
+                                    }
+                                    /*]]>*/
+                                </script>
+                            </div>
+                        </div> 
                 </div>
             
             </section>
@@ -69,4 +103,5 @@
 
 
 </body>
+
 </html>
