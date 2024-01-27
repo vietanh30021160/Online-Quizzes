@@ -18,10 +18,10 @@ public class Questions {
     @Column(name = "QuestionID", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "QuizID")
-    @JsonBackReference
-    private Quizzes quiz;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "QuizID")
+//    @JsonBackReference
+//    private Quizzes quiz;
 
     @Lob
     @Column(name = "QuestionContent")
