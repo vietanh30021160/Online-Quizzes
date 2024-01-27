@@ -29,7 +29,6 @@ public class MarkController {
 @GetMapping("/mark/{quizzId}")
     public String index(Model model, @RequestParam(value = "username", required = false) String usename, @RequestParam(value = "pageNo" , defaultValue = "1") Integer pageNo,
                         @PathVariable("quizzId") Integer quizzId){
-    System.out.println(quizzId);
     Page<QuizAttempts> listQuizAttempts = this.quizAttemptsService.findQuizAttemptsByQuizID(quizzId,pageNo);
     if(usename != null){
         listQuizAttempts = this.quizAttemptsService.searchUseByName(usename,quizzId,pageNo);
@@ -37,7 +36,7 @@ public class MarkController {
     }
 
     Quizzes QuizzAndSubjectById = this.quizzesService.findByID(quizzId);
-    QuizzAndSubjectById.getSubject();
+//    QuizzAndSubjectById.getSubject();
     model.addAttribute("QuizAttempts",listQuizAttempts);
     model.addAttribute("QuizzAndSubjectById",QuizzAndSubjectById);
     model.addAttribute("totalPage",listQuizAttempts.getTotalPages());
