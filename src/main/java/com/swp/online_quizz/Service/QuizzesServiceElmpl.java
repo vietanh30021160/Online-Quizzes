@@ -31,7 +31,7 @@ public class QuizzesServiceElmpl implements QuizzesService{
 
     @Override
     public Quizzes findByID(Integer quizID) {
-        return null;
+        return quizzesRepository.findById(quizID).orElse(null);
     }
 
     @Override
@@ -44,9 +44,8 @@ public class QuizzesServiceElmpl implements QuizzesService{
         return null;
     }
 
-    @Override
-    public Quizzes QuizzAndSubjectBySubjectID(Integer SubjectID) {
-        return quizzesRepository.findQuizzesBySubjectID(SubjectID);
-    }
+
+
+
 
 }

@@ -13,9 +13,11 @@ public interface QuizAttemptsService {
     Boolean update(QuizAttempts quizAttempts);
     Boolean delete(Integer AttemptsID);
     List<QuizAttempts> findQuizAttemptsByQuizID(Integer QuizzID);
-    List<QuizAttempts> searchUseByName(String useName);
+    Page<QuizAttempts> findQuizAttemptsByQuizID(Integer QuizzID,Integer pageNo);
+
+    List<QuizAttempts> searchUseByName(String useName,Integer QuizzID);
 
     Page<QuizAttempts> getAll(Integer pageNo);
 
-    Page<QuizAttempts> searchUseByName(String useName, Integer pageNo);
+    Page<QuizAttempts> searchUseByName(String useName,Integer QuizzID, Integer pageNo);
 }

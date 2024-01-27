@@ -1,6 +1,7 @@
 package com.swp.online_quizz.Entity;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ public class QuizAttempts {
     @Column(name = "EndTime")
     private LocalDateTime endTime;
 
+
     @Column(name = "Marks")
     private Integer marks;
 
@@ -43,4 +45,7 @@ public class QuizAttempts {
     @JoinColumn(name = "CurrentQuestionID")
     private Questions currentQuestion;
 
+    public long getMinutesDifference(){
+        return ChronoUnit.MINUTES.between(startTime, endTime);
+    }
 }

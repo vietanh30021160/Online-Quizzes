@@ -56,8 +56,18 @@ public class QuizAttemptsServiceElmpl implements QuizAttemptsService{
     }
 
     @Override
-    public List<QuizAttempts> searchUseByName(String useName) {
-        return this.quizAttemptsRepository.searchUseByName(useName);
+    public Page<QuizAttempts> findQuizAttemptsByQuizID(Integer QuizzID, Integer pageNo) {
+        List<QuizAttempts> quizAttempts = this.quizAttemptsRepository.findQuizAttemptsByQuizID(QuizzID);
+        Pageable pageable = PageRequest.of(pageNo - 1, 5);
+        Integer start = (int) pageable.getOffset();
+        Integer end = ( start +pageable.getPageSize()) > quizAttempts.size() ? quizAttempts.size() : ( start +pageable.getPageSize());
+        quizAttempts  = quizAttempts.subList(start,end);
+        return new PageImpl<QuizAttempts>(quizAttempts,pageable,this.quizAttemptsRepository.findQuizAttemptsByQuizID(QuizzID).size());
+    }
+
+    @Override
+    public List<QuizAttempts> searchUseByName(String useName,Integer quizzID) {
+        return this.quizAttemptsRepository.searchUseByName(useName,quizzID);
     }
 
     @Override
@@ -67,12 +77,12 @@ public class QuizAttemptsServiceElmpl implements QuizAttemptsService{
     }
 
     @Override
-    public Page<QuizAttempts> searchUseByName(String useName, Integer pageNo) {
-        List<QuizAttempts> list = this.searchUseByName(useName);
+    public Page<QuizAttempts> searchUseByName(String useName,Integer QuizzID, Integer pageNo) {
+        List<QuizAttempts> list = this.searchUseByName(useName,QuizzID);
         Pageable pageable = PageRequest.of(pageNo-1,5);
         Integer start = (int) pageable.getOffset();
-        Integer end = ( start +pageable.getPageSize()) > list.size() ? list.size() : ( start +pageable.getPageSize());
+        Integer end = ( start + pageable.getPageSize()) > list.size() ? list.size() : ( start + pageable.getPageSize());
         list  = list.subList(start,end);
-        return new PageImpl<QuizAttempts>(list,pageable,this.searchUseByName(useName).size());
+        return new PageImpl<QuizAttempts>(list,pageable,this.searchUseByName(useName,QuizzID).size());
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,20 +26,22 @@ public class MarkController {
     private QuizAttemptsService quizAttemptsService;
     @Autowired
     private QuizzesService quizzesService;
-@GetMapping("/mark")
-    public String index(Model model, @Param("usename")String usename, @RequestParam(value = "pageNo" , defaultValue = "1") Integer pageNo){
-    Page<QuizAttempts> listQuizAttempts = this.quizAttemptsService.getAll(pageNo);
+@GetMapping("/mark/{quizzId}")
+    public String index(Model model, @RequestParam(value = "username", required = false) String usename, @RequestParam(value = "pageNo" , defaultValue = "1") Integer pageNo,
+                        @PathVariable("quizzId") Integer quizzId){
+    System.out.println(quizzId);
+    Page<QuizAttempts> listQuizAttempts = this.quizAttemptsService.findQuizAttemptsByQuizID(quizzId,pageNo);
     if(usename != null){
-        listQuizAttempts = this.quizAttemptsService.searchUseByName(usename,pageNo);
+        listQuizAttempts = this.quizAttemptsService.searchUseByName(usename,quizzId,pageNo);
         model.addAttribute("usename",usename);
     }
 
-    Quizzes QuizzAndSubjectById = (Quizzes) this.quizzesService.QuizzAndSubjectBySubjectID(2);
+    Quizzes QuizzAndSubjectById = this.quizzesService.findByID(quizzId);
+    QuizzAndSubjectById.getSubject();
     model.addAttribute("QuizAttempts",listQuizAttempts);
     model.addAttribute("QuizzAndSubjectById",QuizzAndSubjectById);
     model.addAttribute("totalPage",listQuizAttempts.getTotalPages());
     model.addAttribute("currentPage",pageNo);
-
         return "class/mark";
     }
 }

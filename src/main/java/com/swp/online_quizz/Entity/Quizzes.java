@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "Quizzes")
 @Getter
@@ -13,9 +15,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Quizzes {
+
+
+
     @Id
     @Column(name = "QuizID", nullable = false)
     private Integer quizId;
+
+
+    @OneToMany(mappedBy = "quiz")
+    private List<QuizAttempts> quizAttempts;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name

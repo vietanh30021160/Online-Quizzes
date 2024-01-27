@@ -12,5 +12,6 @@ public interface QuizzesRepository extends JpaRepository<Quizzes, Integer> {
 //    public Quizzes findQuizzesBySubjectID(int SubjectId);
     @Query("SELECT q FROM Quizzes q JOIN FETCH q.subject s WHERE s.subjectId = :subjectId")
     public Quizzes findQuizzesBySubjectID(@Param("subjectId") int subjectId);
-
+    @Query("select q from Quizzes q JOIN fetch q.quizAttempts qa where qa.quiz.quizId = :attemptID")
+    Quizzes findByAttemptID(Integer attemptID);
 }

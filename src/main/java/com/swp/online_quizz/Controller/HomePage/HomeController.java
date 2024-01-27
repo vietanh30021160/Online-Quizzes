@@ -31,25 +31,4 @@ public class HomeController {
         return "html/index";
     }
 
-//    @RequestMapping("/message")
-//    public String msg(Model model){
-////        List< Messages>
-////        model.addAttribute("listSubjects",listSubject);
-////        model.addAttribute("listQuizzes",listQuiz);
-//        return "html/index";
-//    }
-//    @RequestMapping(value = "/getinfo/:id", method = RequestMethod.GET)
-//    public String msg(Model model){
-////        List< Messages>
-////        model.addAttribute("listSubjects",listSubject);
-////        model.addAttribute("listQuizzes",listQuiz);
-//        return "html/index";
-//    }
-//    @RequestMapping(value = "/getinfo/:id", method = RequestMethod.POST)
-//    public String msg(Model model, RequestBody paosidfj){
-////        List< Messages>
-////        model.addAttribute("listSubjects",listSubject);
-////        model.addAttribute("listQuizzes",listQuiz);
-//        return "html/index";
-//    }
 }

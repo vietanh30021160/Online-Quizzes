@@ -9,8 +9,11 @@ import java.util.List;
 
 @Repository
 public interface QuizAttemptsRepository extends JpaRepository<QuizAttempts,Integer> {
-    @Query(value = "select * from QuizAttempts where QuizAttempts.quizId = ?1",nativeQuery = true)
+    @Query(value = "select * from QuizAttempts where QuizAttempts.quizId = ?1", nativeQuery = true)
     public List<QuizAttempts> findQuizAttemptsByQuizID(Integer quizID);
-    @Query(value = "select qa from QuizAttempts qa join FETCH qa.user u where u.username like %?1%")
-    public List<QuizAttempts> searchUseByName(String usename);
+
+    @Query(value = "select qa from QuizAttempts qa join FETCH qa.user u join fetch qa.quiz q where u.username like %?1% and q.quizId = ?2")
+    public List<QuizAttempts> searchUseByName(String usename, Integer quizID);
 }
+
+

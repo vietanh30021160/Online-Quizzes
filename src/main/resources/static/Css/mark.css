@@ -36,7 +36,8 @@ h2 {
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: .2rem; }
-.custom-table tbody th, .custom-table tbody td {
+.custom-table tbody th, .custom-table tbody td{
+    box-sizing: border-box;
     color: #b7b6b6;
     font-weight: 400;
     padding-bottom: 20px;
@@ -47,10 +48,17 @@ h2 {
     -o-transition: .3s all ease;
     transition: .3s all ease; }
 .custom-table tbody th small, .custom-table tbody td small {
+    display: block;
     color: rgba(255, 255, 255, 0.3);
     font-weight: 300; }
 .custom-table tbody th a, .custom-table tbody td a {
-    color: rgba(255, 255, 255, 0.3); }
+    color: rgba(100, 98, 98, 0.93);
+
+}
+
+.custom-table tbody td a:hover{
+    color: rgb(0, 89, 255);
+}
 .custom-table tbody th .more, .custom-table tbody td .more {
     color: rgba(255, 255, 255, 0.3);
     font-size: 11px;
@@ -63,10 +71,10 @@ h2 {
     transition: .3s all ease; }
 .custom-table tbody tr:hover td, .custom-table tbody tr:focus td {
     color: #fff; }
-.custom-table tbody tr:hover td a, .custom-table tbody tr:focus td a {
-    color: #fdd114; }
-.custom-table tbody tr:hover td .more, .custom-table tbody tr:focus td .more {
-    color: #fdd114; }
+/*.custom-table tbody tr:hover td a, .custom-table tbody tr:focus td a {*/
+/*    color: #fdd114; }*/
+/*.custom-table tbody tr:hover td .more, .custom-table tbody tr:focus td .more {*/
+/*    color: #fdd114; }*/
 .custom-table .td-box-wrap {
     padding: 0; }
 .custom-table .box {
