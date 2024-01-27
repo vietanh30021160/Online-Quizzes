@@ -9,4 +9,6 @@ import com.swp.online_quizz.Entity.Questions;
 @Service
 public interface IQuestionsService {
     public List<Questions> getAllQuestions();
+
+    public Questions getQuestions(Integer questionId);
 }

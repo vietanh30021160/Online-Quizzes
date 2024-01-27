@@ -1,6 +1,6 @@
 package com.swp.online_quizz.Entity;
 
-import java.util.Set;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -26,6 +28,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Questions {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "QuestionID")
     private Integer questionId;
 
@@ -48,9 +51,9 @@ public class Questions {
 
     @OneToMany(mappedBy = "question")
     @JsonManagedReference
-    private Set<Answers> listAnswer;
+    private List<Answers> listAnswer;
 
     @OneToMany(mappedBy = "question")
     @JsonManagedReference
-    private Set<QuestionAttempts> listQuestionAttempts;
+    private List<QuestionAttempts> listQuestionAttempts;
 }

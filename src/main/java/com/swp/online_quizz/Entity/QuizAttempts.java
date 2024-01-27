@@ -1,7 +1,7 @@
 package com.swp.online_quizz.Entity;
 
 import java.sql.Timestamp;
-import java.util.Set;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -59,8 +59,8 @@ public class QuizAttempts {
     private Integer currentQuestionId;
 
     public QuizAttempts(Users user, Quizzes quiz, Timestamp startTime, Timestamp endTime, Integer marks,
-            Boolean isCompleted, Integer currentQuestionId, Set<Feedback> listFeedbacks,
-            Set<QuestionAttempts> listQuestionAttempts, Set<QuizProgress> listQuizzProgress) {
+            Boolean isCompleted, Integer currentQuestionId, List<Feedback> listFeedbacks,
+            List<QuestionAttempts> listQuestionAttempts, List<QuizProgress> listQuizzProgress) {
         this.user = user;
         this.quiz = quiz;
         this.startTime = startTime;
@@ -75,14 +75,14 @@ public class QuizAttempts {
 
     @OneToMany(mappedBy = "attempt")
     @JsonManagedReference
-    private Set<Feedback> listFeedbacks;
+    private List<Feedback> listFeedbacks;
 
     @OneToMany(mappedBy = "attempt")
     @JsonManagedReference
-    private Set<QuestionAttempts> listQuestionAttempts;
+    private List<QuestionAttempts> listQuestionAttempts;
 
     @OneToMany(mappedBy = "attempt")
     @JsonManagedReference
-    private Set<QuizProgress> listQuizzProgress;
+    private List<QuizProgress> listQuizzProgress;
 
 }

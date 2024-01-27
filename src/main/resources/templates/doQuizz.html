@@ -8,8 +8,11 @@
 </head>
 <body>
 
-    <form action="#">
+    <form th:action="@{/attempt/progress}" th:object="${QuizProgress}" method="post">
         <!----Tên quizzz - Tên môn--->
+        <input type="hidden" name="page" th:value="${page}" />
+        <input type="hidden" name="questionID" th:value="${question.getQuestionId()}">
+        <input type="hidden" name="attempID" th:value="${attemp.getAttemptId()}">
         <div class="qtext">
             <h1 th:text = "${quiz.getQuizName()} + ' - ' + ${quiz.getSubject().getSubjectName()}"></h1>
         </div>
@@ -17,12 +20,14 @@
         <div class="card-contenain">
             <div class="card">
                 <div class="info">
-                    <h3 class="no">Question <span class="qno" th:text = "${listQProg.get(0).getQuestionOrder()}"></span></h3>
+                    <h3 class="no">Question <span class="qno" th:text = "${page}"></span></h3>
                 </div>
                 <div class="content">
-                    <h2 class="question" th:text = "${listQProg.get(0).getQuestion().getQuestionContent()}"></h2>
-                    <div class="answer" th:each = "answer, answerIndex : ${listQProg.get(0).getQuestion().getListAnswer()}">
-                        <div class="r0"><input type="radio" name="q1034657:1_answer" value="0" id="q1034657:1_answer0">
+                    <h2 class="question" th:text = "${question.getQuestionContent()}"></h2>
+                    <div class="answer" th:each = "answer, answerIndex : ${question.getListAnswer()}">
+                        <div class="r0">
+                            <input type="radio" name="answer" th:field="*{answer}" th:value="${answer.getAnswerId()}" id="q1034657:1_answer0"
+                                th:checked="${answerProg == answer.getAnswerId()} ? 'checked' : ''">
                             <label for="q1034657:1_answer0" class="m-l-1">
                                 <span class="answernumber" th:text="${answerIndex.index + 1} + '. '"></span>
                                 <span  th:text = "${answer.getAnswerContent()}"></span>

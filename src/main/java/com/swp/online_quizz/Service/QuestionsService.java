@@ -17,4 +17,10 @@ public class QuestionsService implements IQuestionsService {
     public List<Questions> getAllQuestions() {
         return questionsRepository.findAll();
     }
+
+    @Override
+    public Questions getQuestions(Integer questionId) {
+        return questionsRepository.getReferenceById(questionId);
+    }
+
 }
