@@ -1,9 +1,6 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,19 +14,20 @@ import lombok.Setter;
 @AllArgsConstructor
 public class QuizProgress {
     @Id
-    @Column(name = "ProgressID")
-    private Integer progressId;
+    @Column(name = "ProgressID", nullable = false)
+    private Integer id;
 
-    @Column(name = "AttemptID")
-    private Integer attemptId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "AttemptID")
+    private QuizAttempts attempt;
 
-    @Column(name = "QuestionID")
-    private Integer questionId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "QuestionID")
+    private Questions question;
 
     @Column(name = "IsAnswered")
     private Boolean isAnswered;
 
     @Column(name = "Answer")
     private String answer;
-
 }

@@ -2,7 +2,9 @@ package com.swp.online_quizz.Entity;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +19,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class QuizAttempts {
     @Id
-    @Column(name = "AttemptID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "AttemptID")
     private Integer attemptId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,4 +51,33 @@ public class QuizAttempts {
     public long getMinutesDifference(){
         return ChronoUnit.MINUTES.between(startTime, endTime);
     }
+
+
+    public QuizAttempts(Users user, Quizzes quiz, LocalDateTime startTime, LocalDateTime endTime, Integer marks,
+            Boolean isCompleted, Questions currentQuestionId, List<Feedback> listFeedbacks,
+                        List<QuestionAttempts> listQuestionAttempts, List<QuizProgress> listQuizzProgress) {
+        this.user = user;
+        this.quiz = quiz;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.marks = marks;
+        this.isCompleted = isCompleted;
+        this.currentQuestion = currentQuestionId;
+        this.listFeedbacks = listFeedbacks;
+        this.listQuestionAttempts = listQuestionAttempts;
+        this.listQuizzProgress = listQuizzProgress;
+    }
+
+    @OneToMany(mappedBy = "attempt")
+    @JsonManagedReference
+    private List<Feedback> listFeedbacks;
+
+    @OneToMany(mappedBy = "attempt")
+    @JsonManagedReference
+    private List<QuestionAttempts> listQuestionAttempts;
+
+    @OneToMany(mappedBy = "attempt")
+    @JsonManagedReference
+    private List<QuizProgress> listQuizzProgress;
+
 }

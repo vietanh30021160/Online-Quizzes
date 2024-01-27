@@ -1,13 +1,11 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.catalina.User;
 
 @Entity
 @Table(name = "Feedback")
@@ -17,15 +15,18 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Feedback {
     @Id
-    @Column(name = "FeedbackID")
-    private Integer feedbackId;
+    @Column(name = "FeedbackID", nullable = false)
+    private Integer id;
 
-    @Column(name = "AttemptID")
-    private Integer attemptId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "AttemptID")
+    private QuizAttempts attempt;
 
-    @Column(name = "UserID")
-    private Integer userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "UserID")
+    private Users userID;
 
+    @Lob
     @Column(name = "Comment")
     private String comment;
 
