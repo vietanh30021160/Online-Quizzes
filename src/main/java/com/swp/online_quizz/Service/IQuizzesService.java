@@ -4,14 +4,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.swp.online_quizz.Entity.Quizzes;
+import com.swp.online_quizz.Entity.Quiz;
 
 @Service
 
 public interface IQuizzesService {
     // lấy ra quizz
-    public Quizzes getOneQuizz(Integer quizId);
+    public Quiz getOneQuizz(Integer quizId);
 
-    public List<Quizzes> getAllQuizzes();
+    public List<Quiz> getAllQuizzes();
 
 }

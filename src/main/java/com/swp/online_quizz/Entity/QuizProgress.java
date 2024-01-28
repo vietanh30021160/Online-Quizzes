@@ -31,12 +31,12 @@ public class QuizProgress {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AttemptID")
     @JsonBackReference
-    private QuizAttempts attempt;
+    private QuizAttempt attempt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "QuestionID")
     @JsonBackReference
-    private Questions question;
+    private Question question;
 
     @Column(name = "IsAnswered")
     private Boolean isAnswered;
@@ -47,8 +47,8 @@ public class QuizProgress {
     @Column(name = "Answer")
     private String answer;
 
-    public QuizProgress(QuizAttempts attempt, Questions question, Boolean isAnswered, Integer questionOrder,
-            String answer) {
+    public QuizProgress(QuizAttempt attempt, Question question, Boolean isAnswered, Integer questionOrder,
+                        String answer) {
         this.attempt = attempt;
         this.question = question;
         this.isAnswered = isAnswered;

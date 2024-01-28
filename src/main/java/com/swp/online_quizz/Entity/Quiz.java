@@ -24,7 +24,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Quizzes {
+public class Quiz {
     @Id
     @Column(name = "QuizID")
     private Integer quizId;
@@ -35,7 +35,7 @@ public class Quizzes {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SubjectID")
     @JsonBackReference
-    private Subjects subject;
+    private Subject subject;
 
     @Column(name = "QuizName")
     private String quizName;
@@ -48,9 +48,9 @@ public class Quizzes {
 
     @OneToMany(mappedBy = "quiz")
     @JsonManagedReference
-    private Set<Questions> listQuestions;
+    private Set<Question> listQuestions;
 
     @OneToMany(mappedBy = "quiz")
     @JsonManagedReference
-    private Set<QuizAttempts> listQuizAttemps;
+    private Set<QuizAttempt> listQuizAttemps;
 }

@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Answers {
+public class Answer {
     @Id
     @Column(name = "AnswerID")
     private Integer answerId;
@@ -28,7 +28,7 @@ public class Answers {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     @JoinColumn(name = "QuestionID")
-    private Questions question;
+    private Question question;
 
     @Column(name = "AnswerContent")
     private String answerContent;

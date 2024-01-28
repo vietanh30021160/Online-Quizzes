@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subjects {
+public class Subject {
     @Id
     @Column(name = "SubjectID")
     private Integer subjectId;
@@ -33,5 +33,5 @@ public class Subjects {
 
     @OneToMany(mappedBy = "subject")
     @JsonManagedReference
-    private List<Quizzes> listQuizzs;
+    private List<Quiz> listQuizzs;
 }

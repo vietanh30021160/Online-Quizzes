@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuestionAttempts implements Serializable {
+public class QuestionAttempt implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "QuestionAttemptID")
@@ -25,12 +25,12 @@ public class QuestionAttempts implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AttemptID")
     @JsonBackReference
-    private QuizAttempts attempt;
+    private QuizAttempt attempt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "QuestionID")
     @JsonBackReference
-    private Questions question;
+    private Question question;
 
     @Column(name = "Answer")
     private String answer;
@@ -44,7 +44,7 @@ public class QuestionAttempts implements Serializable {
     @Column(name = "IsCorrect")
     private Boolean isCorrect;
 
-    public QuestionAttempts(QuizAttempts attempt, Questions question, String answer, Boolean isAnswered, Integer questionOrder, Boolean isCorrect) {
+    public QuestionAttempt(QuizAttempt attempt, Question question, String answer, Boolean isAnswered, Integer questionOrder, Boolean isCorrect) {
         this.attempt = attempt;
         this.question = question;
         this.answer = answer;

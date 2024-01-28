@@ -5,19 +5,19 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.swp.online_quizz.Entity.QuizAttempts;
-import com.swp.online_quizz.Entity.Quizzes;
-import com.swp.online_quizz.Entity.Users;
+import com.swp.online_quizz.Entity.QuizAttempt;
+import com.swp.online_quizz.Entity.Quiz;
+import com.swp.online_quizz.Entity.User;
 
 @Service
 public interface IQuizAttemptsService {
-    public QuizAttempts getQuizAttempts(Integer quizAttemptID);
+    public QuizAttempt getQuizAttempts(Integer quizAttemptID);
 
-    public boolean createQuizzAttempt(QuizAttempts attempt);
+    public boolean createQuizzAttempt(QuizAttempt attempt);
 
-    public QuizAttempts updateAttempts(Integer id, QuizAttempts attempt);
+    public QuizAttempt updateAttempts(Integer id, QuizAttempt attempt);
 
-    public List<QuizAttempts> getAttemptByUserIdAndQuizzId(Quizzes quiz, Users user);
+    public List<QuizAttempt> getAttemptByUserIdAndQuizzId(Quiz quiz, User user);
 
-    public List<QuizAttempts> findByQuizIdAndUserIdAndStartTime(Quizzes quiz, Users user, Timestamp startTime);
+    public List<QuizAttempt> findByQuizIdAndUserIdAndStartTime(Quiz quiz, User user, Timestamp startTime);
 }

@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.swp.online_quizz.Entity.QuestionAttempts;
-import com.swp.online_quizz.Entity.Questions;
-import com.swp.online_quizz.Entity.QuizAttempts;
+import com.swp.online_quizz.Entity.QuestionAttempt;
+import com.swp.online_quizz.Entity.Question;
+import com.swp.online_quizz.Entity.QuizAttempt;
 import com.swp.online_quizz.Entity.QuizProgress;
-import com.swp.online_quizz.Entity.Quizzes;
-import com.swp.online_quizz.Entity.Users;
+import com.swp.online_quizz.Entity.Quiz;
+import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Service.IAnswerService;
 import com.swp.online_quizz.Service.IQuesstionAttemptsService;
 import com.swp.online_quizz.Service.IQuestionsService;
@@ -57,14 +57,14 @@ public class QuizAttemptController {
     }
 
     @GetMapping("/question")
-    public List<Questions> getAllQuestions() {
+    public List<Question> getAllQuestions() {
         return iQuestionsService.getAllQuestions();
     }
 
     @GetMapping("/testApi/{quizId}")
-    public List<QuizAttempts> testApi(@PathVariable Integer quizId, Model model) {
-        Users user = iUsersService.getUsersByID(8);
-        Quizzes quizz = iQuizzesService.getOneQuizz(quizId);
+    public List<QuizAttempt> testApi(@PathVariable Integer quizId, Model model) {
+        User user = iUsersService.getUsersByID(8);
+        Quiz quizz = iQuizzesService.getOneQuizz(quizId);
         Timestamp startTime = Timestamp.valueOf("2024-01-25 02:18:35.316");
         return iQuizAttemptsService.findByQuizIdAndUserIdAndStartTime(quizz, user, startTime);
     }
@@ -76,25 +76,25 @@ public class QuizAttemptController {
 
     @GetMapping("/attemptQuiz/{quizId}")
     public RedirectView attemptQuizz(@PathVariable Integer quizId, Model model) {
-        Users user = iUsersService.getUsersByID(8);
+        User user = iUsersService.getUsersByID(8);
         if (user != null) {
-            Quizzes quizz = iQuizzesService.getOneQuizz(quizId);
+            Quiz quizz = iQuizzesService.getOneQuizz(quizId);
             Timestamp startTime = new Timestamp(System.currentTimeMillis());
             long endTimeMillis = startTime.getTime() + (500 * 60 * 1000);
             Timestamp endTime = new Timestamp(endTimeMillis);
             long startTimeSearchMillis = startTime.getTime() - (10);
             Timestamp startTimeSearch = new Timestamp(startTimeSearchMillis);
-            List<Questions> listQuestion = getRandomQuestionsFromSet(quizId, 3); // số lượng câu hỏi trong 1 bài quiz
+            List<Question> listQuestion = getRandomQuestionsFromSet(quizId, 3); // số lượng câu hỏi trong 1 bài quiz
                                                                                  // được tạo
-            QuizAttempts newAttemp = new QuizAttempts(0, user, quizz, startTime, endTime,
+            QuizAttempt newAttemp = new QuizAttempt(0, user, quizz, startTime, endTime,
                     0, false, listQuestion.get(0).getQuestionId(), null, null, null);
             iQuizAttemptsService.createQuizzAttempt(newAttemp);
             List<QuizProgress> listQProg = new ArrayList<>();
-            QuizAttempts attemp = iQuizAttemptsService.findByQuizIdAndUserIdAndStartTime(quizz,
+            QuizAttempt attemp = iQuizAttemptsService.findByQuizIdAndUserIdAndStartTime(quizz,
                     user, startTimeSearch).get(0);
             for (int i = 0; i < listQuestion.size(); i++) {
                 iQuesstionAttemptsService
-                        .createQuesstionAttempts(new QuestionAttempts(attemp, listQuestion.get(i), "", false,
+                        .createQuesstionAttempts(new QuestionAttempt(attemp, listQuestion.get(i), "", false,
                                 (i + 1), false));
                 QuizProgress qp = new QuizProgress(attemp, listQuestion.get(i), false, (i + 1), "");
                 listQProg.add(qp);
@@ -109,9 +109,9 @@ public class QuizAttemptController {
     @GetMapping("/attemptQuiz/{quizId}/{attemptID}/{page}")
     public String attemptQuizzQuestionNumber(@PathVariable Integer quizId, @PathVariable Integer attemptID,
             @PathVariable Integer page, HttpSession session, Model model) {
-        Users user = iUsersService.getUsersByID(8);
+        User user = iUsersService.getUsersByID(8);
         if (user != null) {
-            QuizAttempts attemp = iQuizAttemptsService.getQuizAttempts(attemptID);
+            QuizAttempt attemp = iQuizAttemptsService.getQuizAttempts(attemptID);
             List<QuizProgress> listQProg = new ArrayList<>(attemp.getListQuizzProgress());
             for (QuizProgress quizProgress : listQProg) {
                 if (quizProgress.getQuestionOrder() == page) {
@@ -120,7 +120,7 @@ public class QuizAttemptController {
                 }
             }
             page -= 1;
-            Questions question = listQProg.get((page)).getQuestion();
+            Question question = listQProg.get((page)).getQuestion();
             QuizProgress quizProgress = listQProg.get((page));
             String answerString = quizProgress.getAnswer();
             int answerProg = 0;
@@ -129,7 +129,7 @@ public class QuizAttemptController {
             } else {
                 answerProg = 0;
             }
-            Quizzes quiz = attemp.getQuiz();
+            Quiz quiz = attemp.getQuiz();
             page += 1;
             model.addAttribute("answerProg", answerProg);
             model.addAttribute("page", page);
@@ -157,10 +157,10 @@ public class QuizAttemptController {
         String answerProgress = progress.getAnswer();
         Integer questionID = Integer.parseInt(questionIDString);
         Integer page = Integer.parseInt(pageString);
-        Questions questionProgress = iQuestionsService.getQuestions(questionID);
+        Question questionProgress = iQuestionsService.getQuestions(questionID);
         Integer attempID = Integer.parseInt(attempIDString);
-        QuizAttempts attemp = iQuizAttemptsService.getQuizAttempts(attempID);
-        for (QuestionAttempts questionAttempts : attemp.getListQuestionAttempts()) {
+        QuizAttempt attemp = iQuizAttemptsService.getQuizAttempts(attempID);
+        for (QuestionAttempt questionAttempts : attemp.getListQuestionAttempts()) {
             if (questionAttempts.getQuestion().getQuestionId() == questionProgress.getQuestionId()) {
                 if (answerProgress != null) {
                     if (iAnswerService.getAnswers(Integer.parseInt(answerProgress)).getIsCorrect()) {
@@ -212,12 +212,12 @@ public class QuizAttemptController {
     public RedirectView finishQuizAttempt(@PathVariable Integer quizId, @PathVariable Integer attemptID,
             HttpSession session,
             Model model) {
-        QuizAttempts attempt = iQuizAttemptsService.getQuizAttempts(attemptID);
+        QuizAttempt attempt = iQuizAttemptsService.getQuizAttempts(attemptID);
         attempt.setIsCompleted(true);
         Timestamp endTime = new Timestamp(System.currentTimeMillis());
         attempt.setEndTime(endTime);
         int count = 0;
-        for (QuestionAttempts questionAttempts : attempt.getListQuestionAttempts()) {
+        for (QuestionAttempt questionAttempts : attempt.getListQuestionAttempts()) {
             if (questionAttempts.getIsCorrect() == true) {
                 count++;
             }
@@ -228,11 +228,11 @@ public class QuizAttemptController {
         return new RedirectView("/quizzes/{quizId}");
     }
 
-    public List<Questions> getRandomQuestionsFromSet(@PathVariable Integer quizId, @PathVariable Integer n) {
-        Set<Questions> questionsSet = iQuizzesService.getOneQuizz(quizId).getListQuestions();
-        List<Questions> questionsList = new ArrayList<>(questionsSet);
-        Collections.shuffle(questionsList);
-        List<Questions> randomQuestions = questionsList.subList(0, Math.min(n, questionsList.size()));
+    public List<Question> getRandomQuestionsFromSet(@PathVariable Integer quizId, @PathVariable Integer n) {
+        Set<Question> questionSet = iQuizzesService.getOneQuizz(quizId).getListQuestions();
+        List<Question> questionList = new ArrayList<>(questionSet);
+        Collections.shuffle(questionList);
+        List<Question> randomQuestions = questionList.subList(0, Math.min(n, questionList.size()));
         return randomQuestions;
     }
 }

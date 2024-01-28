@@ -1,6 +1,6 @@
 package com.swp.online_quizz.Service;
 
-import com.swp.online_quizz.Entity.QuestionAttempts;
+import com.swp.online_quizz.Entity.QuestionAttempt;
 import com.swp.online_quizz.Repository.QuestionAttemptsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,7 @@ public class QuesstionAttemptsService implements IQuesstionAttemptsService{
     @Autowired
     QuestionAttemptsRepository questionAttemptsRepository;
     @Override
-    public Boolean createQuesstionAttempts(QuestionAttempts questionAttempts) {
+    public Boolean createQuesstionAttempts(QuestionAttempt questionAttempts) {
         try {
             this.questionAttemptsRepository.save(questionAttempts);
             return true;
@@ -21,9 +21,9 @@ public class QuesstionAttemptsService implements IQuesstionAttemptsService{
     }
 
     @Override
-    public Boolean updateQuesstionAttempts(Integer id, QuestionAttempts questionAttempts) {
+    public Boolean updateQuesstionAttempts(Integer id, QuestionAttempt questionAttempts) {
         try {
-            QuestionAttempts uQuestionAttempts = questionAttemptsRepository.getReferenceById(id);
+            QuestionAttempt uQuestionAttempts = questionAttemptsRepository.getReferenceById(id);
             uQuestionAttempts.setAnswer(questionAttempts.getAnswer());
             uQuestionAttempts.setIsAnswered(questionAttempts.getIsAnswered());
             uQuestionAttempts.setIsCorrect(questionAttempts.getIsCorrect());

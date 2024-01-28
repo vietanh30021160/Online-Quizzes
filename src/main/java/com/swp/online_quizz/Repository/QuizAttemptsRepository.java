@@ -8,14 +8,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.swp.online_quizz.Entity.QuizAttempts;
+import com.swp.online_quizz.Entity.QuizAttempt;
 
 @Repository
-public interface QuizAttemptsRepository extends JpaRepository<QuizAttempts, Integer> {
-    @Query("SELECT qa FROM QuizAttempts qa WHERE qa.quiz.quizId = :quizId AND qa.user.userId = :userId")
-    List<QuizAttempts> findByQuizIdAndUserId(@Param("quizId") Integer quizId, @Param("userId") Integer userId);
+public interface QuizAttemptsRepository extends JpaRepository<QuizAttempt, Integer> {
+    @Query("SELECT qa FROM QuizAttempt qa WHERE qa.quiz.quizId = :quizId AND qa.user.userId = :userId")
+    List<QuizAttempt> findByQuizIdAndUserId(@Param("quizId") Integer quizId, @Param("userId") Integer userId);
 
-    @Query("SELECT qa FROM QuizAttempts qa WHERE qa.quiz.quizId = :quizId AND qa.user.userId = :userId AND qa.startTime >= :startTime")
-    List<QuizAttempts> findByQuizIdAndUserIdAndStartTime(@Param("quizId") Integer quizId,
-            @Param("userId") Integer userId, @Param("startTime") Timestamp startTime);
+    @Query("SELECT qa FROM QuizAttempt qa WHERE qa.quiz.quizId = :quizId AND qa.user.userId = :userId AND qa.startTime >= :startTime")
+    List<QuizAttempt> findByQuizIdAndUserIdAndStartTime(@Param("quizId") Integer quizId,
+                                                        @Param("userId") Integer userId, @Param("startTime") Timestamp startTime);
 }

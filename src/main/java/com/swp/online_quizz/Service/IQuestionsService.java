@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.swp.online_quizz.Entity.Questions;
+import com.swp.online_quizz.Entity.Question;
 
 @Service
 public interface IQuestionsService {
-    public List<Questions> getAllQuestions();
+    public List<Question> getAllQuestions();
 
-    public Questions getQuestions(Integer questionId);
+    public Question getQuestions(Integer questionId);
 }

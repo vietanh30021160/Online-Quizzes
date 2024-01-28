@@ -22,7 +22,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Users {
+public class User {
     @Id
     @Column(name = "UserID")
     private Integer userId;
@@ -68,5 +68,5 @@ public class Users {
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
-    private Set<QuizAttempts> listQuizAttempts;
+    private Set<QuizAttempt> listQuizAttempts;
 }

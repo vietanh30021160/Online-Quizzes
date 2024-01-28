@@ -28,7 +28,7 @@ public class Feedback {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AttemptID")
     @JsonBackReference
-    private QuizAttempts attempt;
+    private QuizAttempt attempt;
 
     @Column(name = "UserID")
     private Integer userId;
