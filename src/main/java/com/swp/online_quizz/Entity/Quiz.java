@@ -12,7 +12,7 @@ import lombok.Setter;
 public class Quiz {
     @Id
     @Column(name = "QuizID", nullable = false)
-    private Integer id;
+    private Integer quizId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

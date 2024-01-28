@@ -13,15 +13,15 @@ import java.time.Instant;
 public class QuizAttempt {
     @Id
     @Column(name = "AttemptID", nullable = false)
-    private Integer id;
+    private Integer attemptId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UserID")
-    private User userID;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "QuizID")
-    private Quiz quizID;
+    private Quiz quiz;
 
     @Column(name = "StartTime")
     private Instant startTime;
@@ -37,6 +37,6 @@ public class QuizAttempt {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CurrentQuestionID")
-    private Question currentQuestionID;
+    private Question currentQuestion;
 
 }

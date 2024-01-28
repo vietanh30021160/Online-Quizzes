@@ -12,11 +12,11 @@ import java.time.Instant;
 public class PasswordRecovery {
     @Id
     @Column(name = "RecoveryID", nullable = false)
-    private Integer id;
+    private Integer recoveryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UserID")
-    private User userID;
+    private User user;
 
     @Column(name = "Token", length = 100)
     private String token;

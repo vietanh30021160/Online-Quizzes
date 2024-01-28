@@ -17,16 +17,16 @@ import java.util.List;
 @Controller
 public class HomeController {
     @Autowired
-    private ISubjectService ISubjectService;
+    private ISubjectService iSubjectService;
     @Autowired
-    private IQuizzesService IQuizzesService;
+    private IQuizzesService iQuizzesService;
 
     @RequestMapping("")
     public String Home(Model model, @Param("keyword") String keyword, @RequestParam(name = "pageNo",defaultValue = "1") Integer pageNo) {
-        List<Subject> listSubject = ISubjectService.getAll();
-        Page<Quiz> listQuiz =  IQuizzesService.getAll(pageNo);
+        List<Subject> listSubject = iSubjectService.getAll();
+        Page<Quiz> listQuiz =  iQuizzesService.getAll(pageNo);
         if(keyword != null){
-            listQuiz = IQuizzesService.searchQuizzes(keyword,pageNo);
+            listQuiz = iQuizzesService.searchQuizzes(keyword,pageNo);
             model.addAttribute("keyword", keyword);
         }
         model.addAttribute("totalPage",listQuiz.getTotalPages());

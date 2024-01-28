@@ -10,15 +10,15 @@ import lombok.Setter;
 public class QuizProgress {
     @Id
     @Column(name = "ProgressID", nullable = false)
-    private Integer id;
+    private Integer progressId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AttemptID")
-    private QuizAttempt attemptID;
+    private QuizAttempt quizAttempt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "QuestionID")
-    private Question questionID;
+    private Question question;
 
     @Column(name = "IsAnswered")
     private Boolean isAnswered;

@@ -11,14 +11,14 @@ import lombok.Setter;
 public class MessageRecipient {
     @Id
     @Column(name = "MessageRecipientID", nullable = false)
-    private Integer id;
+    private Integer messageRecipientId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MessageID")
-    private Message messageID;
+    private Message message;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "RecipientID")
-    private User recipientID;
+    private User recipient;
 
 }

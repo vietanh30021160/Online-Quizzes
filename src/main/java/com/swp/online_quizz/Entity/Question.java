@@ -11,11 +11,11 @@ import lombok.Setter;
 public class Question {
     @Id
     @Column(name = "QuestionID", nullable = false)
-    private Integer id;
+    private Integer questionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "QuizID")
-    private Quiz quizID;
+    private Quiz quiz;
 
     @Lob
     @Column(name = "QuestionContent")

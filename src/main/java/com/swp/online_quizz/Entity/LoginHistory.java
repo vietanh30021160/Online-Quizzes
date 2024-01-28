@@ -12,11 +12,11 @@ import java.time.Instant;
 public class LoginHistory {
     @Id
     @Column(name = "LoginHistoryID", nullable = false)
-    private Integer id;
+    private Integer loginHistoryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UserID")
-    private User userID;
+    private User user;
 
     @Column(name = "LoginTime")
     private Instant loginTime;

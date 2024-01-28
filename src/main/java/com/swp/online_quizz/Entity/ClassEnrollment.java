@@ -11,11 +11,11 @@ import lombok.Setter;
 public class ClassEnrollment {
     @Id
     @Column(name = "EnrollmentID", nullable = false)
-    private Integer id;
+    private Integer enrollmentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ClassID")
-    private Class classID;
+    private Class classes;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "StudentID")

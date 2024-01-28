@@ -7,11 +7,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface IQuizzesService {
-    List<Quiz> getAll();
-    public boolean create(Quiz quizzes);
-    public Subject find(Integer quizId);
-    public Boolean update(Quiz quizzes);
-    public Boolean delete(Integer quizId);
+
     public List<Quiz> searchQuizzes(String keyword);
     Page<Quiz> getAll(Integer pageNo);
     public Page<Quiz> searchQuizzes(String keyword,Integer pageNo);

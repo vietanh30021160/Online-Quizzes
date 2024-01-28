@@ -15,39 +15,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 
-public class QuizzesService implements IQuizzesService {
+public class QuizService implements IQuizzesService {
     @Autowired
     private final QuizRepository quizRepository;
-    @Override
-    public List<Quiz> getAll() {
-        return quizRepository.findAll();
-    }
-
-    @Override
-    public boolean create(Quiz quiz) {
-        try{
-            this.quizRepository.save(quiz);
-            return true;
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
-    public Subject find(Integer quizId) {
-        return null;
-    }
-
-    @Override
-    public Boolean update(Quiz quizzes) {
-        return null;
-    }
-
-    @Override
-    public Boolean delete(Integer quizId) {
-        return null;
-    }
 
     @Override
     public List<Quiz> searchQuizzes(String keyword) {
@@ -69,5 +39,4 @@ public class QuizzesService implements IQuizzesService {
         list = list.subList(start,end);
         return new PageImpl<Quiz>(list,pageable,this.searchQuizzes(keyword).size());
     }
-
 }

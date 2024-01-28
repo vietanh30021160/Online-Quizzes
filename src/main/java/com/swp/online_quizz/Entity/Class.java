@@ -11,7 +11,7 @@ import lombok.Setter;
 public class Class {
     @Id
     @Column(name = "ClassID", nullable = false)
-    private Integer id;
+    private Integer classId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TeacherID")

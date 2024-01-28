@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class User {
     @Id
     @Column(name = "UserID", nullable = false)
-    private Integer id;
+    private Integer userId;
 
     @Column(name = "Username", nullable = false, length = 50)
     private String username;
