@@ -7,11 +7,5 @@ import java.util.List;
 
 public interface ISubjectService {
     public List<Subject> getAll();
-    public boolean create(Subject Subject);
-    public Subject find(Integer subjectID);
-    public Boolean update(Subject Subject);
-    public Boolean delete(Integer subjectID);
 
-
-    List<Quiz> getQuizzesBySubjectId(Integer subjectId);
 }

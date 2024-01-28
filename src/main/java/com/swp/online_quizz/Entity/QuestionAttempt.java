@@ -12,15 +12,15 @@ public class QuestionAttempt {
     @EmbeddedId
     private QuestionAttemptId id;
 
-    @MapsId("attemptID")
+    @MapsId("attemptId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "AttemptID", nullable = false)
-    private QuizAttempt attemptID;
+    private QuizAttempt quizAttempt;
 
-    @MapsId("questionID")
+    @MapsId("questionId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "QuestionID", nullable = false)
-    private Question questionID;
+    private Question question;
 
     @Column(name = "Answer")
     private String answer;

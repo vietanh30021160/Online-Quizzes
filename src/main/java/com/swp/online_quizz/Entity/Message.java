@@ -13,11 +13,11 @@ import java.time.Instant;
 public class Message {
     @Id
     @Column(name = "MessageID", nullable = false)
-    private Integer id;
+    private Integer messageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SenderID")
-    private User senderID;
+    private User sender;
 
     @Column(name = "MessageType", nullable = false, length = 20)
     private String messageType;

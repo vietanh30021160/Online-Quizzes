@@ -15,23 +15,23 @@ import java.util.Objects;
 public class QuestionAttemptId implements Serializable {
     private static final long serialVersionUID = -1135486450227171721L;
     @Column(name = "AttemptID", nullable = false)
-    private Integer attemptID;
+    private Integer attemptId;
 
     @Column(name = "QuestionID", nullable = false)
-    private Integer questionID;
+    private Integer questionId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         QuestionAttemptId entity = (QuestionAttemptId) o;
-        return Objects.equals(this.questionID, entity.questionID) &&
-                Objects.equals(this.attemptID, entity.attemptID);
+        return Objects.equals(this.questionId, entity.questionId) &&
+                Objects.equals(this.attemptId, entity.attemptId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(questionID, attemptID);
+        return Objects.hash(questionId, attemptId);
     }
 
 }
