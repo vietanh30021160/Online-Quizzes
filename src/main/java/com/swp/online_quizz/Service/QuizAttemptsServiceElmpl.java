@@ -36,7 +36,7 @@ public class QuizAttemptsServiceElmpl implements QuizAttemptsService{
 
     @Override
     public QuizAttempts findById(Integer AttemptsID) {
-        return null;
+        return this.quizAttemptsRepository.findById(AttemptsID).orElse(null);
     }
 
 
@@ -66,8 +66,17 @@ public class QuizAttemptsServiceElmpl implements QuizAttemptsService{
     }
 
     @Override
-    public List<QuizAttempts> searchUseByName(String useName,Integer quizzID) {
-        return this.quizAttemptsRepository.searchUseByName(useName,quizzID);
+    public List<QuizAttempts> searchUseByName(String username,Integer quizzID) {
+        return this.quizAttemptsRepository.searchUseByName(username,quizzID);
+    }
+    @Override
+    public Page<QuizAttempts> searchUseByName(String username,Integer QuizzID, Integer pageNo) {
+        List<QuizAttempts> quizAttempts = quizAttemptsRepository.searchUseByName(username,QuizzID);
+        Pageable pageable = PageRequest.of(pageNo-1,5);
+        Integer start = (int) pageable.getOffset();
+        Integer end = ( start + pageable.getPageSize()) > quizAttempts.size() ? quizAttempts.size() : ( start + pageable.getPageSize());
+        quizAttempts  = quizAttempts.subList(start,end);
+        return new PageImpl<QuizAttempts>(quizAttempts,pageable,quizAttemptsRepository.searchUseByName(username,QuizzID).size());
     }
 
     @Override
@@ -76,13 +85,5 @@ public class QuizAttemptsServiceElmpl implements QuizAttemptsService{
         return this.quizAttemptsRepository.findAll(pageable);
     }
 
-    @Override
-    public Page<QuizAttempts> searchUseByName(String useName,Integer QuizzID, Integer pageNo) {
-        List<QuizAttempts> list = this.searchUseByName(useName,QuizzID);
-        Pageable pageable = PageRequest.of(pageNo-1,5);
-        Integer start = (int) pageable.getOffset();
-        Integer end = ( start + pageable.getPageSize()) > list.size() ? list.size() : ( start + pageable.getPageSize());
-        list  = list.subList(start,end);
-        return new PageImpl<QuizAttempts>(list,pageable,this.searchUseByName(useName,QuizzID).size());
-    }
+
 }

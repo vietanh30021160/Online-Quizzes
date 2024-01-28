@@ -27,9 +27,8 @@ public class QuestionAttempts implements Serializable {
     @JsonBackReference
     private QuizAttempts attempt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "QuestionID")
-    @JsonBackReference
     private Questions question;
 
     @Column(name = "Answer")

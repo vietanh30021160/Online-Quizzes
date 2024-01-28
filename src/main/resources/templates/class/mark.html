@@ -97,7 +97,7 @@
         <div class="price-range col-sm-4 d-flex align-items-end">
             <form  method="get" class="mx-sm-3" >
                 <div class="input-group" >
-                    <input style="border-radius: 10px " name="usename" th:value="${usename}" class="form-control form-control-lg" type="text" placeholder="Search Name ..." aria-describedby="button-addon2" autofocus>
+                    <input style="border-radius: 10px " name="username" th:value="${username}" class="form-control form-control-lg" type="text" placeholder="Search Name ..." aria-describedby="button-addon2" autofocus>
                     <button style="border-radius: 10px" class="btn btn-secondary" id="button-addon2" type="submit" >Search</button>
                 </div>
             </form>
@@ -133,7 +133,7 @@
                     <td th:text="${markClass.attemptId}"></td>
                     <td>
                         <small th:text="${markClass.user.username}"></small>
-                        <a th:href="@{/class/mark/detail}">(Review)</a>
+                        <a th:href="@{${markClass.quiz.quizId}+'/attempt/'+${markClass.attemptId}}">(Review)</a>
                     </td>
 
                     <td th:text="${markClass.user.email}">
@@ -161,7 +161,7 @@
                         <span aria-hidden="true">«</span>
                     </a>
                 </li>
-                <li class="page-item " th:each="i:${#numbers.sequence(1,totalPage)}" th:classappend="${i == currentPage ? 'active' : ''}"><a class="page-link" th:href="@{${usename != null && usename != '' ? '?usename=' + usename + '&' : '?'} + 'pageNo='+${i}}" th:text="${i}"></a></li>
+                <li class="page-item " th:each="i:${#numbers.sequence(1,totalPage)}" th:classappend="${i == currentPage ? 'active' : ''}"><a class="page-link" th:href="@{${username != null && username != '' ? '?username=' + username + '&' : '?'} + 'pageNo='+${i}}" th:text="${i}"></a></li>
                 <li class="page-item" th:if="${currentPage < totalPage}">
                     <a th:href="@{'?pageNo='+${currentPage + 1}}" class="page-link" aria-label="Next" id="nextPaging">
                         <span aria-hidden="true">»</span>

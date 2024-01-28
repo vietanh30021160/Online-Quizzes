@@ -15,9 +15,9 @@ public interface QuizAttemptsService {
     List<QuizAttempts> findQuizAttemptsByQuizID(Integer QuizzID);
     Page<QuizAttempts> findQuizAttemptsByQuizID(Integer QuizzID,Integer pageNo);
 
-    List<QuizAttempts> searchUseByName(String useName,Integer QuizzID);
+    List<QuizAttempts> searchUseByName(String username,Integer QuizzID);
+    Page<QuizAttempts> searchUseByName(String username,Integer QuizzID, Integer pageNo);
 
     Page<QuizAttempts> getAll(Integer pageNo);
 
-    Page<QuizAttempts> searchUseByName(String useName,Integer QuizzID, Integer pageNo);
 }

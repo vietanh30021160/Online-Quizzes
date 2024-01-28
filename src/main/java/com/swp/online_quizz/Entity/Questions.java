@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "Questions")
 @Getter
@@ -36,4 +38,6 @@ public class Questions {
     @Column(name = "VideoURL")
     private String videoUrl;
 
+    @OneToMany(mappedBy = "question")
+    private List<Answers> answersList;
 }
