@@ -1,0 +1,134 @@
+.container {
+    display: grid;
+    grid-template-columns: 0.7fr 3.3fr 0.9fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+        ". center .";
+}
+
+.center {
+    grid-area: center;
+}
+#timeRemaining {
+    text-align: end;
+}
+.card-contenain {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.card-contenain .card{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.card .info {
+    margin-right: 50px;
+}
+.info h3,
+.qno {
+    font-size: x-large;
+    text-align: center;
+    text-align: center;
+        margin: 20px 0px;
+        background: -webkit-linear-gradient(90deg,
+                rgba(221, 51, 51, 1) 0%,
+                rgba(130, 36, 227, 1) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+}
+
+
+.qn_buttons {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.multipages {
+    display: flex;
+    justify-content: center;
+}
+.mod_quiz-prev-nav,
+.mod_quiz-next-nav {
+    margin: 10px;
+    /* Khoảng cách giữa các nút */
+}
+#timeRemaining {
+    margin: 10px 20px;
+    font-weight: bold;
+    font-size: large;
+}
+.qtext h1 {
+    text-align: center;
+    margin: 20px 0px;
+        background: -webkit-linear-gradient(90deg,
+                rgba(221, 51, 51, 1) 0%,
+                rgba(130, 36, 227, 1) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+}
+
+.button-load {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 40px;
+    margin-bottom: 200px;
+}
+
+.button-load button {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-load .button {
+    height: 50px;
+    width: 200px;
+    position: relative;
+    background-color: transparent;
+    cursor: pointer;
+    border: 2px solid;
+    overflow: hidden;
+    border-radius: 30px;
+    color: #333;
+    transition: all 0.5s ease-in-out;
+}
+
+.button-load .btn-txt {
+    z-index: 1;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+.button-load .type1::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition: all 0.5s ease-in-out;
+    background-color: rgb(195, 34, 181);
+    background: linear-gradient(90deg,
+            rgba(221, 51, 51, 1) 0%,
+            rgba(130, 36, 227, 1) 100%);
+    border-radius: 30px;
+    visibility: hidden;
+    height: 10px;
+    width: 10px;
+    z-index: -1;
+}
+
+.button-load .button:hover {
+    box-shadow: 1px 1px 200px #252525;
+    color: #fff;
+    border: none;
+}
+
+.button-load .type1:hover::after {
+    visibility: visible;
+    transform: scale(100) translateX(2px);
+}

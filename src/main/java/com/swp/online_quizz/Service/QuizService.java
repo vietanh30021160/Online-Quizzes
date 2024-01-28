@@ -39,4 +39,14 @@ public class QuizService implements IQuizzesService {
         list = list.subList(start,end);
         return new PageImpl<Quiz>(list,pageable,this.searchQuizzes(keyword).size());
     }
+
+    @Override
+    public Quiz getOneQuizz(Integer quizId) {
+        return quizRepository.getReferenceById(quizId);
+    }
+
+    @Override
+    public List<Quiz> getAllQuizzes() {
+        return quizRepository.findAll();
+    }
 }

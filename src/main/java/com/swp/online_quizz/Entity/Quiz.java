@@ -1,36 +1,56 @@
 package com.swp.online_quizz.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "Quizzes")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Quiz {
     @Id
-    @Column(name = "QuizID", nullable = false)
+    @Column(name = "QuizID")
     private Integer quizId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JoinColumn(name = "TeacherID")
-    private User teacher;
+    @Column(name = "TeacherID")
+    private Integer teacherId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "SubjectID")
+    @JsonBackReference
     private Subject subject;
 
-    @Column(name = "QuizName", length = 100)
+    @Column(name = "QuizName")
     private String quizName;
 
     @Column(name = "TimeLimit")
     private Integer timeLimit;
 
-    @Column(name = "IsCompleted")
+    @Column(name = "isCompleted")
     private Boolean isCompleted;
 
+    @OneToMany(mappedBy = "quiz")
+    @JsonManagedReference
+    private Set<Question> listQuestions;
+
+    @OneToMany(mappedBy = "quiz")
+    @JsonManagedReference
+    private Set<QuizAttempt> listQuizAttemps;
 }

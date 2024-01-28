@@ -1,25 +1,35 @@
 package com.swp.online_quizz.Entity;
 
+import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "QuestionAttempts")
-public class QuestionAttempt {
-    @EmbeddedId
-    private QuestionAttemptId id;
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class QuestionAttempt implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "QuestionAttemptID")
+    private Integer questionAttemptID;
 
-    @MapsId("attemptId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "AttemptID", nullable = false)
-    private QuizAttempt quizAttempt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "AttemptID")
+    @JsonBackReference
+    private QuizAttempt attempt;
 
-    @MapsId("questionId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "QuestionID", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "QuestionID")
+    @JsonBackReference
     private Question question;
 
     @Column(name = "Answer")
@@ -28,7 +38,18 @@ public class QuestionAttempt {
     @Column(name = "IsAnswered")
     private Boolean isAnswered;
 
+    @Column(name = "QuestionOrder")
+    private Integer questionOrder;
+
     @Column(name = "IsCorrect")
     private Boolean isCorrect;
 
+    public QuestionAttempt(QuizAttempt attempt, Question question, String answer, Boolean isAnswered, Integer questionOrder, Boolean isCorrect) {
+        this.attempt = attempt;
+        this.question = question;
+        this.answer = answer;
+        this.isAnswered = isAnswered;
+        this.questionOrder = questionOrder;
+        this.isCorrect = isCorrect;
+    }
 }

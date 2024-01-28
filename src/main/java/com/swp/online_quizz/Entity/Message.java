@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -27,9 +29,11 @@ public class Message {
     private String messageContent;
 
     @Column(name = "SendTime")
-    private Instant sendTime;
+
+    private Timestamp sendTime;
 
     @Column(name = "IsRead")
     private Boolean isRead;
+
 
 }

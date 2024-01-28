@@ -1,61 +1,72 @@
 package com.swp.online_quizz.Entity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
-import java.time.LocalDate;
-
-@Getter
-@Setter
 @Entity
 @Table(name = "Users")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
-    @Column(name = "UserID", nullable = false)
+    @Column(name = "UserID")
     private Integer userId;
 
-    @Column(name = "Username", nullable = false, length = 50)
+    @Column(name = "Username")
     private String username;
 
-    @Column(name = "PasswordHash", nullable = false, length = 100)
+    @Column(name = "PasswordHash")
     private String passwordHash;
 
-    @Column(name = "Email", nullable = false, length = 100)
+    @Column(name = "Email")
     private String email;
 
-    @Column(name = "Role", nullable = false, length = 20)
+    @Column(name = "Role")
     private String role;
 
     @Column(name = "JoinDate")
-    private Instant joinDate;
+    private LocalDateTime joinDate;
 
-    @Column(name = "FirstName", length = 50)
+    @Column(name = "FirstName")
     private String firstName;
 
-    @Column(name = "LastName", length = 50)
+    @Column(name = "LastName")
     private String lastName;
 
     @Column(name = "DateOfBirth")
     private LocalDate dateOfBirth;
 
-    @Column(name = "PhoneNumber", length = 20)
+    @Column(name = "PhoneNumber")
     private String phoneNumber;
 
     @Column(name = "Address")
     private String address;
 
-    @Column(name = "Gender", length = 10)
+    @Column(name = "Gender")
     private String gender;
 
     @Column(name = "ProfilePictureURL")
-    private String profilePictureURL;
+    private String profilePictureUrl;
 
     @Column(name = "IsActive")
     private Boolean isActive;
 
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private Set<QuizAttempt> listQuizAttempts;
 }

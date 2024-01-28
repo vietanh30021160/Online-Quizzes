@@ -25,4 +25,6 @@ public class Answer {
     @Column(name = "IsCorrect")
     private Boolean isCorrect;
 
+
 }
+

@@ -9,6 +9,16 @@ import java.util.List;
 public interface IQuizzesService {
 
     public List<Quiz> searchQuizzes(String keyword);
+
     Page<Quiz> getAll(Integer pageNo);
-    public Page<Quiz> searchQuizzes(String keyword,Integer pageNo);
+
+    public Page<Quiz> searchQuizzes(String keyword, Integer pageNo);
+
+    // lấy ra quizz
+    public Quiz getOneQuizz(Integer quizId);
+
+    public List<Quiz> getAllQuizzes();
 }
+
+
+

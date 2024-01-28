@@ -1,6 +1,16 @@
 package com.swp.online_quizz.Entity;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +24,8 @@ public class Feedback {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AttemptID")
-    private QuizAttempt quizAttempt;
+    @JsonBackReference
+    private QuizAttempt attempt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UserID")
