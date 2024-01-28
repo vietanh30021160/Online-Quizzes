@@ -8,13 +8,13 @@
         href="/Css/quizzInfo.css" th:href="@{/Css/quizzInfo.css}">
 </head>
 <body>
-    <div class="container">
-        <div role="main">
+    <di class="container">
+        <di role="main" class="center" >
             <h1 th:text = "${quiz.getQuizName()} + ' - ' + ${quiz.getSubject().getSubjectName()}"></h1>
-            <div class="box quizinfo py-3">
-                <p>This quiz opened at <span th:text="'   ' + ${quiz.getTimeLimit()}">
+            <div class="box quizinfo">
+                <p><span class="bold-text">This quiz opened at: </span><span th:text="'   ' + ${listAttempts.get(0).getStartTime()}">
                 </span></p>
-                <p>Time limit: <span th:text="' ' + ${listAttempts.get(0).getStartTime()} + ' '"></span>min</p>
+                <p><span class="bold-text">Time limit:</span><span th:text="' ' + ${quiz.getTimeLimit()} + ' '"></span>min</p>
             </div>
             <h3>Summary of your previous attempts</h3>
             <div class="generaltable quizattemptsummary">
@@ -24,7 +24,7 @@
                             <thead>
                                 <tr class="row100 head">
                                     <th class="header c0 cell100 column1" style="text-align:center;" scope="col">Attempt</th>
-                                    <th class="header c1 cell100 column2" style="text-align:left;" scope="col">State</th>
+                                    <th class="header c1 cell100 column2" style="text-align:center;" scope="col">State</th>
                                     <th class="header c2 cell100 column3" style="text-align:center;" scope="col">Marks / <span class="statedetails" 
                                         th:text="' ' + ${listAttempts.get(0).getListQuestionAttempts().size()}"></span></th>
                                     <th class="header c3 cell100 column4" style="text-align:center;" scope="col">Grade / 10.00</th>
@@ -39,7 +39,7 @@
                         <tbody>
                             <tr class="row100 body" th:each = "attempt, attemptIndex : ${listAttempts}">
                                 <td class="cell c0 cell100 column1" style="text-align:center;"th:text="${attemptIndex.index + 1}"></td>
-                                <td class="cell c1 cell100 column2" style="text-align:left;" >
+                                <td class="cell c1 cell100 column2" style="text-align:center;" >
                                     <span th:if="${attempt.getIsCompleted()}" class="statedetails" th:text = "'Finished ' + ' Submitted  ' + ${attempt.getEndTime()}"></span>
                                     <span th:unless="${attempt.getIsCompleted()}" class="statedetails">Attempting</span>
                                 </td>

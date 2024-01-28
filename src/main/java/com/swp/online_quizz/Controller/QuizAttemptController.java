@@ -80,7 +80,7 @@ public class QuizAttemptController {
         if (user != null) {
             Quizzes quizz = iQuizzesService.getOneQuizz(quizId);
             Timestamp startTime = new Timestamp(System.currentTimeMillis());
-            long endTimeMillis = startTime.getTime() + (5 * 60 * 1000);
+            long endTimeMillis = startTime.getTime() + (500 * 60 * 1000);
             Timestamp endTime = new Timestamp(endTimeMillis);
             long startTimeSearchMillis = startTime.getTime() - (10);
             Timestamp startTimeSearch = new Timestamp(startTimeSearchMillis);
@@ -148,7 +148,7 @@ public class QuizAttemptController {
     }
 
     @PostMapping("/progress")
-    public RedirectView progress(@ModelAttribute("user") QuizProgress progress,
+    public RedirectView progress(@ModelAttribute() QuizProgress progress,
             @RequestParam(name = "previous", required = false) String previous,
             @RequestParam(name = "next", required = false) String next,
             @RequestParam(name = "attempID", required = false) String attempIDString,

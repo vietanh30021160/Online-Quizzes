@@ -82,19 +82,76 @@ iframe {
     position: relative;
     overflow: hidden
 }
+.container {
+    display: grid;
+    grid-template-columns: 0.5fr 3.9fr 0.5fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+        ". center .";
+}
+
+.center {
+    grid-area: center;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+}
 .container h1 {
-    margin-left: 20px;
+    margin: 20px 0px ;
+    text-align: center;
     background: -webkit-linear-gradient(90deg,
             rgba(221, 51, 51, 1) 0%,
             rgba(130, 36, 227, 1) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+.quizinfo{
+    margin: 10px 30px;
+    font-size: medium;
+}
+.box.quizinfo {
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+.box.quizinfo p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+}
+.box.quizinfo p .bold-text {
+    font-weight: bold;
+}
+.container h3 {
+    margin: 10px 30px 5px 50px;
+}
 .js-pscroll {
     position: relative;
-    overflow: hidden
+    overflow: hidden;
+    max-height: 100%;
+    z-index: 1;
+    /* Thiết lập z-index để đặt phía sau */
 }
 
+/* Thiết lập cho thanh cuộn */
+.js-pscroll::-webkit-scrollbar {
+    width: 12px;
+}
+
+.js-pscroll::-webkit-scrollbar-thumb {
+    background-color: #888;
+}
+
+.js-pscroll::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+.table100 {
+    margin: 0px 30px 10px 30px;
+    width: 100%;
+}
 .table100 .ps__rail-y {
     width: 9px;
     background-color: transparent;
@@ -169,43 +226,51 @@ table {
 th,
 td {
     font-weight: unset;
-    padding-right: 10px
+    padding-right: 0px
 }
 
 .column1 {
-    width: 13%;
-    padding-left: 40px
+    width: 10%;
+    padding-left: 0px;
+    text-align: center;
 }
 
 .column2 {
-    width: 33%
+    width: 34%;
+    text-align: center;
 }
 
 .column3 {
-    width: 22%
+    width: 23%;
+    text-align: center;
 }
 
 .column4 {
-    width: 19%
+    width: 20%;
+    text-align: center;
 }
 
 .column5 {
-    width: 13%
+    width: 13%;
+    text-align: center;
 }
 
 .table100-head th {
     padding-top: 18px;
-    padding-bottom: 18px
+    padding-bottom: 18px;
+    text-align: center;
 }
 
 .table100-body td {
     padding-top: 16px;
-    padding-bottom: 16px
+    padding-bottom: 16px;
+    text-align: center;
 }
 
 .table100 {
     position: relative;
-    padding-top: 60px
+    padding-top: 60px;
+    text-align: center;
 }
 
 .table100-head {
@@ -225,14 +290,16 @@ td {
     font-size: 18px;
     color: #fff;
     line-height: 1.4;
-    background-color: #6c7ae0
+    background-color: #6c7ae0;
+    text-align: center;
 }
 
 .table100.ver1 td {
     font-family: Lato-Regular;
     font-size: 15px;
     color: gray;
-    line-height: 1.4
+    line-height: 1.4;
+    text-align: center;
 }
 
 .table100.ver1 .table100-body tr:nth-child(even) {
@@ -240,6 +307,7 @@ td {
 }
 
 .table100.ver1 {
+    text-align: center;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 0 40px 0 rgba(0, 0, 0, .15);
@@ -260,12 +328,15 @@ td {
 .table100.ver1 .ps__rail-y .ps__thumb-y::before {
     background-color: #ccc
 }
+.feedback h3 {
+    margin: 5px 30px;
+}
 .button-load {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: -20px;
+    margin-top: 40px;
     margin-bottom: 200px;
 }
 
