@@ -1,40 +1,39 @@
 package com.swp.online_quizz.Entity;
 
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "Messages")
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
+@Table(name = "Messages")
 public class Message {
     @Id
-    @Column(name = "MessageID")
+    @Column(name = "MessageID", nullable = false)
     private Integer messageId;
 
-    @Column(name = "SenderID")
-    private Integer senderId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "SenderID")
+    private User sender;
 
-    @Column(name = "MessageType")
+    @Column(name = "MessageType", nullable = false, length = 20)
     private String messageType;
 
+    @Lob
     @Column(name = "MessageContent")
     private String messageContent;
 
     @Column(name = "SendTime")
-    private LocalDateTime sendTime;
+
+    private Timestamp sendTime;
 
     @Column(name = "IsRead")
     private Boolean isRead;
+
 
 }

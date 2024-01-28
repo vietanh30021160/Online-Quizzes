@@ -1,29 +1,24 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "MessageRecipients")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
+@Table(name = "MessageRecipients")
 public class MessageRecipient {
     @Id
-    @Column(name = "MessageRecipientID")
+    @Column(name = "MessageRecipientID", nullable = false)
     private Integer messageRecipientId;
 
-    @Column(name = "MessageID")
-    private Integer messageId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MessageID")
+    private Message message;
 
-    @Column(name = "RecipientID")
-    private Integer recipientId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "RecipientID")
+    private User recipient;
 
 }
