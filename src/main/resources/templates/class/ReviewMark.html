@@ -1,136 +1,79 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <head th:replace="Home/Head :: head"></head>
-
-    <!-- Required meta tags -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
-
-    <link rel="stylesheet" th:href="@{/Css/owl.carousel.min.css}">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" th:href="@{/Css/bootstrap.min.css}">
-
-    <!-- Style -->
-    <link rel="stylesheet" th:href="@{/Css/mark.css}">
-
+    <div th:replace="Home/Head :: head"></div>
     <title>Mark Class</title>
 
 </head>
 <body id="top">
-<nav class="navbar navbar-expand-lg" th:fragment="header">
+<div th:replace="Home/Header :: header"></div>
 
-    <div class="container">
-        <a class="navbar-brand" href="/">
-            <i class="bi-back"></i>
-            <span>QuizTest</span>
-        </a>
+<h1 class="d-flex justify-content-center p-3 title-Page">Review mark</h1>
 
-        <div class="d-lg-none ms-auto me-4">
-            <a href="#top" class="navbar-icon bi-person smoothscroll"></a>
-        </div>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-lg-5 me-lg-auto">
-                <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_1">Home</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_2">List Quizzes</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_3">How it works</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_5">Contact</a>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
-
-                    <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                        <li><a class="dropdown-item" href="topics-listing.html">Topics Listing</a></li>
-
-                        <li><a class="dropdown-item" href="contact.html">Contact Form</a></li>
-                    </ul>
-                </li>
-            </ul>
-
-            <div class="d-none d-lg-block">
-                <a href="#top" class="navbar-icon bi-person smoothscroll"></a>
-            </div>
-        </div>
-    </div>
-</nav>
 <div class="container">
-    <div class="row">
-        <div th:object="${QuizAttempts}" class="col-sm-8">
+    <div class="row status_left">
+        <div th:object="${QuizAttempts}"  class="col-md-8">
             <div class="row ">
-                <h4 >StartTime : <small th:text="*{startTime}" class="text-muted " ></small></h4>
+                <h5><div>Started on    </div><small th:text="*{startTime}" ></small></h5>
             </div>
             <div class="row ">
-                <h4 >Status : <small th:text="*{isCompleted}" class="text-muted " ></small></h4>
+                <h5><div>Status   </div><small th:text="${QuizAttempts.isCompleted  == true ? 'Finished' : 'Unfinished'}"
+                                    ></small></h5>
             </div>
             <div class="row ">
-                <h4 >EndTime : <small th:text="*{endTime}" class="text-muted " ></small></h4>
+                <h5><div>Completed on   </div><small th:text="*{endTime}" ></small></h5>
             </div>
             <div class="row ">
-                <h4 >Time Taken : <small th:text="*{getMinutesDifference()}" class="text-muted " ></small><small class="text-muted " > Min</small></h4>
+                <h5><div>Time Taken   </div><small th:text="*{getMinutesDifference()}" ></small><small
+                        > Min</small></h5>
             </div>
             <div class="row ">
-                <h4 >Grade : <small th:text="*{marks}" class="text-muted " ></small><small class="text-muted " > Min</small></h4>
+                <h5><div>Grade   </div><small th:text="*{marks}" ></small><small >
+                    </small></h5>
             </div>
 
 
         </div>
+        <div class="demo col-md-4">
+            <nav class="pagination-outer" aria-label="Page navigation ">
+                <p class="title_NavQuizQuestions">Quiz navigation</p>
+                <ul class="pagination " th:each="NoQuestion,indexNoQuestion : ${QuestionAttemptsList}">
+                    <li class="page-item  "><a class="page-link p-0 m-0" th:href="'#'+${indexNoQuestion.index+1}" th:text="${indexNoQuestion.index+1}"></a></li>
+                </ul>
 
-    </div>
-</div>
-<tr scope="row" >
-    <td >
-        <p >
-        <p ></p>
-        </p>
-    </td>
-    <div class="container mt-sm-5 my-1">
-        <div class="question ml-sm-5 pl-sm-5 pt-2 no-pointer-events" th:each="attempt,index  : ${QuestionAttemptsList}"  >
-            <div class="py-2 h5"><b th:text="${index.index + 1}+')'+${attempt.question.questionContent}"></b></div>
-            <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3"  th:each="answer,answerIndex  : ${attempt.question.answersList}">
-                <label class="options" th:if="${answer.isCorrect}">
-                    <input type="radio"  th:classappend="${attempt.answer == answer.answerId ? 'checked' : ''}" th:checked="${answer.isCorrect}" disabled>
-
-                    <span  th:text="${answer.answerContent}"></span>
-                </label>
-            </div>
-<!--            <div th:if="${answer.isCorrect}" class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3">-->
-<!--                <span class="text-success">Đáp án đúng: <b th:text="${answer.answerContent}"></b></span>-->
-<!--            </div>-->
+                <a class="finishReview" th:object="${QuizAttempts}" th:href="'../../'+*{quiz.quizId}">Finish review</a>
+            </nav>
         </div>
+
     </div>
-
-
-<!--    <td th:text="${markClass.user.email}">-->
-<!--    </td>-->
-<!--    <td th:text="${markClass.isCompleted ? 'Complete' : 'Incomplete'}"></td>-->
-
-<!--    <td th:text="${markClass.startTime}"></td>-->
-<!--    <td th:text="${markClass.endTime}"><a href="#" class="more"></a></td>-->
-<!--    <td th:text="${markClass.getMinutesDifference()}"></td>-->
-<!--    <td th:text="${markClass.marks}"><a href="#" class="more"></a></td>-->
-
-</tr>
 </div>
+<div class="container">
+    <div class= "row">
+
+        <div class="container col-md-8">
+            <div class="question ml-sm-5 pl-sm-5 pt-2 no-pointer-events"
+                 th:each="questionAttempt,index  : ${QuestionAttemptsList}">
+                <div class="py-2 h5 title-question" th:id="${index.index+1}"><b
+                        th:text="${index.index + 1}+') '+${questionAttempt.question.questionContent}"></b></div>
+                <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3"
+                     th:each="answer,answerIndex  : ${questionAttempt.question.answersList}">
+                    <label class="options">
+                        <input type="radio" th:checked="${answer.answerId == questionAttempt.answer}" disabled>
+                        <span th:text="${answerIndex.index + 1} + '.'"></span>
+                        <span th:text="${answer.answerContent}"></span> <span class="text-success"><b
+                            th:if="${answer.isCorrect}">  --> True</b></span>
+                        <span class="text-danger"><b th:if="${!answer.isCorrect}">  --> False</b></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+<div th:replace="Home/Footer :: footer"></div>
 <div th:replace="Home/Script :: script"></div>
 
 </body>

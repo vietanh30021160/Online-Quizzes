@@ -18,7 +18,7 @@ import java.util.List;
 public class Questions {
     @Id
     @Column(name = "QuestionID", nullable = false)
-    private Integer id;
+    private Integer questionID;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "QuizID")
