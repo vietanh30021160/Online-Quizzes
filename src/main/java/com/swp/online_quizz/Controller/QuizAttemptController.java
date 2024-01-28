@@ -109,6 +109,7 @@ public class QuizAttemptController {
     @GetMapping("/attemptQuiz/{quizId}/{attemptID}/{page}")
     public String attemptQuizzQuestionNumber(@PathVariable Integer quizId, @PathVariable Integer attemptID,
             @PathVariable Integer page, HttpSession session, Model model) {
+
         User user = iUsersService.getUsersByID(13);
         if (user != null) {
             QuizAttempt attemp = iQuizAttemptsService.getQuizAttempts(attemptID);
