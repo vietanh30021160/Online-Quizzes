@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.swp.online_quizz.Entity.QuestionAttempt;
 import com.swp.online_quizz.Entity.Question;
+import com.swp.online_quizz.Entity.QuestionAttempt;
+import com.swp.online_quizz.Entity.Quiz;
 import com.swp.online_quizz.Entity.QuizAttempt;
 import com.swp.online_quizz.Entity.QuizProgress;
-import com.swp.online_quizz.Entity.Quiz;
 import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Service.IAnswerService;
 import com.swp.online_quizz.Service.IQuesstionAttemptsService;
@@ -85,7 +85,7 @@ public class QuizAttemptController {
             long startTimeSearchMillis = startTime.getTime() - (10);
             Timestamp startTimeSearch = new Timestamp(startTimeSearchMillis);
             List<Question> listQuestion = getRandomQuestionsFromSet(quizId, 3); // số lượng câu hỏi trong 1 bài quiz
-                                                                                 // được tạo
+                                                                                // được tạo
             QuizAttempt newAttemp = new QuizAttempt(0, user, quizz, startTime, endTime,
                     0, false, listQuestion.get(0).getQuestionId(), null, null, null);
             iQuizAttemptsService.createQuizzAttempt(newAttemp);
@@ -165,6 +165,8 @@ public class QuizAttemptController {
                 if (answerProgress != null) {
                     if (iAnswerService.getAnswers(Integer.parseInt(answerProgress)).getIsCorrect()) {
                         questionAttempts.setIsCorrect(true);
+                    } else {
+                        questionAttempts.setIsCorrect(false);
                     }
                 }
                 questionAttempts.setAnswer(answerProgress);
