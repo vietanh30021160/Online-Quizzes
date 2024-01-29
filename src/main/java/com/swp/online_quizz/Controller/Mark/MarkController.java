@@ -44,7 +44,7 @@ public class MarkController {
         model.addAttribute("QuizzAndSubjectById", QuizzAndSubjectById);
         model.addAttribute("totalPage", listQuizAttempts.getTotalPages());
         model.addAttribute("currentPage", pageNo);
-        return "class/mark";
+        return "mark";
     }
     @GetMapping("mark/{quizzId}/attempt/{attemptID}")
     public String reviewAttempt(Model model , @PathVariable(value = "quizzId") Integer quizzId , @PathVariable("attemptID") Integer attemptID){
@@ -53,6 +53,6 @@ public class MarkController {
             model.addAttribute("QuizAttempts",quizAttempts);
             model.addAttribute("QuestionAttemptsList", questionAttemptList);
 
-            return "class/ReviewMark";
+            return "ReviewMark";
     }
 }
