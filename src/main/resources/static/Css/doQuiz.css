@@ -1,23 +1,33 @@
 .container {
     display: grid;
-    grid-template-columns: 0.7fr 3.3fr 0.9fr;
-    grid-template-rows: 1fr;
+    grid-template-columns: 0.3fr 4.3fr 0.3fr;
+    grid-template-rows: 0.3fr 2fr 0.4fr;
     gap: 0px 0px;
+    grid-auto-flow: row;
     grid-template-areas:
-        ". center .";
+        "Header Header Header"
+        ". Container ."
+        "Footer Footer Footer";
 }
 
-.center {
-    grid-area: center;
+.Header {
+    grid-area: Header;
+}
+
+.Container {
+    grid-area: Container;
+}
+
+.Footer {
+    grid-area: Footer;
 }
 #timeRemaining {
     text-align: end;
 }
 .card-contenain {
-    max-width: 800px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 .card-contenain .card{
@@ -27,6 +37,9 @@
 }
 .card .info {
     margin-right: 50px;
+}
+.card .content{
+    margin-left: 30px;
 }
 .info h3,
 .qno {
@@ -41,14 +54,17 @@
         -webkit-text-fill-color: transparent;
 }
 
-
 .qn_buttons {
     max-width: 800px;
     margin: 0 auto;
 }
-.multipages {
+.card-text {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
+    align-items: center;
+}
+.multipages{
+    margin: 5px;
 }
 .mod_quiz-prev-nav,
 .mod_quiz-next-nav {
@@ -68,6 +84,13 @@
                 rgba(130, 36, 227, 1) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+}
+.multipages{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap  ;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .button-load {
