@@ -47,6 +47,10 @@ public class QuizAttempt {
     @JoinColumn(name = "CurrentQuestionID")
     private Question currentQuestion;
 
+//    @Column(name = "CurrentQuestionID")
+//    private Integer currentQuestionId;
+
+
     public long getMinutesDifference(){
         long millisecondsDifference = endTime.getTime() - startTime.getTime();
         long secondsDifference = millisecondsDifference / 1000;

@@ -1,5 +1,7 @@
 package com.swp.online_quizz.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "Quizzes")
@@ -23,8 +26,7 @@ public class Quiz {
     private Integer quizId;
 
 
-    @OneToMany(mappedBy = "quiz")
-    private List<QuizAttempt> quizAttempts;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name
@@ -44,4 +46,15 @@ public class Quiz {
     @Column(name = "IsCompleted")
     private Boolean isCompleted;
 
+    @OneToMany(mappedBy = "quiz")
+    @JsonManagedReference
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Set<Question> listQuestions;
+
+//    @OneToMany(mappedBy = "quiz")
+//    @JsonManagedReference
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//    private Set<QuizAttempt> listQuizAttemps;
+@OneToMany(mappedBy = "quiz")
+private List<QuizAttempt> quizAttempts;
 }

@@ -1,8 +1,13 @@
 package com.swp.online_quizz.Entity;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,4 +31,7 @@ public class Subject {
     @Column(name = "Description")
     private String description;
 
+    @OneToMany(mappedBy = "subject")
+    @JsonManagedReference
+    private List<Quiz> listQuizzs;
 }

@@ -42,4 +42,8 @@ public class UsersService implements IUsersService {
     public Boolean delete(Integer userID) {
         return null;
     }
+    @Override
+    public User getUsersByID(Integer userID) {
+        return usersRepository.getReferenceById(userID);
+    }
 }

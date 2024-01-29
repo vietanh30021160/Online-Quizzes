@@ -2,10 +2,14 @@ package com.swp.online_quizz.Entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -61,4 +65,8 @@ public class User {
 
     @Column(name = "IsActive")
     private Boolean isActive;
+
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private Set<QuizAttempt> listQuizAttempts;
 }

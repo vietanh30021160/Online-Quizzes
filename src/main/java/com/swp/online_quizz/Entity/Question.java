@@ -1,12 +1,24 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.*;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Table(name = "Questions")
@@ -16,15 +28,15 @@ import java.util.List;
 @AllArgsConstructor
 public class Question {
     @Id
-    @Column(name = "QuestionID", nullable = false)
-    private Integer questionID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "QuestionID")
+    private Integer questionId;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "QuizID")
-//    @JsonBackReference
-//    private Quizzes quiz;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "QuizID")
+    @JsonBackReference
+    private Quiz quiz;
 
-    @Lob
     @Column(name = "QuestionContent")
     private String questionContent;
 
@@ -38,5 +50,10 @@ public class Question {
     private String videoUrl;
 
     @OneToMany(mappedBy = "question")
-    private List<Answer> answerList;
+    @JsonManagedReference
+    private List<Answer> listAnswer;
+
+    @OneToMany(mappedBy = "question")
+    @JsonManagedReference
+    private List<QuestionAttempt> listQuestionAttempts;
 }

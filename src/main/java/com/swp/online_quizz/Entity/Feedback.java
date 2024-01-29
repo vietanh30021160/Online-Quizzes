@@ -15,7 +15,7 @@ import lombok.Setter;
 public class Feedback {
     @Id
     @Column(name = "FeedbackID", nullable = false)
-    private Integer id;
+    private Integer feedbackId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AttemptID")
@@ -23,7 +23,7 @@ public class Feedback {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UserID")
-    private User userID;
+    private User user;
 
     @Lob
     @Column(name = "Comment")

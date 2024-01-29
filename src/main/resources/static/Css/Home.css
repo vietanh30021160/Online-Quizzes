@@ -1,0 +1,98 @@
+.inline-block-div {
+    display: inline-block;
+    margin-right: 20px; /* Khoảng cách giữa các div */
+}
+.box-footer {
+
+    padding: 10px;
+    text-align: center;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination li {
+    display: inline;
+    margin-right: 5px;
+}
+
+.pagination a {
+    color: #333;
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.pagination a:hover {
+    background-color: #ddd;
+}
+
+.pagination .active {
+    background-color: #337ab7;
+    color: #fff;
+
+}
+
+
+
+.filter-container {
+    position: relative;
+    text-align: right; /* Căn phải */
+    margin-right: 20px; /* Dịch chuyển nút về bên phải */
+}
+
+.filter-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.filter-options {
+    display: none;
+    position: absolute;
+    top: 40px; /* Khoảng cách từ nút xuống lựa chọn */
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.filter-option {
+    padding: 10px;
+    display: block;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.3s ease;
+}
+
+.filter-option:hover {
+    background-color: #f9f9f9;
+}
+
+/* Ẩn checkbox mặc định */
+input[type="checkbox"] {
+    display: none;
+}
+
+/* Hiển thị tùy chọn khi checkbox được chọn */
+input[type="checkbox"]:checked + .filter-options {
+    display: block;
+}
+.filter-options span {
+    display: block;
+    margin-bottom: 5px;
+    cursor: pointer;
+    color: blue;
+}
+
+.filter-options span:hover {
+    text-decoration: underline;
+}

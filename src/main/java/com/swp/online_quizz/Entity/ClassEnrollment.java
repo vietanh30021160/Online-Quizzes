@@ -1,29 +1,24 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "ClassEnrollments")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
+@Table(name = "ClassEnrollments")
 public class ClassEnrollment {
     @Id
-    @Column(name = "EnrollmentID")
+    @Column(name = "EnrollmentID", nullable = false)
     private Integer enrollmentId;
 
-    @Column(name = "ClassID")
-    private Integer classId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ClassID")
+    private Class classes;
 
-    @Column(name = "StudentID")
-    private Integer studentId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "StudentID")
+    private User student;
 
 }

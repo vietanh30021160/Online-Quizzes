@@ -19,4 +19,13 @@ public interface IQuizAttemptsService {
 
     Page<QuizAttempt> getAll(Integer pageNo);
 
+    public QuizAttempt getQuizAttempts(Integer quizAttemptID);
+
+    public boolean createQuizzAttempt(QuizAttempt attempt);
+
+    public QuizAttempt updateAttempts(Integer id, QuizAttempt attempt);
+
+    public List<QuizAttempt> getAttemptByUserIdAndQuizzId(Quiz quiz, User user);
+
+    public List<QuizAttempt> findByQuizIdAndUserIdAndStartTime(Quiz quiz, User user, Timestamp startTime);
 }
