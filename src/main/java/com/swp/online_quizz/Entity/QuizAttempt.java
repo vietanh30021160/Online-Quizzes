@@ -47,9 +47,6 @@ public class QuizAttempt {
     @JoinColumn(name = "CurrentQuestionID")
     private Question currentQuestion;
 
-//    @Column(name = "CurrentQuestionID")
-//    private Integer currentQuestionId;
-
 
     public long getMinutesDifference(){
         long millisecondsDifference = endTime.getTime() - startTime.getTime();
@@ -69,7 +66,7 @@ public class QuizAttempt {
         this.endTime = endTime;
         this.marks = marks;
         this.isCompleted = isCompleted;
-        this.currentQuestion = currentQuestionId;
+        this.currentQuestion = currentQuestion;
         this.listFeedbacks = listFeedbacks;
         this.listQuestionAttempts = listQuestionAttempts;
         this.listQuizzProgress = listQuizzProgress;

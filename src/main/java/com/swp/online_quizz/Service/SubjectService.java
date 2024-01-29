@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
-public class SubjectService implements ISubjectsService {
+public class SubjectService implements ISubjectService {
     @Autowired
     private final SubjectsRepository subrepository;
     @Autowired

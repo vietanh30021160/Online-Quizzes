@@ -30,7 +30,7 @@ public class QuizzesController {
 
     @GetMapping("/{quizID}")
     public String quizInfo(@PathVariable Integer quizID, HttpSession session, Model model) {
-        User user1 = iUsersService.getUsersByID(13);
+        User user1 = iUsersService.getUsersByID(1);
         Quiz quiz = iQuizzesService.getOneQuizz(quizID);
         List<QuizAttempt> listAttempts = iQuizAttemptsService.getAttemptByUserIdAndQuizzId(quiz, user1);
         Integer highestMark = 0;

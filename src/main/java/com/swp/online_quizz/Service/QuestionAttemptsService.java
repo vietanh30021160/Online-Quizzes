@@ -8,9 +8,36 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+
 public class QuestionAttemptsService implements IQuestionAttemptsService {
     @Autowired
     QuestionAttemptsRepository questionAttemptsRepository;
+
+    @Override
+    public Boolean createQuesstionAttempts(QuestionAttempt questionAttempts) {
+        try {
+            this.questionAttemptsRepository.save(questionAttempts);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean updateQuesstionAttempts(Integer id, QuestionAttempt questionAttempts) {
+        try {
+            QuestionAttempt uQuestionAttempts = questionAttemptsRepository.getReferenceById(id);
+            uQuestionAttempts.setAnswer(questionAttempts.getAnswer());
+            uQuestionAttempts.setIsAnswered(questionAttempts.getIsAnswered());
+            uQuestionAttempts.setIsCorrect(questionAttempts.getIsCorrect());
+            this.questionAttemptsRepository.save(uQuestionAttempts);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
 
     @Override
     public List<QuestionAttempt> findByAttemptID(Integer attemptID) {

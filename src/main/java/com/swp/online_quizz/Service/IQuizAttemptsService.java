@@ -1,8 +1,11 @@
 package com.swp.online_quizz.Service;
 
+import com.swp.online_quizz.Entity.Quiz;
 import com.swp.online_quizz.Entity.QuizAttempt;
+import com.swp.online_quizz.Entity.User;
 import org.springframework.data.domain.Page;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface IQuizAttemptsService {

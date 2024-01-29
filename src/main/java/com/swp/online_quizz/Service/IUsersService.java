@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface IUsersService {
     public User getUsersByID(Integer userID);
     List<User> getAlList();

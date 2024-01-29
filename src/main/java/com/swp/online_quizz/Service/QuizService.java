@@ -24,10 +24,6 @@ public class QuizService implements IQuizzesService {
         return quizRepository.findAll();
     }
 
-    @Override
-    public boolean create(Quiz quizzes) {
-        return false;
-    }
 
     @Override
     public Subject find(Integer quizId) {
