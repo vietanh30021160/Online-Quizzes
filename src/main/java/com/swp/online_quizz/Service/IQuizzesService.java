@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 
-public class QuizzesServiceElmpl implements QuizzesService{
+public class IQuizzesService implements QuizzesService{
     @Autowired
     private final QuizzesRepository quizzesRepository;
     @Override

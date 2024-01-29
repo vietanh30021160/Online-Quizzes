@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class QuestionAttemptsServiceElmpl implements QuestionAttemptsService{
+public class IQuestionAttemptsService implements QuestionAttemptsService{
     @Autowired
     public QuestionAttemptsRepository questionAttemptsRepository;
     @Override

@@ -2,7 +2,6 @@ package com.swp.online_quizz.Service;
 
 import com.swp.online_quizz.Entity.Subjects;
 import com.swp.online_quizz.Repository.SubjectsRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
-public class SubjectServiceElmpl implements SubjectsService {
+public class ISubjectService implements SubjectsService {
     @Autowired
     private final SubjectsRepository subrepository;
     @Override

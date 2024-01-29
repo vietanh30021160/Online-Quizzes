@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class QuizAttemptsServiceElmpl implements QuizAttemptsService{
+public class IQuizAttemptsService implements QuizAttemptsService{
 
     @Autowired
     private QuizAttemptsRepository quizAttemptsRepository;

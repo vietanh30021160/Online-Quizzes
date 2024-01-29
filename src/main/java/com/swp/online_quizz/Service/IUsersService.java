@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UsersServiceElmpl implements UsersService {
+public class IUsersService implements UsersService {
     @Autowired
     private UsersRepostory usersRepostory;
     @Override
