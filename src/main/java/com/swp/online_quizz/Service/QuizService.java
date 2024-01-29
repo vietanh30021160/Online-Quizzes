@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,5 +49,37 @@ public class QuizService implements IQuizzesService {
     @Override
     public List<Quiz> getAllQuizzes() {
         return quizRepository.findAll();
+    }
+
+    @Override
+    public List<Quiz> filterQuizzesByTimeLimit(Integer min, Integer max) {
+        if (min != null && max != null) {
+            return quizRepository.findBytimeLimitBetween(min, max);
+        } else {
+            return quizRepository.findAll();
+        }
+    }
+
+    @Override
+    public Page<Quiz> searchAndFilter(String keyword, Integer pageNo, Integer min, Integer max) {
+        Specification<Quiz> spec = Specification.where(null);
+
+        if (keyword != null && !keyword.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("quizName")), "%" + keyword.toLowerCase() + "%"));
+        }
+
+        if (min != null) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.greaterThan(root.get("timeLimit"), min));
+        }
+
+        if (max != null) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.lessThanOrEqualTo(root.get("timeLimit"), max));
+        }
+        Pageable pageable = PageRequest.of(pageNo - 1,3);
+
+        return quizRepository.findAll(spec, pageable);
     }
 }

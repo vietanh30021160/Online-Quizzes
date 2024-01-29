@@ -3,6 +3,8 @@ package com.swp.online_quizz.Entity;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -35,12 +37,14 @@ public class Quiz {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SubjectID")
     @JsonBackReference
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Subject subject;
 
     @Column(name = "QuizName")
     private String quizName;
 
     @Column(name = "TimeLimit")
+
     private Integer timeLimit;
 
     @Column(name = "isCompleted")
@@ -48,9 +52,11 @@ public class Quiz {
 
     @OneToMany(mappedBy = "quiz")
     @JsonManagedReference
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Set<Question> listQuestions;
 
     @OneToMany(mappedBy = "quiz")
     @JsonManagedReference
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Set<QuizAttempt> listQuizAttemps;
 }
