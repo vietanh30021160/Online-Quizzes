@@ -1,6 +1,6 @@
 package com.swp.online_quizz.Entity;
 
-import java.util.Set;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -48,9 +48,9 @@ public class Quiz {
 
     @OneToMany(mappedBy = "quiz")
     @JsonManagedReference
-    private Set<Question> listQuestions;
+    private List<Question> listQuestions;
 
     @OneToMany(mappedBy = "quiz")
     @JsonManagedReference
-    private Set<QuizAttempt> listQuizAttemps;
+    private List<QuizAttempt> listQuizAttemps;
 }

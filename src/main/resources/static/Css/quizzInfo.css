@@ -84,19 +84,26 @@ iframe {
 }
 .container {
     display: grid;
-    grid-template-columns: 0.5fr 3.9fr 0.5fr;
-    grid-template-rows: 1fr;
+    grid-template-columns: 0.3fr 4.3fr 0.3fr;
+    grid-template-rows: 0.3fr 2fr 0.4fr;
     gap: 0px 0px;
+    grid-auto-flow: row;
     grid-template-areas:
-        ". center .";
+        "Header Header Header"
+        ". Container ."
+        "Footer Footer Footer";
 }
 
-.center {
-    grid-area: center;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin: 0 auto;
+.Header {
+    grid-area: Header;
+}
+
+.Container {
+    grid-area: Container;
+}
+
+.Footer {
+    grid-area: Footer;
 }
 .container h1 {
     margin: 20px 0px ;
@@ -115,6 +122,11 @@ iframe {
     padding: 15px;
     border-radius: 8px;
     margin-top: 20px;
+}
+.quizattemptsummary{
+    margin: 0 auto;
+    justify-content: space-around;
+    align-items: center;
 }
 .box.quizinfo p {
     margin: 0;

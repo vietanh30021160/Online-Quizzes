@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -232,7 +231,7 @@ public class QuizAttemptController {
     }
 
     public List<Question> getRandomQuestionsFromSet(@PathVariable Integer quizId, @PathVariable Integer n) {
-        Set<Question> questionSet = iQuizzesService.getOneQuizz(quizId).getListQuestions();
+        List<Question> questionSet = iQuizzesService.getOneQuizz(quizId).getListQuestions();
         List<Question> questionList = new ArrayList<>(questionSet);
         Collections.shuffle(questionList);
         List<Question> randomQuestions = questionList.subList(0, Math.min(n, questionList.size()));
