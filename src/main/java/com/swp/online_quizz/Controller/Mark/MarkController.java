@@ -1,16 +1,14 @@
 package com.swp.online_quizz.Controller.Mark;
 
-import com.swp.online_quizz.Entity.QuestionAttempts;
-import com.swp.online_quizz.Entity.Questions;
-import com.swp.online_quizz.Entity.QuizAttempts;
-import com.swp.online_quizz.Entity.Quizzes;
-import com.swp.online_quizz.Service.QuestionAttemptsService;
-import com.swp.online_quizz.Service.QuizAttemptsService;
-import com.swp.online_quizz.Service.QuizzesService;
-import com.swp.online_quizz.Service.UsersService;
+import com.swp.online_quizz.Entity.QuestionAttempt;
+import com.swp.online_quizz.Entity.QuizAttempt;
+import com.swp.online_quizz.Entity.Quiz;
+import com.swp.online_quizz.Service.IQuestionAttemptsService;
+import com.swp.online_quizz.Service.IQuizAttemptsService;
+import com.swp.online_quizz.Service.IQuizzesService;
+import com.swp.online_quizz.Service.IUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,23 +22,23 @@ import java.util.List;
 @RequestMapping("/class")
 public class MarkController {
     @Autowired
-    private UsersService usersService;
+    private IUsersService usersService;
     @Autowired
-    private QuizAttemptsService quizAttemptsService;
+    private IQuizAttemptsService quizAttemptsService;
     @Autowired
-    private QuizzesService quizzesService;
+    private IQuizzesService quizzesService;
     @Autowired
-    private QuestionAttemptsService questionAttemptsService;
+    private IQuestionAttemptsService questionAttemptsService;
     @GetMapping("/mark/{quizzId}")
     public String index(Model model, @RequestParam(value = "username", required = false) String username, @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                         @PathVariable("quizzId") Integer quizzId) {
-        Page<QuizAttempts> listQuizAttempts = this.quizAttemptsService.findQuizAttemptsByQuizID(quizzId, pageNo);
+        Page<QuizAttempt> listQuizAttempts = this.quizAttemptsService.findQuizAttemptsByQuizID(quizzId, pageNo);
         if (username != null) {
             listQuizAttempts = this.quizAttemptsService.searchUseByName(username, quizzId, pageNo);
             model.addAttribute("username", username);
         }
 
-        Quizzes QuizzAndSubjectById = this.quizzesService.findByID(quizzId);
+        Quiz QuizzAndSubjectById = this.quizzesService.findByID(quizzId);
         QuizzAndSubjectById.getSubject();
         model.addAttribute("QuizAttempts", listQuizAttempts);
         model.addAttribute("QuizzAndSubjectById", QuizzAndSubjectById);
@@ -50,10 +48,10 @@ public class MarkController {
     }
     @GetMapping("mark/{quizzId}/attempt/{attemptID}")
     public String reviewAttempt(Model model , @PathVariable(value = "quizzId") Integer quizzId , @PathVariable("attemptID") Integer attemptID){
-            QuizAttempts quizAttempts = this.quizAttemptsService.findById(attemptID);
-            List<QuestionAttempts> questionAttemptsList = this.questionAttemptsService.findByAttemptID(attemptID);
+            QuizAttempt quizAttempts = this.quizAttemptsService.findById(attemptID);
+            List<QuestionAttempt> questionAttemptList = this.questionAttemptsService.findByAttemptID(attemptID);
             model.addAttribute("QuizAttempts",quizAttempts);
-            model.addAttribute("QuestionAttemptsList",questionAttemptsList);
+            model.addAttribute("QuestionAttemptsList", questionAttemptList);
 
             return "class/ReviewMark";
     }

@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Answers {
+public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AnswerID", nullable = false)
@@ -20,7 +20,7 @@ public class Answers {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "QuestionID")
-    private Questions question;
+    private Question question;
 
     @Column(name = "AnswerContent")
     private String answerContent;

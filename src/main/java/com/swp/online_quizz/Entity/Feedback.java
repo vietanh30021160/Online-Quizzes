@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.catalina.User;
 
 @Entity
 @Table(name = "Feedback")
@@ -20,11 +19,11 @@ public class Feedback {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AttemptID")
-    private QuizAttempts attempt;
+    private QuizAttempt attempt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UserID")
-    private Users userID;
+    private User userID;
 
     @Lob
     @Column(name = "Comment")

@@ -10,20 +10,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Subjects")
+@Table(name = "ClassEnrollments")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Subjects {
+public class ClassEnrollment {
     @Id
-    @Column(name = "SubjectID")
-    private Integer subjectId;
+    @Column(name = "EnrollmentID")
+    private Integer enrollmentId;
 
-    @Column(name = "SubjectName")
-    private String subjectName;
+    @Column(name = "ClassID")
+    private Integer classId;
 
-    @Column(name = "Description")
-    private String description;
+    @Column(name = "StudentID")
+    private Integer studentId;
 
 }

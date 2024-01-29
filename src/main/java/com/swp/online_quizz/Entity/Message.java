@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Messages {
+public class Message {
     @Id
     @Column(name = "MessageID")
     private Integer messageId;

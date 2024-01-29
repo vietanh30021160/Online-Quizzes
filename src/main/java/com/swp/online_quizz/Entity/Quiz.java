@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Quizzes {
+public class Quiz {
 
 
 
@@ -24,16 +24,16 @@ public class Quizzes {
 
 
     @OneToMany(mappedBy = "quiz")
-    private List<QuizAttempts> quizAttempts;
+    private List<QuizAttempt> quizAttempts;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name
             = "TeacherID")
-    private Users teacher;
+    private User teacher;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SubjectID")
-    private Subjects subject;
+    private Subject subject;
 
     @Column(name = "QuizName", length = 100)
     private String quizName;

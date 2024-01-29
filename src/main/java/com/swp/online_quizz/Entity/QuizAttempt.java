@@ -1,7 +1,6 @@
 package com.swp.online_quizz.Entity;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -17,7 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuizAttempts {
+public class QuizAttempt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "AttemptID")
@@ -25,17 +24,17 @@ public class QuizAttempts {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UserID")
-    private Users user;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "QuizID")
-    private Quizzes quiz;
+    private Quiz quiz;
 
     @Column(name = "StartTime")
-    private LocalDateTime startTime;
+    private Timestamp startTime;
 
     @Column(name = "EndTime")
-    private LocalDateTime endTime;
+    private Timestamp endTime;
 
 
     @Column(name = "Marks")
@@ -46,16 +45,20 @@ public class QuizAttempts {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CurrentQuestionID")
-    private Questions currentQuestion;
+    private Question currentQuestion;
 
     public long getMinutesDifference(){
-        return ChronoUnit.MINUTES.between(startTime, endTime);
+        long millisecondsDifference = endTime.getTime() - startTime.getTime();
+        long secondsDifference = millisecondsDifference / 1000;
+        long minutesDifference = secondsDifference / 60;
+
+        return minutesDifference;
     }
 
 
-    public QuizAttempts(Users user, Quizzes quiz, LocalDateTime startTime, LocalDateTime endTime, Integer marks,
-            Boolean isCompleted, Questions currentQuestionId, List<Feedback> listFeedbacks,
-                        List<QuestionAttempts> listQuestionAttempts, List<QuizProgress> listQuizzProgress) {
+    public QuizAttempt(User user, Quiz quiz, Timestamp startTime, Timestamp endTime, Integer marks,
+                       Boolean isCompleted, Question currentQuestionId, List<Feedback> listFeedbacks,
+                       List<QuestionAttempt> listQuestionAttempts, List<QuizProgress> listQuizzProgress) {
         this.user = user;
         this.quiz = quiz;
         this.startTime = startTime;
@@ -74,7 +77,7 @@ public class QuizAttempts {
 
     @OneToMany(mappedBy = "attempt")
     @JsonManagedReference
-    private List<QuestionAttempts> listQuestionAttempts;
+    private List<QuestionAttempt> listQuestionAttempts;
 
     @OneToMany(mappedBy = "attempt")
     @JsonManagedReference

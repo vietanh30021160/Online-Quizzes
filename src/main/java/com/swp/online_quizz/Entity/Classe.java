@@ -15,7 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Classes {
+public class Classe {
     @Id
     @Column(name = "ClassID")
     private Integer classId;

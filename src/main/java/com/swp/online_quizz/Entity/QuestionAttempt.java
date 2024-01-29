@@ -2,8 +2,6 @@ package com.swp.online_quizz.Entity;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuestionAttempts implements Serializable {
+public class QuestionAttempt implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "QuestionAttemptID")
@@ -24,11 +22,11 @@ public class QuestionAttempts implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AttemptID")
-    private QuizAttempts attempt;
+    private QuizAttempt attempt;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "QuestionID")
-    private Questions question;
+    private Question question;
 
     @Column(name = "Answer")
     private String answer;
@@ -42,7 +40,7 @@ public class QuestionAttempts implements Serializable {
     @Column(name = "IsCorrect")
     private Boolean isCorrect;
 
-    public QuestionAttempts(QuizAttempts attempt, Questions question, String answer, Boolean isAnswered, Integer questionOrder, Boolean isCorrect) {
+    public QuestionAttempt(QuizAttempt attempt, Question question, String answer, Boolean isAnswered, Integer questionOrder, Boolean isCorrect) {
         this.attempt = attempt;
         this.question = question;
         this.answer = answer;

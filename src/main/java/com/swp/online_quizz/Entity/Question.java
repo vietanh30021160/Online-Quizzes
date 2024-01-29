@@ -1,6 +1,5 @@
 package com.swp.online_quizz.Entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Questions {
+public class Question {
     @Id
     @Column(name = "QuestionID", nullable = false)
     private Integer questionID;
@@ -39,5 +38,5 @@ public class Questions {
     private String videoUrl;
 
     @OneToMany(mappedBy = "question")
-    private List<Answers> answersList;
+    private List<Answer> answerList;
 }

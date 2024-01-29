@@ -19,11 +19,11 @@ public class QuizProgress {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AttemptID")
-    private QuizAttempts attempt;
+    private QuizAttempt attempt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "QuestionID")
-    private Questions question;
+    private Question question;
 
     @Column(name = "IsAnswered")
     private Boolean isAnswered;

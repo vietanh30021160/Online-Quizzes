@@ -15,7 +15,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageRecipients {
+public class MessageRecipient {
     @Id
     @Column(name = "MessageRecipientID")
     private Integer messageRecipientId;
