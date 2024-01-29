@@ -1,28 +1,15 @@
-.container {
-    display: grid;
-    grid-template-columns: 0.3fr 4.3fr 0.3fr;
-    grid-template-rows: 0.3fr 2fr 0.4fr;
-    gap: 0px 0px;
-    grid-auto-flow: row;
-    grid-template-areas:
-        "Header Header Header"
-        ". Container ."
-        "Footer Footer Footer";
-}
-
 .Header {
-    grid-area: Header;
-}
-
-.Container {
-    grid-area: Container;
-}
-
-.Footer {
-    grid-area: Footer;
+    background-color: #80d0c7;
 }
 #timeRemaining {
     text-align: end;
+}
+.Container{
+    margin: 0 auto;
+    max-width: 90%;
+}
+.Container h2{
+    font-size: 20px;
 }
 .card-contenain {
     margin: 0 auto;
@@ -32,8 +19,10 @@
 }
 .card-contenain .card{
     display: flex;
+    flex-direction: row !important;
     justify-content: space-between;
     align-items: flex-start;
+    border: none;
 }
 .card .info {
     margin-right: 50px;
@@ -48,8 +37,8 @@
     text-align: center;
         margin: 20px 0px;
         background: -webkit-linear-gradient(90deg,
-                rgba(221, 51, 51, 1) 0%,
-                rgba(130, 36, 227, 1) 100%);
+                rgba(138, 100, 235, 1) 0%,
+                rgba(99, 229, 223, 1) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
 }
@@ -80,10 +69,26 @@
     text-align: center;
     margin: 20px 0px;
         background: -webkit-linear-gradient(90deg,
-                rgba(221, 51, 51, 1) 0%,
-                rgba(130, 36, 227, 1) 100%);
+                rgba(138, 100, 235, 1) 0%,
+                rgba(99, 229, 223, 1) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+}
+
+.radio-button__input:checked+.radio-button__label .radio-button__custom {
+    transform: translateY(-50%) scale(0.9);
+    border: 5px solid #4c8bf5;
+    color: #4c8bf5;
+}
+
+.radio-button__input:checked+.radio-button__label {
+    color: #4c8bf5;
+}
+
+.radio-button__label:hover .radio-button__custom {
+    transform: translateY(-50%) scale(1.2);
+    border-color: #4c8bf5;
+    box-shadow: 0 0 10px #4c8bf580;
 }
 .multipages{
     display: flex;
@@ -134,10 +139,8 @@
     left: 0;
     top: 0;
     transition: all 0.5s ease-in-out;
-    background-color: rgb(195, 34, 181);
-    background: linear-gradient(90deg,
-            rgba(221, 51, 51, 1) 0%,
-            rgba(130, 36, 227, 1) 100%);
+    background: rgb(138, 100, 235);
+        background: radial-gradient(circle, rgba(138, 100, 235, 1) 0%, rgba(99, 229, 223, 1) 100%);
     border-radius: 30px;
     visibility: hidden;
     height: 10px;
