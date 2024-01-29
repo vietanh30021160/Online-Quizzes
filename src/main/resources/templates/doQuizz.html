@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <title>Document</title>
+    <div th:replace="HomeHead :: head"></div>
+    <title>Quiz</title>
+
     <link rel="stylesheet" type="text/css" media="all" href="/css/doQuiz.css" th:href="@{/css/doQuiz.css}">
 </head>
-<body>
+<body id="top">
+<div th:replace="HomeHeader :: header"></div>
     <div class="container">
-        <div class="Header"></div>
         <div class="Container">
             <form th:action="@{/attempt/progress}" th:object="${QuizProgress}" method="post">
                         <!----Tên quizzz - Tên môn--->
@@ -111,8 +111,9 @@
                         </div>
             </form>
         </div>
-        <div class="Footer"></div>
     </div>
+<div th:replace="HomeFooter :: footer"></div>
+<div th:replace="HomeScript :: script"></div>
 
 
 </body>

@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head >
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <div th:replace="HomeHead :: head"></div>
     <link rel="stylesheet" type="text/css" media="all" 
         href="/css/quizzInfo.css" th:href="@{/css/quizzInfo.css}">
 
 </head>
 <body>
+<div th:replace="HomeHeader :: header"></div>
 <div class="container">
     <div class="Header"></div>
     <div class="Container">
@@ -86,7 +85,6 @@
                 </div>
             </div>
     </div>
-    <div class="Footer"></div>
 </div>
 
 </body>

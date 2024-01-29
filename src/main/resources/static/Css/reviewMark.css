@@ -1,7 +1,13 @@
 body {
     font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    background-color: rgb(51, 148, 157);
+    background-color: rgb(255, 250, 250);
+
     font-weight: 300;
+}
+.headerMark{
+    background-color: #3d899b;
+    background-image: linear-gradient(90deg, #3d899b 0%, #7ecec5 50%);
+
 }
 .navTopPage{
     /*background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);*/
@@ -302,7 +308,7 @@ h2 {
 .status_left h5 small {
      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman',
      serif;
-     color: #00f5ff;
+     color: #6c5656;
  }
 .status_left h5 div {
     display: inline-block;
@@ -311,3 +317,11 @@ h2 {
 html{
      scroll-behavior: smooth;
  }
+.container .answer{
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+}
+.footer{
+    margin-top: 50px;
+    background-color: #FFFFFF;
+}

@@ -1,145 +1,8 @@
-/*body {*/
-/*    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";*/
-/*    background-color: #898f8f;*/
-/*    font-weight: 300; }*/
 
-/*p {*/
-/*    color: rgba(182, 179, 179, 0.5);*/
-/*    font-weight: 300; }*/
-
-/*h1, h2, h3, h4, h5, h6,*/
-/*.h1, .h2, .h3, .h4, .h5, .h6 {*/
-/*    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; }*/
-
-/*a {*/
-/*    -webkit-transition: .3s all ease;*/
-/*    -o-transition: .3s all ease;*/
-/*    transition: .3s all ease; }*/
-/*a, a:hover {*/
-/*    text-decoration: none !important; }*/
-
-/*.content {*/
-/*    padding: 7rem 0; }*/
-
-/*h2 {*/
-/*    font-size: 20px;*/
-/*    color: #fff; }*/
-
-/*.custom-table {*/
-/*    min-width: 900px; }*/
-/*.custom-table thead tr, .custom-table thead th {*/
-
-/*    padding-bottom: 30px;*/
-/*    border-top: none;*/
-/*    border-bottom: none !important;*/
-/*    color: #ffffff;*/
-/*    font-size: 12px;*/
-/*    text-transform: uppercase;*/
-/*    letter-spacing: .2rem; }*/
-/*.custom-table tbody th, .custom-table tbody td{*/
-/*    box-sizing: border-box;*/
-/*    color: #b7b6b6;*/
-/*    font-weight: 400;*/
-/*    padding-bottom: 20px;*/
-/*    padding-top: 20px;*/
-/*    font-weight: 300;*/
-/*    border: none;*/
-/*    -webkit-transition: .3s all ease;*/
-/*    -o-transition: .3s all ease;*/
-/*    transition: .3s all ease; }*/
-/*.custom-table tbody th small, .custom-table tbody td small {*/
-/*    display: block;*/
-/*    color: rgba(255, 255, 255, 0.3);*/
-/*    font-weight: 300; }*/
-/*.custom-table tbody th a, .custom-table tbody td a {*/
-/*    color: rgba(100, 98, 98, 0.93);*/
-
-/*}*/
-
-/*.custom-table tbody td a:hover{*/
-/*    color: rgb(0, 89, 255);*/
-/*}*/
-/*.custom-table tbody th .more, .custom-table tbody td .more {*/
-/*    color: rgba(255, 255, 255, 0.3);*/
-/*    font-size: 11px;*/
-/*    font-weight: 900;*/
-/*    text-transform: uppercase;*/
-/*    letter-spacing: .2rem; }*/
-/*.custom-table tbody tr {*/
-/*    -webkit-transition: .3s all ease;*/
-/*    -o-transition: .3s all ease;*/
-/*    transition: .3s all ease; }*/
-/*.custom-table tbody tr:hover td, .custom-table tbody tr:focus td {*/
-/*    color: #fff; }*/
-/*!*.custom-table tbody tr:hover td a, .custom-table tbody tr:focus td a {*!*/
-/*!*    color: #fdd114; }*!*/
-/*!*.custom-table tbody tr:hover td .more, .custom-table tbody tr:focus td .more {*!*/
-/*!*    color: #fdd114; }*!*/
-/*.custom-table .td-box-wrap {*/
-/*    padding: 0; }*/
-/*.custom-table .box {*/
-/*    background: #fff;*/
-/*    border-radius: 4px;*/
-/*    margin-top: 15px;*/
-/*    margin-bottom: 15px; }*/
-/*.custom-table .box td, .custom-table .box th {*/
-/*    border: none !important; }*/
-/*!*From search*!*/
-/*.pagination-outer{ text-align: center; }*/
-/*.pagination{*/
-/*    font-family: 'Poppins', sans-serif;*/
-/*    display: inline-flex;*/
-/*    position: relative;*/
-/*}*/
-/*.pagination li a.page-link{*/
-/*    color: #555;*/
-/*    background-color: #eee;*/
-/*    font-size: 18px;*/
-/*    font-weight: 500;*/
-/*    line-height: 38px;*/
-/*    height: 35px;*/
-/*    width: 35px;*/
-/*    padding: 0;*/
-/*    margin: 0 5px;*/
-/*    border-radius: 3px;*/
-/*    border: 3px solid #555;*/
-/*    position: relative;*/
-/*    z-index: 1;*/
-/*    transition: all 0.4s ease 0s;*/
-/*}*/
-/*.pagination li:first-child a.page-link,*/
-/*.pagination li:last-child a.page-link{*/
-/*    font-size: 25px;*/
-/*    line-height: 35px;*/
-/*    font-weight: 500;*/
-/*}*/
-/*.pagination li a.page-link:hover,*/
-/*.pagination li a.page-link:focus,*/
-/*.pagination li.active a.page-link:hover,*/
-/*.pagination li.active a.page-link{*/
-/*    color: rgb(6,98,134);*/
-/*    background-color: #eee;*/
-/*    line-height: 30px;*/
-/*    border: 3px solid rgb(6,98,134);*/
-/*    box-shadow: 0 0 10px rgba(0,0,0,0.3);*/
-/*}*/
-/*@media only screen and (max-width: 480px){*/
-/*    .pagination{*/
-/*        font-size: 0;*/
-/*        display: inline-block;*/
-/*    }*/
-/*    .pagination li{*/
-/*        display: inline-block;*/
-/*        vertical-align: top;*/
-/*        margin: 10px 0;*/
-/*    }*/
-/*}*/
-/*.no-pointer-events {*/
-/*     pointer-events: none;*/
-/* }*/
 body {
     font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    background-color: rgb(51, 148, 157);
+    background-color: rgb(255, 250, 250);
+
     font-weight: 300;
 }
 html{
@@ -212,7 +75,7 @@ h2 {
 }
 
 .custom-table tbody th small, .custom-table tbody td small {
-    color: rgba(227, 227, 227, 0.3);
+    color: rgba(2, 12, 12, 0.3);
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman',
     serif;
 }
@@ -241,7 +104,7 @@ h2 {
 }
 
 .custom-table tbody tr:hover td, .custom-table tbody tr:focus td {
-    color: #fff;
+    color: #134bfa;
 }
 
 /*.custom-table tbody tr:hover td a, .custom-table tbody tr:focus td a {*/
@@ -441,7 +304,10 @@ h2 {
 .status_left h5 small {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman',
     serif;
-    color: #00f5ff;
+    color: #938d8d;
+}
+.status_left h5 small:hover{
+    color: #09cbee;
 }
 .status_left h5 div {
     display: inline-block;
@@ -449,4 +315,39 @@ h2 {
 }
 .title-Page:hover{
     color: #4fecb4;
+}
+.btnSortMark{
+    display: flex;
+    justify-content: right;
+    padding: 20px 50px 0 0 ;
+}
+.headerMark{
+    background-color: #3d899b;
+    background-image: linear-gradient(90deg, #3d899b 0%, #7ecec5 50%);
+
+}
+.use_Student{
+    color: #0e0e0e;
+    margin: 0;
+}
+.custom-table tbody td small{
+    font-size: 16px;
+}
+.tableInfo{
+    font-size: 18.5px;
+    font-family: 'Times New Roman', Times, serif;
+}
+.footer{
+    margin-top: 30px;
+    background-color: #FFFFFF;
+}
+.btnSortLeft{
+    margin-right: 10px;
+}
+.reviewLink{
+    color: black;
+    opacity: 0.5;
+}
+.reviewLink:hover{
+    opacity: 1;
 }

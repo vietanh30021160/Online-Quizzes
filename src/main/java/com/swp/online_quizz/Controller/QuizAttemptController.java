@@ -63,7 +63,7 @@ public class QuizAttemptController {
 
     @GetMapping("/testApi/{quizId}")
     public List<QuizAttempt> testApi(@PathVariable Integer quizId, Model model) {
-        User user = iUsersService.getUsersByID(1);
+        User user = iUsersService.getUsersByID(2);
         Quiz quizz = iQuizzesService.getOneQuizz(quizId);
         Timestamp startTime = Timestamp.valueOf("2024-01-25 02:18:35.316");
         return iQuizAttemptsService.findByQuizIdAndUserIdAndStartTime(quizz, user, startTime);
@@ -76,7 +76,7 @@ public class QuizAttemptController {
 
     @GetMapping("/attemptQuiz/{quizId}")
     public RedirectView attemptQuizz(@PathVariable Integer quizId, Model model) {
-        User user = iUsersService.getUsersByID(1);
+        User user = iUsersService.getUsersByID(2);
         if (user != null) {
             Quiz quizz = iQuizzesService.getOneQuizz(quizId);
             Timestamp startTime = new Timestamp(System.currentTimeMillis());
@@ -110,7 +110,7 @@ public class QuizAttemptController {
     public String attemptQuizzQuestionNumber(@PathVariable Integer quizId, @PathVariable Integer attemptID,
             @PathVariable Integer page, HttpSession session, Model model) {
 
-        User user = iUsersService.getUsersByID(1);
+        User user = iUsersService.getUsersByID(2);
         if (user != null) {
             QuizAttempt attemp = iQuizAttemptsService.getQuizAttempts(attemptID);
             List<QuizProgress> listQProg = new ArrayList<>(attemp.getListQuizzProgress());

@@ -6,10 +6,7 @@ import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Repository.QuizAttemptsRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -55,18 +52,18 @@ public class QuizAttemptsService implements IQuizAttemptsService {
     }
 
     @Override
-    public List<QuizAttempt> findQuizAttemptsByQuizID(Integer QuizID) {
-        return this.quizAttemptsRepository.findQuizAttemptsByQuizID(QuizID);
+    public List<QuizAttempt> findQuizAttemptsByQuizID(Integer QuizID , Sort sort) {
+        return this.quizAttemptsRepository.findQuizAttemptsByQuizID(QuizID,sort);
     }
 
     @Override
-    public Page<QuizAttempt> findQuizAttemptsByQuizID(Integer QuizzID, Integer pageNo) {
-        List<QuizAttempt> quizAttempts = this.quizAttemptsRepository.findQuizAttemptsByQuizID(QuizzID);
+    public Page<QuizAttempt> findQuizAttemptsByQuizID(Integer QuizzID, Integer pageNo,Sort sort) {
+        List<QuizAttempt> quizAttempts = this.quizAttemptsRepository.findQuizAttemptsByQuizID(QuizzID,sort);
         Pageable pageable = PageRequest.of(pageNo - 1, 5);
         Integer start = (int) pageable.getOffset();
         Integer end = ( start +pageable.getPageSize()) > quizAttempts.size() ? quizAttempts.size() : ( start +pageable.getPageSize());
         quizAttempts  = quizAttempts.subList(start,end);
-        return new PageImpl<QuizAttempt>(quizAttempts,pageable,this.quizAttemptsRepository.findQuizAttemptsByQuizID(QuizzID).size());
+        return new PageImpl<QuizAttempt>(quizAttempts,pageable,this.quizAttemptsRepository.findQuizAttemptsByQuizID(QuizzID,sort).size());
     }
 
     @Override
