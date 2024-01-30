@@ -51,11 +51,5 @@ public class HomeController {
         model.addAttribute("listQuiz", listQuiz);
         return "HomePage";
     }
-    @GetMapping("/filter")
-    public ResponseEntity<List<Quiz>> filterQuizzes(@RequestParam(required = false) Integer min,
-                                    @RequestParam(required = false) Integer max) {
 
-        // Gọi service để lấy danh sách quiz sau khi lọc
-        return ResponseEntity.status(HttpStatus.OK).body(iQuizzesService.filterQuizzesByTimeLimit(min, max));
-    }
 }
