@@ -21,10 +21,10 @@
                     <input type="password" class="form-element" th:field="*{password}" placeholder="Password">
                 </div>
                 <div class="form-input-field" >
-                    <input type="radio" id="studentRadio" checked th:field="*{role}" name="userType" th:value="Student"/>
+                    <input type="radio" id="studentRadio" checked th:field="*{role}" name="userType" th:value="ROLE_STUDENT"/>
                     <label for="studentRadio">Student</label>
 
-                    <input type="radio" id="teacherRadio" th:field="*{role}" name="userType" th:value="Teacher"/>
+                    <input type="radio" id="teacherRadio" th:field="*{role}" name="userType" th:value="ROLE_TEACHER"/>
                     <label for="teacherRadio">Teacher</label>
                 </div>
                 <div class="message">

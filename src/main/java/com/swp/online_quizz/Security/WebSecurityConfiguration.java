@@ -6,15 +6,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.DefaultSecurityFilterChain;
@@ -30,11 +33,9 @@ import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
-    private final DataSource dataSource;
     private final CustomUserDetailsServices customUserDetailsServices;
     @Bean
     public static PasswordEncoder passwordEncoder(){
@@ -44,26 +45,18 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests((auth) ->
-                        auth.requestMatchers("/", "/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll()
-                                .requestMatchers("/admin/**").hasAuthority("Admin")
+                        auth.requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers( "/","/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(login -> login
                         .loginPage("/login").permitAll()
-                        .defaultSuccessUrl("/")
                         .failureUrl("/login?unsuccessful")
                         .successHandler(myAuthenticationSuccessHandler())
-                ).logout(logout -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/login?logout"))
-                        .logoutSuccessUrl("/")
-                        .logoutSuccessHandler(myLogoutSuccessHandler())
-                )
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .accessDeniedHandler((request, response, accessDeniedException) ->
-                                        response.sendRedirect("/login")
-                                )
                 );
-        ;
-        httpSecurity.userDetailsService(customUserDetailsServices).passwordManagement(pass -> passwordEncoder());
+//                .exceptionHandling(exceptionHandling -> exceptionHandling
+//                        .accessDeniedHandler((request, response, accessDeniedException) ->
+//                                response.sendRedirect("/login"))
+//                );
         return httpSecurity.build();
     }
 
@@ -83,6 +76,13 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
             super.onAuthenticationSuccess(request, response, authentication);
             // Lưu UserDetails vào SecurityContextHolder
             SecurityContextHolder.getContext().setAuthentication(authentication);
+//            var authorities = authentication.getAuthorities();
+//            var roles = authorities.stream().map(r->r.getAuthority()).findFirst();
+//            if(roles.orElse("").equals("ROLE_ADMIN")){
+//                response.sendRedirect("/admin");
+//            }else{
+//                response.sendRedirect("/");
+//            }
         }
     }
 
@@ -93,6 +93,11 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
             // Xóa UserDetails khỏi SecurityContextHolder khi đăng xuất
             SecurityContextHolder.clearContext();
         }
+    }
+
+    @Autowired
+    public void configure(AuthenticationManagerBuilder auth) throws Exception{
+        auth.userDetailsService(customUserDetailsServices).passwordEncoder(passwordEncoder());
     }
 
 

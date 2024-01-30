@@ -1,37 +1,37 @@
 package com.swp.online_quizz.Service;
 
+import com.swp.online_quizz.Dto.UserRegisterDtoRequest;
+import com.swp.online_quizz.Entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-
+import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
-    private String username;
-    private String password;
-    private Collection<? extends GrantedAuthority> authorities;
+    private final User user;
 
-    public CustomUserDetails(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        this.username = username;
-        this.password = password;
-        this.authorities = authorities;
+    public CustomUserDetails(User user) {
+        this.user = user;
     }
-
+    public String getFirstName(){
+        return user.getFirstName();
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return List.of(user::getRole);
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return user.getPasswordHash();
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return user.getUsername();
     }
 
     @Override

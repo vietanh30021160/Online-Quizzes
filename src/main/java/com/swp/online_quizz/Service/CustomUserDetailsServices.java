@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,14 +22,14 @@ public class CustomUserDetailsServices implements UserDetailsService {
     private final UsersRepository usersRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = usersRepository.findByUsername(username).orElseThrow(
-                ()-> new UsernameNotFoundException("Username or password incorrect")
-        );
-
-        return new CustomUserDetails(user.getUsername(),user.getPasswordHash(),authorities(user.getRole()));
+        Optional<User> user = usersRepository.findByUsername(username);
+        if(user.isEmpty()){
+            throw new UsernameNotFoundException("User not found");
+        }
+        return new CustomUserDetails(user.get());
     }
 
     public Collection<? extends GrantedAuthority> authorities(String role){
-        return Arrays.asList(new SimpleGrantedAuthority(role));
+        return List.of(new SimpleGrantedAuthority(role));
     }
 }

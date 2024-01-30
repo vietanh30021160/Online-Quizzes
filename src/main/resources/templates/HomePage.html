@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{HomeHead :: head}"></head>
 <link th:href="@{Css/Home.css}" rel="stylesheet">
 <body id="top">
@@ -80,7 +80,8 @@
                             <div class="row">
                                 <div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0" th:each="quizzes : ${listQuiz}">
                                     <div class="custom-block bg-white shadow-lg">
-                                        <a th:href="@{/quizzes/{quizID}(quizID = ${quizzes.quizId})}">
+                                        <a sec:authorize=”hasRole('ROLE_STUDENT')” th:href="@{/quizzes/{quizID}(quizID = ${quizzes.quizId})}">
+                                            <a sec:authorize=”hasRole('ROLE_TEACHER')” th:href="@{/quizzes/{quizID}(quizID = ${quizzes.quizId})}">
                                             <div class="d-flex">
                                                 <div>
                                                     <h5 class="mb-2" th:text="${quizzes.quizName}"></h5>
