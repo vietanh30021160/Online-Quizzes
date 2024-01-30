@@ -3,19 +3,8 @@ package com.swp.online_quizz.Entity;
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,12 +24,10 @@ public class QuizAttempt {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "UserID")
-    @JsonBackReference
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "QuizID")
-    @JsonBackReference
     private Quiz quiz;
 
     @Column(name = "StartTime")
@@ -49,17 +36,30 @@ public class QuizAttempt {
     @Column(name = "EndTime")
     private Timestamp endTime;
 
+
     @Column(name = "Marks")
     private Integer marks;
 
     @Column(name = "IsCompleted")
     private Boolean isCompleted;
 
-    @Column(name = "CurrentQuestionID")
-    private Integer currentQuestionId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CurrentQuestionID")
+    private Question currentQuestion;
+
+
+    public String getMinutesDifference(){
+        long millisecondsDifference = endTime.getTime() - startTime.getTime();
+        long secondsDifference = millisecondsDifference / 1000;
+        long minutesDifference = secondsDifference / 60;
+        long remainingSeconds = secondsDifference % 60;
+
+        return minutesDifference + " Ms " + remainingSeconds + " s";
+    }
+
 
     public QuizAttempt(User user, Quiz quiz, Timestamp startTime, Timestamp endTime, Integer marks,
-                       Boolean isCompleted, Integer currentQuestionId, List<Feedback> listFeedbacks,
+                       Boolean isCompleted, Question currentQuestionId, List<Feedback> listFeedbacks,
                        List<QuestionAttempt> listQuestionAttempts, List<QuizProgress> listQuizzProgress) {
         this.user = user;
         this.quiz = quiz;
@@ -67,7 +67,7 @@ public class QuizAttempt {
         this.endTime = endTime;
         this.marks = marks;
         this.isCompleted = isCompleted;
-        this.currentQuestionId = currentQuestionId;
+        this.currentQuestion = currentQuestion;
         this.listFeedbacks = listFeedbacks;
         this.listQuestionAttempts = listQuestionAttempts;
         this.listQuizzProgress = listQuizzProgress;

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head th:replace="~{HomeHead :: head}"></head>
-
+<link th:href="@{Css/Home.css}" rel="stylesheet">
 <body id="top">
 
 <main>
@@ -50,17 +50,14 @@
         <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
             <div class="container-fluid">
                 <div class="row">
-                    <ul class="nav nav-tabs " id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation" th:each="subject : ${listSubject}">
-                            <button class="nav-link active"
-                                    name="keyword"
-                                    type="submit"
-                            ><a th:href="@{'?keyword='+ ${subject.subjectName} + '#section_2'}"
-                                th:text="${subject.subjectName}" style="color: #000000"></a></button>
+                    <ul class="nav nav-tabs"  >
+                        <li class="nav-item"  th:each="subject : ${listSubject}">
+                            <a class="nav-link active"
+                               th:href="@{'?keyword='+ ${subject.subjectName} + '#section_2'}"
+                               th:text="${subject.subjectName}"
+                               style="color: #000000"></a>
                         </li>
-
                     </ul>
-
                 </div>
             </div>
         </form>

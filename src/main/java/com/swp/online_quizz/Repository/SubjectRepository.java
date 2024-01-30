@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SubjectRepository extends JpaRepository<Subject, Integer> {
-
+    @Query(value = "SELECT *FROM Subjects where id = ?1", nativeQuery = true)
+    Subject findById(int id);
 }
