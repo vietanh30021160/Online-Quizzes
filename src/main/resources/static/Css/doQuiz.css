@@ -1,32 +1,34 @@
-.container {
-    display: grid;
-    grid-template-columns: 0.7fr 3.3fr 0.9fr;
-    grid-template-rows: 1fr;
-    gap: 0px 0px;
-    grid-template-areas:
-        ". center .";
-}
-
-.center {
-    grid-area: center;
+.Header {
+    background-color: #80d0c7;
 }
 #timeRemaining {
     text-align: end;
 }
+.Container{
+    margin: 0 auto;
+    max-width: 90%;
+}
+.Container h2{
+    font-size: 20px;
+}
 .card-contenain {
-    max-width: 800px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 .card-contenain .card{
     display: flex;
+    flex-direction: row !important;
     justify-content: space-between;
     align-items: flex-start;
+    border: none;
 }
 .card .info {
     margin-right: 50px;
+}
+.card .content{
+    margin-left: 30px;
 }
 .info h3,
 .qno {
@@ -35,20 +37,23 @@
     text-align: center;
         margin: 20px 0px;
         background: -webkit-linear-gradient(90deg,
-                rgba(221, 51, 51, 1) 0%,
-                rgba(130, 36, 227, 1) 100%);
+                rgba(138, 100, 235, 1) 0%,
+                rgba(99, 229, 223, 1) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
 }
-
 
 .qn_buttons {
     max-width: 800px;
     margin: 0 auto;
 }
-.multipages {
+.card-text {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
+    align-items: center;
+}
+.multipages{
+    margin: 5px;
 }
 .mod_quiz-prev-nav,
 .mod_quiz-next-nav {
@@ -64,10 +69,17 @@
     text-align: center;
     margin: 20px 0px;
         background: -webkit-linear-gradient(90deg,
-                rgba(221, 51, 51, 1) 0%,
-                rgba(130, 36, 227, 1) 100%);
+                rgba(138, 100, 235, 1) 0%,
+                rgba(99, 229, 223, 1) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+}
+.multipages{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap  ;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .button-load {
@@ -111,10 +123,8 @@
     left: 0;
     top: 0;
     transition: all 0.5s ease-in-out;
-    background-color: rgb(195, 34, 181);
-    background: linear-gradient(90deg,
-            rgba(221, 51, 51, 1) 0%,
-            rgba(130, 36, 227, 1) 100%);
+    background: rgb(138, 100, 235);
+        background: radial-gradient(circle, rgba(138, 100, 235, 1) 0%, rgba(99, 229, 223, 1) 100%);
     border-radius: 30px;
     visibility: hidden;
     height: 10px;

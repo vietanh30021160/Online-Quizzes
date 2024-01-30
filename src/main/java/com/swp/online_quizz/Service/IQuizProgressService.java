@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import com.swp.online_quizz.Entity.QuizProgress;
 
-@Service
 public interface IQuizProgressService {
 
     public Boolean createQuizProgress(QuizProgress quizProgress);

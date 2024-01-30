@@ -35,5 +35,4 @@ public class Message {
     @Column(name = "IsRead")
     private Boolean isRead;
 
-
 }

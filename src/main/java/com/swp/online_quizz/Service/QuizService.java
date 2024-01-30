@@ -19,6 +19,32 @@ import java.util.List;
 public class QuizService implements IQuizzesService {
     @Autowired
     private final QuizRepository quizRepository;
+    @Override
+    public List<Quiz> getAll() {
+        return quizRepository.findAll();
+    }
+
+
+    @Override
+    public Subject find(Integer quizId) {
+        return null;
+    }
+
+    @Override
+    public Quiz findByID(Integer quizID) {
+        return quizRepository.findById(quizID).orElse(null);
+    }
+
+    @Override
+    public Boolean update(Quiz quizzes) {
+        return null;
+    }
+
+    @Override
+    public Boolean delete(Integer quizId) {
+        return null;
+    }
+
 
     @Override
     public List<Quiz> searchQuizzes(String keyword) {
@@ -86,4 +112,6 @@ public class QuizService implements IQuizzesService {
 
         return quizRepository.findAll(spec, pageable);
     }
+
+
 }

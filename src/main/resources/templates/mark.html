@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <div th:replace="HomeHead :: head"></div>
+    <link th:href="@{../../Css/mark.css}" rel="stylesheet">
+    <title>Mark Class</title>
+
+</head>
+<body id="top">
+<div class="headerMark">
+    <div th:replace="HomeHeader :: header"></div>
+</div>
+<h1 class="d-flex justify-content-center p-3 title-Page">Mark Class</h1>
+<div class="container">
+    <div class="row status_left">
+        <div th:object="${QuizzAndSubjectById}" class="col-sm-8">
+            <div class="row ">
+                <h5>
+                    <div>Subject</div>
+                    :
+                    <small th:text="*{subject.subjectName}"></small></h5>
+            </div>
+            <div class="row ">
+                <h5>
+                    <div>Quizz Name</div>
+                    :
+                    <small th:text="*{quizName}"></small></h5>
+            </div>
+            <div class="row ">
+                <h5>
+                    <div>Teacher</div>
+                    :
+                    <small th:text="*{teacher.username}"></small></h5>
+            </div>
+            <div class="row ">
+                <h5>
+                    <div>TimeLimit</div>
+                    :
+                    <small th:text="*{timeLimit}"></small><small> Min</small></h5>
+            </div>
+
+
+        </div>
+        <div class="price-range col-sm-4 d-flex align-items-end">
+            <form method="get" class="mx-sm-3">
+                <div class="input-group">
+                    <input style="border-radius: 10px " name="username" th:value="${username}"
+                           class="form-control form-control-lg" type="text" placeholder="Search Name ..."
+                           aria-describedby="button-addon2" autofocus>
+                    <button style="border-radius: 10px" class="btn btn-secondary" id="button-addon2" type="submit">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <div class="btnSortMark">
+        <a class="btn btn-outline-secondary btnSortLeft"
+           th:href="@{'/class/mark/' + ${QuizzAndSubjectById.quizId}(sort='marks', dir='asc')}">Ascending Mark</a>
+        <a class="btn btn-outline-secondary btnSortRight"
+           th:href="@{'/class/mark/' + ${QuizzAndSubjectById.quizId}(sort='marks', dir='desc')}">Decrease Mark</a>
+    </div>
+</div>
+<div class="container">
+    <div class="row dashboard_Static ">
+
+        <div class="col-xl-3 col-md-6 mb-4 sub_card">
+            <div class="card border-left-danger shadow h-100 py-2 body_Static_Low">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class=" font-weight-bold text-danger  mb-1">
+                                Scores range from (0-4)
+                            </div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
+                                         th:text="${mark_low} + '%'"></div>
+                                    <small class=" mb-0 " th:text="${stt_low}+ ' Student'"></small>
+                                </div>
+                                <div class="col">
+                                    <div class="progress progress-sm mr-2">
+                                        <div class="progress-bar bg-danger" role="progressbar"
+                                             th:style="'width:'+${mark_low}+'%'" aria-valuenow="50" aria-valuemin="0"
+                                             aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2 body_Static_Medium">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
+                                Scores range from (4-8)
+                            </div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
+                                         th:text="${mark_medium} + '%'"></div>
+                                    <small class="mb-0 " th:text="${stt_medium}+ ' Student '"></small>
+                                </div>
+                                <div class="col">
+                                    <div class="progress progress-sm mr-2">
+                                        <div class="progress-bar bg-warning" role="progressbar"
+                                             th:style="'width:'+${mark_medium}+'%' " aria-valuenow="50"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2 body_Static_High">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Scores range from
+                                (8-10)
+                            </div>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
+                                         th:text="${mark_high} + '%'"></div>
+                                    <small class=" mb-0 " th:text="${stt_high}+ ' Student '"></small>
+                                </div>
+                                <div class="col">
+                                    <div class="progress progress-sm mr-2">
+                                        <div class="progress-bar bg-success" role="progressbar"
+                                             th:style="'width:'+${mark_high}+'%' " aria-valuenow="50" aria-valuemin="0"
+                                             aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="content p-1">
+        <div class="container">
+            <h2 class="mb-5"></h2>
+
+
+            <div class="table-responsive">
+
+                <table class="table table-striped custom-table">
+                    <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Student</th>
+                        <th scope="col">Email Address</th>
+                        <th scope="col">State</th>
+                        <th scope="col">Started On</th>
+                        <th scope="col">Completed</th>
+                        <th scope="col">Time Taken</th>
+                        <th scope="col">Grade</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr scope="row" th:each="markClass,iterStat  : ${QuizAttempts}" class="tableInfo">
+                        <td th:text="${iterStat.count}"></td>
+                        <td th:text="${markClass.attemptId}"></td>
+                        <td>
+                            <p th:text="${markClass.user.username}" class="use_Student"></p>
+                            <small class="reviewLink"><a
+                                    th:href="@{${markClass.quiz.quizId}+'/attempt/'+${markClass.attemptId}}">(Review)</a></small>
+                        </td>
+
+                        <td th:text="${markClass.user.email}">
+                        </td>
+                        <td th:text="${markClass.isCompleted ? 'Complete' : 'Incomplete'}"></td>
+
+                        <td th:text="${markClass.startTime}"></td>
+                        <td th:text="${markClass.endTime}"><a href="#" class="more"></a></td>
+                        <td th:text="${markClass.getMinutesDifference()}"></td>
+                        <td th:text="${markClass.marks}"><a href="#" class="more"></a></td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+        <div class="demo">
+            <nav class="pagination-outer" aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item" th:if="${currentPage > 1}" id="movePaging">
+                        <a th:href="@{'?pageNo='+${currentPage - 1}}" class="page-link" aria-label="Previous">
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+                    <li class="page-item " th:each="i:${#numbers.sequence(1,totalPage)}"
+                        th:classappend="${i == currentPage ? 'active' : ''}"><a class="page-link"
+                                                                                th:href="@{${username != null && username != '' ? '?username=' + username + '&' : '?'} + 'pageNo='+${i}}"
+                                                                                th:text="${i}"></a></li>
+                    <li class="page-item" th:if="${currentPage < totalPage}">
+                        <a th:href="@{'?pageNo='+${currentPage + 1}}" class="page-link" aria-label="Next"
+                           id="nextPaging">
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+        <div th:replace="HomeFooter :: footer"></div>
+    </div>
+    <div th:replace="HomeScript :: script"></div>
+</body>
+</html>
