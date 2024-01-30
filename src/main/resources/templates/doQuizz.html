@@ -19,7 +19,34 @@
             <div class="qtext">
                 <h1 th:text="${quiz.getQuizName()} + ' - ' + ${quiz.getSubject().getSubjectName()}"></h1>
             </div>
-            <div id="timeRemaining"></div>
+            <div id="time">
+                <div class="circle" style="--clr: #ece148;">
+                    <div class="dots hr_dot"></div>
+                    <svg>
+                        <circle cx="70" cy="70" r="70"></circle>
+                        <circle cx="70" cy="70" r="70" id="hh"></circle>
+                    </svg>
+                    <div id="hour">00<br><span>hours</span></div>
+                </div>
+                <div class="circle" style="--clr: #df5353;">
+                    <div class="dots min_dot"></div>
+                    <svg>
+                        <circle cx="70" cy="70" r="70"></circle>
+                        <circle cx="70" cy="70" r="70"  id="mm"></circle>
+                    </svg>
+                    <div id="min">00<br><span>min</span></div>
+                </div>
+                <div class="circle" style="--clr: #25e62f;">
+                    <div class="dots sec_dot"></div>
+                    <svg>
+                        <circle cx="70" cy="70" r="70"></circle>
+                        <circle cx="70" cy="70" r="70"  id="ss"></circle>
+                    </svg>
+                    <div id="sec">00<br><span>hour</span></div>
+                </div>
+            </div>
+            <div id="timeRemaining">
+            </div>
             <!-----Nội dung câu hỏi------>
             <div class="card-contenain">
                 <div class="card">
