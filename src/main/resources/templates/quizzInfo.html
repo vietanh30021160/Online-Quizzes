@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head >
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <div th:replace="HomeHead :: head"></div>
     <link rel="stylesheet" type="text/css" media="all" 
         href="/css/quizzInfo.css" th:href="@{/css/quizzInfo.css}">
 
 </head>
 <body>
+<div th:replace="HomeHeader :: header"></div>
 <div class="container">
     <div class="Header"></div>
     <div class="Container">
@@ -60,7 +59,7 @@
                                             th:text="${attempt.getMarks()}"></td>
                                         <td class="cell c4 cell100 column5 lastcol" style="text-align:center;">
                                             <a th:if="${attempt.getIsCompleted()}" title="Review your responses to this attempt"
-                                                href="#">Review</a>
+                                                th:href="@{../class/mark/{quizID}/attempt/{attemptID}(quizID = ${quiz.getQuizId()}, attemptID = ${attempt.getAttemptId()})  }">Review</a>
                                             <a th:unless="${attempt.getIsCompleted()}" title="Review your responses to this attempt"
                                                 href="/attempt/test"
                                                 th:href="@{/attempt/attemptQuiz/{quizID}/{attemptID}/1(quizID = ${quiz.getQuizId()}, attemptID = ${attempt.getAttemptId()})}">Continue</a>
@@ -86,7 +85,6 @@
                 </div>
             </div>
     </div>
-    <div class="Footer"></div>
 </div>
 
 </body>

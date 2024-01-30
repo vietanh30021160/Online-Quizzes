@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <div th:replace="HomeHead :: head"></div>
+    <link rel="stylesheet" th:href="@{/Css/reviewMark.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Mark Class</title>
+
+</head>
+<body id="top">
+<div  class="headerMark">
+    <div th:replace="HomeHeader :: header"></div>
+</div>
+
+
+<h1 class="d-flex justify-content-center p-3 title-Page">Review mark</h1>
+
+<div class="container">
+    <div class="row status_left">
+        <div th:object="${QuizAttempts}"  class="col-md-8">
+            <div class="row ">
+                <h5><div>Started on    </div>: <small th:text="*{startTime}" ></small></h5>
+            </div>
+            <div class="row ">
+                <h5><div>Status   </div>: <small th:text="${QuizAttempts.isCompleted  == true ? 'Finished' : 'Unfinished'}"
+                                    ></small></h5>
+            </div>
+            <div class="row ">
+                <h5><div>Completed on   </div>: <small th:text="*{endTime}" ></small></h5>
+            </div>
+            <div class="row ">
+                <h5><div>Time Taken   </div>: <small th:text="*{getMinutesDifference()}" ></small><small
+                        ></small></h5>
+            </div>
+            <div class="row ">
+                <h5><div>Grade   </div>: <small th:text="*{marks}" ></small><small >
+                    </small></h5>
+            </div>
+
+
+        </div>
+        <div class="demo col-md-4">
+            <nav class="pagination-outer" aria-label="Page navigation ">
+                <p class="title_NavQuizQuestions">Quiz navigation</p>
+                <ul class="pagination " th:each="NoQuestion,indexNoQuestion : ${QuestionAttemptsList}">
+                    <li class="page-item  "><a class="page-link p-0 m-0" th:href="'#'+${indexNoQuestion.index+1}" th:text="${indexNoQuestion.index+1}"></a></li>
+                </ul>
+
+                <a class="finishReview" th:object="${QuizAttempts}" th:href="'../../'+*{quiz.quizId}">Finish review</a>
+            </nav>
+        </div>
+
+    </div>
+</div>
+<div class="container">
+    <div class= "row">
+
+        <div class="container col-md-8">
+            <div class="question ml-sm-5 pl-sm-5 pt-2 no-pointer-events"
+                 th:each="questionAttempt,index  : ${QuestionAttemptsList}">
+                <div class="py-2 h5 title-question" th:id="${index.index+1}"><b
+                        th:text="${index.index + 1}+') '+${questionAttempt.question.questionContent}"></b></div>
+                <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3"
+                     th:each="answer,answerIndex  : ${questionAttempt.question.listAnswer}">
+
+                    <label class="options answer">
+                        <input type="radio" th:checked="${answer.answerId+'' == questionAttempt.answer}" disabled>
+                        <span th:text="${answerIndex.index + 1} + '.'"></span>
+                        <span th:text="${answer.answerContent}" th:classappend="${answer.isCorrect?'text-primary':'text-danger'}"></span>
+                        <span th:if="${answer.isCorrect}"><i class="fa-solid fa-check"></i></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+<div class="footer"><div th:replace="HomeFooter :: footer"></div></div>
+<div th:replace="HomeScript :: script"></div>
+
+</body>
+</html>

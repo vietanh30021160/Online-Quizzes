@@ -2,8 +2,6 @@ package com.swp.online_quizz.Entity;
 
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,12 +22,10 @@ public class QuestionAttempt implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AttemptID")
-    @JsonBackReference
     private QuizAttempt attempt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "QuestionID")
-    @JsonBackReference
     private Question question;
 
     @Column(name = "Answer")
