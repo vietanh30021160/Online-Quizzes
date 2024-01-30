@@ -66,7 +66,11 @@ public class QuizService implements IQuizzesService {
 
         if (keyword != null && !keyword.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.like(criteriaBuilder.lower(root.get("quizName")), "%" + keyword.toLowerCase() + "%"));
+                    criteriaBuilder.or(
+                            criteriaBuilder.like(criteriaBuilder.lower(root.get("quizName")), "%" + keyword.toLowerCase() + "%"),
+                            criteriaBuilder.like(criteriaBuilder.lower(root.get("subject").get("subjectName")), "%" + keyword.toLowerCase() + "%")
+                    )
+            );
         }
 
         if (min != null) {
