@@ -351,3 +351,6 @@ h2 {
 .reviewLink:hover{
     opacity: 1;
 }
+.nav_iconPerson {
+    padding-left: 20px;
+}

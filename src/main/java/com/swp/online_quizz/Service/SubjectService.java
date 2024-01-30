@@ -2,7 +2,7 @@ package com.swp.online_quizz.Service;
 
 import com.swp.online_quizz.Entity.Subject;
 import com.swp.online_quizz.Repository.QuizRepository;
-import com.swp.online_quizz.Repository.SubjectsRepository;
+import com.swp.online_quizz.Repository.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SubjectService implements ISubjectService {
     @Autowired
-    private final SubjectsRepository subrepository;
+    private final SubjectRepository subrepository;
     @Autowired
     private final QuizRepository quizRepository;
     @Override

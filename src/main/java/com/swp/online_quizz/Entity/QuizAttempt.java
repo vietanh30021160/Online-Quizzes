@@ -48,12 +48,13 @@ public class QuizAttempt {
     private Question currentQuestion;
 
 
-    public long getMinutesDifference(){
+    public String getMinutesDifference(){
         long millisecondsDifference = endTime.getTime() - startTime.getTime();
         long secondsDifference = millisecondsDifference / 1000;
         long minutesDifference = secondsDifference / 60;
+        long remainingSeconds = secondsDifference % 60;
 
-        return minutesDifference;
+        return minutesDifference + " Ms " + remainingSeconds + " s";
     }
 
 
