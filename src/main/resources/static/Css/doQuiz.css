@@ -1,25 +1,23 @@
 .Header {
     background-color: #80d0c7;
 }
-#timeRemaining {
-    text-align: end;
-}
 #time{
     display: flex;
-    gap: 30px;
+    justify-content: flex-end;
+    gap: 5px;
 }
 #time .circle {
     position: relative;
-    width: 150px;
-    height: 150px;
+    width: 80px;
+    height: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 #time .circle svg {
     position: relative;
-    width: 150px;
-    height: 150px;
+    width: 80px;
+    height: 80px;
     transform: rotate(270deg);
 }
 #time .circle svg circle {
@@ -28,24 +26,30 @@
     fill: transparent;
     stroke-width: 8;
     stroke: #282828;
+    stroke-linecap: round;
     transform: translate(5px, 5px);
 }
 #time .circle svg circle:nth-child(2) {
     stroke: var(--clr);
-    stroke-dasharray: 440;
+    stroke-dasharray: 214;
+    stroke-dashoffset: 214;
 }
-#time div {
+#time .circle .timeLimit {
     position: absolute;
     text-align: center;
+    transform: translateY(-10px);
     font-weight: 500;
 }
-#time div span {
+#time .circle div span {
     position: absolute;
-    transform: translateX(-50%) translateY(-10px);
+    transform: translateX(-50%) translateY(-8px);
     font-size: 0.35em;
     font-weight: 300;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+}
+.timeLimit {
+    font-size: 30px;
 }
 #time .dots{
     position: absolute;
@@ -106,7 +110,9 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
 }
-
+.active {
+    background-color: #80d0c7;
+}
 .qn_buttons {
     max-width: 800px;
     margin: 0 auto;
