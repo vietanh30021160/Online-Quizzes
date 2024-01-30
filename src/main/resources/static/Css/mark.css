@@ -1,0 +1,378 @@
+
+body {
+    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    background-color: rgba(192, 216, 250, 0.51);
+
+    font-weight: 300;
+}
+html{
+    scroll-behavior: smooth;
+}
+.navTopPage{
+    /*background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);*/
+    background-color: #0ea3bf;
+    background-image: linear-gradient(160deg, #0ea3bf 0%, #6db6e0 50%, #3bbfc9 100%);
+
+}
+p {
+    color: rgba(182, 179, 179, 0.5);
+    font-weight: 300;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+a {
+    -webkit-transition: .3s all ease;
+    -o-transition: .3s all ease;
+    transition: .3s all ease;
+}
+
+a, a:hover {
+    text-decoration: none !important;
+}
+
+.content {
+    padding: 7rem 0;
+}
+
+h2 {
+    font-size: 20px;
+    color: #fff;
+}
+
+.custom-table {
+    min-width: 900px;
+}
+
+/*.custom-table thead tr, .custom-table thead th {*/
+
+/*    padding-bottom: 30px;*/
+/*    border-top: none;*/
+/*    border-bottom: none !important;*/
+/*    color: #ffffff;*/
+/*    font-size: 12px;*/
+/*    text-transform: uppercase;*/
+/*    letter-spacing: .2rem;*/
+/*}*/
+
+.custom-table tbody th, .custom-table tbody td {
+    box-sizing: border-box;
+    color: #b7b6b6;
+    font-weight: 400;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    font-weight: 300;
+    border: none;
+    -webkit-transition: .3s all ease;
+    -o-transition: .3s all ease;
+    transition: .3s all ease;
+}
+.status_left h5 {
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+}
+
+.custom-table tbody th small, .custom-table tbody td small {
+    color: rgba(2, 12, 12, 0.3);
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman',
+    serif;
+}
+
+.custom-table tbody th a, .custom-table tbody td a {
+    color: rgba(100, 98, 98, 0.93);
+
+}
+
+.custom-table tbody td a:hover {
+    color: rgb(0, 89, 255);
+}
+
+.custom-table tbody th .more, .custom-table tbody td .more {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .2rem;
+}
+
+.custom-table tbody tr {
+    -webkit-transition: .3s all ease;
+    -o-transition: .3s all ease;
+    transition: .3s all ease;
+}
+
+.custom-table tbody tr:hover td, .custom-table tbody tr:focus td {
+    color: #134bfa;
+}
+
+/*.custom-table tbody tr:hover td a, .custom-table tbody tr:focus td a {*/
+/*    color: #fdd114; }*/
+/*.custom-table tbody tr:hover td .more, .custom-table tbody tr:focus td .more {*/
+/*    color: #fdd114; }*/
+.custom-table .td-box-wrap {
+    padding: 0;
+}
+
+.custom-table .box {
+    background: #fff;
+    border-radius: 4px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.custom-table .box td, .custom-table .box th {
+    border: none !important;
+}
+
+/*From search*/
+.pagination-outer {
+    text-align: center;
+}
+
+.pagination {
+    font-family: 'Poppins', sans-serif;
+    display: inline-flex;
+    position: relative;
+}
+
+.pagination li a.page-link {
+    color: #555;
+    background-color: #eee;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 38px;
+    height: 35px;
+    width: 35px;
+    padding: 0;
+    margin: 0 5px;
+    border-radius: 3px;
+    border: 3px solid #555;
+    position: relative;
+    z-index: 1;
+    transition: all 0.4s ease 0s;
+}
+
+.pagination li:first-child a.page-link,
+.pagination li:last-child a.page-link {
+    font-size: 25px;
+    line-height: 35px;
+    font-weight: 500;
+}
+
+.pagination li a.page-link:hover,
+.pagination li a.page-link:focus,
+.pagination li.active a.page-link:hover,
+.pagination li.active a.page-link {
+    color: rgb(6, 98, 134);
+    background-color: #eee;
+    line-height: 30px;
+    border: 3px solid rgb(6, 98, 134);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+@media only screen and (max-width: 480px) {
+    .pagination {
+        font-size: 0;
+        display: inline-block;
+    }
+
+    .pagination li {
+        display: inline-block;
+        vertical-align: top;
+        margin: 10px 0;
+    }
+}
+
+.no-pointer-events {
+    pointer-events: none;
+}
+
+.container .title-question {
+    padding-left: 20px;
+    padding-top: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+}
+
+.container label {
+    padding-left: 80px;
+}
+
+.pagination-outer{ text-align: center; }
+.pagination{
+    font-family: 'Poppins', sans-serif;
+    display: inline-flex;
+    position: relative;
+}
+.pagination li a.page-link{
+    color: #444;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 53px;
+    height: 45px;
+    width: 35px;
+    padding: 0;
+    margin: 0 5px;
+    border: 2px solid #444;
+    border-radius: 0;
+    position: relative;
+    z-index: 1;
+    transition: all 0.4s ease 0s;
+}
+.pagination li:first-child a.page-link,
+.pagination li:last-child a.page-link{
+    font-size: 30px;
+    line-height: 50px;
+    font-weight: 400;
+}
+.pagination li a.page-link:hover,
+.pagination li a.page-link:focus,
+.pagination li.active a.page-link:hover,
+.pagination li.active a.page-link{
+    color: rgb(0, 119, 255);
+    background-color: transparent;
+    border-color: rgb(0, 119, 255);
+    box-shadow: 4px 4px rgba(0,0,0,0.2);
+}
+.pagination li a.page-link:before{
+    content: '';
+    background-color: #444;
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    left: 0;
+    top: 10px;
+    z-index: -1;
+    transition: all 0.4s ease 0s;
+}
+.pagination li a.page-link:hover:before,
+.pagination li a.page-link:focus:before,
+.pagination li.active a.page-link:hover:before,
+.pagination li.active a.page-link:before{
+    background-color: rgb(82, 161, 252);
+    height: 11px;
+    top: 0;
+}
+@media only screen and (max-width: 480px){
+    .pagination{
+        font-size: 0;
+        display: inline-block;
+    }
+    .pagination li{
+        display: inline-block;
+        vertical-align: top;
+        margin: 10px 0;
+    }
+}
+.demo{
+    margin-top: 50px;
+}
+.demo .pagination-outer{
+    position: relative;
+}
+.demo .title_NavQuizQuestions{
+    color: black;
+    margin: 0;
+    position: absolute;
+    left: 35px;
+    top: -10px;
+}
+.demo .page-link{
+    margin: 0;
+    padding: 0;
+}
+.demo .finishReview{
+    color: black;
+    margin: 0;
+    position: absolute;
+    left: 35px;
+    top: 100px;
+}
+.demo .finishReview:hover{
+    color: #4fecb4;
+}
+.status_left{
+    margin-left: 15px;
+}
+
+.title-Page{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman',
+    serif;;
+}
+.status_left h5 small {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman',
+    serif;
+    color: #938d8d;
+}
+.status_left h5 small:hover{
+    color: #09cbee;
+}
+.status_left h5 div {
+    display: inline-block;
+    min-width: 180px;
+}
+.title-Page:hover{
+    color: #4fecb4;
+}
+.btnSortMark{
+    display: flex;
+    justify-content: right;
+    padding: 20px 50px 0 0 ;
+}
+.headerMark{
+    background-color: #3d899b;
+    background-image: linear-gradient(90deg, #3d899b 0%, #7ecec5 50%);
+
+}
+.use_Student{
+    color: #0e0e0e;
+    margin: 0;
+}
+.custom-table tbody td small{
+    font-size: 16px;
+}
+.tableInfo{
+    font-size: 18.5px;
+    font-family: 'Times New Roman', Times, serif;
+}
+.footer{
+    margin-top: 30px;
+    background-color: #f8f8f8;
+}
+.btnSortLeft{
+    margin-right: 10px;
+}
+.reviewLink{
+    color: black;
+    opacity: 0.5;
+}
+.reviewLink:hover{
+    opacity: 1;
+}
+.nav_iconPerson {
+    padding-left: 20px;
+}
+.dashboard_Static{
+    padding: 25px 0 5px;
+    height: 100px;
+    padding-left: 80px;
+}
+.card-body{
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.body_Static_Low:hover{
+    background-color: #ee8c8c;
+}
+.body_Static_Medium:hover{
+    background-color: #fdfda6;
+}
+.body_Static_High:hover{
+    background-color: #49cb4b;
+}
+.copyright-text{
+    color: black;
+}

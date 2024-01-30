@@ -1,13 +1,17 @@
 package com.swp.online_quizz.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "Answers")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,13 +22,10 @@ public class Answer {
     @JoinColumn(name = "QuestionID")
     private Question question;
 
-    @Lob
     @Column(name = "AnswerContent")
     private String answerContent;
 
     @Column(name = "IsCorrect")
     private Boolean isCorrect;
 
-
 }
-
