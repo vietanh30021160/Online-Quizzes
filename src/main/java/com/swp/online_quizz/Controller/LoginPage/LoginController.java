@@ -72,7 +72,7 @@ public class LoginController {
 
         boolean isValid = iUserService.register(userRegisterDtoRequest);
         if(isValid){
-            return "Register";
+            return "redirect:/login";
         }
         model.addAttribute("ms", "Register unsuccessfully!");
         model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());

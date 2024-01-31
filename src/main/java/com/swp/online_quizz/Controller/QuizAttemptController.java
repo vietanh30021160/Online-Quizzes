@@ -63,7 +63,7 @@ public class QuizAttemptController {
 
     @GetMapping("/attemptQuiz/{quizId}")
     public RedirectView attemptQuizz(@PathVariable Integer quizId) {
-        User user = iUsersService.getUsersByID(2);
+        User user = iUsersService.getUsersByID(3);
             Quiz quizz = iQuizzesService.getOneQuizz(quizId);
             Timestamp startTime = new Timestamp(System.currentTimeMillis());
             long endTimeMillis = startTime.getTime() + (quizz.getTimeLimit() * 60 * 1000);
@@ -94,7 +94,7 @@ public class QuizAttemptController {
     public String attemptQuizzQuestionNumber(@PathVariable Integer quizId, @PathVariable Integer attemptID,
             @PathVariable Integer page, HttpSession session, Model model, Authentication auth) {
 
-        User user = iUsersService.getUsersByID(2);
+        User user = iUsersService.getUsersByID(3);
 
         if (user != null) {
             QuizAttempt attemp = iQuizAttemptsService.getQuizAttempts(attemptID);
@@ -210,7 +210,7 @@ public class QuizAttemptController {
                 count++;
             }
         }
-        double mark = ((double) count / attempt.getListQuestionAttempts().size()) * 10;
+        double mark = ((double) count / attempt.getListQuestionAttempts().size()) * 100;
         attempt.setMarks((int) mark);
         iQuizAttemptsService.updateAttempts(attemptID, attempt);
         return new RedirectView("/quizzes/{quizId}");

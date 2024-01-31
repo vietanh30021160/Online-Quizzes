@@ -42,7 +42,6 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests((auth) ->
                         auth.requestMatchers("/admin/**").hasRole("ADMIN")
-//                                .requestMatchers("/class/mark/**").hasRole("TEACHER")
                                 .requestMatchers( "/","/register","/forgotpassword","/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(login -> login
