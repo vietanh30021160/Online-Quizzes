@@ -17,16 +17,11 @@
             <div class="form-item">
                 <input type="password" class="form-element" name="password" th:field="*{password}" placeholder="Password">
             </div>
-            <div class="form-checkbox-item">
-                <input type="checkbox" value="ON" class="rememberMe" id="rememberMe">
-                <label for="rememberMe">Remember me</label>
-            </div>
             <div class="message" th:if="${param.unsuccessful}">
                 <h3>Username or password incorrect!</h3>
             </div>
             <div class="flex">
                 <input type="submit" class="button" value="Log in">
-                <a href="/forgotpassword">Forgot password?</a>
             </div>
             <div class="footer">
                 <p style="margin-top: 3rem;margin-bottom: 1.5rem;">Other sign-in method</p>

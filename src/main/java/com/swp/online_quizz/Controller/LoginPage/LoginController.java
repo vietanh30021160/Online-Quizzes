@@ -32,7 +32,7 @@ import java.security.Principal;
 public class LoginController {
 
     private final IUserService iUserService;
-    private final UserDetailsService UserDetailsServices;
+    private final UserDetailsService userDetailsService;
 
     @GetMapping("/login")
     public String loginPage(Model model) {
@@ -47,9 +47,32 @@ public class LoginController {
     }
     @PostMapping("/register")
     public String register(Model model, @ModelAttribute UserRegisterDtoRequest userRegisterDtoRequest){
+        String ms = "";
+
+        if(userRegisterDtoRequest.getUsername()==null){
+            model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
+            model.addAttribute("ms", "Username can not be null!");
+            return "Register";
+        }
+        if(userRegisterDtoRequest.getEmail()==null){
+            model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
+            model.addAttribute("ms", "Username can not be null!");
+            return "Register";
+        }
+        if(userRegisterDtoRequest.getPassword()==null){
+            model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
+            model.addAttribute("ms", "Password can not be null!");
+            return "Register";
+        }
+        if(userRegisterDtoRequest.getRole()==null){
+            model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
+            model.addAttribute("ms", "Role can not be null!");
+            return "Register";
+        }
+
         boolean isValid = iUserService.register(userRegisterDtoRequest);
         if(isValid){
-            return "redirect:/login";
+            return "Register";
         }
         model.addAttribute("ms", "Register unsuccessfully!");
         model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
@@ -72,12 +95,9 @@ public class LoginController {
         return "Admin";
     }
     @GetMapping("/check")
-    public String home(Model model, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        if (customUserDetails != null) {
-            System.out.println(customUserDetails.getUsername() + "CCCC" + customUserDetails.getAuthorities());
-            return "redirect:/";
-        }
-        System.out.println("NULL");
+    public String home(Model model, Principal principal) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+        System.out.println("NULL " + userDetails.getUsername());
         return "redirect:/login";
     }
 }
