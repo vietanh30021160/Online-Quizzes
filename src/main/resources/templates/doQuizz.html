@@ -19,7 +19,33 @@
             <div class="qtext">
                 <h1 th:text="${quiz.getQuizName()} + ' - ' + ${quiz.getSubject().getSubjectName()}"></h1>
             </div>
-            <div id="timeRemaining"></div>
+
+            <div id="time">
+                <div class="circle" style="--clr: #ece148;">
+                    <div class="dots hr_dot"></div>
+                    <svg>
+                        <circle cx="35" cy="35" r="35"></circle>
+                        <circle cx="35" cy="35" r="35" id="hh"></circle>
+                    </svg>
+                    <div class="timeLimit" id="hour">00<br><span>hours</span></div>
+                </div>
+                <div class="circle" style="--clr: #df5353;">
+                    <div class="dots min_dot"></div>
+                    <svg>
+                        <circle cx="35" cy="35" r="35"></circle>
+                        <circle cx="35" cy="35" r="35"  id="mm"></circle>
+                    </svg>
+                    <div class="timeLimit" id="min">00<br><span>min</span></div>
+                </div>
+                <div class="circle" style="--clr: #25e62f;">
+                    <div class="dots sec_dot"></div>
+                    <svg>
+                        <circle cx="35" cy="35" r="35"></circle>
+                        <circle cx="35" cy="35" r="35"  id="ss"></circle>
+                    </svg>
+                    <div class="timeLimit" id="sec">00<br><span>hour</span></div>
+                </div>
+            </div>
             <!-----Nội dung câu hỏi------>
             <div class="card-contenain">
                 <div class="card">
@@ -29,22 +55,24 @@
                     <div class="content">
                         <h2 class="question" th:text="${question.getQuestionContent()}"></h2>
                         <div class="answer" th:each="answer, answerIndex : ${question.getListAnswer()}">
-                            <div class="r0">
-                                <input type="radio" name="answer" th:field="*{answer}" th:value="${answer.getAnswerId()}"
+
+                            <div class="r0 radio-button">
+                                <input class="radio-button__input" type="radio" name="answer" th:field="*{answer}" th:value="${answer.getAnswerId()}"
+
                                     th:id="'answer_' + ${answerIndex.index}">
                                 <script th:inline="javascript">
                                     /*<![CDATA[*/
                                     var answerProg = /*[[${answerProg}]]*/ null; // Assuming answerProg is a variable from the server-side
-                                    var answerId = /*[[${answer.getAnswerId()}]]*/ null; // Get the answer ID from Thymeleaf
-                                    // Check the radio button if answerProg is equal to the answer ID
-                                    if (answerProg !== null && answerId !== null && answerProg === answerId) {
-                                        // Use the dynamically generated ID based on the answer index
-                                        document.getElementById('answer_' + /*[[${answerIndex.index}]]*/ '').checked = true;
-                                    }
+                                        var answerId = /*[[${answer.getAnswerId()}]]*/ null; // Get the answer ID from Thymeleaf
+
+                                        if (answerProg !== null && answerId !== null && answerProg === answerId) {
+                                            // Use the dynamically generated ID based on the answer index
+                                            document.getElementById('answer_' + /*[[${answerIndex.index}]]*/ '').checked = true;
+                                        }
                                     /*]]>*/
                                 </script>
-                                <label for="q1034657:1_answer0" class="m-l-1">
-                                    <span class="answernumber"
+                                <label for="q1034657:1_answer0" class="radio-button__label">
+                                    <span class="answernumber radio-button__custom"
                                         th:text="${answerIndex.index + 1} + '. ' + ${answer.getAnswerContent()}"></span>
                                 </label>
                             </div>
@@ -56,16 +84,15 @@
                     aria-labelledby="instance-0-header">
                     <div class="card-body p-3">
                         <div class="card-text content mt-3">
-                            <div class="qn_buttons clearfix multipages"
-                                th:each="quizProgress2, quizProgress2Index : ${listQProg}">
-                                <a class="qnbutton complete free btn btn-secondary thispage" id="quiznavbutton1"
-                                    title="Not answered" data-quiz-page="0" href="/attempt/test"
+                            <div class="qn_buttons clearfix multipages" th:each="quizProgress2, quizProgress2Index : ${listQProg}">
+                                <a th:class="${quizProgress2.getIsAnswered() ? 'qnbutton complete free btn btn-secondary thispage active' : 'qnbutton complete free btn btn-secondary thispage'}"
+                                    id="quiznavbutton1" th:title="${quizProgress2.getIsAnswered() ? 'Answered' : 'Not answered'}" data-quiz-page="0"
+                                    href="/attempt/test"
                                     th:href="@{/attempt/attemptQuiz/{quizID}/{attemptID}/{page}(quizID = ${quiz.getQuizId()}, attemptID = ${attemp.getAttemptId()}, page = ${quizProgress2.getQuestionOrder()})}">
                                     <span class="thispageholder"></span>
                                     <span class="trafficlight"></span>
-                                    <span class="accesshide"
-                                        th:text="'Question' + ${quizProgress2.getQuestionOrder()}"></span><span
-                                        class="accesshide"><span class="flagstate"></span></span>
+                                    <span class="accesshide" th:text="'Question' + ${quizProgress2.getQuestionOrder()}"></span>
+                                    <span class="accesshide"><span class="flagstate"></span></span>
                                 </a>
                             </div>
                         </div>
@@ -75,27 +102,54 @@
                                 quiz</a>
                             <script th:inline="javascript">
                                 /*<![CDATA[*/
-                                // Đặt thời gian kết thúc (đọc từ model hoặc server)
-                                var endTime = /*[[${endTime}]]*/ 0;
-                                // Cập nhật thời gian còn lại mỗi giây
-                                var countdownInterval = setInterval(function () {
-                                    var now = new Date().getTime();
-                                    var timeRemaining = endTime - now;
-                                    // Tính toán phút và giây còn lại
-                                    var hour = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                                    var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-                                    var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-                                    // Hiển thị thời gian còn lại
-                                    document.getElementById("timeRemaining").innerHTML = "Time Remaining: " + hour + "h " + minutes + "m " + seconds + "s ";
-                                    if (timeRemaining <= 0) {
-                                        clearInterval(countdownInterval);
-                                        submitQuiz();
-                                        document.getElementById("submitQuizLink").style.pointerEvents = "none";
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    let hour = document.getElementById('hour');
+                                    let min = document.getElementById('min');
+                                    let sec = document.getElementById('sec');
+
+                                    let hh = document.getElementById('hh');
+                                    let mm = document.getElementById('mm');
+                                    let ss = document.getElementById('ss');
+
+                                    let hr_dot = document.querySelector('.hr_dot');
+                                    let min_dot = document.querySelector('.min_dot');
+                                    let sec_dot = document.querySelector('.sec_dot');
+
+                                    // Đặt thời gian kết thúc (đọc từ model hoặc server)
+                                    var endTime = /*[[${endTime}]]*/ 0;
+                                    // Cập nhật thời gian còn lại mỗi giây
+                                    var countdownInterval = setInterval(function () {
+                                        var now = new Date().getTime();
+                                        var timeRemaining = endTime - now;
+                                        // Tính toán phút và giây còn lại
+                                        var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                        var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                                        var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+                                        // Hiển thị thời gian còn lại
+                                        hour.innerHTML = hours + "<br><span>Hours<span>";
+                                        min.innerHTML = minutes + "<br><span>Minutes<span>";
+                                        sec.innerHTML = seconds + "<br><span>Seconds<span>";
+
+                                        //Animation
+                                        hh.style.strokeDashoffset = 214 - (214 * hours) / 24;
+                                        mm.style.strokeDashoffset = 214 - (214 * minutes) / 60;
+                                        ss.style.strokeDashoffset = 214 - (214 * seconds) / 60;
+
+                                        //animate circle dots
+                                        hr_dot.style.transform = 'rotateZ(' + (hours * 15) + 'deg)';
+                                        min_dot.style.transform = 'rotateZ(' + (minutes * 6) + 'deg)';
+                                        sec_dot.style.transform = 'rotateZ(' + (seconds * 6) + 'deg)';
+
+                                        if (timeRemaining <= 0) {
+                                            clearInterval(countdownInterval);
+                                            submitQuiz();
+                                        }
+                                    }, 1000);
+
+                                    function submitQuiz() {
+                                        document.getElementById("submitButton").click();
                                     }
-                                }, 1000);
-                                function submitQuiz() {
-                                    document.getElementById("submitButton").click();
-                                }
+                                });
                                 /*]]>*/
                             </script>
                         </div>
