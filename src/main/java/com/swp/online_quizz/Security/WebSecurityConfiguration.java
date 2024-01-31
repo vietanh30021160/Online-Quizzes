@@ -42,6 +42,7 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests((auth) ->
                         auth.requestMatchers("/admin/**").hasRole("ADMIN")
+//                                .requestMatchers("/class/mark/**").hasRole("TEACHER")
                                 .requestMatchers( "/","/register","/forgotpassword","/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(login -> login
@@ -49,10 +50,6 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
                         .failureUrl("/login?unsuccessful")
                         .successHandler(myAuthenticationSuccessHandler())
                 );
-//                .exceptionHandling(exceptionHandling -> exceptionHandling
-//                        .accessDeniedHandler((request, response, accessDeniedException) ->
-//                                response.sendRedirect("/login"))
-//                );
         return httpSecurity.build();
     }
 
