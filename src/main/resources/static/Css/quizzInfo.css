@@ -9,7 +9,15 @@ html {
     height: 100%;
     font-family: sans-serif
 }
+.headerMark{
+    background-color: #3d899b;
+    background-image: linear-gradient(90deg, #3d899b 0%, #7ecec5 50%);
 
+}
+.footer{
+    margin-top: 30px;
+    background-color: #FFFFFF;
+}
 a {
     margin: 0;
     transition: all .4s;
@@ -404,4 +412,10 @@ td {
 .button-load .type1:hover::after {
     visibility: visible;
     transform: scale(100) translateX(2px);
+}
+.button-load{
+    margin: 0;
+}
+.sub_body{
+    margin-bottom: 100px;
 }

@@ -37,6 +37,22 @@ public class MarkController {
                         @PathVariable("quizzId") Integer quizzId, @RequestParam(value = "sort", defaultValue = "marks") String sort, @RequestParam(value = "dir", defaultValue = "asc") String dir) {
         Sort s = Sort.by(Sort.Direction.fromString(dir), sort);
         Page<QuizAttempt> listQuizAttempts = this.quizAttemptsService.findQuizAttemptsByQuizID(quizzId, pageNo, s);
+        List<QuizAttempt> ListQuizAttemptsSatic = this.quizAttemptsService.findQuizAttemptsByQuizID(quizzId,s);
+        int mark_low = 0, mark_medium = 0, mark_high = 0, index = 0;
+        for (QuizAttempt quizAttempt : ListQuizAttemptsSatic) {
+            index = index + 1;
+            if (quizAttempt.getMarks() >= 0 && quizAttempt.getMarks() < 4) {
+                mark_low += 1;
+            } else if (quizAttempt.getMarks() >= 4 && quizAttempt.getMarks() < 8) {
+                mark_medium += 1;
+            } else {
+                mark_high += 1;
+            }
+        }
+        double pec_low = Math.round((double) mark_low * 100 / index * 100.0) / 100.0;
+        double pec_medium = Math.round((double) mark_medium * 100 / index * 100.0) / 100.0;
+        double pec_high = (double) 100 - pec_low - pec_medium;
+
         if (username != null) {
             listQuizAttempts = this.quizAttemptsService.searchUseByName(username, quizzId, pageNo);
             model.addAttribute("username", username);
@@ -48,6 +64,12 @@ public class MarkController {
         model.addAttribute("QuizzAndSubjectById", QuizzAndSubjectById);
         model.addAttribute("totalPage", listQuizAttempts.getTotalPages());
         model.addAttribute("currentPage", pageNo);
+        model.addAttribute("mark_low", pec_low);
+        model.addAttribute("mark_medium", pec_medium);
+        model.addAttribute("mark_high", pec_high);
+        model.addAttribute("stt_low", mark_low);
+        model.addAttribute("stt_medium", mark_medium);
+        model.addAttribute("stt_high", mark_high);
         return "mark";
     }
 

@@ -96,3 +96,7 @@ input[type="checkbox"]:checked + .filter-options {
 .filter-options span:hover {
     text-decoration: underline;
 }
+.nav-link:hover {
+    /* Thêm các thuộc tính CSS khi di chuột qua liên kết tại đây */
+    text-decoration: underline; /* Ví dụ: làm cho văn bản có gạch chân khi di chuột qua */
+}

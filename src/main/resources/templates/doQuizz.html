@@ -19,6 +19,7 @@
             <div class="qtext">
                 <h1 th:text="${quiz.getQuizName()} + ' - ' + ${quiz.getSubject().getSubjectName()}"></h1>
             </div>
+
             <div id="time">
                 <div class="circle" style="--clr: #ece148;">
                     <div class="dots hr_dot"></div>
@@ -54,8 +55,10 @@
                     <div class="content">
                         <h2 class="question" th:text="${question.getQuestionContent()}"></h2>
                         <div class="answer" th:each="answer, answerIndex : ${question.getListAnswer()}">
+
                             <div class="r0 radio-button">
                                 <input class="radio-button__input" type="radio" name="answer" th:field="*{answer}" th:value="${answer.getAnswerId()}"
+
                                     th:id="'answer_' + ${answerIndex.index}">
                                 <script th:inline="javascript">
                                     /*<![CDATA[*/

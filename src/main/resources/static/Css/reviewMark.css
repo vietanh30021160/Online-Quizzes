@@ -1,6 +1,6 @@
 body {
     font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    background-color: rgb(255, 250, 250);
+    background-color: rgba(192, 216, 250, 0.51);
 
     font-weight: 300;
 }
@@ -324,4 +324,7 @@ html{
 .footer{
     margin-top: 50px;
     background-color: #FFFFFF;
+}
+.copyright-text{
+    color: black;
 }
