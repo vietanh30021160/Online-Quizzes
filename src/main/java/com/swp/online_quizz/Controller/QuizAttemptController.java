@@ -224,7 +224,7 @@ public class QuizAttemptController {
                 count++;
             }
         }
-        double mark = ((double) count / attempt.getListQuestionAttempts().size()) * 10;
+        double mark = ((double) count / attempt.getListQuestionAttempts().size()) * 100;
         attempt.setMarks((int) mark);
         iQuizAttemptsService.updateAttempts(attemptID, attempt);
         return new RedirectView("/quizzes/{quizId}");
