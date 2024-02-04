@@ -1,0 +1,129 @@
+<!-- create_quiz.html -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="/Css/createQuiz.css" th:href="@{/Css/createQuiz.css}">
+</head>
+
+<body>
+<h1>Create Quiz</h1>
+
+<form id="quizForm" action="/quizzes/createAll" th:action="@{/quizzes/createAll}" th:object="${quiz}" method="post">
+    <label for="quizName">Quiz Name:</label>
+    <input type="text" id="quizName" name="quizName"  required>
+
+    <label for="timeLimit">Time Limit:</label>
+    <input type="number" id="timeLimit" name="timeLimit"  required>
+
+    <label for="subjectName">Subject Name:</label>
+    <input type="text" id="subjectName" name="subjectName"  required>
+
+    <!--  <label for="teacherId">Teacher ID:</label>-->
+    <!--  <input type="number" id="teacherId" name="teacherId"  required>-->
+
+    <hr>
+
+    <h2>Questions</h2>
+
+    <div id="questionsContainer">
+        <div class="question" th:each="question, questionIndex : ${quiz?.listQuestions}">
+            <label th:for="${'listQuestions[' + questionIndex.index + '].questionContent'}">
+                <h4>Question Content:</h4>
+            </label>
+            <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].questionContent'}" th:field="${'listQuestions[' + questionIndex.index + '].questionContent'}" required>
+
+            <label th:for="${'listQuestions[' + questionIndex.index + '].questionType'}">Question Type:</label>
+            <input type="text" th:id="${'questionType' + questionIndex.index}" th:field="${'listQuestions[' + questionIndex.index + '].questionType'}" required>
+
+            <hr>
+
+            <h4>Answers</h4>
+
+            <div class="answersContainer" th:each="answer, answerIndex : ${question.answers}">
+                <div class="answer">
+                    <label th:for="${'listQuestions[' + questionIndex.index + '].listAnswers[' + answerIndex.index + '].answerContent'}">Answer Content:</label>
+                    <input type="text" th:id="${'answerContent' + questionIndex.index + answerIndex.index}" th:field="${'listQuestions[' + questionIndex.index + '].listAnswers[' + answerIndex.index + '].answerContent'}" required>
+
+                    <label th:for="${'listQuestions[' + questionIndex.index + '].listAnswers[' + answerIndex.index + '].isCorrect'}">Is Correct:</label>
+                    <input type="checkbox" th:id="${'isCorrect' + questionIndex.index + answerIndex.index}"
+                           th:field="${'listQuestions[' + questionIndex.index + '].listAnswers[' + answerIndex.index + '].isCorrect'}" th:checked="${true}" >
+                </div>
+            </div>
+
+            <button type="button" onclick="addAnswer(this, ${questionIndex.index})">Add Answer</button>
+        </div>
+    </div>
+
+    <button type="button" onclick="addQuestion()">Add Question</button>
+    <hr>
+
+    <button type="button" onclick="submitForms()">Create Quiz</button>
+</form>
+
+
+<script th:inline="javascript">
+    function addAnswer(button, questionIndex) {
+        var questionDiv = button.closest('.question');
+        var answersContainer = questionDiv.querySelector('.answersContainer');
+
+        var answerDiv = document.createElement('div');
+        answerDiv.classList.add('answer');
+
+        answerDiv.innerHTML = `
+        <label for="answerContent">Answer Content:</label>
+        <input type="text" required th:id="${'questions[' + questionIndex + '].answers[' + answersContainer.childElementCount + '].answerContent'}" name="${'questions[' + questionIndex + '].answers[' + answersContainer.childElementCount + '].answerContent'}">
+
+        <label for="isCorrect">Is Correct:</label>
+        <input type="checkbox" th:id="${'questions[' + questionIndex + '].answers[' + answersContainer.childElementCount + '].isCorrect'}" name="${'questions[' + questionIndex + '].answers[' + answersContainer.childElementCount + '].isCorrect'}">
+      `;
+
+        answersContainer.appendChild(answerDiv);
+    }
+
+    function addQuestion() {
+        var questionsContainer = document.getElementById('questionsContainer');
+        var questionIndex = questionsContainer.childElementCount;
+
+        var newQuestionDiv = document.createElement('div');
+        newQuestionDiv.classList.add('question');
+
+        newQuestionDiv.innerHTML = `
+        <label for="questionContent"><h4>Question Content:</h4></label>
+        <input type="text" required th:id="${'questionContent' + questionIndex}" name="${'questions[' + questionIndex + '].questionContent'}">
+
+        <label for="questionType">Question Type:</label>
+        <input type="text" required th:id="${'questionType' + questionIndex}" name="${'questions[' + questionIndex + '].questionType'}">
+
+        <hr>
+
+        <h4>Answers</h4>
+
+        <div class="answersContainer">
+          <div class="answer">
+            <label for="answerContent">Answer Content:</label>
+            <input type="text" required th:id="${'answerContent' + questionIndex + '0'}" name="${'questions[' + questionIndex + '].answers[0].answerContent'}">
+
+            <label for="isCorrect">Is Correct:</label>
+            <input type="checkbox" th:id="${'isCorrect' + questionIndex + '0'}" name="${'questions[' + questionIndex + '].answers[0].isCorrect'}">
+          </div>
+        </div>
+
+        <button type="button" onclick="addAnswer(this, ${questionIndex})">Add Answer</button>
+      `;
+
+        questionsContainer.appendChild(newQuestionDiv);
+    }
+
+    function submitForms() {
+        // Submit the main quiz form
+        document.getElementById('quizForm').submit();
+    }
+</script>
+
+</script>
+</body>
+</html>

@@ -10,8 +10,12 @@ public interface IQuizzesService {
     List<Quiz> getAll();
     public Subject find(Integer quizId);
     public Quiz findByID(Integer quizID);
-    public Boolean update(Quiz quizzes);
-    public Boolean delete(Integer quizId);
+
+
+    Quiz findQuizById(Integer quizId);
+
+    boolean createQuiz1(Quiz quiz);
+
     public List<Quiz> searchQuizzes(String keyword);
 
     Page<Quiz> getAll(Integer pageNo);

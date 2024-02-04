@@ -2,7 +2,11 @@ package com.swp.online_quizz.Service;
 
 import java.util.List;
 
+import com.swp.online_quizz.Entity.User;
+import com.swp.online_quizz.Repository.AnswersRepository;
+import com.swp.online_quizz.Repository.QuestionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +19,7 @@ import com.swp.online_quizz.Entity.Subject;
 import com.swp.online_quizz.Repository.QuizRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +27,21 @@ import lombok.RequiredArgsConstructor;
 public class QuizService implements IQuizzesService {
     @Autowired
     private final QuizRepository quizRepository;
+    @Autowired
+    private IQuestionsService questionsService;
+    @Autowired
+    private IAnswerService iAnswerService;
+    @Autowired
+    @Lazy
+    private ISubjectService iSubjectService;
+    @Autowired
+    private IUsersService iUsersService;
+    @Autowired
+    private QuestionsRepository questionsRepository;
+    @Autowired
+    private AnswersRepository answersRepository;
+
+
 
     @Override
     public List<Quiz> getAll() {
@@ -38,16 +58,30 @@ public class QuizService implements IQuizzesService {
         return quizRepository.findById(quizID).orElse(null);
     }
 
-    @Override
-    public Boolean update(Quiz quizzes) {
-        return null;
-    }
+
 
     @Override
-    public Boolean delete(Integer quizId) {
-        return null;
+    public Quiz findQuizById(Integer quizId) {
+        return quizRepository.getReferenceById(quizId);
     }
+    @Override
+    public boolean createQuiz1(Quiz quiz) {
+        try {
+            Subject existingSubject = iSubjectService.createOrUpdateSubject(quiz.getSubject().getSubjectName());
+            User teacher = iUsersService.getUsersByID(quiz.getTeacher().getUserId());
 
+            quiz.setSubject(existingSubject);
+            quiz.setTeacher(teacher);
+            quiz.setIsCompleted(false);
+
+            quizRepository.save(quiz);
+
+            return true; // Nếu không có ngoại lệ, trả về true
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ nếu cần
+            return false; // Nếu có ngoại lệ, trả về false
+        }
+    }
     @Override
     public List<Quiz> searchQuizzes(String keyword) {
         return quizRepository.findByKeywordContainingIgnoreCase(keyword);

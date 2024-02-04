@@ -2,7 +2,9 @@ package com.swp.online_quizz.Service;
 
 import java.util.List;
 
+import com.swp.online_quizz.Entity.Quiz;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.swp.online_quizz.Entity.Question;
@@ -12,7 +14,9 @@ import com.swp.online_quizz.Repository.QuestionsRepository;
 public class QuestionsService implements IQuestionsService {
     @Autowired
     QuestionsRepository questionsRepository;
-
+    @Autowired
+    @Lazy
+    private QuizService quizService;
     @Override
     public List<Question> getAllQuestions() {
         return questionsRepository.findAll();
@@ -20,6 +24,29 @@ public class QuestionsService implements IQuestionsService {
 
     @Override
     public Question getQuestions(Integer questionId) {
+        return questionsRepository.getReferenceById(questionId);
+    }
+
+    @Override
+    public boolean createQuestion1(Question question) {
+        try {
+            Quiz existingQuiz = quizService.findQuizById(question.getQuiz().getQuizId());
+            question.setQuiz(existingQuiz);
+            questionsRepository.save(question);
+            return true; // Nếu không có ngoại lệ, trả về true
+        } catch (Exception e) {
+            e.printStackTrace(); // Xử lý ngoại lệ nếu cần
+            return false; // Nếu có ngoại lệ, trả về false
+        }
+    }
+
+    @Override
+    public Question getQuestionById(Integer questionId) {
+        return questionsRepository.findById(questionId).orElse(null);
+    }
+
+    @Override
+    public Question findQuestionById(Integer questionId) {
         return questionsRepository.getReferenceById(questionId);
     }
 
