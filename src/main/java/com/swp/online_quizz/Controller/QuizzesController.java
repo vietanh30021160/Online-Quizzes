@@ -1,6 +1,7 @@
 package com.swp.online_quizz.Controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.swp.online_quizz.Entity.*;
 import com.swp.online_quizz.Repository.QuizRepository;
@@ -48,7 +49,9 @@ public class QuizzesController {
     @Transactional
     @PostMapping("/createAll")
     public String createQuizWithQuestionsAndAnswers(@ModelAttribute("quiz") Quiz quiz
+
     ) {
+//
 
         String subjectName = quiz.getSubjectName();
 
@@ -91,8 +94,60 @@ public class QuizzesController {
     }
     @GetMapping("/showCreateQuizPage")
     public String showCreateQuizPage(Model model) {
+        Quiz quiz = iQuizzesService.getEmptyQuiz();
         model.addAttribute("quiz",new Quiz());
+        List<String> questionContents = quiz.getListQuestions().stream()
+                .map(Question::getQuestionContent)
+                .collect(Collectors.toList());
+
+        model.addAttribute("questionContents", questionContents);
+
         return "createQuiz";
+    }
+    @PostMapping("/updateAll/{quizId}")
+    public String processUpdateQuizForm(@PathVariable Integer quizId, @ModelAttribute Quiz quiz) {
+
+        Quiz oldQuiz = iQuizService.findQuizById(quizId);
+
+        oldQuiz.setQuizName(quiz.getQuizName());
+        oldQuiz.setTimeLimit(quiz.getTimeLimit());
+        oldQuiz.setListQuestions(quiz.getListQuestions());
+        iQuizService.updateQuizByQuizId1(quizId, oldQuiz);
+
+        for (Question question : quiz.getListQuestions()) {
+            List<Question> oldQuestion = oldQuiz.getListQuestions();
+            question.setQuiz(quiz);
+            Question olQuestion = iQuestionsService.findQuestionById(question.getQuestionId());
+            if (oldQuestion == null) {
+                iQuestionsService.createQuestion1(olQuestion);
+                System.out.println("Create successfull!");
+            } else {
+                olQuestion.setQuestionContent(question.getQuestionContent());
+                olQuestion.setQuestionType(question.getQuestionType());
+                iQuestionsService.updateQuestion1(question.getQuestionId(), question);
+
+
+                for (Answer answer : question.getListAnswer()) {
+
+                    answer.setQuestion(question);
+                    iAnswerService.updateAnswer1(answer.getAnswerId(), answer);
+                }
+            }
+            return "redirect:/quizzes/list";
+
+        }
+        return "redirect:/quizzes/list";
+    }
+    @GetMapping("/showUpdateQuizPage/{quizId}")
+    public String getUpdateQuizForm(@PathVariable Integer quizId, Model model) {
+        // Retrieve the quiz and its details from the service
+        Quiz quiz = iQuizService.findQuizById(quizId);
+        if (quiz == null) {
+            return "showQuiz";
+        }
+        model.addAttribute("quiz", quiz);
+
+        return "updateQuiz";
     }
     @GetMapping("/{quizID}")
     public String quizInfo(@PathVariable Integer quizID, HttpSession session, Model model) {

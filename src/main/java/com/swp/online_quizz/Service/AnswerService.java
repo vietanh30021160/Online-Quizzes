@@ -37,5 +37,22 @@ public class AnswerService implements IAnswerService{
             e.printStackTrace();
             return false;
         }
+
+
     }
-}
+
+    @Override
+    public Boolean updateAnswer1(Integer id, Answer answer) {
+        try {
+            Answer uAnswer = answersRepository.getReferenceById(id);
+            uAnswer.setAnswerContent(answer.getAnswerContent());
+            uAnswer.setIsCorrect(answer.getIsCorrect());
+            this.answersRepository.save(uAnswer);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+    }
+

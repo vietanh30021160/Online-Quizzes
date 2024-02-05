@@ -11,4 +11,5 @@ public interface IAnswerService {
     List<Answer> getAll();
 
     boolean createAnswer1(Answer answer, Integer questionId);
+    Boolean updateAnswer1(Integer id, Answer answer);
 }

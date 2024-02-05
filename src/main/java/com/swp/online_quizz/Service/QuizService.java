@@ -83,6 +83,26 @@ public class QuizService implements IQuizzesService {
         }
     }
     @Override
+    public Quiz getEmptyQuiz() {
+        Quiz quiz = new Quiz();
+        // Initialize other properties if needed
+        return quiz;
+    }
+    @Transactional
+    @Override
+    public Boolean updateQuizByQuizId1(Integer id, Quiz quiz) {
+        try {
+            Quiz uQuiz = quizRepository.getReferenceById(id);
+            uQuiz.setQuizName(quiz.getQuizName());
+            uQuiz.setTimeLimit(quiz.getTimeLimit());
+            this.quizRepository.save(uQuiz);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+    @Override
     public List<Quiz> searchQuizzes(String keyword) {
         return quizRepository.findByKeywordContainingIgnoreCase(keyword);
     }

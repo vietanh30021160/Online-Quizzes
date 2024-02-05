@@ -16,4 +16,6 @@ public interface IQuestionsService {
     Question getQuestionById(Integer questionId);
 
     Question findQuestionById(Integer questionId);
+
+    Boolean updateQuestion1(Integer id, Question question);
 }

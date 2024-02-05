@@ -49,5 +49,18 @@ public class QuestionsService implements IQuestionsService {
     public Question findQuestionById(Integer questionId) {
         return questionsRepository.getReferenceById(questionId);
     }
+    @Override
+    public Boolean updateQuestion1(Integer id, Question question) {
+        try {
+            Question uQuestion = questionsRepository.getReferenceById(id);
+            uQuestion.setQuestionContent(question.getQuestionContent());
+            uQuestion.setQuestionType(question.getQuestionType());
+            this.questionsRepository.save(uQuestion);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
 
 }
