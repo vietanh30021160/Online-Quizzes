@@ -104,35 +104,33 @@ public class QuizzesController {
 
         return "createQuiz";
     }
-    @PostMapping("/updateAll/{quizId}")
-    public String processUpdateQuizForm(@PathVariable Integer quizId, @ModelAttribute Quiz quiz) {
-
-        Quiz oldQuiz = iQuizService.findQuizById(quizId);
-
-        oldQuiz.setQuizName(quiz.getQuizName());
-        oldQuiz.setTimeLimit(quiz.getTimeLimit());
-        oldQuiz.setListQuestions(quiz.getListQuestions());
-        iQuizService.updateQuizByQuizId1(quizId, oldQuiz);
-
-        for (Question question : quiz.getListQuestions()) {
-            List<Question> oldQuestion = oldQuiz.getListQuestions();
-            question.setQuiz(quiz);
-            Question olQuestion = iQuestionsService.findQuestionById(question.getQuestionId());
-            if (oldQuestion == null) {
-                iQuestionsService.createQuestion1(olQuestion);
-                System.out.println("Create successfull!");
-            } else {
-                olQuestion.setQuestionContent(question.getQuestionContent());
-                olQuestion.setQuestionType(question.getQuestionType());
-                iQuestionsService.updateQuestion1(question.getQuestionId(), question);
 
 
-                for (Answer answer : question.getListAnswer()) {
+        @PostMapping("/updateAll/{quizId}")
+        public String updateQuizAndQuestions(@PathVariable Integer quizId, @ModelAttribute("quiz") Quiz updatedQuiz) {
+            iQuizzesService.updateQuizByQuizId1(quizId, updatedQuiz);
 
-                    answer.setQuestion(question);
-                    iAnswerService.updateAnswer1(answer.getAnswerId(), answer);
+            for (Question updatedQuestion : updatedQuiz.getListQuestions()) {
+                Question existingQuestion = iQuestionsService.findQuestionById(updatedQuestion.getQuestionId());
+
+                if (existingQuestion != null) {
+                    iQuestionsService.updateQuestion1(existingQuestion.getQuestionId(), updatedQuestion);
+                } else {
+                    updatedQuestion.setQuiz(updatedQuiz);
+                    iQuestionsService.createQuestion1(updatedQuestion);
                 }
-            }
+
+                for (Answer updatedAnswer : updatedQuestion.getListAnswer()) {
+                    Answer existingAnswer = iAnswerService.getAnswerById(updatedAnswer.getAnswerId());
+
+                    if (existingAnswer != null) {
+                        iAnswerService.updateAnswer1(existingAnswer.getAnswerId(), updatedAnswer);
+                    } else {
+                        updatedAnswer.setQuestion(updatedQuestion);
+                        iAnswerService.createAnswer1(updatedAnswer, updatedQuestion.getQuestionId());
+                    }
+                }
+
             return "redirect:/quizzes/list";
 
         }

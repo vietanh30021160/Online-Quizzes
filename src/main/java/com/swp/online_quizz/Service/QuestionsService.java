@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.swp.online_quizz.Entity.Question;
 import com.swp.online_quizz.Repository.QuestionsRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class QuestionsService implements IQuestionsService {
@@ -26,17 +27,17 @@ public class QuestionsService implements IQuestionsService {
     public Question getQuestions(Integer questionId) {
         return questionsRepository.getReferenceById(questionId);
     }
-
+    @Transactional
     @Override
     public boolean createQuestion1(Question question) {
         try {
             Quiz existingQuiz = quizService.findQuizById(question.getQuiz().getQuizId());
             question.setQuiz(existingQuiz);
             questionsRepository.save(question);
-            return true; // Nếu không có ngoại lệ, trả về true
+            return true;
         } catch (Exception e) {
-            e.printStackTrace(); // Xử lý ngoại lệ nếu cần
-            return false; // Nếu có ngoại lệ, trả về false
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -49,6 +50,7 @@ public class QuestionsService implements IQuestionsService {
     public Question findQuestionById(Integer questionId) {
         return questionsRepository.getReferenceById(questionId);
     }
+    @Transactional
     @Override
     public Boolean updateQuestion1(Integer id, Question question) {
         try {

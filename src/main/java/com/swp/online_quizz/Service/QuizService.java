@@ -64,6 +64,7 @@ public class QuizService implements IQuizzesService {
     public Quiz findQuizById(Integer quizId) {
         return quizRepository.getReferenceById(quizId);
     }
+    @Transactional
     @Override
     public boolean createQuiz1(Quiz quiz) {
         try {
@@ -76,10 +77,10 @@ public class QuizService implements IQuizzesService {
 
             quizRepository.save(quiz);
 
-            return true; // Nếu không có ngoại lệ, trả về true
+            return true;
         } catch (Exception e) {
-            e.printStackTrace(); // Xử lý ngoại lệ nếu cần
-            return false; // Nếu có ngoại lệ, trả về false
+            e.printStackTrace();
+            return false;
         }
     }
     @Override
@@ -88,6 +89,7 @@ public class QuizService implements IQuizzesService {
         // Initialize other properties if needed
         return quiz;
     }
+
     @Transactional
     @Override
     public Boolean updateQuizByQuizId1(Integer id, Quiz quiz) {

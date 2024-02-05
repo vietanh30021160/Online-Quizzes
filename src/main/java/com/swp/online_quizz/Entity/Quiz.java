@@ -50,7 +50,7 @@ public class Quiz {
     @Column(name = "IsCompleted")
     private Boolean isCompleted;
 
-    @OneToMany(mappedBy = "quiz")
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Question> listQuestions = new ArrayList<>();
 

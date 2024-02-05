@@ -45,7 +45,7 @@ public class Question {
     @Column(name = "VideoURL")
     private String videoUrl;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Answer> listAnswer = new ArrayList<>();
 

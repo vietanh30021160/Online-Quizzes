@@ -6,6 +6,7 @@ import com.swp.online_quizz.Repository.AnswersRepository;
 import com.swp.online_quizz.Repository.QuestionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,8 +14,7 @@ import java.util.List;
 public class AnswerService implements IAnswerService{
     @Autowired
     AnswersRepository answersRepository;
-    @Autowired
-    private QuestionsRepository questionsRepository;
+
     @Autowired
     private QuestionsService questionsService;
     @Override
@@ -25,6 +25,7 @@ public class AnswerService implements IAnswerService{
     public List<Answer> getAll() {
         return answersRepository.findAll();
     }
+    @Transactional
     @Override
     public boolean createAnswer1(Answer answer, Integer questionId) {
         try {
@@ -40,7 +41,7 @@ public class AnswerService implements IAnswerService{
 
 
     }
-
+    @Transactional
     @Override
     public Boolean updateAnswer1(Integer id, Answer answer) {
         try {
@@ -53,6 +54,11 @@ public class AnswerService implements IAnswerService{
             ex.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public Answer getAnswerById(Integer questionId) {
+        return answersRepository.findById(questionId).orElse(null);
     }
     }
 

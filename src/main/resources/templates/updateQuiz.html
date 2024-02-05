@@ -51,7 +51,7 @@
 
             <div class="answersContainer">
                 <div th:each="answer, answerIndex : ${question.listAnswer}" class="answer">
-                    <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].answerId'}"
+                    <input type="hidden" th:id="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].answerId'}"
                            th:field="*{listQuestions[__${questionIndex.index}__].listAnswer[__${answerIndex.index}__].answerId}" th:value="${answer.answerId}" required>
                     <label th:for="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].answerContent'}">Answer Content:</label>
                     <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].answerContent'}"
