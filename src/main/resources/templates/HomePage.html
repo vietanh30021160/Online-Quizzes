@@ -53,7 +53,7 @@
                     <ul class="nav nav-tabs"  >
                         <li class="nav-item"  th:each="subject : ${listSubject}">
                             <a class="nav-link active"
-                               th:href="@{'?keyword='+ ${subject.subjectName} + '#section_2'}"
+                               th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'subject='+ ${subject.subjectName} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max:''}+ '#section_2'}"
                                th:text="${subject.subjectName}"
                                style="color: #000000"></a>
                         </li>
@@ -65,9 +65,9 @@
             <label class="filter-button" for="filterCheckbox">Time</label>
             <input type="checkbox" id="filterCheckbox">
             <div class="filter-options">
-                <span><a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo=1'+'&min=0'+'&max=30'+ '#section_2'}">0-30 Minute</a></span></br>
-                <span><a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo=1'+'&min=30'+'&max=60'+ '#section_2'}">30-60 Minute</a></span></br>
-                <span><a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo=1' +'&min=60'+'&max=150'+ '#section_2'}">60-150 Minute</a></span></br>
+                <span><a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo=1'+'&min=0'+'&max=30'+${subject!=null && subject!='' ? '&subject='+subject:''} +'#section_2'}">0-30 Minute</a></span></br>
+                <span><a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo=1'+'&min=30'+'&max=60'+${subject!=null && subject!='' ? '&subject='+subject:''} + '#section_2'}">30-60 Minute</a></span></br>
+                <span><a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo=1' +'&min=60'+'&max=150'+${subject!=null && subject!='' ? '&subject='+subject:''}+ '#section_2'}">60-150 Minute</a></span></br>
             </div>
         </div>
 
@@ -102,13 +102,13 @@
         <div class="box-footer">
             <ul class="pagination">
                 <li th:if="${currentPage>1}"><a
-                        th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo='+ ${currentPage-1} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max+'#':'#'}+ 'section_2'}">«</a>
+                        th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo='+ ${currentPage-1} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max:''}+${subject!=null && subject!='' ? '&subject='+subject:''}+ '#section_2'}">«</a>
                 </li>
                 <li th:each="i:${#numbers.sequence(1,totalPage)}" th:classappend="${currentPage == i ? 'active' : ''}">
-                    <a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo='+ ${i} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max+'#':'#'}+ 'section_2'}"
+                    <a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo='+ ${i} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max:''}+${subject!=null && subject!='' ? '&subject='+subject:''}+ '#section_2'}"
                        th:text="${i}"></a></li>
                 <li th:if="${currentPage<totalPage}"><a
-                        th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo='+ ${currentPage+1} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max+'#':'#'}+ 'section_2'}">»</a>
+                        th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo='+ ${currentPage+1} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max:''}+${subject!=null && subject!='' ? '&subject='+subject:''}+ '#section_2'}">»</a>
                 </li>
             </ul>
         </div>
