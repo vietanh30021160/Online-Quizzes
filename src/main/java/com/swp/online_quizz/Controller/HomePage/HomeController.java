@@ -26,25 +26,18 @@ public class HomeController {
 
     @RequestMapping("")
     public String Home(Model model,
-                       @Param("keyword") String keyword,
+                       @RequestParam(required = false) String keyword,
+                       @RequestParam(required = false) String subject,
                        @RequestParam(name = "pageNo",defaultValue = "1") Integer pageNo,
                        @RequestParam(required = false) Integer min,
                        @RequestParam(required = false) Integer max) {
         List<Subject> listSubject = iSubjectService.getAll();
-        Page<Quiz> listQuiz =  iQuizzesService.getAll(pageNo);
-        if(min != null && max != null && keyword != null){
-            listQuiz = iQuizzesService.searchAndFilter(keyword,pageNo,min,max);
-
-        }
-        if(keyword != null && min == null && max == null){
-            listQuiz = iQuizzesService.searchQuizzes(keyword,pageNo);
-        }
-        if(keyword == null && min != null && max != null){
-            listQuiz = iQuizzesService.searchAndFilter(keyword,pageNo,min,max);
-        }
+        Page<Quiz> listQuiz ;
+        listQuiz = iQuizzesService.searchAndFilterAndSubject(keyword,pageNo,min,max,subject);
         model.addAttribute("min", min);
         model.addAttribute("max", max);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("subject", subject);
         model.addAttribute("totalPage",listQuiz.getTotalPages());
         model.addAttribute("currentPage",pageNo);
         model.addAttribute("listSubject", listSubject);
