@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/Css/Login.css}">
+    <title>Title</title>
+</head>
+<body>
+<div class="login-card">
+    <div class="column">
+        <h1>Login</h1>
+        <form th:action="@{/login}" method="POST" th:object="${userLoginDtoRequest}">
+            <div class="form-item">
+                <input type="text" class="form-element" name="username" th:field="*{username}" placeholder="Username">
+            </div>
+            <div class="form-item">
+                <input type="password" class="form-element" name="password" th:field="*{password}" placeholder="Password">
+            </div>
+            <div class="message" th:if="${param.unsuccessful}">
+                <h3>Username or password incorrect!</h3>
+            </div>
+            <div class="flex">
+                <input type="submit" class="button" value="Log in">
+            </div>
+            <div class="footer">
+                <p style="margin-top: 3rem;margin-bottom: 1.5rem;">Other sign-in method</p>
+                <div class="social-button">
+                    <a href="#" class="google">
+                        <i class="fab fa-google"></i>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="column">
+        <h2>Welcome to Online Quizz</h2>
+        <p>If you don't have any account, would you like to register right now?</p>
+        <a th:href="@{/register}">Sign up</a>
+    </div>
+</div>
+</body>
+</html>
