@@ -23,13 +23,10 @@ public class CustomUserDetailsServices implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = usersRepository.findByUsername(username);
-        if(user.isEmpty()){
-            throw new UsernameNotFoundException("User not found");
-        }
-        return new CustomUserDetails(user.get());
+        return user.map(CustomUserDetails::new).orElse(null);
     }
 
-    public Collection<? extends GrantedAuthority> authorities(String role){
-        return List.of(new SimpleGrantedAuthority(role));
-    }
+//    public Collection<? extends GrantedAuthority> authorities(String role){
+//        return List.of(new SimpleGrantedAuthority(role));
+//    }
 }

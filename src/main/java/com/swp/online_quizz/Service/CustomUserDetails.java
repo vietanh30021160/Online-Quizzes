@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.List;
 
+
 public class CustomUserDetails implements UserDetails {
     private final User user;
 

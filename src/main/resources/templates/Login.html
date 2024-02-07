@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/Css/Login.css">
+    <link rel="stylesheet" th:href="@{/Css/Login.css}">
     <title>Title</title>
 </head>
 <body>
@@ -26,7 +26,7 @@
             <div class="footer">
                 <p style="margin-top: 3rem;margin-bottom: 1.5rem;">Other sign-in method</p>
                 <div class="social-button">
-                    <a href="" class="google">
+                    <a href="#" class="google">
                         <i class="fab fa-google"></i>
                     </a>
                 </div>
@@ -36,7 +36,7 @@
     <div class="column">
         <h2>Welcome to Online Quizz</h2>
         <p>If you don't have any account, would you like to register right now?</p>
-        <a href="/register">Sign up</a>
+        <a th:href="@{/register}">Sign up</a>
     </div>
 </div>
 </body>
