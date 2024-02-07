@@ -15,7 +15,7 @@ public class ClassQuizz {
     @MapsId("classId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ClassID", nullable = false)
-    private Class classes;
+    private Classes classes;
 
     @MapsId("quizId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
