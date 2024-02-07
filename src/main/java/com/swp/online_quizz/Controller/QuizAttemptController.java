@@ -8,10 +8,9 @@ import java.util.Optional;
 
 import com.swp.online_quizz.Repository.UsersRepository;
 import com.swp.online_quizz.Service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,8 +61,18 @@ public class QuizAttemptController {
     }
 
     @GetMapping("/attemptQuiz/{quizId}")
-    public RedirectView attemptQuizz(@PathVariable Integer quizId) {
-        User user = iUsersService.getUsersByID(3);
+    public RedirectView attemptQuizz(@PathVariable Integer quizId, HttpServletRequest request) {
+        String username = "";
+        if(request.getSession().getAttribute("authentication")!=null){
+            Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
+            username= authentication.getName();
+        }
+        Optional<User> userOptional = usersRepository.findByUsername(username);
+        if(userOptional.isEmpty()){
+            return new RedirectView("redirect:/login");
+        }
+        //nếu có thì lấy ra user
+        User user = userOptional.get();
             Quiz quizz = iQuizzesService.getOneQuizz(quizId);
             Timestamp startTime = new Timestamp(System.currentTimeMillis());
             long endTimeMillis = startTime.getTime() + (quizz.getTimeLimit() * 60 * 1000);
@@ -92,45 +101,49 @@ public class QuizAttemptController {
 
     @GetMapping("/attemptQuiz/{quizId}/{attemptID}/{page}")
     public String attemptQuizzQuestionNumber(@PathVariable Integer quizId, @PathVariable Integer attemptID,
-            @PathVariable Integer page, HttpSession session, Model model, Authentication auth) {
-
-        User user = iUsersService.getUsersByID(3);
-
-        if (user != null) {
-            QuizAttempt attemp = iQuizAttemptsService.getQuizAttempts(attemptID);
-            List<QuizProgress> listQProg = new ArrayList<>(attemp.getListQuizzProgress());
-            for (QuizProgress quizProgress : listQProg) {
-                if (quizProgress.getQuestionOrder() == page) {
-                    attemp.setCurrentQuestion(quizProgress.getQuestion());
-                    iQuizAttemptsService.updateAttempts(attemptID, attemp);
-                }
-            }
-            page -= 1;
-            Question question = listQProg.get((page)).getQuestion();
-            QuizProgress quizProgress = listQProg.get((page));
-            String answerString = quizProgress.getAnswer();
-            int answerProg = 0;
-            if (answerString != null && !answerString.isEmpty()) {
-                answerProg = Integer.parseInt(answerString);
-            } else {
-                answerProg = 0;
-            }
-            Quiz quiz = attemp.getQuiz();
-            page += 1;
-            model.addAttribute("answerProg", answerProg);
-            model.addAttribute("page", page);
-            model.addAttribute("attemp", attemp);
-            model.addAttribute("quiz", quiz);
-            model.addAttribute("question", question);
-            model.addAttribute("listQProg", listQProg);
-            model.addAttribute("startTime", attemp.getStartTime());
-            model.addAttribute("endTime", attemp.getEndTime().getTime());
-
-            model.addAttribute("QuizProgress", new QuizProgress());
-            return "doQuizz";
-        } else {
-            return "redirect:/Login";
+            @PathVariable Integer page, HttpSession session, Model model, Authentication auth, HttpServletRequest request) {
+        String username = "";
+        if(request.getSession().getAttribute("authentication")!=null){
+            Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
+            username= authentication.getName();
         }
+        Optional<User> userOptional = usersRepository.findByUsername(username);
+        if(userOptional.isEmpty()){
+            return "redirect:/login";
+        }
+        //nếu có thì lấy ra user
+        User user = userOptional.get();
+        QuizAttempt attemp = iQuizAttemptsService.getQuizAttempts(attemptID);
+        List<QuizProgress> listQProg = new ArrayList<>(attemp.getListQuizzProgress());
+        for (QuizProgress quizProgress : listQProg) {
+            if (quizProgress.getQuestionOrder() == page) {
+                attemp.setCurrentQuestion(quizProgress.getQuestion());
+                iQuizAttemptsService.updateAttempts(attemptID, attemp);
+            }
+        }
+        page -= 1;
+        Question question = listQProg.get((page)).getQuestion();
+        QuizProgress quizProgress = listQProg.get((page));
+        String answerString = quizProgress.getAnswer();
+        int answerProg = 0;
+        if (answerString != null && !answerString.isEmpty()) {
+            answerProg = Integer.parseInt(answerString);
+        } else {
+            answerProg = 0;
+        }
+        Quiz quiz = attemp.getQuiz();
+        page += 1;
+        model.addAttribute("answerProg", answerProg);
+        model.addAttribute("page", page);
+        model.addAttribute("attemp", attemp);
+        model.addAttribute("quiz", quiz);
+        model.addAttribute("question", question);
+        model.addAttribute("listQProg", listQProg);
+        model.addAttribute("startTime", attemp.getStartTime());
+        model.addAttribute("endTime", attemp.getEndTime().getTime());
+
+        model.addAttribute("QuizProgress", new QuizProgress());
+        return "doQuizz";
     }
 
     @PostMapping("/progress")

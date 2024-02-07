@@ -11,7 +11,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
+import java.util.Collection;
 
 
 @Controller
@@ -34,11 +37,28 @@ public class LoginController {
     private final IUserService iUserService;
     private final UserDetailsService userDetailsService;
 
-    @GetMapping("/login")
-    public String loginPage(Model model) {
-        model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
-        return "Login";
-    }
+//    @GetMapping("/login")
+//    public String loginPage(Model model) {
+//        model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
+//        return "Login";
+//    }
+//
+//    @PostMapping("/login")
+//    public String loginSucess(HttpServletRequest request){
+//
+//
+//        if(request.getAttribute("authentication")!=null) {
+//            Authentication authentication = (Authentication)request.getAttribute("authentication");
+//            String username = authentication.getName();
+//            Object principal = authentication.getPrincipal();
+//            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+////        System.out.println("NULL " + userDetails.getUsername());
+//            System.out.println("Name " + username);
+//            System.out.println("Principal " + principal);
+//            System.out.println("Authorities " + authorities);
+//        }
+//        return "redirect:/";
+//    }
 
     @GetMapping("/register")
     public String registerPage(Model model){
@@ -74,9 +94,13 @@ public class LoginController {
         if(isValid){
             return "redirect:/login";
         }
-        model.addAttribute("ms", "Register unsuccessfully!");
-        model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
-        return "Register";
+        if(!(ms.length()==0||ms==null)){
+            model.addAttribute("ms", "Register unsuccessfully!");
+            model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
+            return "Register";
+        }
+
+        return "redirect:/login";
     }
 
     @GetMapping("/forgotpassword")
@@ -85,8 +109,9 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
-    public String logoutSuccess(){
+    public String logoutSuccess(HttpServletRequest request){
         SecurityContextHolder.clearContext();
+        request.getSession().invalidate();
         return "redirect:/";
     }
 
@@ -94,10 +119,27 @@ public class LoginController {
     public String adminPage(){
         return "Admin";
     }
-    @GetMapping("/check")
-    public String home(Model model, Principal principal) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
-        System.out.println("NULL " + userDetails.getUsername());
-        return "redirect:/login";
+
+@GetMapping("/login")
+public String loginPage(Model model) {
+    model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
+    return "Login";
+}
+
+    @PostMapping("/login")
+    public String loginSucess(HttpServletRequest request){
+
+
+        if(SecurityContextHolder.getContext()!=null) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+            Object principal = authentication.getPrincipal();
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+//        System.out.println("NULL " + userDetails.getUsername());
+            System.out.println("Name " + username);
+            System.out.println("Principal " + principal);
+            System.out.println("Authorities " + authorities);
+        }
+        return "redirect:/";
     }
 }

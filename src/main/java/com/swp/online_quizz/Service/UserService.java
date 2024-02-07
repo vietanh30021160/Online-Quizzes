@@ -32,8 +32,8 @@ public class UserService implements IUserService{
         String checkEmail = usersRepository.findByEmail(userRegisterDtoRequest.getEmail());
         if(checkUsername.isEmpty ()&& checkEmail==null){
             userRegisterDtoRequest.setPassword(passwordEncoder.encode(userRegisterDtoRequest.getPassword()));
-            User user = usersRepository.save(UserMapper.toUser(userRegisterDtoRequest));
-            return usersRepository.findByUsername(userRegisterDtoRequest.getUsername()).isPresent();
+            usersRepository.save(UserMapper.toUser(userRegisterDtoRequest));
+            return true;
         }
         return false;
     }
