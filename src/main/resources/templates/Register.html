@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/Css/Register.css}">
+    <title>Title</title>
+</head>
+<body>
+    <div class="login-card">
+        <div class="column">
+            <h1>Register</h1>
+            <form th:action="@{/register}" method="POST" th:object="${userRegisterDtoRequest}">
+                <div class="form-item">
+                    <input type="text" class="form-element" th:field="*{username}" placeholder="Username">
+                </div>
+                <div class="form-item">
+                    <input type="email" class="form-element" th:field="*{email}" placeholder="Email">
+                </div>
+                <div class="form-item">
+                    <input type="password" class="form-element" th:field="*{password}" placeholder="Password">
+                </div>
+                <div class="form-input-field" >
+                    <input type="radio" id="studentRadio" th:field="*{role}" name="userType" th:value="ROLE_STUDENT"/>
+                    <label for="studentRadio">Student</label>
+
+                    <input type="radio" id="teacherRadio" th:field="*{role}" name="userType" th:value="ROLE_TEACHER"/>
+                    <label for="teacherRadio">Teacher</label>
+                </div>
+                <div class="message">
+                    <h3 th:text="${ms}?:''"></h3>
+                </div>
+                <div class="message">
+                    <h3 th:if="${param.authentication}?:''"></h3>
+                </div>
+                <div class="flex">
+                    <input type="submit" class="button" value="Register">
+                </div>
+            </form>
+        </div>
+        <div class="column">
+            <h2>Welcome to Online Quizz</h2>
+            <p>If you have an account yet, would you like to log in right now?</p>
+            <a th:href="@{/login}">Log in</a>
+        </div>
+    </div>
+</body>
+</html>
