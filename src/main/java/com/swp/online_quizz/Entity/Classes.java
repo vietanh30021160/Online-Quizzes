@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "Classes")
-public class Class {
+public class Classes {
     @Id
     @Column(name = "ClassID", nullable = false)
     private Integer classId;
