@@ -22,6 +22,7 @@ public class ClassesService implements IClassesService {
     private ClassEnrollmentRepository classEnrollmentRepository;
 
     public void joinClass(String classCode, Integer studentId) {
+
         // Tìm lớp học dựa trên classCode
         Classes classes = classesRepository.findbyclassCode(classCode);
 

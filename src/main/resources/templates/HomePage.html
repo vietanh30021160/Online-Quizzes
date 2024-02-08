@@ -14,22 +14,56 @@
 
                 <div class="col-lg-8 col-12 mx-auto">
                     <h1 class="text-white text-center">Test. Learn. Enjoy</h1>
-
                     <h6 class="text-center">Easy to use for teachers and students</h6>
-
-                    <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
+                    <form id="joinForm" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
                         <div class="input-group input-group-lg">
-                                    <span class="input-group-text bi-search" id="basic-addon1">
-
-                                    </span>
-
-                            <input name="keyword" type="search" class="form-control" id="keyword"
-                                   placeholder="Test, Code join class,  ..." aria-label="Search">
-
+                            <span class="input-group-text bi-search" id="basic-addon1"></span>
+                            <input type="search" name="classCode" class="form-control" placeholder=" Code join class,  ..."
+                                   aria-label="Search">
                             <button type="submit" class="form-control">Join</button>
-
                         </div>
                     </form>
+                    <p id="submitMessage" ></p>
+                </div>
+
+                <script type="text/javascript">
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var form = document.getElementById('joinForm');
+                        var submitMessage = document.getElementById('submitMessage');
+
+                        form.addEventListener('submit', function(event) {
+                            event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+                            // Lấy dữ liệu từ form
+                            var formData = new FormData(form);
+
+                            // Gửi yêu cầu HTTP POST bất đồng bộ
+                            fetch('/', {
+                                method: 'POST',
+                                body: formData
+                            })
+                                .then(function(response) {
+                                    if (response.ok) {
+                                        // Nếu yêu cầu thành công, hiển thị thông báo
+                                        submitMessage.innerText = 'Join class successfully!';
+                                        setTimeout(function() {
+                                            submitMessage.innerText = ''; // Xóa thông báo sau 3 giây
+                                        }, 3000);
+                                    } else {
+                                        // Nếu có lỗi, hiển thị thông báo lỗi
+                                        submitMessage.innerText = 'Error: You have already taken this class or the classcode is wrong ' + response.statusText;
+                                        setTimeout(function() {
+                                            submitMessage.innerText = ''; // Xóa thông báo sau 3 giây
+                                        }, 3000);
+                                    }
+                                })
+                                .catch(function(error) {
+                                    // Xử lý lỗi nếu fetch thất bại
+                                    submitMessage.innerText = 'Error: ' + error.message;
+                                });
+                        });
+                    });
+                </script>
                 </div>
 
             </div>
