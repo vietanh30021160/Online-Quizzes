@@ -2,6 +2,7 @@ package com.swp.online_quizz.Controller;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.swp.online_quizz.Entity.Answer;
 import com.swp.online_quizz.Entity.Question;
 import com.swp.online_quizz.Entity.QuestionAttempt;
 import com.swp.online_quizz.Entity.Quiz;
@@ -68,11 +70,6 @@ public class QuizAttemptController {
         return iQuizAttemptsService.findByQuizIdAndUserIdAndStartTime(quizz, user, startTime);
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
-
     @GetMapping("/attemptQuiz/{quizId}")
     public RedirectView attemptQuizz(@PathVariable Integer quizId, Model model) {
         User user = iUsersService.getUsersByID(2);
@@ -83,7 +80,7 @@ public class QuizAttemptController {
             Timestamp endTime = new Timestamp(endTimeMillis);
             long startTimeSearchMillis = startTime.getTime() - (10);
             Timestamp startTimeSearch = new Timestamp(startTimeSearchMillis);
-            List<Question> listQuestion = getRandomQuestionsFromSet(quizId, 3); // số lượng câu hỏi trong 1 bài quiz
+            List<Question> listQuestion = getRandomQuestionsFromSet(quizId, 9); // số lượng câu hỏi trong 1 bài quiz
                                                                                 // được tạo
             QuizAttempt newAttemp = new QuizAttempt(0, user, quizz, startTime, endTime,
                     0, false, listQuestion.get(0), null, null, null);
@@ -123,11 +120,15 @@ public class QuizAttemptController {
             Question question = listQProg.get((page)).getQuestion();
             QuizProgress quizProgress = listQProg.get((page));
             String answerString = quizProgress.getAnswer();
-            int answerProg = 0;
+            int[] answerProg = new int[question.getListAnswer().size()];
+            for (int i = 0; i < answerProg.length; i++) {
+                answerProg[i] = 0;
+            }
             if (answerString != null && !answerString.isEmpty()) {
-                answerProg = Integer.parseInt(answerString);
-            } else {
-                answerProg = 0;
+                String[] answerIds = answerString.split(",");
+                for (int i = 0; i < answerIds.length; i++) {
+                    answerProg[i] = Integer.parseInt(answerIds[i]);
+                }
             }
             Quiz quiz = attemp.getQuiz();
             page += 1;
@@ -139,10 +140,11 @@ public class QuizAttemptController {
             model.addAttribute("listQProg", listQProg);
             model.addAttribute("startTime", attemp.getStartTime());
             model.addAttribute("endTime", attemp.getEndTime().getTime());
-
             model.addAttribute("QuizProgress", new QuizProgress());
             return "doQuizz";
-        } else {
+        } else
+
+        {
             return "Login";
         }
     }
@@ -163,8 +165,30 @@ public class QuizAttemptController {
         for (QuestionAttempt questionAttempts : attemp.getListQuestionAttempts()) {
             if (questionAttempts.getQuestion().getQuestionId() == questionProgress.getQuestionId()) {
                 if (answerProgress != null) {
-                    if (iAnswerService.getAnswers(Integer.parseInt(answerProgress)).getIsCorrect()) {
-                        questionAttempts.setIsCorrect(true);
+                    if (questionAttempts.getQuestion().getQuestionType().equalsIgnoreCase("multiplechoice")
+                            || questionAttempts.getQuestion().getQuestionType().equalsIgnoreCase("yesno")) {
+                        String[] arrayStringAnswerProgress = answerProgress.split(",");
+                        int[] arrayIntAnswerProgress = new int[arrayStringAnswerProgress.length];
+                        for (int i = 0; i < arrayStringAnswerProgress.length; i++) {
+                            arrayIntAnswerProgress[i] = Integer.parseInt(arrayStringAnswerProgress[i]);
+                        }
+                        ArrayList<Integer> listCorrectAnswer = new ArrayList<>();
+                        for (Answer answer : questionAttempts.getQuestion().getListAnswer()) {
+                            if (answer.getIsCorrect()) {
+                                listCorrectAnswer.add(answer.getAnswerId());
+                            }
+                        }
+                        int[] arrayCorrectAnswer = new int[listCorrectAnswer.size()];
+                        for (int i = 0; i < listCorrectAnswer.size(); i++) {
+                            arrayCorrectAnswer[i] = listCorrectAnswer.get(i); // Autoboxing
+                        }
+                        Arrays.sort(arrayIntAnswerProgress);
+                        Arrays.sort(arrayCorrectAnswer);
+                        if (Arrays.equals(arrayIntAnswerProgress, arrayCorrectAnswer)) {
+                            questionAttempts.setIsCorrect(true);
+                        } else {
+                            questionAttempts.setIsCorrect(false);
+                        }
                     } else {
                         questionAttempts.setIsCorrect(false);
                     }
@@ -224,7 +248,7 @@ public class QuizAttemptController {
                 count++;
             }
         }
-        double mark = ((double) count / attempt.getListQuestionAttempts().size()) * 10;
+        double mark = ((double) count / attempt.getListQuestionAttempts().size()) * 100;
         attempt.setMarks((int) mark);
         iQuizAttemptsService.updateAttempts(attemptID, attempt);
         return new RedirectView("/quizzes/{quizId}");

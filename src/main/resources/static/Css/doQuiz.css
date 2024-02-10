@@ -25,12 +25,12 @@
     height: 100%; 
     fill: transparent;
     stroke-width: 8;
-    stroke: #282828;
+    stroke: #5c636a;
     stroke-linecap: round;
     transform: translate(5px, 5px);
 }
 #time .circle svg circle:nth-child(2) {
-    stroke: var(--clr);
+    stroke: url(#gradient);
     stroke-dasharray: 214;
     stroke-dashoffset: 214;
 }
@@ -49,7 +49,7 @@
     text-transform: uppercase;
 }
 .timeLimit {
-    font-size: 30px;
+    font-size: 28px;
 }
 #time .dots{
     position: absolute;
@@ -66,28 +66,27 @@
     top: -3px;
     width: 15px;
     height: 15px;
-    background: var(--clr);
+    background: url(#gradient);
     border-radius: 50%;
-    box-shadow: 0 0 20px var(--clr),
-    0 0 60px var(--clr);
+    box-shadow: 0 0 20px url(#gradient),
+    0 0 60px url(#gradient);
 
 }
 
-.Container h2{
-    font-size: 20px;
-}
 .Container{
     margin: 0 auto;
     max-width: 90%;
 }
 .Container h2{
-    font-size: 20px;
+    margin-top: 20px;
+    font-size: 25px;
+    margin-bottom: 20px;
 }
 .card-contenain {
     margin: 0 auto;
     display: flex;
     justify-content: space-around;
-    align-items: center;
+    align-items: start;
 }
 .card-contenain .card{
     display: flex;
@@ -101,6 +100,10 @@
 }
 .card .content{
     margin-left: 30px;
+    width: 820px;
+}
+.answer {
+    margin: 10px 0 20px 10px;
 }
 .info h3,
 .qno {
@@ -134,7 +137,7 @@
     margin: 10px;
     /* Khoảng cách giữa các nút */
 }
-#timeRemaining {
+#time {
     margin: 10px 20px;
     font-weight: bold;
     font-size: large;
@@ -164,21 +167,45 @@
     border-color: #4c8bf5;
     box-shadow: 0 0 10px #4c8bf580;
 }
-.multipages{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap  ;
-    justify-content: space-between;
-    align-items: center;
+.js-pscroll {
+    position: relative;
+    overflow: hidden;
+    max-height: 100%;
+    z-index: 1;
+    /* Thiết lập z-index để đặt phía sau */
 }
 
+/* Thiết lập cho thanh cuộn */
+.js-pscroll::-webkit-scrollbar {
+    background-color: #4c8bf5;
+        width: 5px !important;
+}
+
+.js-pscroll::-webkit-scrollbar-thumb {
+    background-color: #888;
+}
+
+.js-pscroll::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+.card-multipages{
+    margin: 0;
+    max-width: 350px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 130px;
+}
 .button-load {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
     margin-top: 40px;
-    margin-bottom: 200px;
+    margin-bottom: 20px;
 }
 
 .button-load button {
@@ -200,7 +227,6 @@
     color: #333;
     transition: all 0.5s ease-in-out;
 }
-
 .button-load .btn-txt {
     z-index: 1;
     font-weight: 600;
