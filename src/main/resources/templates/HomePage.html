@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{HomeHead :: head}"></head>
 <link th:href="@{Css/Home.css}" rel="stylesheet">
 <body id="top">
@@ -14,22 +14,56 @@
 
                 <div class="col-lg-8 col-12 mx-auto">
                     <h1 class="text-white text-center">Test. Learn. Enjoy</h1>
-
                     <h6 class="text-center">Easy to use for teachers and students</h6>
-
-                    <form method="get" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
+                    <form id="joinForm" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
                         <div class="input-group input-group-lg">
-                                    <span class="input-group-text bi-search" id="basic-addon1">
-
-                                    </span>
-
-                            <input name="keyword" type="search" class="form-control" id="keyword"
-                                   placeholder="Test, Code join class,  ..." aria-label="Search">
-
+                            <span class="input-group-text bi-search" id="basic-addon1"></span>
+                            <input type="search" name="classCode" class="form-control" placeholder=" Code join class,  ..."
+                                   aria-label="Search">
                             <button type="submit" class="form-control">Join</button>
-
                         </div>
                     </form>
+                    <p id="submitMessage" ></p>
+                </div>
+
+                <script type="text/javascript">
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var form = document.getElementById('joinForm');
+                        var submitMessage = document.getElementById('submitMessage');
+
+                        form.addEventListener('submit', function(event) {
+                            event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+                            // Lấy dữ liệu từ form
+                            var formData = new FormData(form);
+
+                            // Gửi yêu cầu HTTP POST bất đồng bộ
+                            fetch('/', {
+                                method: 'POST',
+                                body: formData
+                            })
+                                .then(function(response) {
+                                    if (response.ok) {
+                                        // Nếu yêu cầu thành công, hiển thị thông báo
+                                        submitMessage.innerText = 'Join class successfully!';
+                                        setTimeout(function() {
+                                            submitMessage.innerText = ''; // Xóa thông báo sau 3 giây
+                                        }, 3000);
+                                    } else {
+                                        // Nếu có lỗi, hiển thị thông báo lỗi
+                                        submitMessage.innerText = 'Error: You have already taken this class or the classcode is wrong ' + response.statusText;
+                                        setTimeout(function() {
+                                            submitMessage.innerText = ''; // Xóa thông báo sau 3 giây
+                                        }, 3000);
+                                    }
+                                })
+                                .catch(function(error) {
+                                    // Xử lý lỗi nếu fetch thất bại
+                                    submitMessage.innerText = 'Error: ' + error.message;
+                                });
+                        });
+                    });
+                </script>
                 </div>
 
             </div>
@@ -53,7 +87,7 @@
                     <ul class="nav nav-tabs"  >
                         <li class="nav-item"  th:each="subject : ${listSubject}">
                             <a class="nav-link active"
-                               th:href="@{'?keyword='+ ${subject.subjectName} + '#section_2'}"
+                               th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'subject='+ ${subject.subjectName} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max:''}+ '#section_2'}"
                                th:text="${subject.subjectName}"
                                style="color: #000000"></a>
                         </li>
@@ -65,9 +99,9 @@
             <label class="filter-button" for="filterCheckbox">Time</label>
             <input type="checkbox" id="filterCheckbox">
             <div class="filter-options">
-                <span><a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo=1'+'&min=0'+'&max=30'+ '#section_2'}">0-30 Minute</a></span></br>
-                <span><a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo=1'+'&min=30'+'&max=60'+ '#section_2'}">30-60 Minute</a></span></br>
-                <span><a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo=1' +'&min=60'+'&max=150'+ '#section_2'}">60-150 Minute</a></span></br>
+                <span><a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo=1'+'&min=0'+'&max=30'+${subject!=null && subject!='' ? '&subject='+subject:''} +'#section_2'}">0-30 Minute</a></span></br>
+                <span><a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo=1'+'&min=30'+'&max=60'+${subject!=null && subject!='' ? '&subject='+subject:''} + '#section_2'}">30-60 Minute</a></span></br>
+                <span><a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo=1' +'&min=60'+'&max=150'+${subject!=null && subject!='' ? '&subject='+subject:''}+ '#section_2'}">60-150 Minute</a></span></br>
             </div>
         </div>
 
@@ -102,13 +136,13 @@
         <div class="box-footer">
             <ul class="pagination">
                 <li th:if="${currentPage>1}"><a
-                        th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo='+ ${currentPage-1} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max+'#':'#'}+ 'section_2'}">«</a>
+                        th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo='+ ${currentPage-1} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max:''}+${subject!=null && subject!='' ? '&subject='+subject:''}+ '#section_2'}">«</a>
                 </li>
                 <li th:each="i:${#numbers.sequence(1,totalPage)}" th:classappend="${currentPage == i ? 'active' : ''}">
-                    <a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo='+ ${i} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max+'#':'#'}+ 'section_2'}"
+                    <a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo='+ ${i} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max:''}+${subject!=null && subject!='' ? '&subject='+subject:''}+ '#section_2'}"
                        th:text="${i}"></a></li>
                 <li th:if="${currentPage<totalPage}"><a
-                        th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo='+ ${currentPage+1} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max+'#':'#'}+ 'section_2'}">»</a>
+                        th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo='+ ${currentPage+1} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max:''}+${subject!=null && subject!='' ? '&subject='+subject:''}+ '#section_2'}">»</a>
                 </li>
             </ul>
         </div>
@@ -133,11 +167,10 @@
                             </div>
 
                             <li>
-                                <h4 class="text-white mb-3">Search your favourite topic</h4>
+                                <h4 class="text-white mb-3">Join classes </h4>
 
-                                <p class="text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                    Reiciendis, cumque magnam? Sequi, cupiditate quibusdam alias illum sed esse ad
-                                    dignissimos libero sunt, quisquam numquam aliquam? Voluptas, accusamus omnis?</p>
+                                <p class="text-white">the website can help you join teacher-created classes easily.
+                                    By using the classCode provided by the teacher, we will then enter the code and join the class</p>
 
                                 <div class="icon-holder">
                                     <i class="bi-search"></i>
@@ -145,23 +178,22 @@
                             </li>
 
                             <li>
-                                <h4 class="text-white mb-3">Bookmark &amp; Keep it for yourself</h4>
+                                <h4 class="text-white mb-3">Search your favourite topic</h4>
 
-                                <p class="text-white">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sint
-                                    animi necessitatibus aperiam repudiandae nam omnis est vel quo, nihil repellat quia
-                                    velit error modi earum similique odit labore. Doloremque, repudiandae?</p>
+                                <p class="text-white">The website can offer many options in subjects.
+                                    We can easily search for quizzes based on subjects or quiz name.
+                                    If you combine both of these search methods, you will achieve results easily</p>
 
                                 <div class="icon-holder">
-                                    <i class="bi-bookmark"></i>
+                                    <i class="bi-search"></i>
                                 </div>
                             </li>
 
                             <li>
                                 <h4 class="text-white mb-3">Read &amp; Enjoy</h4>
 
-                                <p class="text-white">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi
-                                    vero quisquam, rem assumenda similique voluptas distinctio, iste est hic eveniet
-                                    debitis ut ducimus beatae id? Quam culpa deleniti officiis autem?</p>
+                                <p class="text-white">The website provides users with an interface that is easy to use, understand and experience.
+                                    Convenient testing of tests</p>
 
                                 <div class="icon-holder">
                                     <i class="bi-book"></i>
