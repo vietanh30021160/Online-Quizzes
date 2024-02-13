@@ -83,8 +83,12 @@ public class QuizAttemptController {
             Timestamp endTime = new Timestamp(endTimeMillis);
             long startTimeSearchMillis = startTime.getTime() - (10);
             Timestamp startTimeSearch = new Timestamp(startTimeSearchMillis);
-            List<Question> listQuestion = getRandomQuestionsFromSet(quizId, 9); // số lượng câu hỏi trong 1 bài quiz
-                                                                                // được tạo
+            // số lượng câu hỏi trong 1 bài quiz được tạo
+            Integer numbOfQuestion = 4; // Initialize it to null or some value
+            if (numbOfQuestion == null) {
+                numbOfQuestion = quizz.getListQuestions().size();
+            }
+            List<Question> listQuestion = getRandomQuestionsFromSet(quizId, numbOfQuestion);
             QuizAttempt newAttemp = new QuizAttempt(0, user, quizz, startTime, endTime,
                     0, false, listQuestion.get(0), null, null, null);
             iQuizAttemptsService.createQuizzAttempt(newAttemp);

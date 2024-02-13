@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <div th:replace="HomeHead :: head"></div>
+    <link rel="stylesheet" type="text/css" media="all" href="/css/Importxlsx.css" th:href="@{/css/Importxlsx.css}">
+    <title>Document</title>
+</head>
+<body>
+    <div th:replace="~{HomeHeader :: header}"></div>
+    <div class="container_upload">
+        <div class="card">
+            <h3>Upload Files</h3>
+            <a href="/quizzes/download-sample" 
+            th:href="@{/quizzes/downloadsample}">Download sample</a>
+            <div class="drop_box">
+                <header>
+                    <h4>Select File here</h4>
+                </header>
+                <p>Files Supported: XLSX</p>
+                <input type="file" hidden accept="xlsx" id="fileID" style="display:none;">
+                <button class="btn">Choose File</button>
+            </div>
+    
+        </div>
+    </div>
+    <div th:replace="~{HomeFooter :: footer}"></div>
+    <script th:src="@{/Js/Importxlsx.js}"></script>
+</body>
+</html>

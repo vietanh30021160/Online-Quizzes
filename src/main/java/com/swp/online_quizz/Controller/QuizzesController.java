@@ -1,9 +1,17 @@
 package com.swp.online_quizz.Controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.io.IOUtils;
+import org.hibernate.boot.beanvalidation.IntegrationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -63,6 +71,26 @@ public class QuizzesController {
         model.addAttribute("highestMark", highestMark);
         return "quizzInfo";
 
+    }
+
+    @GetMapping("/Importxlsx")
+    public String test() {
+        return "Importxlsx";
+    }
+
+    @GetMapping("/downloadsample")
+    public ResponseEntity<?> downloadSample() throws IOException {
+        String fileName = "ExampleFormQuiz.xlsx";
+        InputStream is = this.getClass().getResourceAsStream(fileName);
+        try {
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+                    .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                    .body(IOUtils.toByteArray(is));
+        } catch (IntegrationException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }
