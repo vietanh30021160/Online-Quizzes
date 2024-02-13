@@ -64,5 +64,15 @@ public class QuestionsService implements IQuestionsService {
         }
         return false;
     }
+    @Override
+    public List<Question> getQuestionsByQuizId(Integer quizId) {
+        return questionsRepository.findByQuizQuizId(quizId);
+    }
+    @Override
+    @Transactional
+    public void deleteQuestionsByQuizId(Integer quizId) {
+        List<Question> questions = questionsRepository.findByQuizQuizId(quizId);
+        questionsRepository.deleteAll(questions);
+    }
 
 }

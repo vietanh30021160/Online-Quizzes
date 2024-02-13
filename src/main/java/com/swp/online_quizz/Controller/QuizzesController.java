@@ -7,6 +7,8 @@ import com.swp.online_quizz.Entity.*;
 import com.swp.online_quizz.Repository.QuizRepository;
 import com.swp.online_quizz.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -29,7 +31,10 @@ public class QuizzesController {
     private IQuizzesService iQuizService;
     @Autowired
     private IQuestionsService iQuestionsService;
-
+    @Autowired
+    private IQuizProgressService iQuizProgressService;
+    @Autowired
+    private IQuestionAttemptsService iQuestionAttemptsService;
     @Autowired
     private IAnswerService iAnswerService;
     @Autowired
@@ -84,11 +89,8 @@ public class QuizzesController {
                     iAnswerService.createAnswer1(answer, question.getQuestionId());
                 }
             }
-
-            // Redirect to a success page or do further processing
             return "redirect:/quizzes/list";
         } else {
-            // Handle the case where the quiz creation failed
             return "redirect:/quizzes/createAll";
         }
     }
@@ -146,6 +148,24 @@ public class QuizzesController {
         model.addAttribute("quiz", quiz);
 
         return "updateQuiz";
+    }
+    @GetMapping("/delete/{quizId}")
+    public String deleteQuiz(@PathVariable Integer quizId) {
+        try {
+            iQuizProgressService.deleteQuizProcessByQuizId(quizId);
+            iQuestionAttemptsService.deleteQuestionAttemptsByQuizId(quizId);
+            iQuizAttemptsService.deleteQuizAttemptsByQuizId(quizId);
+            iQuestionsService.deleteQuestionsByQuizId(quizId);
+            List<Question> questions = iQuestionsService.getQuestionsByQuizId(quizId);
+            for (Question question : questions) {
+                iAnswerService.deleteAnswersByQuestionId(question.getQuestionId());
+            }
+
+            iQuizzesService.deleteQuizById(quizId);
+            return "redirect:/quizzes/list";
+        } catch (Exception e) {
+            return "redirect:/quizzes/list";
+        }
     }
     @GetMapping("/{quizID}")
     public String quizInfo(@PathVariable Integer quizID, HttpSession session, Model model) {

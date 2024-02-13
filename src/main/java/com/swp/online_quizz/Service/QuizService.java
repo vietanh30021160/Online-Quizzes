@@ -1,6 +1,7 @@
 package com.swp.online_quizz.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Repository.AnswersRepository;
@@ -103,6 +104,13 @@ public class QuizService implements IQuizzesService {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    @Transactional
+    public void deleteQuizById(Integer quizId) {
+        Optional<Quiz> optionalQuiz = quizRepository.findByQuizId(quizId);
+        optionalQuiz.ifPresent(quiz -> quizRepository.delete(quiz));
     }
     @Override
     public List<Quiz> searchQuizzes(String keyword) {

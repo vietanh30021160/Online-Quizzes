@@ -22,6 +22,9 @@ public interface IQuizzesService {
     @Transactional
     Boolean updateQuizByQuizId1(Integer id, Quiz quiz);
 
+    @Transactional
+    void deleteQuizById(Integer quizId);
+
     public List<Quiz> searchQuizzes(String keyword);
 
     Page<Quiz> getAll(Integer pageNo);

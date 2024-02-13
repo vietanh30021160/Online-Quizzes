@@ -3,7 +3,6 @@ package com.swp.online_quizz.Service;
 import com.swp.online_quizz.Entity.Answer;
 import com.swp.online_quizz.Entity.Question;
 import com.swp.online_quizz.Repository.AnswersRepository;
-import com.swp.online_quizz.Repository.QuestionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,7 +54,12 @@ public class AnswerService implements IAnswerService{
         }
         return false;
     }
-
+    @Override
+    @Transactional
+    public void deleteAnswersByQuestionId(Integer questionId) {
+        List<Answer> answers = answersRepository.findByQuestionQuestionId(questionId);
+        answersRepository.deleteAll(answers);
+    }
     @Override
     public Answer getAnswerById(Integer questionId) {
         return answersRepository.findById(questionId).orElse(null);

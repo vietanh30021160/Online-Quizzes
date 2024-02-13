@@ -32,7 +32,7 @@
         <td th:text="${quiz.timeLimit}"></td>
         <td th:text="${quiz.isCompleted}"></td>
         <td><a th:href="@{'/quizzes/showUpdateQuizPage/' + ${quiz.quizId}}">Update</a></td>
-        <td><a th:href="@{'/quizzes/deleteAll/' + ${quiz.quizId}}">Delete</a></td>
+        <td><a th:href="@{'/quizzes/delete/' + ${quiz.quizId}}">Delete</a></td>
     </tr>
     </tbody>
 </table>
