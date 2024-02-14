@@ -15,15 +15,18 @@ import java.util.List;
 
 @Service
 public class QuizAttemptsService implements IQuizAttemptsService {
+    @Autowired
+    private QuizAttemptsRepository quizAttemptsRepository;
     @Override
     @Transactional
     public void deleteQuizAttemptsByQuizId(Integer quizId) {
         List<QuizAttempt> attempts = quizAttemptsRepository.findByQuizQuizId(quizId);
         quizAttemptsRepository.deleteAll(attempts);
     }
-
-    @Autowired
-    private QuizAttemptsRepository quizAttemptsRepository;
+    @Override
+    public List<QuizAttempt> getQuizAttemptsByQuizId(Integer quizId) {
+        return quizAttemptsRepository.findByQuizQuizId(quizId);
+    }
 
 
     @Override

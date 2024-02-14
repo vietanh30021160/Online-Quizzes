@@ -38,6 +38,8 @@ public class QuizzesController {
     @Autowired
     private IAnswerService iAnswerService;
     @Autowired
+    private IFeedbackService iFeedbackService;
+    @Autowired
     private ISubjectService iSubjectService;
     @GetMapping("/all")
 
@@ -108,39 +110,38 @@ public class QuizzesController {
     }
 
 
-        @PostMapping("/updateAll/{quizId}")
-        public String updateQuizAndQuestions(@PathVariable Integer quizId, @ModelAttribute("quiz") Quiz updatedQuiz) {
-            iQuizzesService.updateQuizByQuizId1(quizId, updatedQuiz);
+    @PostMapping("/updateAll/{quizId}")
+    public String updateQuizAndQuestions(@PathVariable Integer quizId, @ModelAttribute("quiz") Quiz updatedQuiz) {
+        iQuizzesService.updateQuizByQuizId1(quizId, updatedQuiz);
 
-            for (Question updatedQuestion : updatedQuiz.getListQuestions()) {
-                Question existingQuestion = iQuestionsService.findQuestionById(updatedQuestion.getQuestionId());
+        for (Question updatedQuestion : updatedQuiz.getListQuestions()) {
+            Question existingQuestion = iQuestionsService.findQuestionById(updatedQuestion.getQuestionId());
 
-                if (existingQuestion != null) {
-                    iQuestionsService.updateQuestion1(existingQuestion.getQuestionId(), updatedQuestion);
+            if (existingQuestion != null) {
+                iQuestionsService.updateQuestion1(existingQuestion.getQuestionId(), updatedQuestion);
+            } else {
+                updatedQuestion.setQuiz(updatedQuiz);
+                iQuestionsService.createQuestion1(updatedQuestion);
+            }
+
+            for (Answer updatedAnswer : updatedQuestion.getListAnswer()) {
+                Answer existingAnswer = iAnswerService.getAnswerById(updatedAnswer.getAnswerId());
+
+                if (existingAnswer != null) {
+                    iAnswerService.updateAnswer1(existingAnswer.getAnswerId(), updatedAnswer);
                 } else {
-                    updatedQuestion.setQuiz(updatedQuiz);
-                    iQuestionsService.createQuestion1(updatedQuestion);
+                    updatedAnswer.setQuestion(updatedQuestion);
+                    iAnswerService.createAnswer1(updatedAnswer, updatedQuestion.getQuestionId());
                 }
-
-                for (Answer updatedAnswer : updatedQuestion.getListAnswer()) {
-                    Answer existingAnswer = iAnswerService.getAnswerById(updatedAnswer.getAnswerId());
-
-                    if (existingAnswer != null) {
-                        iAnswerService.updateAnswer1(existingAnswer.getAnswerId(), updatedAnswer);
-                    } else {
-                        updatedAnswer.setQuestion(updatedQuestion);
-                        iAnswerService.createAnswer1(updatedAnswer, updatedQuestion.getQuestionId());
-                    }
-                }
-
-            return "redirect:/quizzes/list";
-
+            }
         }
+
         return "redirect:/quizzes/list";
     }
+
     @GetMapping("/showUpdateQuizPage/{quizId}")
     public String getUpdateQuizForm(@PathVariable Integer quizId, Model model) {
-        // Retrieve the quiz and its details from the service
+
         Quiz quiz = iQuizService.findQuizById(quizId);
         if (quiz == null) {
             return "showQuiz";
@@ -154,6 +155,10 @@ public class QuizzesController {
         try {
             iQuizProgressService.deleteQuizProcessByQuizId(quizId);
             iQuestionAttemptsService.deleteQuestionAttemptsByQuizId(quizId);
+            List<QuizAttempt> attempts = iQuizAttemptsService.getQuizAttemptsByQuizId(quizId);
+            for (QuizAttempt attempt : attempts) {
+                iFeedbackService.deleteFeedbackByAttemptId(attempt.getAttemptId());
+            }
             iQuizAttemptsService.deleteQuizAttemptsByQuizId(quizId);
             iQuestionsService.deleteQuestionsByQuizId(quizId);
             List<Question> questions = iQuestionsService.getQuestionsByQuizId(quizId);

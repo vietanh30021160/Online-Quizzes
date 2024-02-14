@@ -34,9 +34,14 @@
             <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].questionContent'}"
                    th:field="*{listQuestions[__${questionIndex.index}__].questionContent}"  required>
 
+
             <label th:for="${'listQuestions[' + questionIndex.index + '].questionType'}">Question Type:</label>
-            <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].questionType'}"
-                   th:field="*{listQuestions[__${questionIndex.index}__].questionType}"  required>
+            <select th:id="${'listQuestions[' + questionIndex.index + '].questionType'}"
+                    th:field="*{listQuestions[__${questionIndex.index}__].questionType}" required>
+
+                <option value="multiplechoice" th:selected="${question.questionType == 'multiplechoice'}">multiplechoice</option>
+                <option value="shortanswer" th:selected="${question.questionType == 'shortanswer'}">shortanswer</option>
+            </select>
 
             <label th:for="${'listQuestions[' + questionIndex.index + '].imageUrl'}">Image URL:</label>
             <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].imageUrl'}"

@@ -14,6 +14,8 @@ public interface IQuizAttemptsService {
     @Transactional
     void deleteQuizAttemptsByQuizId(Integer quizId);
 
+    List<QuizAttempt> getQuizAttemptsByQuizId(Integer quizId);
+
     List<QuizAttempt> getAll();
     Boolean create(QuizAttempt quizAttempts);
     QuizAttempt findById(Integer AttemptsID);
