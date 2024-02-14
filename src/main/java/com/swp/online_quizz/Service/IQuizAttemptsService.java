@@ -5,11 +5,17 @@ import com.swp.online_quizz.Entity.QuizAttempt;
 import com.swp.online_quizz.Entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
 
 public interface IQuizAttemptsService {
+    @Transactional
+    void deleteQuizAttemptsByQuizId(Integer quizId);
+
+    List<QuizAttempt> getQuizAttemptsByQuizId(Integer quizId);
+
     List<QuizAttempt> getAll();
     Boolean create(QuizAttempt quizAttempts);
     QuizAttempt findById(Integer AttemptsID);
