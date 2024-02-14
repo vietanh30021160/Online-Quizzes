@@ -25,7 +25,7 @@ th, td {
 }
 
 th {
-    background-color: #4CAF50;
+    background-color: #337ab7;
     color: white;
 }
 
@@ -37,20 +37,20 @@ a {
     display: inline-block;
     margin: 10px 0;
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #337ab7;
     color: white;
     text-decoration: none;
     border-radius: 4px;
 }
 
 a:hover {
-    background-color: #45a049;
+    background-color: #337ab7;
 }
 button {
     display: inline-block;
     margin: 10px 0;
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #337ab7;
     color: white;
     text-decoration: none;
     border-radius: 4px;
