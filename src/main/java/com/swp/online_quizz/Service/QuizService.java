@@ -119,7 +119,7 @@ public class QuizService implements IQuizzesService {
 
     @Override
     public Page<Quiz> getAll(Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo - 1, 3);
+        Pageable pageable = PageRequest.of(pageNo -1, 3);
         return this.quizRepository.findAll(pageable);
     }
 
@@ -144,17 +144,10 @@ public class QuizService implements IQuizzesService {
         return quizRepository.findAll();
     }
 
-    @Override
-    public List<Quiz> filterQuizzesByTimeLimit(Integer min, Integer max) {
-        if (min != null && max != null) {
-            return quizRepository.findBytimeLimitBetween(min, max);
-        } else {
-            return quizRepository.findAll();
-        }
-    }
+
 
     @Override
-    public Page<Quiz> searchAndFilter(String keyword, Integer pageNo, Integer min, Integer max) {
+    public Page<Quiz> searchAndFilterAndSubject(String keyword, Integer pageNo, Integer min, Integer max, String subject) {
         Specification<Quiz> spec = Specification.where(null);
 
         if (keyword != null && !keyword.isEmpty()) {
@@ -165,6 +158,11 @@ public class QuizService implements IQuizzesService {
                             "%" + keyword.toLowerCase() + "%")));
         }
 
+        if (subject != null && !subject.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("subject").get("subjectName"), subject));
+        }
+
         if (min != null) {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get("timeLimit"), min));
         }
@@ -173,7 +171,8 @@ public class QuizService implements IQuizzesService {
             spec = spec.and(
                     (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("timeLimit"), max));
         }
-        Pageable pageable = PageRequest.of(pageNo - 1, 3);
+
+        Pageable pageable = PageRequest.of(pageNo -1, 3);
 
         return quizRepository.findAll(spec, pageable);
     }

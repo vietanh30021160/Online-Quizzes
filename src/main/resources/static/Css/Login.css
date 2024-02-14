@@ -1,0 +1,184 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap");
+
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1.5rem;
+    &:after{
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-color: #0037ff;
+        height: 100vh;
+        z-index: -1;
+    }
+}
+
+a{
+    text-decoration: none;
+
+}
+
+.login-card{
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 10px 50px -30px black;
+    width: 1200px;
+    border-radius: 30px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.column{
+    padding: 4rem;
+    &:last-child{
+        background-size: cover;
+        position: relative;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        gap: 40px;
+        &:after{
+            content:"";
+            position:absolute;
+            background: linear-gradient(90deg, white, #ffffff82);
+            inset: 0;
+        }
+        *{
+            z-index: 1;
+        }
+        a{
+            display: inline-block;
+            padding: 12px 30px;
+            font-size: 16px;
+            border: 2px solid #0037ff;
+            color: black;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all .3s;
+            font-weight: 600;
+            &:hover{
+                background-color: #0037ff;
+                color: white;
+            }
+        }
+    }
+
+    &:last-child{
+        text-align: center;
+    }
+}
+
+h1{
+    margin-left: 8rem;
+    
+    margin-bottom: 15px;
+}
+
+.form-element{
+    width: 100%;
+    border: none;
+
+    background-color: #f1f1f1;
+    padding: 20px 30px;
+    font-size: 18px;
+    border-radius: 20px;
+    transition:box-shadow .2x;
+
+    &:focus{
+        outline:none;
+        box-shadow: 0 0 0 2px #0037ff;
+    }
+}
+input[type=checkbox]{
+    accent-color: #0037ff;
+    width: 16px;
+    height: 16px;
+}
+form{
+    margin-top: 3rem;
+    
+    &>*{
+        margin-top: 1rem;
+    }
+    .button{
+        background-color: #0037ff;
+        color: white;
+        border: none;
+        padding: 20px 40px;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 18px;
+        transition: all .2s;
+        &:active{
+            scale: .95;
+            background-color: darken(#0037ff, 10%);
+        }
+    }
+
+    .form-checkbox-item{
+        display: flex;
+        align-items: center;
+        gap: .7rem;
+        margin-left: 5px;
+    }
+}
+.message{
+    color: red;
+}
+
+.flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.footer{
+    margin-left: 6rem;
+    
+}
+.social-button{
+    margin-left: 3.5rem;
+
+    display: flex;
+    gap: 1rem;
+    a{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+    }
+}
+
+.google {
+    height: 46px;
+    width: 46px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0.45rem;
+    color: #333;
+    border-radius: 50%;
+    border: 1px solid #333;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: 0.3s;
+  }
+  
+  .google:hover {
+    color: #4481eb;
+    border-color: #4481eb;
+  }

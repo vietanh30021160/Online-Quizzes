@@ -2,17 +2,29 @@ package com.swp.online_quizz.Controller;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 import com.swp.online_quizz.Entity.*;
 import com.swp.online_quizz.Repository.QuizRepository;
 import com.swp.online_quizz.Service.*;
+import com.swp.online_quizz.Repository.UsersRepository;
+import com.swp.online_quizz.Service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.swp.online_quizz.Entity.Quiz;
+import com.swp.online_quizz.Entity.QuizAttempt;
+import com.swp.online_quizz.Entity.User;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -68,6 +80,8 @@ public class QuizzesController {
         Subject subject = new Subject();
         subject.setSubjectName(subjectName);
 
+    @Autowired
+    private UsersRepository usersRepository;
 
         quiz.setSubject(subject);
         if (quiz.getTeacher() == null) {
@@ -176,8 +190,21 @@ public class QuizzesController {
         }
     }
     @GetMapping("/{quizID}")
-    public String quizInfo(@PathVariable Integer quizID, HttpSession session, Model model) {
-        User user1 = iUsersService.getUsersByID(2);
+    public String quizInfo(@PathVariable Integer quizID, HttpSession session, Model model, Authentication auth, HttpServletRequest request) {
+
+        String username = "";
+        if(request.getSession().getAttribute("authentication")!=null){
+            Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
+            username= authentication.getName();
+        }
+        Optional<User> userOptional = usersRepository.findByUsername(username);
+        if(userOptional.isEmpty()){
+            //Nếu không có user thì làm gì đấy
+            return "redirect:/login";
+        }
+        //nếu có thì lấy ra user
+        User user1 = userOptional.get();
+
         Quiz quiz = iQuizzesService.getOneQuizz(quizID);
         List<QuizAttempt> listAttempts = iQuizAttemptsService.getAttemptByUserIdAndQuizzId(quiz, user1);
         Integer highestMark = 0;
@@ -190,5 +217,8 @@ public class QuizzesController {
         model.addAttribute("quiz", quiz);
         model.addAttribute("highestMark", highestMark);
         return "quizzInfo";
+
     }
+
+
 }

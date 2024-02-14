@@ -35,8 +35,8 @@ public interface IQuizzesService {
     public Quiz getOneQuizz(Integer quizId);
 
     public List<Quiz> getAllQuizzes();
-    public List<Quiz> filterQuizzesByTimeLimit(Integer min , Integer max);
-    public Page<Quiz> searchAndFilter(String keyword, Integer pageNo, Integer min , Integer max);
+
+    Page<Quiz> searchAndFilterAndSubject(String keyword, Integer pageNo, Integer min, Integer max, String subject);
 }
 
 

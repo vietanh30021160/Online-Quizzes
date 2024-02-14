@@ -20,4 +20,7 @@ public class Classes {
     @Column(name = "ClassName", length = 100)
     private String className;
 
+    @Column(name = "ClassCode", length = 100)
+    private String classCode;
+
 }

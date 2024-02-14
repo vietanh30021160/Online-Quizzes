@@ -10,6 +10,7 @@ import lombok.Setter;
 @Table(name = "ClassEnrollments")
 public class ClassEnrollment {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "EnrollmentID", nullable = false)
     private Integer enrollmentId;
 
@@ -19,6 +20,6 @@ public class ClassEnrollment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "StudentID")
-    private User student;
+    private User studentID;
 
 }
