@@ -54,6 +54,8 @@ public class QuizzesController {
     @Autowired
     private IClassQuizzService iClassQuizzService;
     @Autowired
+    private UsersRepository usersRepository;
+    @Autowired
     private ISubjectService iSubjectService;
     @GetMapping("/all")
 
@@ -80,8 +82,7 @@ public class QuizzesController {
         Subject subject = new Subject();
         subject.setSubjectName(subjectName);
 
-    @Autowired
-    private UsersRepository usersRepository;
+
 
         quiz.setSubject(subject);
         if (quiz.getTeacher() == null) {

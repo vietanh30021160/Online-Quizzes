@@ -23,8 +23,6 @@ import lombok.*;
 @Builder
 public class User {
     @Id
-    @Column(name = "UserID", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UserID")
     private Integer userId;
