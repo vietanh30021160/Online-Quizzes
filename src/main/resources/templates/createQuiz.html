@@ -8,7 +8,7 @@
 </head>
 
 <body>
-<h1>Update Quiz</h1>
+<h1>Create Quiz</h1>
 
 <form id="quizForm" action="/quizzes/createAll" th:action="@{'/quizzes/createAll'}" th:object="${quiz}" method="post">
     <label for="quizName">Quiz Name:</label>
@@ -28,12 +28,12 @@
         <div class="question" th:each="question, questionIndex : ${quiz.listQuestions}">
             <label th:for="${'listQuestions[' + questionIndex.index + '].questionContent'}">
                 <h4>Question Content:</h4>
+                <h4>Question Content:</h4>
                 <input type="hidden" th:id="${'listQuestions[' + questionIndex.index + '].questionId'}"
-                       th:field="*{listQuestions[__${questionIndex.index}__].questionId}" required>
+                       th:field="*{listQuestions[__${questionIndex.index}__].questionId}"  required>
             </label>
             <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].questionContent'}"
                    th:field="*{listQuestions[__${questionIndex.index}__].questionContent}"  required>
-
 
             <label th:for="${'listQuestions[' + questionIndex.index + '].questionType'}">Question Type:</label>
             <select th:id="${'listQuestions[' + questionIndex.index + '].questionType'}"
@@ -49,9 +49,8 @@
 
             <label th:for="${'listQuestions[' + questionIndex.index + '].videoUrl'}">Video URL:</label>
             <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].videoUrl'}"
-                   th:field="*{listQuestions[__${questionIndex.index}__].videoUrl}" >
+                   th:field="*{listQuestions[__${questionIndex.index}__].videoUrl}">
             <hr>
-
             <h4>Answers</h4>
 
             <div class="answersContainer">
