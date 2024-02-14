@@ -15,7 +15,7 @@ public class ClassEnrollment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ClassID")
-    private Class classes;
+    private Classes classes;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "StudentID")

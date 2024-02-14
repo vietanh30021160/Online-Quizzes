@@ -57,6 +57,8 @@ public class QuestionsService implements IQuestionsService {
             Question uQuestion = questionsRepository.getReferenceById(id);
             uQuestion.setQuestionContent(question.getQuestionContent());
             uQuestion.setQuestionType(question.getQuestionType());
+            uQuestion.setImageUrl(question.getImageUrl());
+            uQuestion.setVideoUrl(question.getVideoUrl());
             this.questionsRepository.save(uQuestion);
             return true;
         } catch (Exception ex) {

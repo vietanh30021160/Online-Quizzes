@@ -40,6 +40,8 @@ public class QuizzesController {
     @Autowired
     private IFeedbackService iFeedbackService;
     @Autowired
+    private IClassQuizzService iClassQuizzService;
+    @Autowired
     private ISubjectService iSubjectService;
     @GetMapping("/all")
 
@@ -160,6 +162,7 @@ public class QuizzesController {
                 iFeedbackService.deleteFeedbackByAttemptId(attempt.getAttemptId());
             }
             iQuizAttemptsService.deleteQuizAttemptsByQuizId(quizId);
+            iClassQuizzService.deleteClassQuizzByQuizId(quizId);
             iQuestionsService.deleteQuestionsByQuizId(quizId);
             List<Question> questions = iQuestionsService.getQuestionsByQuizId(quizId);
             for (Question question : questions) {
