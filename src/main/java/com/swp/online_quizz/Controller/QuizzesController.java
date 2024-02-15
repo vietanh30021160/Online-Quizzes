@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.swp.online_quizz.Entity.Answer;
@@ -48,7 +48,7 @@ import com.swp.online_quizz.Service.IUsersService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-@Controller
+@RestController
 @RequestMapping(path = "/quizzes")
 public class QuizzesController {
     @Autowired
@@ -80,6 +80,11 @@ public class QuizzesController {
     @Autowired
     private ISubjectService iSubjectService;
 
+    @PostMapping("/upload")
+    public ResponseEntity<Quiz> uploadExcel(@RequestParam("file") MultipartFile excelFile) throws IOException {
+        return new ResponseEntity<>(excelUploadService.createQuizFromExcel(excelFile), HttpStatus.CREATED);
+    }
+
     @GetMapping("/all")
 
     public List<Quiz> getAll() {
@@ -95,10 +100,7 @@ public class QuizzesController {
 
     @Transactional
     @PostMapping("/createAll")
-    public String createQuizWithQuestionsAndAnswers(@ModelAttribute("quiz") Quiz quiz
-
-    ) {
-        //
+    public String createQuizWithQuestionsAndAnswers(@ModelAttribute("quiz") Quiz quiz) {
 
         String subjectName = quiz.getSubjectName();
 
@@ -247,7 +249,7 @@ public class QuizzesController {
         return "Importxlsx";
     }
 
-    @PostMapping("/upload-quiz-data")
+    @PostMapping("/uploadquizdata")
     public String uploadQuizData(@RequestParam("file") MultipartFile file) throws IOException {
         Quiz quiz = excelUploadService.createQuizFromExcel(file);
         return "showQuiz";
