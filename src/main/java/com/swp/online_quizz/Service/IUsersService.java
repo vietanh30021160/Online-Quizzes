@@ -8,6 +8,11 @@ import java.util.List;
 public interface IUsersService {
     public User getUsersByID(Integer userID);
     List<User> getAlList();
+
+    List<User> findIsactiveTeachers();
+
+    void toggleActive(Integer userId);
+
     Boolean create(User users);
     User findById(Integer userID);
     Boolean update(User users);

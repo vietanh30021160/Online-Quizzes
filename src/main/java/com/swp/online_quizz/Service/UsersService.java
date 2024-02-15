@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsersService implements IUsersService {
@@ -15,8 +16,18 @@ public class UsersService implements IUsersService {
     public List<User> getAlList() {
         return this.usersRepository.findAll();
     }
-
-
+    @Override
+    public List<User> findIsactiveTeachers() {
+        return usersRepository.findByRoleAndIsActive( "ROLE_TEACHER",false);
+    }
+    @Override
+    public void toggleActive(Integer userId) {
+        Optional<User> optionalUser = usersRepository.findById(userId);
+        optionalUser.ifPresent(user -> {
+            user.setIsActive(!user.getIsActive());
+            usersRepository.save(user);
+        });
+    }
     @Override
     public Boolean create(User users) {
         try {
