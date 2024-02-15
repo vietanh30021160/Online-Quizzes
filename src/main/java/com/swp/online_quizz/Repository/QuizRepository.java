@@ -1,6 +1,8 @@
 package com.swp.online_quizz.Repository;
 
 import com.swp.online_quizz.Entity.Quiz;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -21,4 +23,5 @@ public interface QuizRepository extends JpaRepository<Quiz, Integer>, JpaSpecifi
 
     List<Quiz> findBytimeLimitBetween(Integer min, Integer max);
     Optional<Quiz> findByQuizId(Integer quizId);
+
 }
