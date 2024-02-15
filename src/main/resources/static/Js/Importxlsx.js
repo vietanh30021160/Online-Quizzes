@@ -16,7 +16,7 @@ const dropArea = document.querySelector(".drop_box"),
                 return;
             }
             const filedata = `
-                <form action="" method="post">
+                <form th:action="@{/quizzes/upload-quiz-data}" method="post">
                     <div class="form">
                         <h4>${fileName}</h4>
                         <button class="btn">Upload</button>

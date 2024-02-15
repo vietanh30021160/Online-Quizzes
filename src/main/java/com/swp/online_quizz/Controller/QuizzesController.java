@@ -3,39 +3,47 @@ package com.swp.online_quizz.Controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.IOUtils;
 import org.hibernate.boot.beanvalidation.IntegrationException;
-import com.swp.online_quizz.Entity.*;
-import com.swp.online_quizz.Repository.QuizRepository;
-import com.swp.online_quizz.Service.*;
-import com.swp.online_quizz.Repository.UsersRepository;
-import com.swp.online_quizz.Service.*;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.swp.online_quizz.Entity.Answer;
+import com.swp.online_quizz.Entity.Question;
 import com.swp.online_quizz.Entity.Quiz;
 import com.swp.online_quizz.Entity.QuizAttempt;
+import com.swp.online_quizz.Entity.Subject;
 import com.swp.online_quizz.Entity.User;
+import com.swp.online_quizz.Repository.QuizRepository;
 import com.swp.online_quizz.Repository.UsersRepository;
+import com.swp.online_quizz.Service.ExcelUploadService;
+import com.swp.online_quizz.Service.IAnswerService;
+import com.swp.online_quizz.Service.IClassQuizzService;
+import com.swp.online_quizz.Service.IFeedbackService;
+import com.swp.online_quizz.Service.IQuestionAttemptsService;
+import com.swp.online_quizz.Service.IQuestionsService;
 import com.swp.online_quizz.Service.IQuizAttemptsService;
+import com.swp.online_quizz.Service.IQuizProgressService;
 import com.swp.online_quizz.Service.IQuizzesService;
+import com.swp.online_quizz.Service.ISubjectService;
+import com.swp.online_quizz.Service.IUsersService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -43,6 +51,8 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping(path = "/quizzes")
 public class QuizzesController {
+    @Autowired
+    private ExcelUploadService excelUploadService;
     @Autowired
     private IUsersService iUsersService;
     @Autowired
@@ -69,9 +79,10 @@ public class QuizzesController {
     private UsersRepository usersRepository;
     @Autowired
     private ISubjectService iSubjectService;
+
     @GetMapping("/all")
 
-    public List<Quiz> getAll(){
+    public List<Quiz> getAll() {
         return iQuizzesService.getAll();
     }
 
@@ -81,20 +92,18 @@ public class QuizzesController {
         model.addAttribute("quizList", quizList);
         return "showQuiz";
     }
+
     @Transactional
     @PostMapping("/createAll")
     public String createQuizWithQuestionsAndAnswers(@ModelAttribute("quiz") Quiz quiz
 
     ) {
-//
+        //
 
         String subjectName = quiz.getSubjectName();
 
-
         Subject subject = new Subject();
         subject.setSubjectName(subjectName);
-
-
 
         quiz.setSubject(subject);
         if (quiz.getTeacher() == null) {
@@ -110,9 +119,7 @@ public class QuizzesController {
 
                 question.setQuiz(quiz);
 
-
                 iQuestionsService.createQuestion1(question);
-
 
                 for (Answer answer : question.getListAnswer()) {
 
@@ -125,10 +132,11 @@ public class QuizzesController {
             return "redirect:/quizzes/createAll";
         }
     }
+
     @GetMapping("/showCreateQuizPage")
     public String showCreateQuizPage(Model model) {
         Quiz quiz = iQuizzesService.getEmptyQuiz();
-        model.addAttribute("quiz",new Quiz());
+        model.addAttribute("quiz", new Quiz());
         List<String> questionContents = quiz.getListQuestions().stream()
                 .map(Question::getQuestionContent)
                 .collect(Collectors.toList());
@@ -137,7 +145,6 @@ public class QuizzesController {
 
         return "createQuiz";
     }
-
 
     @PostMapping("/updateAll/{quizId}")
     public String updateQuizAndQuestions(@PathVariable Integer quizId, @ModelAttribute("quiz") Quiz updatedQuiz) {
@@ -179,6 +186,7 @@ public class QuizzesController {
 
         return "updateQuiz";
     }
+
     @GetMapping("/delete/{quizId}")
     public String deleteQuiz(@PathVariable Integer quizId) {
         try {
@@ -202,6 +210,7 @@ public class QuizzesController {
             return "redirect:/quizzes/list";
         }
     }
+
     @GetMapping("/{quizID}")
     public String quizInfo(@PathVariable Integer quizID, HttpSession session, Model model, Authentication auth,
             HttpServletRequest request) {
@@ -236,6 +245,12 @@ public class QuizzesController {
     @GetMapping("/Importxlsx")
     public String test() {
         return "Importxlsx";
+    }
+
+    @PostMapping("/upload-quiz-data")
+    public String uploadQuizData(@RequestParam("file") MultipartFile file) throws IOException {
+        Quiz quiz = excelUploadService.createQuizFromExcel(file);
+        return "showQuiz";
     }
 
     @GetMapping("/downloadsample")
