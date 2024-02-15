@@ -4,6 +4,7 @@ import com.swp.online_quizz.Entity.QuestionAttempt;
 import com.swp.online_quizz.Repository.QuestionAttemptsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,6 +14,12 @@ public class QuestionAttemptsService implements IQuestionAttemptsService {
     @Autowired
     QuestionAttemptsRepository questionAttemptsRepository;
 
+    @Override
+    @Transactional
+    public void deleteQuestionAttemptsByQuizId(Integer quizId) {
+        List<QuestionAttempt> questionAttempts = questionAttemptsRepository.findByAttemptQuizQuizId(quizId);
+        questionAttemptsRepository.deleteAll(questionAttempts);
+    }
     @Override
     public Boolean createQuesstionAttempts(QuestionAttempt questionAttempts) {
         try {

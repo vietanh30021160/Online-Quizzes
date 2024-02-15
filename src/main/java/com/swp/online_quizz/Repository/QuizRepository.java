@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz, Integer>, JpaSpecificationExecutor<Quiz> {
@@ -24,5 +25,5 @@ public interface QuizRepository extends JpaRepository<Quiz, Integer>, JpaSpecifi
     List<Quiz> findByKeywordContainingIgnoreCase(@Param("keyword") String keyword);
 
     List<Quiz> findBytimeLimitBetween(Integer min, Integer max);
-
+    Optional<Quiz> findByQuizId(Integer quizId);
 }
