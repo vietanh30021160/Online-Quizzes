@@ -25,7 +25,6 @@ import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Repository.UsersRepository;
 import com.swp.online_quizz.Service.IQuizAttemptsService;
 import com.swp.online_quizz.Service.IQuizzesService;
-import com.swp.online_quizz.Service.IUsersService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -33,8 +32,6 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping(path = "/quizzes")
 public class QuizzesController {
-    @Autowired
-    private IUsersService iUsersService;
     @Autowired
     private IQuizAttemptsService iQuizAttemptsService;
     @Autowired

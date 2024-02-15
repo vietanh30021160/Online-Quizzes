@@ -27,13 +27,11 @@ import com.swp.online_quizz.Entity.QuizAttempt;
 import com.swp.online_quizz.Entity.QuizProgress;
 import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Repository.UsersRepository;
-import com.swp.online_quizz.Service.IAnswerService;
 import com.swp.online_quizz.Service.IQuestionAttemptsService;
 import com.swp.online_quizz.Service.IQuestionsService;
 import com.swp.online_quizz.Service.IQuizAttemptsService;
 import com.swp.online_quizz.Service.IQuizProgressService;
 import com.swp.online_quizz.Service.IQuizzesService;
-import com.swp.online_quizz.Service.IUsersService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -41,10 +39,6 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping(path = "/attempt")
 public class QuizAttemptController {
-    @Autowired
-    private IAnswerService iAnswerService;
-    @Autowired
-    private IUsersService iUsersService;
     @Autowired
     private IQuestionAttemptsService iQuestionAttemptsService;
     @Autowired

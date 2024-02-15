@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -45,10 +44,9 @@ public class QuizService implements IQuizzesService {
 
     @Override
     public Page<Quiz> getAll(Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo -1, 3);
+        Pageable pageable = PageRequest.of(pageNo - 1, 3);
         return this.quizRepository.findAll(pageable);
     }
-
 
     @Override
     public Quiz getOneQuizz(Integer quizId) {
@@ -60,10 +58,9 @@ public class QuizService implements IQuizzesService {
         return quizRepository.findAll();
     }
 
-
-
     @Override
-    public Page<Quiz> searchAndFilterAndSubject(String keyword, Integer pageNo, Integer min, Integer max, String subject) {
+    public Page<Quiz> searchAndFilterAndSubject(String keyword, Integer pageNo, Integer min, Integer max,
+            String subject) {
         Specification<Quiz> spec = Specification.where(null);
 
         if (keyword != null && !keyword.isEmpty()) {
@@ -73,8 +70,8 @@ public class QuizService implements IQuizzesService {
         }
 
         if (subject != null && !subject.isEmpty()) {
-            spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get("subject").get("subjectName"), subject));
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
+                    .equal(root.get("subject").get("subjectName"), subject));
         }
 
         if (min != null) {
@@ -86,10 +83,9 @@ public class QuizService implements IQuizzesService {
                     (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("timeLimit"), max));
         }
 
-        Pageable pageable = PageRequest.of(pageNo -1, 3);
+        Pageable pageable = PageRequest.of(pageNo - 1, 3);
 
         return quizRepository.findAll(spec, pageable);
     }
-
 
 }
