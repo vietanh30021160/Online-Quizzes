@@ -65,3 +65,43 @@ button {
 button:hover {
     background-color: #286090;
 }
+nav {
+    background-color: #337ab7;
+    color: white;
+    padding: 10px;
+    height: 40px;
+}
+
+.navigation {
+    float: left;
+    line-height: 40px;
+}
+
+.search-form {
+    float: right;
+}
+
+
+.search-form button {
+    background-color: #286090;
+    color: white;
+    border: none;
+    cursor: pointer;
+    height: 28px;
+    padding: 0 12px;
+}
+
+
+.search-form input[type=text] {
+    padding: 6px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    height: 28px;
+}
+
+
+.search-form input[type=text]:focus {
+    border: 1px solid #286090;
+}

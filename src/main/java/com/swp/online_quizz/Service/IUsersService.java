@@ -17,6 +17,9 @@ public interface IUsersService {
 
     List<User> getStudent();
 
+
+    List<User> searchByUsername(String username);
+
     Boolean create(User users);
     User findById(Integer userID);
     Boolean update(User users);

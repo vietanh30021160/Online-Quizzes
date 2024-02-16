@@ -42,4 +42,10 @@ public class HomeAdminController {
         model.addAttribute("students", students);
         return "StudentsList";
     }
+    @GetMapping("/teacher/search")
+    public String searchUsers(@RequestParam("username") String username, Model model) {
+        List<User> foundUsers = iUsersService.searchByUsername(username);
+        model.addAttribute("teachers", foundUsers);
+        return "TeachersList";
+    }
 }
