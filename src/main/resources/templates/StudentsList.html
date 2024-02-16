@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher List</title>
+    <title>Student List</title>
     <link rel="stylesheet" type="text/css" media="all"
           href="/Css/TeachersList.css" th:href="@{/Css/TeachersList.css}">
 </head>
 <body>
 <nav>
-    <ul>
+    <ul class="navigation">
         <li><a th:href="@{/admin}">Home</a></li>
     </ul>
+    <form class="search-form" th:action="@{/admin/student/search}" method="get">
+        <input type="text" name="username" placeholder="Search by username...">
+        <button type="submit">Search</button>
+    </form>
 </nav>
 <h1>Student List</h1>
 <table border="1">

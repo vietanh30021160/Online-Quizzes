@@ -57,6 +57,10 @@ public class UsersService implements IUsersService {
         return usersRepository.findByUsernameIgnoreCaseContainingAndRole(username,"ROLE_TEACHER");
 }
     @Override
+    public List<User> searchByUsernameStudent(String username) {
+        return usersRepository.findByUsernameIgnoreCaseContainingAndRole(username,"ROLE_STUDENT");
+    }
+    @Override
     public Boolean create(User users) {
         try {
             this.usersRepository.save(users);
