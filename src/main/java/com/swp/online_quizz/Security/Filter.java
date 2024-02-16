@@ -38,6 +38,7 @@ public class Filter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String requestURI = request.getRequestURI();
         return requestURI.equals("/") ||
+                requestURI.startsWith("/test/") ||
                 requestURI.equals("/register") ||
                 requestURI.equals("/login") ||
                 requestURI.startsWith("/forgotpassword") ||
