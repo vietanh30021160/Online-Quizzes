@@ -13,6 +13,8 @@ public interface IUsersService {
 
     void toggleActive(Integer userId);
 
+    List<User> getTeachers();
+
     Boolean create(User users);
     User findById(Integer userID);
     Boolean update(User users);

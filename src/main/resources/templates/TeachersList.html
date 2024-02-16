@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User List</title>
+    <title>Teacher List</title>
     <link rel="stylesheet" type="text/css" media="all"
-          href="/Css/AcceptTeacher.css" th:href="@{/Css/AcceptTeacher.css}">
+          href="/Css/TeachersList.css" th:href="@{/Css/TeachersList.css}">
 </head>
 <body>
 <nav>
@@ -13,8 +13,7 @@
         <li><a th:href="@{/admin}">Home</a></li>
     </ul>
 </nav>
-<div class="container">
-<h1>User List</h1>
+<h1>Teacher List</h1>
 <table border="1">
     <thead>
     <tr>
@@ -24,37 +23,26 @@
         <th>Join Date</th>
         <th>First Name</th>
         <th>Last Name</th>
-        <th>Date of Birth</th>
-        <th>Phone Number</th>
-        <th>Address</th>
-        <th>Gender</th>
-        <th>Active</th>
-        <th>Accept</th>
+        <th th:text="${teachers.size() > 0 ? 'Active' : ''}">Active</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="user : ${userList}">
+    <tr th:each="user : ${teachers}">
         <td th:text="${user.userId}"></td>
         <td th:text="${user.username}"></td>
         <td th:text="${user.email}"></td>
         <td th:text="${user.joinDate}"></td>
         <td th:text="${user.firstName}"></td>
         <td th:text="${user.lastName}"></td>
-        <td th:text="${user.dateOfBirth}"></td>
-        <td th:text="${user.phoneNumber}"></td>
-        <td th:text="${user.address}"></td>
-        <td th:text="${user.gender}"></td>
-        <td th:text="${user.isActive}"></td>
         <td>
-            <form action="/admin/toggle-active" method="post">
+            <form th:action="@{/admin/toggle-active}" method="post">
                 <input type="hidden" name="userId" th:value="${user.userId}">
-                <input type="hidden" name="redirectUrl" th:value="'/admin/isActive-teachers'">
-                <button type="submit" class="accept-btn">Accept</button>
+                <input type="hidden" name="redirectUrl" th:value="'/admin/teachers'">
+                <button type="submit" th:text="${user.isActive ? 'Active' : 'Inactive'}"></button>
             </form>
         </td>
     </tr>
     </tbody>
 </table>
-</div>
 </body>
 </html>

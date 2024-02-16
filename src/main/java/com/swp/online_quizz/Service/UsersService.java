@@ -29,6 +29,10 @@ public class UsersService implements IUsersService {
         });
     }
     @Override
+    public List<User> getTeachers() {
+        return usersRepository.findByRole("ROLE_TEACHER");
+    }
+    @Override
     public Boolean create(User users) {
         try {
             this.usersRepository.save(users);

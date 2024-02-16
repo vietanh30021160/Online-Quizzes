@@ -25,8 +25,15 @@ public class HomeAdminController {
         return "AcceptTeacher";
     }
     @PostMapping("/toggle-active")
-    public String toggleActive(@RequestParam("userId") Integer userId) {
+    public String toggleActive(@RequestParam("userId") Integer userId,
+                               @RequestParam("redirectUrl") String redirectUrl) {
         iUsersService.toggleActive(userId);
-        return "redirect:/admin/isActive-teachers";
+        return "redirect:" + redirectUrl;
+    }
+    @GetMapping("/teachers")
+    public String getTeachers(Model model) {
+        List<User> teachers = iUsersService.getTeachers();
+        model.addAttribute("teachers", teachers);
+        return "TeachersList";
     }
 }
