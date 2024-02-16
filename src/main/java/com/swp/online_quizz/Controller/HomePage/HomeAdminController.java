@@ -36,4 +36,10 @@ public class HomeAdminController {
         model.addAttribute("teachers", teachers);
         return "TeachersList";
     }
+    @GetMapping("/student")
+    public String getStudent(Model model) {
+        List<User> students = iUsersService.getStudent();
+        model.addAttribute("students", students);
+        return "StudentsList";
+    }
 }

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher List</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="/Css/TeachersList.css" th:href="@{/Css/TeachersList.css}">
+</head>
+<body>
+<nav>
+    <ul>
+        <li><a th:href="@{/admin}">Home</a></li>
+    </ul>
+</nav>
+<h1>Student List</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>User ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Join Date</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th th:text="${students.size() > 0 ? 'Active' : ''}">Active</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${students}">
+        <td th:text="${user.userId}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.joinDate}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td>
+            <form th:action="@{/admin/toggle-active}" method="post">
+                <input type="hidden" name="userId" th:value="${user.userId}">
+                <input type="hidden" name="redirectUrl" th:value="'/admin/student'">
+                <button type="submit" th:text="${user.isActive != null ? (user.isActive ? 'Active' : 'Inactive') : 'Unknown'}"></button>
+
+
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

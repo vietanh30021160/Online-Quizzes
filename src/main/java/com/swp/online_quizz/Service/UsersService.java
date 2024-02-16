@@ -23,14 +23,34 @@ public class UsersService implements IUsersService {
     @Override
     public void toggleActive(Integer userId) {
         Optional<User> optionalUser = usersRepository.findById(userId);
-        optionalUser.ifPresent(user -> {
-            user.setIsActive(!user.getIsActive());
-            usersRepository.save(user);
-        });
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Boolean currentIsActive = user.getIsActive();
+            if (currentIsActive != null) {
+                user.setIsActive(!currentIsActive);
+            } else {
+                // Handle case where isActive is null, set it to a default value
+                user.setIsActive(true);
+            }
+            try {
+                usersRepository.save(user);
+            } catch (Exception e) {
+                // Handle database save exception
+                e.printStackTrace();
+            }
+        } else {
+            // Handle case where no user found with the given userId
+            System.out.println("No user found with userId: " + userId);
+        }
     }
+
     @Override
     public List<User> getTeachers() {
         return usersRepository.findByRole("ROLE_TEACHER");
+    }
+    @Override
+    public List<User> getStudent(){
+        return usersRepository.findByRole("ROLE_STUDENT");
     }
     @Override
     public Boolean create(User users) {

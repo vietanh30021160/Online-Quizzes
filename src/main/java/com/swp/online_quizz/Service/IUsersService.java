@@ -15,6 +15,8 @@ public interface IUsersService {
 
     List<User> getTeachers();
 
+    List<User> getStudent();
+
     Boolean create(User users);
     User findById(Integer userID);
     Boolean update(User users);
