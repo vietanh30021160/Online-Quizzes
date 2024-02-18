@@ -36,18 +36,19 @@ public class HomeController {
     public String Home(Model model,
                        @RequestParam(required = false) String keyword,
                        @RequestParam(required = false) String subject,
-                       @RequestParam(name = "pageNo",defaultValue = "1") Integer pageNo,
+                       @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                        @RequestParam(required = false) Integer min,
                        @RequestParam(required = false) Integer max,
-                        @RequestParam(required = false) String classCode,
+                       @RequestParam(required = false) String classCode,
                        HttpServletRequest request) {
         List<Subject> listSubject = iSubjectService.getAll();
-        Page<Quiz> listQuiz = iQuizzesService.searchAndFilterAndSubject(keyword,pageNo,min,max,subject);
-
+        Page<Quiz> listQuiz = iQuizzesService.searchAndFilterAndSubject(keyword, pageNo, min, max, subject);
+        String role = "ROLE_STUDENT";
+        // Thêm role Teacher
+        String role_Teacher = "ROLE_TEACHER";
+        String username = "";
         int totalPage = listQuiz.getTotalPages(); // Lấy số trang từ listQuiz
-        if(classCode != null) {
-            String role ="ROLE_STUDENT";
-            String username = "";
+        if (classCode != null) {
             if (request.getSession().getAttribute("authentication") != null) {
                 Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
                 username = authentication.getName();
@@ -58,7 +59,7 @@ public class HomeController {
                 return "redirect:/login";
             }
             //nếu có thì lấy ra user
-            if( role.equals(userOptional.get().getRole())){
+            if (role.equals(userOptional.get().getRole())) {
                 Integer user1 = userOptional.get().getUserId();
                 iClassesService.joinClass(classCode, user1);
             }
@@ -72,7 +73,14 @@ public class HomeController {
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("listSubject", listSubject);
         model.addAttribute("listQuiz", listQuiz);
-
+        if (request.getSession().getAttribute("authentication") != null) {
+            Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
+            username = authentication.getName();
+        }
+        Optional<User> userOptional = usersRepository.findByUsername(username);
+        if (role_Teacher.equals(userOptional.get().getRole())) {
+            return "HomePageTeacher";
+        }
         return "HomePage";
     }
 
