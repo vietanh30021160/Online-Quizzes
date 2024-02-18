@@ -206,6 +206,11 @@ public class QuizService implements IQuizzesService {
         if (!quizIds.isEmpty() ) {
             spec = spec.and((root, query, criteriaBuilder) -> root.get("quizId").in(quizIds));
         }
+        // Nếu quizIds là null hoặc rỗng thì trả về một Page rỗng
+        if (quizIds == null || quizIds.isEmpty()) {
+            return Page.empty();
+        }
+
 
         Pageable pageable = PageRequest.of(pageNo -1, 3);
 

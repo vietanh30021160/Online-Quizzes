@@ -113,6 +113,35 @@ public class HomeController {
 
         return "HomePage";
     }
+//    @GetMapping("/join")
+//    public String joinClass(Model model,
+//                            @RequestParam(required = false) String classCode,
+//                            HttpServletRequest request) {
+//        String role = "ROLE_STUDENT";
+//        String username = "";
+//
+//        // Kiểm tra xem người dùng đã đăng nhập hay chưa
+//        if (request.getSession().getAttribute("authentication") != null) {
+//            Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
+//            username = authentication.getName();
+//
+//            Optional<User> userOptional = usersRepository.findByUsername(username);
+//            if (userOptional.isPresent() && role.equals(userOptional.get().getRole())) {
+//                Integer userId = userOptional.get().getUserId();
+//                if (classCode != null) {
+//                    if (iClassEnrollmentService.existsByStudentIdAndClassCode(userId, classCode)) {
+//                        model.addAttribute("mess", "You have already taken this class or the classcode is wrong");
+//                    } else {
+//                        iClassesService.joinClass(classCode, userId);
+//                        model.addAttribute("classCode", classCode);
+//                        model.addAttribute("mess", "Join class successfully!");
+//                    }
+//                }
+//            }
+//        }
+//
+//            return "redirect:/";
+//        }
 
 
 

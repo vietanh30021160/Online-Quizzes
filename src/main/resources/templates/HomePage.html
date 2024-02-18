@@ -20,10 +20,11 @@
                             <span class="input-group-text bi-search" id="basic-addon1"></span>
                             <input type="search" name="classCode" class="form-control" placeholder=" Code join class,  ..."
                                    aria-label="Search">
-                            <button type="submit" class="form-control">Join</button>
+                            <button type="submit" class="form-control" >Join</button>
                         </div>
+                        <p  id="message" th:text="${mess}" ></p>
                     </form>
-                    <p  id="message" th:text="${mess}" ></p>
+
                 </div>
                 <script type="text/javascript">
                     // Hàm để ẩn thông báo sau 3 giây
@@ -35,7 +36,6 @@
                             }, 3000); // 3 giây
                         }
                     }
-
                     // Gọi hàm hideMessage khi trang đã tải xong
                     window.onload = hideMessage;
                 </script>
