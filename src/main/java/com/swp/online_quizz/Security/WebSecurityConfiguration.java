@@ -1,12 +1,8 @@
 package com.swp.online_quizz.Security;
 
+import java.io.IOException;
+import java.util.Collection;
 
-import com.swp.online_quizz.Service.CustomUserDetails;
-import com.swp.online_quizz.Service.CustomUserDetailsServices;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,8 +23,13 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.io.IOException;
-import java.util.Collection;
+import com.swp.online_quizz.Service.CustomUserDetails;
+import com.swp.online_quizz.Service.CustomUserDetailsServices;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -43,20 +44,19 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> {
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
-                    auth.requestMatchers("/", "/register", "/forgotpassword", "/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll();
+                    auth.requestMatchers("/", "/quizzes/downloadsample", "/quizzes/**", "/test/**", "/register",
+                            "/fsorgotpassword", "/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(login -> login
                         .loginPage("/login").permitAll()
                         .failureUrl("/login2?unsuccessful")
-                        .successHandler(myAuthenticationSuccessHandler())
-                )
+                        .successHandler(myAuthenticationSuccessHandler()))
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
@@ -69,11 +69,12 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
 
     public static class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         @Override
-        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-//            SecurityContext context = SecurityContextHolder.createEmptyContext();
-//            context.setAuthentication(authentication);
-            request.getSession().setAttribute("authentication",authentication);
-            CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
+        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                Authentication authentication) throws IOException, ServletException {
+            // SecurityContext context = SecurityContextHolder.createEmptyContext();
+            // context.setAuthentication(authentication);
+            request.getSession().setAttribute("authentication", authentication);
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
             Collection<? extends GrantedAuthority> authorities = customUserDetails.getAuthorities();
 
             String role = "";
@@ -95,7 +96,8 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 

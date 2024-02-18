@@ -80,13 +80,7 @@ public class QuizzesController {
     @Autowired
     private ISubjectService iSubjectService;
 
-    @PostMapping("/upload")
-    public ResponseEntity<Quiz> uploadExcel(@RequestParam("file") MultipartFile excelFile) throws IOException {
-        return new ResponseEntity<>(excelUploadService.createQuizFromExcel(excelFile), HttpStatus.CREATED);
-    }
-
     @GetMapping("/all")
-
     public List<Quiz> getAll() {
         return iQuizzesService.getAll();
     }
@@ -250,17 +244,29 @@ public class QuizzesController {
     }
 
     @PostMapping("/uploadquizdata")
-    public String uploadQuizData(@RequestParam("file") MultipartFile file) throws IOException {
-        Quiz quiz = excelUploadService.createQuizFromExcel(file);
+    public String uploadQuizData(@RequestParam("file") MultipartFile file, HttpSession session, Model model,
+            Authentication auth, HttpServletRequest request) throws IOException {
+        String username = "";
+        if (request.getSession().getAttribute("authentication") != null) {
+            Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
+            username = authentication.getName();
+        }
+        Optional<User> userOptional = usersRepository.findByUsername(username);
+        if (userOptional.isEmpty()) {
+            // Nếu không có user thì làm gì đấy
+            return "login";
+        }
+        // nếu có thì lấy ra user
+        User user1 = userOptional.get();
+        Quiz quiz = excelUploadService.createQuizFromExcel(file, user1);
         return "showQuiz";
     }
 
     @GetMapping("/downloadsample")
     public ResponseEntity<?> downloadSample() throws IOException {
         String fileName = "ExampleFormQuiz.xlsx";
-        InputStream is = this.getClass().getResourceAsStream(fileName);
+        InputStream is = this.getClass().getResourceAsStream("/ExampleFormQuiz.xlsx");
         try {
-
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
                     .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))

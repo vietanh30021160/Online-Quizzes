@@ -17,12 +17,15 @@
                     <h4>Select File here</h4>
                 </header>
                 <p>Files Supported: XLSX</p>
-                <input type="file" hidden accept="xlsx" id="fileID" style="display:none;">
-                <button class="btn">Choose File</button>
+                <form id="uploadForm" method="post" th:action="@{/quizzes/uploadquizdata}" enctype="multipart/form-data">
+                    <input id="input-file" type="file" name="file" />
+                    <button class="btn btn-sm btn-outline-success float-right" type="submit">
+                        Upload
+                    </button>
+                </form>
             </div>
         </div>
     </div>
     <div th:replace="~{HomeFooter :: footer}"></div>
-    <script th:src="@{/Js/Importxlsx.js}"></script>
 </body>
 </html>
