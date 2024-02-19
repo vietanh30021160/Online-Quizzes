@@ -9,6 +9,8 @@ public interface IUsersService {
     public User getUsersByID(Integer userID);
     List<User> getAlList();
 
+    List<User> getUserIsActive();
+
     List<User> findIsactiveTeachers();
 
     void toggleActive(Integer userId);
@@ -22,8 +24,11 @@ public interface IUsersService {
 
     List<User> searchByUsernameStudent(String username);
 
+
+    boolean updateUser(Integer userId, User updatedUser);
+
     Boolean create(User users);
     User findById(Integer userID);
-    Boolean update(User users);
+
     Boolean delete(Integer userID);
 }

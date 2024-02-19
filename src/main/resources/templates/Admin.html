@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{AdminHead :: head}"></head>
+<head th:replace="~{AdminHead :: AdminHead}"></head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
@@ -15,13 +15,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Blank page
+                Admin page
                 <small>it all starts here</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a th:href="@{#}"><i class="fa fa-dashboard"></i> Home</a></li>
-                <li><a th:href="@{#}">Examples</a></li>
-                <li class="active">Blank page</li>
+                <li class="active">Admin page</li>
             </ol>
         </section>
 
@@ -35,6 +34,25 @@
                     Welcom to admin page!
                 </div>
                 <!-- /.box-body -->
+                <!-- Default box -->
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Số lượng người dùng</h3>
+                    </div>
+                    <div class="box-body">
+                        <span th:text="${numberOfUsers}"></span>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Số lượng bài kiểm tra</h3>
+                    </div>
+                    <div class="box-body">
+                        <p th:text="${numberOfQuizzes}"></p>
+                    </div>
+                </div>
+                <!-- /.box -->
 
 
             </div>

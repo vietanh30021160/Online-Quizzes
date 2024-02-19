@@ -17,6 +17,10 @@ public class UsersService implements IUsersService {
         return this.usersRepository.findAll();
     }
     @Override
+    public List<User> getUserIsActive(){
+        return this.usersRepository.findByIsActive(true);
+    }
+    @Override
     public List<User> findIsactiveTeachers() {
         return usersRepository.findByRoleAndIsActive( "ROLE_TEACHER",false);
     }
@@ -60,6 +64,26 @@ public class UsersService implements IUsersService {
     public List<User> searchByUsernameStudent(String username) {
         return usersRepository.findByUsernameIgnoreCaseContainingAndRole(username,"ROLE_STUDENT");
     }
+
+    @Override
+    public boolean updateUser(Integer userId, User updatedUser){
+        try {
+            User existingUser = getUsersByID(userId);
+            existingUser.setFirstName(updatedUser.getFirstName());
+            existingUser.setLastName(updatedUser.getLastName());
+            existingUser.setDateOfBirth(updatedUser.getDateOfBirth());
+            existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
+            existingUser.setAddress(updatedUser.getAddress());
+            existingUser.setGender(updatedUser.getGender());
+            existingUser.setProfilePictureURL(updatedUser.getProfilePictureURL());
+            this.usersRepository.save(existingUser);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
     @Override
     public Boolean create(User users) {
         try {
@@ -76,10 +100,7 @@ public class UsersService implements IUsersService {
         return null;
     }
 
-    @Override
-    public Boolean update(User users) {
-        return null;
-    }
+
 
     @Override
     public Boolean delete(Integer userID) {

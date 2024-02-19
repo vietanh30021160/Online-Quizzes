@@ -115,10 +115,7 @@ public class LoginController {
         return "redirect:/";
     }
 
-    @GetMapping("/admin")
-    public String adminPage(){
-        return "Admin";
-    }
+
 
 @GetMapping("/login")
 public String loginPage(Model model) {
