@@ -109,3 +109,6 @@ input[type="checkbox"]:checked + .filter-options {
     color: black;
     border-radius: 5px;
 }
+.navbar-expand-lg .navbar-nav .nav-link{
+    margin: 1px;
+}

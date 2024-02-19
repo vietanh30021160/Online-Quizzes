@@ -120,7 +120,12 @@ public class LoginController {
         return "Admin";
     }
 
-@GetMapping("/login")
+    @GetMapping("/homePageTeacher")
+    public String teacherPage(){
+        return "HomePageTeacher";
+    }
+
+    @GetMapping("/login")
 public String loginPage(Model model) {
     model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
     return "Login";

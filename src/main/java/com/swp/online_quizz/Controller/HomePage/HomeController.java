@@ -66,6 +66,17 @@ public class HomeController {
             username = authentication.getName();
 
             // Nếu người dùng đã đăng nhập và có vai trò là sinh viên, thì lọc danh sách bài trắc nghiệm dựa trên quizIds của sinh viên
+        Page<Quiz> listQuiz = iQuizzesService.searchAndFilterAndSubject(keyword, pageNo, min, max, subject);
+        String role = "ROLE_STUDENT";
+        // Thêm role Teacher
+        String role_Teacher = "ROLE_TEACHER";
+        String username = "";
+        int totalPage = listQuiz.getTotalPages(); // Lấy số trang từ listQuiz
+        if (classCode != null) {
+            if (request.getSession().getAttribute("authentication") != null) {
+                Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
+                username = authentication.getName();
+            }
             Optional<User> userOptional = usersRepository.findByUsername(username);
             if (role.equals(userOptional.get().getRole())) {
                 Integer user1 = userOptional.get().getUserId();
@@ -99,6 +110,13 @@ public class HomeController {
                     }
                 }
             }
+            }
+            //nếu có thì lấy ra user
+            if (role.equals(userOptional.get().getRole())) {
+                Integer user1 = userOptional.get().getUserId();
+                iClassesService.joinClass(classCode, user1);
+            }
+            model.addAttribute("classCode", classCode);
         }
 
         // Gửi các thông tin cần thiết tới trang chủ
@@ -110,7 +128,14 @@ public class HomeController {
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("listSubject", listSubject);
         model.addAttribute("listQuiz", listQuiz);
-
+        if (request.getSession().getAttribute("authentication") != null) {
+            Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
+            username = authentication.getName();
+        }
+        Optional<User> userOptional = usersRepository.findByUsername(username);
+        if (role_Teacher.equals(userOptional.get().getRole())) {
+            return "HomePageTeacher";
+        }
         return "HomePage";
     }
 //    @GetMapping("/join")
