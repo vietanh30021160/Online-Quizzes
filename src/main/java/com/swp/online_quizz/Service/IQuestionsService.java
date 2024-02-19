@@ -24,4 +24,6 @@ public interface IQuestionsService {
 
     @Transactional
     void deleteQuestionsByQuizId(Integer quizId);
+    @Transactional
+    public List<Question> getAllQuestionUnique();
 }

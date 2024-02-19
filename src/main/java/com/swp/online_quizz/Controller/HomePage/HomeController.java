@@ -55,7 +55,6 @@ public class HomeController {
             }
             Optional<User> userOptional = usersRepository.findByUsername(username);
             if (userOptional.isEmpty() || !role.equals(userOptional.get().getRole())) {
-                //Nếu không có user thì làm gì đấy
                 return "redirect:/login";
             }
             //nếu có thì lấy ra user

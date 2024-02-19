@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Quiz By Bank Question</title>
+    <link rel="stylesheet" type="text/css" media="all" href="/Css/createQuiz.css" th:href="@{/Css/createQuiz.css}">
+</head>
+
+<body>
+<h1>Create Quiz By Bank Question</h1>
+
+<form id="quizForm" action="/quizzes/createQuizByListQuestion" th:action="@{'/quizzes/createQuizByListQuestion'}" th:object="${quiz}" method="post">
+    <label for="quizName">Quiz Name:</label>
+    <input type="text" id="quizName" name="quizName" required>
+
+    <label for="timeLimit">Time Limit:</label>
+    <input type="number" id="timeLimit" name="timeLimit"  required>
+
+    <label for="subjectName">Subject Name:</label>
+    <input type="text" id="subjectName" name="subjectName" required>
+    <hr>
+
+    <h2>Questions</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>Question</th>
+
+            <th>Check</th>
+            <th>Uncheck</th>
+        </tr>
+        <tbody>
+        <tr th:each="question,index : ${ListQuestion}">
+            <td th:text="${index.count}"></td>
+            <td th:text="${question.questionContent}"></td>
+<!--            <td><a th:href="@{'/quizzes/showUpdateQuizPage/' + ${quiz.quizId}}">Update</a></td>-->
+<!--            <td><a th:href="@{'/quizzes/delete/' + ${quiz.quizId}}">Delete</a></td>-->
+        </tr>
+        </tbody>
+    </table>
+
+</form>
+<script>
+</script>
+
+</body>
+</html>

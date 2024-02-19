@@ -69,19 +69,16 @@ public class QuizzesController {
         model.addAttribute("quizList", quizList);
         return "showQuiz";
     }
+
     @Transactional
     @PostMapping("/createAll")
-    public String createQuizWithQuestionsAndAnswers(@ModelAttribute("quiz") Quiz quiz
-
-    ) {
-//
+    public String createQuizWithQuestionsAndAnswers(@ModelAttribute("quiz") Quiz quiz) {
 
         String subjectName = quiz.getSubjectName();
 
 
         Subject subject = new Subject();
         subject.setSubjectName(subjectName);
-
 
 
         quiz.setSubject(subject);
@@ -126,7 +123,54 @@ public class QuizzesController {
         return "createQuiz";
     }
 
+    @GetMapping("/createQuizByListQuestions")
+    public String showCreateQuizzPageByListQuestion(Model model){
+        Quiz quiz = iQuizService.getEmptyQuiz();
+        List<Question> questions = this.iQuestionsService.getAllQuestionUnique();
+        model.addAttribute("ListQuestion" , questions);
+        model.addAttribute("quiz",quiz);
+        return "CreateQuizzByBankQuestion";
+    }
+    @Transactional
+    @PostMapping("/createQuizByListQuestion")
+    public String createQuizWithListQuestions(@ModelAttribute("quiz") Quiz quiz) {
 
+        String subjectName = quiz.getSubjectName();
+
+
+        Subject subject = new Subject();
+        subject.setSubjectName(subjectName);
+
+
+        quiz.setSubject(subject);
+        if (quiz.getTeacher() == null) {
+
+            User defaultTeacher = iUsersService.getUsersByID(1);
+            quiz.setTeacher(defaultTeacher);
+        }
+        boolean quizCreated = iQuizService.createQuiz1(quiz);
+
+        if (quizCreated) {
+
+            for (Question question : quiz.getListQuestions()) {
+
+                question.setQuiz(quiz);
+
+
+                iQuestionsService.createQuestion1(question);
+
+
+                for (Answer answer : question.getListAnswer()) {
+
+                    answer.setQuestion(question);
+                    iAnswerService.createAnswer1(answer, question.getQuestionId());
+                }
+            }
+            return "redirect:/quizzes/list";
+        } else {
+            return "redirect:/quizzes/createQuizByListQuestion";
+        }
+    }
     @PostMapping("/updateAll/{quizId}")
     public String updateQuizAndQuestions(@PathVariable Integer quizId, @ModelAttribute("quiz") Quiz updatedQuiz) {
         iQuizzesService.updateQuizByQuizId1(quizId, updatedQuiz);

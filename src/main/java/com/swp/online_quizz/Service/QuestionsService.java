@@ -18,6 +18,7 @@ public class QuestionsService implements IQuestionsService {
     @Autowired
     @Lazy
     private QuizService quizService;
+
     @Override
     public List<Question> getAllQuestions() {
         return questionsRepository.findAll();
@@ -75,6 +76,11 @@ public class QuestionsService implements IQuestionsService {
     public void deleteQuestionsByQuizId(Integer quizId) {
         List<Question> questions = questionsRepository.findByQuizQuizId(quizId);
         questionsRepository.deleteAll(questions);
+    }
+
+    @Override
+    public List<Question> getAllQuestionUnique() {
+        return questionsRepository.getAllQuestionUnique();
     }
 
 }
