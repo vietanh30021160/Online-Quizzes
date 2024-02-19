@@ -50,6 +50,7 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
                 .authorizeHttpRequests((auth) -> {
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/", "/register", "/forgotpassword", "/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll();
+                   auth.requestMatchers("/homePageTeacher/**").hasRole("TEACHER");
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(login -> login
@@ -83,7 +84,7 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
             if (role.contains("ROLE_ADMIN")) {
                 // Nếu người dùng có vai trò ROLE_ADMIN, chuyển hướng đến URL "/admin"
                 getRedirectStrategy().sendRedirect(request, response, "/admin");
-            } else {
+            }  else {
                 super.onAuthenticationSuccess(request, response, authentication);
             }
         }
