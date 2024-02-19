@@ -42,9 +42,11 @@ public class HomeAdminController {
             String userName = userOptional.get().getUsername();
             int numberOfUsers = iUsersService.getUserIsActive().size();
             int numberOfQuizzes = iQuizzesService.getAll().size();
+            int numberOfAccept = iUsersService.findIsactiveTeachers().size();
             model.addAttribute("numberOfUsers", numberOfUsers);
             model.addAttribute("numberOfQuizzes", numberOfQuizzes);
             model.addAttribute("userName", userName);
+            model.addAttribute("numberOfAccept",numberOfAccept);
         }
         return "Admin";
     }
