@@ -7,42 +7,72 @@
     <title>Title</title>
 </head>
 <body>
-    <div class="login-card">
-        <div class="column">
-            <h1>Register</h1>
-            <form th:action="@{/register}" method="POST" th:object="${userRegisterDtoRequest}">
-                <div class="form-item">
-                    <input type="text" class="form-element" th:field="*{username}" placeholder="Username">
-                </div>
-                <div class="form-item">
+<div class="login-card">
+    <div class="column">
+        <h1>Register</h1>
+        <h3 th:if="${name!=null}">You have not had any account yet! Creating an account to continue</h3>
+        <form th:action="@{/register}" method="POST" th:object="${userRegisterDtoRequest}">
+            <div th:if="${us==null}" class="form-item">
+                <input type="text" class="form-element" th:field="*{username}" placeholder="Username">
+            </div>
+            <div th:if="${us!=null}" class="form-item">
+                <input type="text" class="form-element1" th:field="*{username}" th:placeholder="${us}">
+            </div>
+            <div th:if="${name==null}">
+                <div th:if="${em==null}" class="form-item">
                     <input type="email" class="form-element" th:field="*{email}" placeholder="Email">
                 </div>
-                <div class="form-item">
-                    <input type="password" class="form-element" th:field="*{password}" placeholder="Password">
+            </div>
+            <div th:if="${name!=null}">
+                <div th:if="${em==null}">
+                    <input type="hidden" class="form-element" th:field="*{email}" th:value="${name}">
                 </div>
-                <div class="form-input-field" >
+            </div>
+            <div th:if="${em!=null}" class="form-item">
+                <input type="email" class="form-element1" th:field="*{email}" th:placeholder="${em}">
+            </div>
+            <div th:if="${pw==null}" class="form-item">
+                <input type="password" class="form-element" th:field="*{password}" placeholder="Password">
+            </div>
+            <div th:if="${pw!=null}" class="form-item">
+                <input type="password" class="form-element1" th:field="*{password}" th:placeholder="${pw}">
+            </div>
+            <div th:if="${rl==null}" class="form-input-field">
+                <div class="role">
+                    <h3>You are:</h3>
                     <input type="radio" id="studentRadio" th:field="*{role}" name="userType" th:value="ROLE_STUDENT"/>
                     <label for="studentRadio">Student</label>
 
                     <input type="radio" id="teacherRadio" th:field="*{role}" name="userType" th:value="ROLE_TEACHER"/>
                     <label for="teacherRadio">Teacher</label>
                 </div>
-                <div class="message">
-                    <h3 th:text="${ms}?:''"></h3>
+            </div>
+            <div th:if="${rl!=null}" class="form-input-field">
+                <p th:text="${rl}" class="error" style="color: #EC7063;"></p><br>
+                <div class="role">
+                    <input type="radio" id="studentRadio1" th:field="*{role}" name="userType" th:value="ROLE_STUDENT"/>
+                    <label for="studentRadio1">Student</label>
+
+                    <input type="radio" id="teacherRadio1" th:field="*{role}" name="userType" th:value="ROLE_TEACHER"/>
+                    <label for="teacherRadio1">Teacher</label>
                 </div>
-                <div class="message">
-                    <h3 th:if="${param.authentication}?:''"></h3>
-                </div>
-                <div class="flex">
-                    <input type="submit" class="button" value="Register">
-                </div>
-            </form>
-        </div>
-        <div class="column">
-            <h2>Welcome to Online Quizz</h2>
-            <p>If you have an account yet, would you like to log in right now?</p>
-            <a th:href="@{/login}">Log in</a>
-        </div>
+            </div>
+            <div class="message">
+                <h4 th:text="${ms}?:''"></h4>
+            </div>
+            <!--                <div class="message">-->
+            <!--                    <h3 th:if="${param.authentication}?:''"></h3>-->
+            <!--                </div>-->
+            <div class="flex">
+                <input type="submit" class="button" value="Register">
+            </div>
+        </form>
     </div>
+    <div class="column">
+        <h2>Welcome to Online Quizz</h2>
+        <p>If you have an account yet, would you like to log in right now?</p>
+        <a th:href="@{/login}">Log in</a>
+    </div>
+</div>
 </body>
 </html>

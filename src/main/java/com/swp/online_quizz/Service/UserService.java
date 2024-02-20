@@ -29,7 +29,7 @@ public class UserService implements IUserService{
     @Override
     public boolean register(UserRegisterDtoRequest userRegisterDtoRequest) {
         Optional<User> checkUsername = usersRepository.findByUsername(userRegisterDtoRequest.getUsername());
-        String checkEmail = usersRepository.findByEmail(userRegisterDtoRequest.getEmail());
+        String checkEmail = usersRepository.findEmailByEmail(userRegisterDtoRequest.getEmail());
         if(checkUsername.isEmpty ()&& checkEmail==null){
             userRegisterDtoRequest.setPassword(passwordEncoder.encode(userRegisterDtoRequest.getPassword()));
             usersRepository.save(UserMapper.toUser(userRegisterDtoRequest));

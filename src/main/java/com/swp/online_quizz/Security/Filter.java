@@ -22,6 +22,7 @@ public class Filter extends OncePerRequestFilter {
 
             if(authentication ==null){
                 response.sendRedirect("/login");
+                return;
             }
 
             SecurityContext context = SecurityContextHolder.createEmptyContext();

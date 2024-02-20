@@ -20,13 +20,21 @@
             <div class="message" th:if="${param.unsuccessful}">
                 <h3>Username or password incorrect!</h3>
             </div>
+            <div class="message" th:if="${param.nopermit}">
+                <h3>No authentication to access!</h3>
+            </div>
+            <div class="form-checkbox-item">
+                <input type="checkbox" value="ON" id="rememberMe">
+                <label for="rememberMe">Remember me</label>
+            </div>
             <div class="flex">
                 <input type="submit" class="button" value="Log in">
+                <a th:href="@{/forgotpassword}">Reset your password</a>
             </div>
             <div class="footer">
                 <p style="margin-top: 3rem;margin-bottom: 1.5rem;">Other sign-in method</p>
                 <div class="social-button">
-                    <a href="#" class="google">
+                    <a th:href="@{/oauth2/authorization/google}" class="google">
                         <i class="fab fa-google"></i>
                     </a>
                 </div>
