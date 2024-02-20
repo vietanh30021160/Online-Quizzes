@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +21,7 @@ public class Filter extends OncePerRequestFilter {
         try {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
 
-            if(authentication ==null){
+            if(authentication == null){
                 response.sendRedirect("/login");
                 return;
             }
@@ -28,6 +29,10 @@ public class Filter extends OncePerRequestFilter {
             SecurityContext context = SecurityContextHolder.createEmptyContext();
             context.setAuthentication(authentication);
             SecurityContextHolder.setContext(context);
+//            String email = (String) session.getAttribute("email");
+//            if(email!=null){
+//                request.getSession().setAttribute("email",email);
+//            }
             request.getSession().setAttribute("authentication",authentication);
             filterChain.doFilter(request,response);
         }catch (Exception e){

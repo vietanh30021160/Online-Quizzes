@@ -8,6 +8,7 @@ import com.swp.online_quizz.Service.IUserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,10 +22,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Collection;
@@ -61,12 +59,19 @@ public class LoginController {
 //    }
 
     @GetMapping("/register")
-    public String registerPage(Model model){
+    public String registerPage(Model model, HttpSession session){
+        String email = (String) session.getAttribute("email");
+        if(email!=null){
+            model.addAttribute("name",email);
+        }
         model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
         return "Register";
     }
     @PostMapping("/register")
-    public String register(Model model, @ModelAttribute UserRegisterDtoRequest userRegisterDtoRequest){
+    public String register(Model model, @ModelAttribute UserRegisterDtoRequest userRegisterDtoRequest,@RequestParam(value = "name1", required = false) String name1){
+        if (name1 != null && !name1.isEmpty()) {
+            model.addAttribute("name",name1);
+        }
         String ms = "";
 
         if(userRegisterDtoRequest.getUsername()==null){

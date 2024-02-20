@@ -10,8 +10,12 @@
 <div class="login-card">
     <div class="column">
         <h1>Register</h1>
-        <h3 th:if="${name!=null}">You have not had any account yet! Creating an account to continue</h3>
+
         <form th:action="@{/register}" method="POST" th:object="${userRegisterDtoRequest}">
+            <div th:if="${name!=null}">
+                <h3>You have not had any account yet! Creating an account to continue</h3>
+                <input type="hidden" th:name="name1" th:value="${name}">
+            </div>
             <div th:if="${us==null}" class="form-item">
                 <input type="text" class="form-element" th:field="*{username}" placeholder="Username">
             </div>
@@ -23,11 +27,19 @@
                     <input type="email" class="form-element" th:field="*{email}" placeholder="Email">
                 </div>
             </div>
-            <div th:if="${name!=null}">
-                <div th:if="${em==null}">
-                    <input type="hidden" class="form-element" th:field="*{email}" th:value="${name}">
+            <div th:if="${name != null}">
+                <div th:if="${em == null}">
+                    <!-- Sử dụng th:field để bind dữ liệu từ model -->
+                    <input type="hidden" class="form-element" th:field="*{email}" id="emailInput">
                 </div>
+                <script th:inline="javascript">
+                    // JavaScript để đặt giá trị cho trường input
+                    var emailValue = /*[[${name}]]*/ '';
+                    document.getElementById("emailInput").value = emailValue;
+                </script>
             </div>
+
+
             <div th:if="${em!=null}" class="form-item">
                 <input type="email" class="form-element1" th:field="*{email}" th:placeholder="${em}">
             </div>

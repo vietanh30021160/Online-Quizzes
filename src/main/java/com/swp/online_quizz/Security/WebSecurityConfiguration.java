@@ -94,9 +94,11 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
                 String username = userDetails.getAttribute("email");
                 String user = usersRepository.findEmailByEmail(username);
                 if (user==null) {
-                    String redirectUrl = "/register/" + username;
+                    String redirectUrl = "/register";
                     // Thực hiện chuyển hướng trực tiếp
-                    getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+                    request.getSession().setAttribute("email",username);
+                    SecurityContextHolder.clearContext();
+                    redirectStrategy.sendRedirect(request,response,redirectUrl);
                 }
                 if(user!=null){
                     //Nếu tồn tại
