@@ -1,5 +1,6 @@
 package com.swp.online_quizz.Controller.HomePage;
 
+import com.swp.online_quizz.Entity.Classes;
 import com.swp.online_quizz.Entity.Quiz;
 import com.swp.online_quizz.Entity.Subject;
 import com.swp.online_quizz.Entity.User;
@@ -36,6 +37,8 @@ public class HomeController {
     private UsersRepository usersRepository;
     @Autowired
     private ClassEnrollmentRepository classEnrollmentRepository;
+    @Autowired
+    private ClassesRepository classesRepository;
 
 
     @RequestMapping("")
@@ -73,11 +76,19 @@ public class HomeController {
             if (role.equals(userOptional.get().getRole())) {
                 Integer user1 = userOptional.get().getUserId();
                 List<Integer> classIds = iClassEnrollmentService.getClassIdsByStudentId(user1);
+                List<Classes> classes = classesRepository.findAllById(classIds);
                 List<Integer> quizIds = iClassQuizzService.getQuizIdsByClassIds(classIds);
                 Page<Quiz> filteredQuiz = iQuizzesService.searchAndFilterAndSubjectAndQuizIds(keyword, pageNo, min, max, subject, quizIds);
                 // Lấy danh sách bài trắc nghiệm đã lọc và cập nhật lại số trang
                 listQuiz = filteredQuiz;
                 totalPage = filteredQuiz.getTotalPages();
+                String userName = userOptional.get().getUsername();
+                String userEmail = userOptional.get().getEmail();
+                String userPhone = userOptional.get().getPhoneNumber();
+                model.addAttribute("userName", userName);
+                model.addAttribute("userEmail", userEmail);
+                model.addAttribute("userPhone", userPhone);
+                model.addAttribute("classes", classes);
             }
         }
 
@@ -113,12 +124,12 @@ public class HomeController {
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("listSubject", listSubject);
         model.addAttribute("listQuiz", listQuiz);
-        if (request.getSession().getAttribute("authentication") != null) {
+        if(request.getSession().getAttribute("authentication") != null) {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
             username = authentication.getName();
         }
         Optional<User> userOptional = usersRepository.findByUsername(username);
-        if (role_Teacher.equals(userOptional.get().getRole())) {
+        if(role_Teacher.equals(userOptional.get().getRole())) {
             return "HomePageTeacher";
         }
         return "HomePage";
