@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +43,7 @@ public class HomeController {
 
 
     @RequestMapping("")
-    public String Home(Model model,
+    public String home(Model model,
                        @RequestParam(required = false) String keyword,
                        @RequestParam(required = false) String subject,
                        @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
@@ -50,89 +51,88 @@ public class HomeController {
                        @RequestParam(required = false) Integer max,
                        @RequestParam(required = false) String classCode,
                        HttpServletRequest request) {
-
         List<Subject> listSubject = iSubjectService.getAll();
-        int totalPage;
-
-        // Lấy danh sách bài trắc nghiệm dựa trên các tham số tìm kiếm và lọc
         Page<Quiz> listQuiz = iQuizzesService.searchAndFilterAndSubject(keyword, pageNo, min, max, subject);
-
-        // Tính toán số trang và tổng số bài trắc nghiệm
-        totalPage = listQuiz.getTotalPages();
-
-        String role = "ROLE_STUDENT";
-        // Thêm role Teacher
-        String role_Teacher = "ROLE_TEACHER";
-        String username = "";
-
-        // Kiểm tra xem người dùng đã đăng nhập hay chưa
-        if (request.getSession().getAttribute("authentication") != null) {
-            Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
-            username = authentication.getName();
-
-            // Nếu người dùng đã đăng nhập và có vai trò là sinh viên, thì lọc danh sách bài trắc nghiệm dựa trên quizIds của sinh viên
-            Optional<User> userOptional = usersRepository.findByUsername(username);
-
-            if (role.equals(userOptional.get().getRole())) {
-                Integer user1 = userOptional.get().getUserId();
-                List<Integer> classIds = iClassEnrollmentService.getClassIdsByStudentId(user1);
-                List<Classes> classes = classesRepository.findAllById(classIds);
-                List<Integer> quizIds = iClassQuizzService.getQuizIdsByClassIds(classIds);
-                Page<Quiz> filteredQuiz = iQuizzesService.searchAndFilterAndSubjectAndQuizIds(keyword, pageNo, min, max, subject, quizIds);
-                // Lấy danh sách bài trắc nghiệm đã lọc và cập nhật lại số trang
-                listQuiz = filteredQuiz;
-                totalPage = filteredQuiz.getTotalPages();
-                String userName = userOptional.get().getUsername();
-                String userEmail = userOptional.get().getEmail();
-                String userPhone = userOptional.get().getPhoneNumber();
-                model.addAttribute("userName", userName);
-                model.addAttribute("userEmail", userEmail);
-                model.addAttribute("userPhone", userPhone);
-                model.addAttribute("classes", classes);
-            }
-        }
-
-        // Nếu có mã lớp học được truyền vào, thì thực hiện tham gia vào lớp học
-        if (classCode != null) {
-            if (username.isEmpty()) {
-                // Nếu người dùng chưa đăng nhập, chuyển hướng đến trang đăng nhập
-                return "redirect:/login";
-            } else {
-                Optional<User> userOptional = usersRepository.findByUsername(username);
-                if (role.equals(userOptional.get().getRole())) {
-                    Integer user2 = userOptional.get().getUserId();
-                    // Kiểm tra xem classCode đã tồn tại hay không
-                    if (iClassEnrollmentService.existsByStudentIdAndClassCode(user2,classCode)) {
-                        // Nếu tồn tại, hiển thị thông báo lỗi và không thực hiện thêm vào lớp
-                        model.addAttribute("mess", "You have already taken this class or the classcode is wrong");
-                    } else {
-                        // Nếu không tồn tại, thêm vào lớp và hiển thị classCode
-                        iClassesService.joinClass(classCode, user2);
-                        model.addAttribute("classCode", classCode);
-                        model.addAttribute("mess", "Join class successfully!");
-                    }
-                }
-            }
-        }
-
-        // Gửi các thông tin cần thiết tới trang chủ
+        int totalPage = listQuiz.getTotalPages();
+        model.addAttribute("listQuiz", listQuiz);
         model.addAttribute("totalPage", totalPage);
+
+
+        Optional<User> userOptional = getUserFromSession(request);
+
+        User user = null;
+        if (userOptional.isPresent()) {
+            user = userOptional.get();
+            String role = user.getRole();
+            if ("ROLE_TEACHER".equals(role)) {
+                return "HomePageTeacher";
+            }
+
+            if ("ROLE_STUDENT".equals(role)) {
+                handleStudentLogic(model, user, keyword, pageNo, min, max, subject, classCode);
+            }
+        }
+
         model.addAttribute("min", min);
         model.addAttribute("max", max);
         model.addAttribute("keyword", keyword);
         model.addAttribute("subject", subject);
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("listSubject", listSubject);
-        model.addAttribute("listQuiz", listQuiz);
-        if(request.getSession().getAttribute("authentication") != null) {
+        return "HomePage";
+    }
+
+    private Optional<User> getUserFromSession(HttpServletRequest request) {
+        if (request.getSession().getAttribute("authentication") != null) {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
-            username = authentication.getName();
+            String username = authentication.getName();
+            return usersRepository.findByUsername(username);
+        }
+        return Optional.empty();
+    }
+
+    private void handleStudentLogic(Model model, User user, String keyword, Integer pageNo, Integer min, Integer max, String subject, String classCode) {
+
+        Integer userId = user.getUserId();
+        List<Integer> classIds = iClassEnrollmentService.getClassIdsByStudentId(userId);
+        List<Classes> classes = classesRepository.findAllById(classIds);
+        List<Integer> quizIds = iClassQuizzService.getQuizIdsByClassIds(classIds);
+        Page<Quiz> filteredQuiz = iQuizzesService.searchAndFilterAndSubjectAndQuizIds(keyword, pageNo, min, max, subject, quizIds);
+        int totalPage = filteredQuiz.getTotalPages();
+        model.addAttribute("classes", classes);
+        model.addAttribute("userName", user.getUsername());
+        model.addAttribute("userEmail", user.getEmail());
+        model.addAttribute("userPhone", user.getPhoneNumber());
+        model.addAttribute("listQuiz", filteredQuiz);
+        model.addAttribute("totalPage", totalPage);
+
+        if (classCode != null) {
+            if (iClassEnrollmentService.existsByStudentIdAndClassCode(userId, classCode)) {
+                model.addAttribute("mess", "You have already taken this class or the classcode is wrong");
+            } else {
+                iClassesService.joinClass(classCode, userId);
+                model.addAttribute("classCode", classCode);
+                model.addAttribute("mess", "Join class successfully!");
+            }
+        }
+    }
+
+    @GetMapping("/information")
+    public String informationPage(Model model,HttpServletRequest request) {
+        String username = "";
+        if(request.getSession().getAttribute("authentication")!=null){
+            Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
+            username= authentication.getName();
         }
         Optional<User> userOptional = usersRepository.findByUsername(username);
-        if(role_Teacher.equals(userOptional.get().getRole())) {
-            return "HomePageTeacher";
+        if(userOptional.isEmpty()){
+            //Nếu không có user thì làm gì đấy
+            return "redirect:/login";
         }
-        return "HomePage";
+        //nếu có thì lấy ra user
+        User user = userOptional.get();
+        model.addAttribute("user",user);
+        return "Information.html";
     }
 //    @GetMapping("/join")
 //    public String joinClass(Model model,

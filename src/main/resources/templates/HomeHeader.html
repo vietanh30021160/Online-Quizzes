@@ -125,7 +125,7 @@
                 <button class="navbar-icon bi-person smoothscroll"></button>
                 <div class="dropdown-content">
                     <!-- Hiển thị thông tin người đăng nhập -->
-                    <a  class="btn btn-default btn-flat"  id="showInformationPopup">Profile</a>
+                    <a th:href="@{/information}" class="btn btn-default btn-flat">Profile</a>
                     <!-- Hiển thị popup cho "Classes" -->
                     <a  id="showClassesPopup" class="btn btn-default btn-flat">Classes</a>
                     <a  class="btn btn-default btn-flat" href="/logout">Logout</a>
@@ -161,60 +161,8 @@
             </div>
 
             <!-- Overlay -->
-            <div class="overlay" id="overlay"></div>
 
-            <script>
-                // Lấy thẻ popup và overlay cho "Information"
-                var informationPopup = document.getElementById("informationPopup");
-                var overlay = document.getElementById("overlay");
-
-                // Lấy thẻ để hiển thị popup cho "Information" khi người dùng nhấp vào
-                var showInformationPopup = document.getElementById("showInformationPopup");
-
-                // Hiển thị popup và overlay cho "Information" khi người dùng nhấp vào
-                showInformationPopup.addEventListener("click", function() {
-                    informationPopup.style.display = "block";
-                    overlay.style.display = "block";
-                });
-
-                // Đóng popup và overlay cho "Information" khi người dùng nhấp vào nút đóng hoặc ngoài popup
-                overlay.addEventListener("click", function() {
-                    informationPopup.style.display = "none";
-                    overlay.style.display = "none";
-                });
-
-                document.getElementById("closeInformationPopup").addEventListener("click", function() {
-                    informationPopup.style.display = "none";
-                    overlay.style.display = "none";
-                });
-
-                // Ngăn chặn sự kiện click trên popup của "Information" từ việc đóng overlay
-                informationPopup.addEventListener("click", function(event) {
-                    event.stopPropagation();
-                });
-
-                // Lấy thẻ popup cho "Classes"
-                var classesPopup = document.getElementById("classesPopup");
-
-                // Lấy thẻ để hiển thị popup cho "Classes" khi người dùng nhấp vào
-                var showClassesPopup = document.getElementById("showClassesPopup");
-
-                // Hiển thị popup và overlay cho "Classes" khi người dùng nhấp vào
-                showClassesPopup.addEventListener("click", function() {
-                    classesPopup.style.display = "block";
-                    overlay.style.display = "block";
-                });
-
-                // Đóng popup và overlay cho "Classes" khi người dùng nhấp vào nút đóng hoặc ngoài popup
-                document.getElementById("closeClassesPopup").addEventListener("click", function() {
-                    classesPopup.style.display = "none";
-                    overlay.style.display = "none";
-                });
-
-                classesPopup.addEventListener("click", function(event) {
-                    event.stopPropagation();
-                });
-            </script>
+            </body>
         </div>
     </div>
 </nav>
