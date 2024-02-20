@@ -22,10 +22,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -55,8 +58,8 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> {
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
+                    auth.requestMatchers("/homePageTeacher/**").hasRole("TEACHER");
                     auth.requestMatchers("/", "/register", "/forgotpassword", "/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll();
-                   auth.requestMatchers("/homePageTeacher/**").hasRole("TEACHER");
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(login -> login
@@ -81,6 +84,7 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
         private UsersRepository usersRepository;
         @Autowired
         private CustomUserDetailsServices customUserDetailsServices;
+        private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 //            SecurityContext context = SecurityContextHolder.createEmptyContext();
@@ -88,19 +92,22 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
             if (authentication.getPrincipal() instanceof DefaultOidcUser) {
                 DefaultOidcUser userDetails = (DefaultOidcUser) authentication.getPrincipal();
                 String username = userDetails.getAttribute("email");
-                Optional<User> user = usersRepository.findByEmail(username);
-                if (user.isEmpty()) {
+                String user = usersRepository.findEmailByEmail(username);
+                if (user==null) {
                     String redirectUrl = "/register/" + username;
                     // Thực hiện chuyển hướng trực tiếp
-                    super.onAuthenticationSuccess(request, response, authentication);
-                } else {
+                    getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+                }
+                if(user!=null){
                     //Nếu tồn tại
                     CustomUserDetails userDetails1 = customUserDetailsServices.loadUserByUsername(username);
-                    authentication = new UsernamePasswordAuthenticationToken(userDetails1,authentication.getCredentials(),authentication.getAuthorities());
+                    authentication = new UsernamePasswordAuthenticationToken(userDetails1, authentication.getCredentials(), authentication.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
-            request.getSession().setAttribute("authentication",authentication);
-            CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
+            if (authentication.getPrincipal() instanceof CustomUserDetails){
+                request.getSession().setAttribute("authentication", authentication);
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
             Collection<? extends GrantedAuthority> authorities = customUserDetails.getAuthorities();
 
             String role = "";
@@ -110,9 +117,10 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
             if (role.contains("ROLE_ADMIN")) {
                 // Nếu người dùng có vai trò ROLE_ADMIN, chuyển hướng đến URL "/admin"
                 getRedirectStrategy().sendRedirect(request, response, "/admin");
-            }  else {
+            } else {
                 super.onAuthenticationSuccess(request, response, authentication);
             }
+        }
         }
     }
 
