@@ -64,6 +64,7 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
                         .failureUrl("/login?unsuccessful")
                         .successHandler(myAuthenticationSuccessHandler())
                 ).exceptionHandling(a->a.accessDeniedPage("/login?nopermit"))
+                .oauth2Login(a->a.loginPage("/login").successHandler(myAuthenticationSuccessHandler()))
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
