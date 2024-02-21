@@ -1,4 +1,113 @@
 
+/*====================================PROFILE==============================================*/
+.profile-box {
+  border: 1px solid #ccc;
+  padding: 20px;
+}
+
+.profile-box-body {
+  margin-bottom: 20px;
+}
+
+.profile-update-form {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.profile-update-form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.profile-update-form input[type="text"],
+.profile-update-form input[type="date"] {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.profile-update-form button {
+  background-color: #337ab7;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.profile-update-form button:hover {
+  background-color: #337ab7;
+}
+
+/*=============================PAGE LIST=====================================*/
+
+.table-wrapper {
+  max-height: 350px; /* Đặt chiều cao tối đa của hộp chứa */
+  overflow: auto; /* Tạo thanh cuộn khi cần */
+}
+h2 {
+  text-align: center;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #337ab7;
+  color: white;
+}
+.search-form {
+  float: right;
+}
+
+
+.search-form button {
+  background-color: #286090;
+  color: white;
+  border: none;
+  cursor: pointer;
+  height: 28px;
+  padding: 0 12px;
+}
+
+
+.search-form input[type=text] {
+  padding: 6px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  height: 28px;
+}
+
+
+.search-form input[type=text]:focus {
+  border: 1px solid #286090;
+}
+button {
+  background-color: #337ab7;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #286090;
+}
+/*==============================================================*/
 html,
 body {
   height: 100%;
@@ -1197,7 +1306,6 @@ a:focus {
 /* Fix dropdown menu in navbars */
 .navbar-custom-menu > .navbar-nav > li {
   position: relative;
-  display: inline-block;
 }
 .navbar-custom-menu > .navbar-nav > li > .dropdown-menu {
   position: absolute;
@@ -1210,7 +1318,6 @@ a:focus {
   }
   .navbar-custom-menu > .navbar-nav > li {
     position: static;
-    display: block;
   }
   .navbar-custom-menu > .navbar-nav > li > .dropdown-menu {
     position: absolute;
@@ -3606,25 +3713,25 @@ table.text-center th {
 }
 .btn-flickr {
   color: #ffffff;
-  background-color: #3c8dbc;
+  background-color: #ff0084;
   border-color: rgba(0, 0, 0, 0.2);
 }
 .btn-flickr:focus,
 .btn-flickr.focus {
   color: #ffffff;
-  background-color: #3c8dbc;
+  background-color: #cc006a;
   border-color: rgba(0, 0, 0, 0.2);
 }
 .btn-flickr:hover {
   color: #ffffff;
-  background-color: #3c8dbc;
+  background-color: #cc006a;
   border-color: rgba(0, 0, 0, 0.2);
 }
 .btn-flickr:active,
 .btn-flickr.active,
 .open > .dropdown-toggle.btn-flickr {
   color: #ffffff;
-  background-color: #3c8dbc;
+  background-color: #cc006a;
   border-color: rgba(0, 0, 0, 0.2);
 }
 .btn-flickr:active,
@@ -3633,30 +3740,30 @@ table.text-center th {
   background-image: none;
 }
 .btn-flickr .badge {
-  color: #3c8dbc;
+  color: #ff0084;
   background-color: #ffffff;
 }
 .btn-foursquare {
   color: #ffffff;
-  background-color: #3c8dbc;
+  background-color: #f94877;
   border-color: rgba(0, 0, 0, 0.2);
 }
 .btn-foursquare:focus,
 .btn-foursquare.focus {
   color: #ffffff;
-  background-color: #3c8dbc;
+  background-color: #f71752;
   border-color: rgba(0, 0, 0, 0.2);
 }
 .btn-foursquare:hover {
   color: #ffffff;
-  background-color: #3c8dbc;
+  background-color: #f71752;
   border-color: rgba(0, 0, 0, 0.2);
 }
 .btn-foursquare:active,
 .btn-foursquare.active,
 .open > .dropdown-toggle.btn-foursquare {
   color: #ffffff;
-  background-color: #3c8dbc;
+  background-color: #f71752;
   border-color: rgba(0, 0, 0, 0.2);
 }
 .btn-foursquare:active,
@@ -3665,7 +3772,7 @@ table.text-center th {
   background-image: none;
 }
 .btn-foursquare .badge {
-  color: #3c8dbc;
+  color: #f94877;
   background-color: #ffffff;
 }
 .btn-github {
@@ -4086,25 +4193,25 @@ table.text-center th {
 }
 .btn-yahoo {
   color: #ffffff;
-  background-color: #3c8dbc;
+  background-color: #720e9e;
   border-color: rgba(0, 0, 0, 0.2);
 }
 .btn-yahoo:focus,
 .btn-yahoo.focus {
   color: #ffffff;
-  background-color: #3c8dbc;
+  background-color: #500a6f;
   border-color: rgba(0, 0, 0, 0.2);
 }
 .btn-yahoo:hover {
   color: #ffffff;
-  background-color: #3c8dbc;
+  background-color: #500a6f;
   border-color: rgba(0, 0, 0, 0.2);
 }
 .btn-yahoo:active,
 .btn-yahoo.active,
 .open > .dropdown-toggle.btn-yahoo {
   color: #ffffff;
-  background-color: #3c8dbc;
+  background-color: #500a6f;
   border-color: rgba(0, 0, 0, 0.2);
 }
 .btn-yahoo:active,
@@ -4113,7 +4220,7 @@ table.text-center th {
   background-image: none;
 }
 .btn-yahoo .badge {
-  color: #3c8dbc;
+  color: #720e9e;
   background-color: #ffffff;
 }
 /*

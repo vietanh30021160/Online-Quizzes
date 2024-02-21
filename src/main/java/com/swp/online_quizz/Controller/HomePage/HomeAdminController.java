@@ -24,9 +24,9 @@ public class HomeAdminController {
     private IQuizzesService iQuizzesService;
     @Autowired
     private UsersRepository usersRepository;
-    @GetMapping("")
-    public String getDashboard(Model model, HttpServletRequest request) {
-        String role ="ROLE_ADMIN";
+    // Phương thức để cập nhật dữ liệu cho trang Dashboard và lấy thông tin người dùng
+    private String updateDashboardData(Model model, HttpServletRequest request) {
+        String role = "ROLE_ADMIN";
         String username = "";
         if (request.getSession().getAttribute("authentication") != null) {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
@@ -34,28 +34,43 @@ public class HomeAdminController {
         }
         Optional<User> userOptional = usersRepository.findByUsername(username);
         if (userOptional.isEmpty() || !role.equals(userOptional.get().getRole())) {
-            //Nếu không có user thì làm gì đấy
             return "redirect:/login";
         }
-        //nếu có thì lấy ra user
-        if( role.equals(userOptional.get().getRole())){
-            String userName = userOptional.get().getUsername();
-            int numberOfUsers = iUsersService.getUserIsActive().size();
-            int numberOfQuizzes = iQuizzesService.getAll().size();
-            int numberOfAccept = iUsersService.findIsactiveTeachers().size();
-            model.addAttribute("numberOfUsers", numberOfUsers);
-            model.addAttribute("numberOfQuizzes", numberOfQuizzes);
-            model.addAttribute("userName", userName);
-            model.addAttribute("numberOfAccept",numberOfAccept);
+        User user = userOptional.get();
+        String userName = user.getUsername();
+        int numberOfUsers = iUsersService.getUserIsActive().size();
+        int numberOfQuizzes = iQuizzesService.getAll().size();
+        int numberOfAccept = iUsersService.findIsactiveTeachers().size();
+        model.addAttribute("numberOfUsers", numberOfUsers);
+        model.addAttribute("numberOfQuizzes", numberOfQuizzes);
+        model.addAttribute("userName", userName);
+        model.addAttribute("numberOfAccept", numberOfAccept);
+
+        // Trả về null hoặc một chuỗi khác nếu không muốn redirect
+        return null;
+    }
+
+    @GetMapping("")
+    public String getDashboard(Model model, HttpServletRequest request) {
+        String redirectUrl = updateDashboardData(model, request);
+        if (redirectUrl != null) {
+            return redirectUrl;
         }
         return "Admin";
     }
+
     @GetMapping("/isActive-teachers")
-    public String getIsActiveTeachers(Model model) {
+    public String getIsActiveTeachers(Model model, HttpServletRequest request) {
+        String redirectUrl = updateDashboardData(model, request);
+        if (redirectUrl != null) {
+            return redirectUrl;
+        }
+
         List<User> isActiveTeachers = iUsersService.findIsactiveTeachers();
         model.addAttribute("userList", isActiveTeachers);
         return "AcceptTeacher";
     }
+
     @PostMapping("/toggle-active")
     public String toggleActive(@RequestParam("userId") Integer userId,
                                @RequestParam("redirectUrl") String redirectUrl) {
@@ -63,17 +78,29 @@ public class HomeAdminController {
         return "redirect:" + redirectUrl;
     }
     @GetMapping("/teachers")
-    public String getTeachers(Model model) {
+    public String getTeachers(Model model, HttpServletRequest request) {
+        String redirectUrl = updateDashboardData(model, request);
+        if (redirectUrl != null) {
+            return redirectUrl;
+        }
+
         List<User> teachers = iUsersService.getTeachers();
         model.addAttribute("teachers", teachers);
         return "TeachersList";
     }
+
     @GetMapping("/student")
-    public String getStudent(Model model) {
+    public String getStudents(Model model, HttpServletRequest request) {
+        String redirectUrl = updateDashboardData(model, request);
+        if (redirectUrl != null) {
+            return redirectUrl;
+        }
+
         List<User> students = iUsersService.getStudent();
         model.addAttribute("students", students);
         return "StudentsList";
     }
+
     @GetMapping("/teacher/search")
     public String searchUsers(@RequestParam("username") String username, Model model) {
         List<User> foundUsers = iUsersService.searchByUsername(username);
@@ -107,17 +134,20 @@ public class HomeAdminController {
 
     @GetMapping("/profile")
     public String showUpdateForm(Model model, HttpServletRequest request) {
+        String redirectUrl = updateDashboardData(model, request);
+        if (redirectUrl != null) {
+            return redirectUrl;
+        }
+
         String username = "";
-        if(request.getSession().getAttribute("authentication")!=null){
+        if (request.getSession().getAttribute("authentication") != null) {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
-            username= authentication.getName();
+            username = authentication.getName();
         }
         Optional<User> userOptional = usersRepository.findByUsername(username);
-        if(userOptional.isEmpty()){
-            //Neu khong co user thi sao?
+        if (userOptional.isEmpty()) {
             return "redirect:/login";
         }
-        //nếu có thì lấy ra user
         User user = userOptional.get();
         model.addAttribute("user", user);
         return "UpdateProfile";
