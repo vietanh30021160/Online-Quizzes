@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <div th:replace="HomeHead :: head"></div>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Quiz By Bank Question</title>
@@ -8,41 +9,75 @@
 </head>
 
 <body>
+<div class="headerMark">
+    <div th:replace="HomeHeader :: header"></div>
+</div>
 <h1>Create Quiz By Bank Question</h1>
 
-<form id="quizForm" action="/quizzes/createQuizByListQuestion" th:action="@{'/quizzes/createQuizByListQuestion'}" th:object="${quiz}" method="post">
+<form id="quizForm" th:action="@{'/quizzes/createQuizByListQuestion'}"
+      th:object="${formObject}" method="post">
     <label for="quizName">Quiz Name:</label>
-    <input type="text" id="quizName" name="quizName" required>
+    <input type="text" id="quizName" name="quizName" th:field="*{quiz.quizName}" required>
 
     <label for="timeLimit">Time Limit:</label>
-    <input type="number" id="timeLimit" name="timeLimit"  required>
+    <input type="number" id="timeLimit" name="timeLimit" th:field="*{quiz.timeLimit}" required>
 
     <label for="subjectName">Subject Name:</label>
-    <input type="text" id="subjectName" name="subjectName" required>
+    <input type="text" id="subjectName" name="subjectName" th:field="*{quiz.subjectName}" required>
     <hr>
+    <div class="container">
+        <h2>Questions</h2>
 
-    <h2>Questions</h2>
-    <table border="1">
-        <thead>
-        <tr>
-            <th>No</th>
-            <th>Question</th>
+        <!--        <form method="get" class="mx-sm-3" th:action="@{/quizzes/createQuizByListQuestions}" id="searchForm">-->
+        <!--            <div class="input-group">-->
+        <!--                <input style="border-radius: 10px " name="question" th:value="${question}"-->
+        <!--                       class="form-control form-control-lg" type="text" placeholder="Search Question ..."-->
+        <!--                       aria-describedby="button-addon2" autofocus>-->
+        <!--                <button style="border-radius: 10px" class="btn btn-secondary" id="button-addon2" type="button" onclick="searchQuestions()">-->
+        <!--                    Search-->
+        <!--                </button>-->
+        <!--            </div>-->
+        <!--        </form>-->
+        <div class="input-group">
+            <input style="border-radius: 10px " id="question" th:value="${question}" name="question"
+                   class="form-control form-control-lg" type="text" placeholder="Search Question ..."
+                   aria-describedby="button-addon2" autofocus>
+            <button style="border-radius: 10px" class="btn btn-secondary" id="button-addon2" type="button"
+                    onclick="searchQuestions()">
+                Search
+            </button>
+        </div>
 
-            <th>Check</th>
-            <th>Uncheck</th>
-        </tr>
-        <tbody>
-        <tr th:each="question,index : ${ListQuestion}">
-            <td th:text="${index.count}"></td>
-            <td th:text="${question.questionContent}"></td>
-<!--            <td><a th:href="@{'/quizzes/showUpdateQuizPage/' + ${quiz.quizId}}">Update</a></td>-->
-<!--            <td><a th:href="@{'/quizzes/delete/' + ${quiz.quizId}}">Delete</a></td>-->
-        </tr>
-        </tbody>
-    </table>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">Question</th>
+                <th scope="col">Chose</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="question,index : ${ListQuestion}">
+                <td th:text="${index.count}"></td>
+                <td th:text="${question.questionContent}"></td>
+
+                <td>
+                    <input type="checkbox" th:id="${index.count}"
+                           th:value="${question.questionId}" th:field="*{selectedQuestions}"
+                           name="selectedQuestions"></td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="submit">Create Quiz</button>
 
 </form>
+</div>
 <script>
+    function searchQuestions() {
+            var searchTerm = document.getElementById("question").value;
+<!--            document.getElementById("quizForm").action = "/quizzes/createQuizByListQuestions?question=" + searchTerm;-->
+            document.getElementById("quizForm").submit();
+       }
 </script>
 
 </body>
