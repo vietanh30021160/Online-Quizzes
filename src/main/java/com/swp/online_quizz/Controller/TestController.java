@@ -24,6 +24,7 @@ import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Repository.UsersRepository;
 import com.swp.online_quizz.Service.ExcelUploadService;
 import com.swp.online_quizz.Service.IMessageRecipientsService;
+import com.swp.online_quizz.Service.IMessagesService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -37,6 +38,8 @@ public class TestController {
     private UsersRepository usersRepository;
     @Autowired
     private ExcelUploadService excelUploadService;
+    @Autowired
+    private IMessagesService iMessagesService;
 
     @GetMapping("/heloo")
     public String testFilter() {
@@ -71,5 +74,12 @@ public class TestController {
     public List<MessageRecipient> test1(Model model, Authentication auth,
             HttpServletRequest request) {
         return (List<MessageRecipient>) request.getAttribute("messages");
+    }
+
+    @GetMapping("/test2")
+    public Message test2(Model model, Authentication auth,
+            HttpServletRequest request) {
+        User user = usersRepository.getReferenceById(9);
+        return iMessagesService.createNotificationNewAcceptTeacher(user);
     }
 }

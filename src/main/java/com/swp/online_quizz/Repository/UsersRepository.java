@@ -1,14 +1,18 @@
 package com.swp.online_quizz.Repository;
 
-import com.swp.online_quizz.Entity.User;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import com.swp.online_quizz.Entity.User;
 
 @Repository
 public interface UsersRepository extends JpaRepository<User, Integer> {
+    List<User> findByRole(String role);
+
     Optional<User> findByUsername(String username);
 
     @Query("select u.email from User u where u.email = ?1")
