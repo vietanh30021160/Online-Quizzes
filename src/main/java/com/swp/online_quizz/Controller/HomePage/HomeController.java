@@ -71,6 +71,11 @@ public class HomeController {
             if ("ROLE_STUDENT".equals(role)) {
                 handleStudentLogic(model, user, keyword, pageNo, min, max, subject, classCode);
             }
+        }else {
+            // Nếu người dùng chưa đăng nhập và nhập class code
+            if (classCode != null && !classCode.isEmpty()) {
+                return "redirect:/login";
+            }
         }
 
         model.addAttribute("min", min);
@@ -107,6 +112,7 @@ public class HomeController {
         model.addAttribute("totalPage", totalPage);
 
         if (classCode != null) {
+
             if (iClassEnrollmentService.existsByStudentIdAndClassCode(userId, classCode)) {
                 model.addAttribute("mess", "You have already taken this class or the classcode is wrong");
             } else {
