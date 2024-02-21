@@ -43,10 +43,33 @@
                     </div>
                 </div>
             </form>
-            <div class="d-none d-lg-block inline-block-div"  >
-                <a href="#top" class="navbar-icon bi bi-bell smoothscroll"></a>
+            <!--notification-->
+            <div class="notification_wrap" name="Notification" value="Notification">
+                <div class=" notification_icon">
+                    <i  class="navbar-icon bi bi-bell smoothscroll"></i>
+                </div>
+                <div class="dropdown">
+                    <div th:if="${not #lists.isEmpty(messages)}" th:each="messageRecipient : ${messages}" class="notify_item">
+                        <div class="notify_img">
+                            <img src="https://lh3.googleusercontent.com/a/ACg8ocIkg8BFCv-em-xii-vQShSYsAFPtMEMSBSIFh6130LY=s288-c-no"
+                                alt="profile_pic" style="width: 50px">
+                        </div>
+                        <div class="notify_info">
+                            <!-- Hiển thị nội dung và thời gian của thông báo -->
+                            <p th:text="${messageRecipient.getMessage().getMessageContent()}"></p>
+                            <span th:text="${messageRecipient.getMessage().getMessageType()}"></span><br>
+                            <span class="notify_time" th:text="${messageRecipient.getMessage().getSendTime()}"></span>
+                        </div>
+                    </div>
+                </div>
             </div>
-
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).on("click", ".notification_icon .bi-bell", function () {
+                        $(".notification_wrap .dropdown").toggleClass("active");
+                    });
+            </script>
+            <!--End notification-->
             <div class="d-none d-lg-block inline-block-div"  >
                 <a href="/logout" class="navbar-icon bi-person smoothscroll"></a>
             </div>
