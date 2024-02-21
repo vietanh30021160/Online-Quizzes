@@ -26,4 +26,5 @@ public interface QuizRepository extends JpaRepository<Quiz, Integer>, JpaSpecifi
 
     List<Quiz> findBytimeLimitBetween(Integer min, Integer max);
     Optional<Quiz> findByQuizId(Integer quizId);
+    List<Quiz>  findByTeacherUserId(Integer userId);
 }
