@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
+
 @Setter
 @Getter
 @Builder
@@ -15,4 +17,8 @@ public class UserRegisterDtoRequest {
     String password;
     String email;
     String role;
+    String firstname;
+    String lastname;
+    LocalDate dateofbirth;
+    String gender;
 }

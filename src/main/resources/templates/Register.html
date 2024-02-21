@@ -16,12 +16,16 @@
                 <h3>You have not had any account yet! Creating an account to continue</h3>
                 <input type="hidden" th:name="name1" th:value="${name}">
             </div>
+
+
             <div th:if="${us==null}" class="form-item">
                 <input type="text" class="form-element" th:field="*{username}" placeholder="Username">
             </div>
             <div th:if="${us!=null}" class="form-item">
                 <input type="text" class="form-element1" th:field="*{username}" th:placeholder="${us}">
             </div>
+
+
             <div th:if="${name==null}">
                 <div th:if="${em==null}" class="form-item">
                     <input type="email" class="form-element" th:field="*{email}" placeholder="Email">
@@ -29,29 +33,62 @@
             </div>
             <div th:if="${name != null}">
                 <div th:if="${em == null}">
-                    <!-- Sử dụng th:field để bind dữ liệu từ model -->
                     <input type="hidden" class="form-element" th:field="*{email}" id="emailInput">
                 </div>
                 <script th:inline="javascript">
-                    // JavaScript để đặt giá trị cho trường input
                     var emailValue = /*[[${name}]]*/ '';
                     document.getElementById("emailInput").value = emailValue;
                 </script>
             </div>
-
-
             <div th:if="${em!=null}" class="form-item">
                 <input type="email" class="form-element1" th:field="*{email}" th:placeholder="${em}">
             </div>
+
+
             <div th:if="${pw==null}" class="form-item">
                 <input type="password" class="form-element" th:field="*{password}" placeholder="Password">
             </div>
             <div th:if="${pw!=null}" class="form-item">
                 <input type="password" class="form-element1" th:field="*{password}" th:placeholder="${pw}">
             </div>
+
+
+            <div th:if="${rpw==null}" class="form-item">
+                <input type="password" class="form-element" name="repassword" placeholder="Re-enter Password">
+            </div>
+            <div th:if="${rpw!=null}" class="form-item">
+                <input type="password" class="form-element1" name="repassword" th:placeholder="${rpw}">
+            </div>
+
+
+            <div class="form-item">
+                <input type="text" class="form-element" th:field="*{firstname}" placeholder="First name">
+            </div>
+
+            <div class="form-item">
+                <input type="text" class="form-element" th:field="*{lastname}" placeholder="Last name">
+            </div>
+
+            <div class="form-item">
+                <input type="date" class="form-element" th:field="*{dateofbirth}" placeholder="Date of Birth">
+            </div>
+
+            <div class="form-input-field">
+                <h3>Gender</h3>
+                <div class="gender">
+                    <input type="radio" id="male" th:field="*{gender}" name="gender" th:value="Male"/>
+                    <label for="male">Male</label>
+
+                    <input type="radio" id="female" th:field="*{role}" name="gender" th:value="Female"/>
+                    <label for="female">Female</label>
+                </div>
+            </div>
+
+
+
             <div th:if="${rl==null}" class="form-input-field">
+                <h3>Role</h3>
                 <div class="role">
-                    <h3>You are:</h3>
                     <input type="radio" id="studentRadio" th:field="*{role}" name="userType" th:value="ROLE_STUDENT"/>
                     <label for="studentRadio">Student</label>
 
@@ -61,6 +98,7 @@
             </div>
             <div th:if="${rl!=null}" class="form-input-field">
                 <p th:text="${rl}" class="error" style="color: #EC7063;"></p><br>
+                <h3>Role</h3>
                 <div class="role">
                     <input type="radio" id="studentRadio1" th:field="*{role}" name="userType" th:value="ROLE_STUDENT"/>
                     <label for="studentRadio1">Student</label>
@@ -69,6 +107,8 @@
                     <label for="teacherRadio1">Teacher</label>
                 </div>
             </div>
+
+
             <div class="message">
                 <h4 th:text="${ms}?:''"></h4>
             </div>

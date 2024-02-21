@@ -34,30 +34,6 @@ public class LoginController {
 
     private final IUserService iUserService;
     private final UserDetailsService userDetailsService;
-
-//    @GetMapping("/login")
-//    public String loginPage(Model model) {
-//        model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
-//        return "Login";
-//    }
-//
-//    @PostMapping("/login")
-//    public String loginSucess(HttpServletRequest request){
-//
-//
-//        if(request.getAttribute("authentication")!=null) {
-//            Authentication authentication = (Authentication)request.getAttribute("authentication");
-//            String username = authentication.getName();
-//            Object principal = authentication.getPrincipal();
-//            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-////        System.out.println("NULL " + userDetails.getUsername());
-//            System.out.println("Name " + username);
-//            System.out.println("Principal " + principal);
-//            System.out.println("Authorities " + authorities);
-//        }
-//        return "redirect:/";
-//    }
-
     @GetMapping("/register")
     public String registerPage(Model model, HttpSession session){
         String email = (String) session.getAttribute("email");
@@ -68,44 +44,52 @@ public class LoginController {
         return "Register";
     }
     @PostMapping("/register")
-    public String register(Model model, @ModelAttribute UserRegisterDtoRequest userRegisterDtoRequest,@RequestParam(value = "name1", required = false) String name1){
+    public String register(Model model, @ModelAttribute UserRegisterDtoRequest userRegisterDtoRequest,@RequestParam(value = "name1", required = false) String name1,@RequestParam(value = "repassword", required = false) String repassword){
         if (name1 != null && !name1.isEmpty()) {
             model.addAttribute("name",name1);
         }
         String ms = "";
-
-        if(userRegisterDtoRequest.getUsername()==null){
-            model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
-            model.addAttribute("ms", "Username can not be null!");
-            return "Register";
+        boolean check = false;
+        if(userRegisterDtoRequest.getUsername()==null|| userRegisterDtoRequest.getUsername().isEmpty()){
+            model.addAttribute("us", "Username can not null");
+            check = true;
         }
-        if(userRegisterDtoRequest.getEmail()==null){
-            model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
-            model.addAttribute("ms", "Username can not be null!");
-            return "Register";
+        if(userRegisterDtoRequest.getEmail()==null || userRegisterDtoRequest.getEmail().isEmpty()){
+            model.addAttribute("em", "Email can not null");
+            check = true;
         }
-        if(userRegisterDtoRequest.getPassword()==null){
-            model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
-            model.addAttribute("ms", "Password can not be null!");
-            return "Register";
+        if(userRegisterDtoRequest.getPassword()==null || userRegisterDtoRequest.getPassword().isEmpty()){
+            model.addAttribute("pw", "Password can not null");
+            check = true;
+        }
+        if(userRegisterDtoRequest.getPassword().length()<6 && !userRegisterDtoRequest.getPassword().isEmpty()){
+            model.addAttribute("pw", "Password must have at least 6 digits");
+            check = true;
+        }
+        if(!repassword.equals(userRegisterDtoRequest.getPassword())){
+            model.addAttribute("rpw","Re-enter password does not match");
+            check = true;
+        }
+        if(repassword.isEmpty()){
+            model.addAttribute("rpw","Re-enter password can not null");
+            check = true;
         }
         if(userRegisterDtoRequest.getRole()==null){
-            model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
-            model.addAttribute("ms", "Role can not be null!");
+            model.addAttribute("rl", "Role can not null");
+            check = true;
+        }
+        if(check){
+            model.addAttribute("ms", "Register unsuccessfully!");
             return "Register";
         }
 
         boolean isValid = iUserService.register(userRegisterDtoRequest);
         if(isValid){
-            return "redirect:/login";
+            ms="Register successfully!";
+            model.addAttribute("ms", ms);
+            model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
         }
-        if(!(ms.length()==0||ms==null)){
-            model.addAttribute("ms", "Register unsuccessfully!");
-            model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
-            return "Register";
-        }
-
-        return "redirect:/login";
+        return "Login";
     }
 
     @GetMapping("/forgotpassword")
@@ -131,25 +115,8 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-public String loginPage(Model model) {
-    model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
-    return "Login";
-}
-
-    @PostMapping("/login")
-    public String loginSucess(HttpServletRequest request){
-
-
-        if(SecurityContextHolder.getContext()!=null) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String username = authentication.getName();
-            Object principal = authentication.getPrincipal();
-            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-//        System.out.println("NULL " + userDetails.getUsername());
-            System.out.println("Name " + username);
-            System.out.println("Principal " + principal);
-            System.out.println("Authorities " + authorities);
-        }
-        return "redirect:/";
+    public String loginPage(Model model) {
+        model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
+        return "Login";
     }
 }

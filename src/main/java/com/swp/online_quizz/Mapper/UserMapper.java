@@ -13,6 +13,10 @@ public class UserMapper {
                 .email(userLoginDtoRequest.getEmail())
                 .passwordHash(userLoginDtoRequest.getPassword())
                 .joinDate(LocalDateTime.now())
+                .firstName(userLoginDtoRequest.getFirstname())
+                .lastName(userLoginDtoRequest.getLastname())
+                .dateOfBirth(userLoginDtoRequest.getDateofbirth())
+                .gender(userLoginDtoRequest.getGender())
                 .isActive(!userLoginDtoRequest.getRole().equals("ROLE_TEACHER"))
                 .build();
     }
