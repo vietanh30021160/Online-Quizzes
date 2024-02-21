@@ -1,29 +1,34 @@
 package com.swp.online_quizz.Service;
 
-import com.swp.online_quizz.Entity.User;
-import com.swp.online_quizz.Repository.UsersRepository;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.swp.online_quizz.Entity.User;
+import com.swp.online_quizz.Repository.UsersRepository;
 
 @Service
 public class UsersService implements IUsersService {
     @Autowired
     UsersRepository usersRepository;
+
     @Override
     public List<User> getAlList() {
         return this.usersRepository.findAll();
     }
+
     @Override
-    public List<User> getUserIsActive(){
+    public List<User> getUserIsActive() {
         return this.usersRepository.findByIsActive(true);
     }
+
     @Override
     public List<User> findIsactiveTeachers() {
-        return usersRepository.findByRoleAndIsActive( "ROLE_TEACHER",false);
+        return usersRepository.findByRoleAndIsActive("ROLE_TEACHER", false);
     }
+
     @Override
     public void toggleActive(Integer userId) {
         Optional<User> optionalUser = usersRepository.findById(userId);
@@ -52,21 +57,24 @@ public class UsersService implements IUsersService {
     public List<User> getTeachers() {
         return usersRepository.findByRole("ROLE_TEACHER");
     }
+
     @Override
-    public List<User> getStudent(){
+    public List<User> getStudent() {
         return usersRepository.findByRole("ROLE_STUDENT");
-    }
-    @Override
-    public List<User> searchByUsername(String username) {
-        return usersRepository.findByUsernameIgnoreCaseContainingAndRole(username,"ROLE_TEACHER");
-}
-    @Override
-    public List<User> searchByUsernameStudent(String username) {
-        return usersRepository.findByUsernameIgnoreCaseContainingAndRole(username,"ROLE_STUDENT");
     }
 
     @Override
-    public boolean updateUser(Integer userId, User updatedUser){
+    public List<User> searchByUsername(String username) {
+        return usersRepository.findByUsernameIgnoreCaseContainingAndRole(username, "ROLE_TEACHER");
+    }
+
+    @Override
+    public List<User> searchByUsernameStudent(String username) {
+        return usersRepository.findByUsernameIgnoreCaseContainingAndRole(username, "ROLE_STUDENT");
+    }
+
+    @Override
+    public boolean updateUser(Integer userId, User updatedUser) {
         try {
             User existingUser = getUsersByID(userId);
             existingUser.setFirstName(updatedUser.getFirstName());
@@ -89,10 +97,10 @@ public class UsersService implements IUsersService {
         try {
             this.usersRepository.save(users);
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return  false;
+        return false;
     }
 
     @Override
@@ -100,14 +108,19 @@ public class UsersService implements IUsersService {
         return null;
     }
 
-
-
     @Override
     public Boolean delete(Integer userID) {
         return null;
     }
+
     @Override
     public User getUsersByID(Integer userID) {
         return usersRepository.getReferenceById(userID);
+    }
+
+    @Override
+    public Boolean update(User users) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 }

@@ -44,9 +44,7 @@ public class MessageHandleInterceptor implements HandlerInterceptor {
         // Nếu có thì lấy ra user
         User user = userOptional.get();
         // Load messages before handling the request
-        User user1 = new User();
-        user1.setUserId(7);
-        List<MessageRecipient> messages = iMessageRecipientsService.findByRecipient(user1);
+        List<MessageRecipient> messages = iMessageRecipientsService.findByRecipient(user);
         request.setAttribute("messages", messages);
         return true;
     }

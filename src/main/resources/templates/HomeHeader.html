@@ -49,7 +49,8 @@
                     <i  class="navbar-icon bi bi-bell smoothscroll"></i>
                 </div>
                 <div class="dropdown">
-                    <div th:if="${not #lists.isEmpty(messages)}" th:each="messageRecipient : ${messages}" class="notify_item">
+                    <div th:if="${not #lists.isEmpty(messages)}" th:each="messageRecipient : ${messages}" class="notify_item" th:classappend="${messageRecipient.getIsSeen()} ? 'seen' : ''">
+                        <div id="messageRecipientID" th:value="${messageRecipient.getMessageRecipientId()}" style="display: none;"></div>
                         <div class="notify_img">
                             <img src="https://lh3.googleusercontent.com/a/ACg8ocIkg8BFCv-em-xii-vQShSYsAFPtMEMSBSIFh6130LY=s288-c-no"
                                 alt="profile_pic" style="width: 50px">
@@ -60,9 +61,43 @@
                             <span th:text="${messageRecipient.getMessage().getMessageType()}"></span><br>
                             <span class="notify_time" th:text="${messageRecipient.getMessage().getSendTime()}"></span>
                         </div>
+                        <div th:if="${!messageRecipient.getIsSeen()}" class="dot" style="background-color: #ccc;"></div>
+                        <div th:if="${messageRecipient.getIsSeen()}" class="dot" style="background-color: green;"></div>
                     </div>
                 </div>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                        const notifyItems = document.querySelectorAll('.notify_item');
+
+                        notifyItems.forEach(function (item) {
+                            const dotElement = item.querySelector('.dot');
+                            dotElement.addEventListener('click', function () {
+                                const messageRecipientId = item.querySelector('#messageRecipientID').getAttribute('value');
+                                const isSeen = item.classList.contains('seen');
+                            fetch(`/notif/updateSeenStatus/${messageRecipientId}`, {
+                                method: 'GET',
+                            })
+                                    .then(function (response) {
+                                        if (response.ok) {
+                                            if (!isSeen) {
+                                                dotElement.style.backgroundColor = 'green';
+                                                item.classList.add('seen');
+                                            } else {
+                                                dotElement.style.backgroundColor = '#ccc';
+                                                item.classList.remove('seen');
+                                            }
+                                        } else {
+                                            console.error('Cập nhật trạng thái đã xem thất bại');
+                                        }
+                                    })
+                                    .catch(function (error) {
+                                        console.error('Lỗi khi gửi yêu cầu cập nhật trạng thái đã xem:', error);
+                                    });
+                            });
+                        });
+                });
+            </script>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script>
                 $(document).on("click", ".notification_icon .bi-bell", function () {
