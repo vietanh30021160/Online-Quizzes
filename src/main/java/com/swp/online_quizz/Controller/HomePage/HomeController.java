@@ -104,10 +104,6 @@ public class HomeController {
         List<Integer> quizIds = iClassQuizzService.getQuizIdsByClassIds(classIds);
         Page<Quiz> filteredQuiz = iQuizzesService.searchAndFilterAndSubjectAndQuizIds(keyword, pageNo, min, max, subject, quizIds);
         int totalPage = filteredQuiz.getTotalPages();
-        model.addAttribute("classes", classes);
-        model.addAttribute("userName", user.getUsername());
-        model.addAttribute("userEmail", user.getEmail());
-        model.addAttribute("userPhone", user.getPhoneNumber());
         model.addAttribute("listQuiz", filteredQuiz);
         model.addAttribute("totalPage", totalPage);
 
