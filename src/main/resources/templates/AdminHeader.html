@@ -29,6 +29,14 @@
                     <ul class="dropdown-menu">
                         <li class="header" th:text="'You have ' + ${numberOfAccept} + ' notifications'"></li>
                         <li>
+                            <div th:if="${not #lists.isEmpty(messages)}" th:each="messageRecipient : ${messages}" class="notify_item">
+                                <div class="notify_info">
+                                    <!-- Hiển thị nội dung và thời gian của thông báo -->
+                                    <p th:text="${messageRecipient.getMessage().getMessageContent()}"></p>
+                                    <span th:text="${messageRecipient.getMessage().getMessageType()}"></span><br>
+                                    <span class="notify_time" th:text="${messageRecipient.getMessage().getSendTime()}"></span>
+                                </div>
+                            </div>
                             <!-- inner menu: contains the actual data -->
                             <ul class="menu">
                                 <li>

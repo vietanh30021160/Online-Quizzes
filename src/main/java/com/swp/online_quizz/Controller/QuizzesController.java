@@ -1,23 +1,22 @@
 package com.swp.online_quizz.Controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import com.swp.online_quizz.Entity.*;
-import com.swp.online_quizz.Repository.QuizRepository;
-import com.swp.online_quizz.Service.*;
-import com.swp.online_quizz.Repository.UsersRepository;
-import com.swp.online_quizz.Service.*;
-import jakarta.servlet.http.HttpServletRequest;
+import org.apache.poi.util.IOUtils;
+import org.hibernate.boot.beanvalidation.IntegrationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -99,14 +98,15 @@ public class QuizzesController {
         }
         // nếu có thì lấy ra user
         int userId = userOptional.get().getUserId();
-        List<Quiz> quizList = iQuizzesService.getQuizByUserId(userId); // Thay thế bằng phương thức lấy danh sách quiz từ Service
+        List<Quiz> quizList = iQuizzesService.getQuizByUserId(userId); // Thay thế bằng phương thức lấy danh sách quiz
+                                                                       // từ Service
         model.addAttribute("quizList", quizList);
         return "showQuiz";
     }
 
     @Transactional
     @PostMapping("/createAll")
-    public String createQuizWithQuestionsAndAnswers(@ModelAttribute("quiz") Quiz quiz) {
+    public String createQuizWithQuestionsAndAnswers(@ModelAttribute("quiz") Quiz quiz, HttpServletRequest request) {
 
         String subjectName = quiz.getSubjectName();
 
@@ -134,9 +134,7 @@ public class QuizzesController {
 
                 question.setQuiz(quiz);
 
-
                 iQuestionsService.createQuestion1(question);
-
 
                 for (Answer answer : question.getListAnswer()) {
 
@@ -162,7 +160,6 @@ public class QuizzesController {
 
         return "createQuiz";
     }
-
 
     @PostMapping("/updateAll/{quizId}")
     public String updateQuizAndQuestions(@PathVariable Integer quizId, @ModelAttribute("quiz") Quiz updatedQuiz) {
@@ -204,6 +201,7 @@ public class QuizzesController {
 
         return "updateQuiz";
     }
+
     @GetMapping("/delete/{quizId}")
     public String deleteQuiz(@PathVariable Integer quizId) {
         try {
@@ -227,20 +225,22 @@ public class QuizzesController {
             return "redirect:/quizzes/list";
         }
     }
+
     @GetMapping("/{quizID}")
-    public String quizInfo(@PathVariable Integer quizID, HttpSession session, Model model, Authentication auth, HttpServletRequest request) {
+    public String quizInfo(@PathVariable Integer quizID, HttpSession session, Model model, Authentication auth,
+            HttpServletRequest request) {
 
         String username = "";
-        if(request.getSession().getAttribute("authentication")!=null){
+        if (request.getSession().getAttribute("authentication") != null) {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
-            username= authentication.getName();
+            username = authentication.getName();
         }
         Optional<User> userOptional = usersRepository.findByUsername(username);
-        if(userOptional.isEmpty()){
-            //Nếu không có user thì làm gì đấy
+        if (userOptional.isEmpty()) {
+            // Nếu không có user thì làm gì đấy
             return "redirect:/login";
         }
-        //nếu có thì lấy ra user
+        // nếu có thì lấy ra user
         User user1 = userOptional.get();
 
         Quiz quiz = iQuizzesService.getOneQuizz(quizID);
@@ -279,7 +279,7 @@ public class QuizzesController {
         // nếu có thì lấy ra user
         User user1 = userOptional.get();
         Quiz quiz = excelUploadService.createQuizFromExcel(file, user1);
-        return "showQuiz";
+        return "redirect:/quizzes/list";
     }
 
     @GetMapping("/downloadsample")

@@ -1,19 +1,24 @@
 package com.swp.online_quizz.Controller.HomePage;
 
-import com.swp.online_quizz.Entity.User;
-import com.swp.online_quizz.Repository.UsersRepository;
-import com.swp.online_quizz.Service.IQuizzesService;
-import com.swp.online_quizz.Service.IUsersService;
-import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-import java.util.Optional;
+import com.swp.online_quizz.Entity.User;
+import com.swp.online_quizz.Repository.UsersRepository;
+import com.swp.online_quizz.Service.IQuizzesService;
+import com.swp.online_quizz.Service.IUsersService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/admin")
@@ -24,7 +29,9 @@ public class HomeAdminController {
     private IQuizzesService iQuizzesService;
     @Autowired
     private UsersRepository usersRepository;
-    // Phương thức để cập nhật dữ liệu cho trang Dashboard và lấy thông tin người dùng
+
+    // Phương thức để cập nhật dữ liệu cho trang Dashboard và lấy thông tin người
+    // dùng
     private String updateDashboardData(Model model, HttpServletRequest request) {
         String role = "ROLE_ADMIN";
         String username = "";
@@ -73,10 +80,11 @@ public class HomeAdminController {
 
     @PostMapping("/toggle-active")
     public String toggleActive(@RequestParam("userId") Integer userId,
-                               @RequestParam("redirectUrl") String redirectUrl) {
+            @RequestParam("redirectUrl") String redirectUrl) {
         iUsersService.toggleActive(userId);
         return "redirect:" + redirectUrl;
     }
+
     @GetMapping("/teachers")
     public String getTeachers(Model model, HttpServletRequest request) {
         String redirectUrl = updateDashboardData(model, request);
@@ -107,6 +115,7 @@ public class HomeAdminController {
         model.addAttribute("teachers", foundUsers);
         return "TeachersList";
     }
+
     @GetMapping("/student/search")
     public String searchUsersStudent(@RequestParam("username") String username, Model model) {
         List<User> foundStudents = iUsersService.searchByUsernameStudent(username);
@@ -117,12 +126,12 @@ public class HomeAdminController {
     @PostMapping("/profile")
     public String updateUserProfile(@ModelAttribute("user") User updatedUser, HttpServletRequest request) {
         String username = "";
-        if(request.getSession().getAttribute("authentication") != null) {
+        if (request.getSession().getAttribute("authentication") != null) {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
             username = authentication.getName();
         }
         Optional<User> userOptional = usersRepository.findByUsername(username);
-        if(userOptional.isEmpty()) {
+        if (userOptional.isEmpty()) {
             // Nếu không có người dùng, chuyển hướng đến trang đăng nhập
             return "redirect:/login";
         }

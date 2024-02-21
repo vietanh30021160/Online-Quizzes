@@ -68,6 +68,18 @@
     display: none;
 }
 
+.dot {
+    margin-top: -30px;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    margin-right: 12px;
+    cursor: pointer;
+}
+.seen .dot {
+    background-color: green;
+}
+
 .notification_wrap .dropdown.active {
     display: block;
 }
