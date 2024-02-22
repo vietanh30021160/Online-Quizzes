@@ -9,10 +9,14 @@ import com.swp.online_quizz.Repository.ClassesRepository;
 import com.swp.online_quizz.Repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-@RequiredArgsConstructor
 public class ClassesService implements IClassesService {
 
     @Autowired
@@ -42,5 +46,47 @@ public class ClassesService implements IClassesService {
 
         // Lưu bản ghi ClassEnrollment vào cơ sở dữ liệu
         classEnrollmentRepository.save(classEnrollment);
+    }
+
+    @Override
+    public List<Classes> getAll() {
+        return this.classesRepository.findAll();
+    }
+
+    @Override
+    public Boolean createClass(Classes classes) {
+        try {
+            this.classesRepository.save(classes);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public Classes findById(Integer id) {
+        return null;
+    }
+
+    @Override
+    public Boolean updateClass(Classes classes) {
+        return null;
+    }
+
+    @Override
+    public Boolean deleteClass(Integer id) {
+        return null;
+    }
+
+    @Override
+    public List<Classes> searchClassesByClassesName(String classesName) {
+        return this.classesRepository.searchByClassName(classesName);
+    }
+
+    @Override
+    public Page<Classes> getAll(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo-1,5);
+        return this.classesRepository.findAll(pageable);
     }
 }

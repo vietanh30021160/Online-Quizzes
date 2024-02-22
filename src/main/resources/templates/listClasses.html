@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <div th:replace="HomeHead :: head"></div>
+    <link th:href="@{../../Css/mark.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Manager Classes</title>
+
+</head>
+<body id="top">
+<div class="headerMark">
+    <div th:replace="HomeHeader :: header"></div>
+</div>
+<h1 class="d-flex justify-content-center p-3 title-Page">Manager Classes</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8"></div>
+        <div class="price-range col-sm-4 d-flex align-items-end">
+            <form method="get" class="mx-sm-3">
+                <div class="input-group">
+                    <input style="border-radius: 10px " name="className" th:value="${className}"
+                           class="form-control form-control-lg" type="text" placeholder="Search Class ..."
+                           aria-describedby="button-addon2" autofocus>
+                    <button style="border-radius: 10px" class="btn btn-secondary" id="button-addon2" type="submit">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container">
+
+
+    <div class="content p-1">
+        <div class="container">
+            <h2 class="mb-5"></h2>
+
+
+            <div class="table-responsive">
+
+                <table class="table table-striped custom-table text-center">
+                    <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">ClassId</th>
+                        <th scope="col">Class Name</th>
+                        <th scope="col">Class Code</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr scope="row " th:each="class,index : ${ListClasses}" class="tableInfo">
+                        <td th:text="${index.count}"></td>
+                        <td th:text="${class.classId}"></td>
+                        <td th:text="${class.className}"></td>
+                        <td th:text="${class.classCode}"></td>
+                        <td>
+                            <a href="" class="edit" title="View" data-toggle="tooltip"><i class="fa-regular fa-eye"></i></a>
+                            <a href="#" class="view" title="Edit" data-toggle="tooltip"><i
+                                    class="fa-solid fa-pencil"></i></a>
+                            <a href="" class="delete" title="Delete" data-toggle="tooltip"><i
+                                    class="fa-solid fa-trash-can"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+                <div class="demo">
+                    <nav class="pagination-outer" aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li class="page-item" th:if="${currentPage > 1}" id="movePaging">
+                                <a th:href="@{'?pageNo='+${currentPage - 1}}" class="page-link" aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                </a>
+                            </li>
+                            <li class="page-item " th:each="i:${#numbers.sequence(1,totalPage)}"
+                                th:classappend="${i == currentPage ? 'active' : ''}"><a class="page-link"
+                                                                                        th:href="@{${username != null && username != '' ? '?username=' + username + '&' : '?'} + 'pageNo='+${i}}"
+                                                                                        th:text="${i}"></a></li>
+                            <li class="page-item" th:if="${currentPage < totalPage}">
+                                <a th:href="@{'?pageNo='+${currentPage + 1}}" class="page-link" aria-label="Next"
+                                   id="nextPaging">
+                                    <span aria-hidden="true">»</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+    </div>
+</div>
+    <div class="footer">
+        <div th:replace="HomeFooter :: footer"></div>
+    </div>
+
+    <div th:replace="HomeScript :: script"></div>
+    <script>
+        $(document).ready(function () {
+               $('[data-toggle="tooltip"]').tooltip();
+           });
+    </script>
+
+</body>
+</html>
