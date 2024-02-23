@@ -101,14 +101,22 @@ public class HomeAdminController {
         return "StudentsList";
     }
 
-    @GetMapping("/teacher/search")
-    public String searchUsers(@RequestParam("username") String username, Model model) {
+    @GetMapping("/search-teacher")
+    public String searchUsers(@RequestParam("username") String username, Model model, HttpServletRequest request) {
+        String redirectUrl = updateDashboardData(model, request);
+        if (redirectUrl != null) {
+            return redirectUrl;
+        }
         List<User> foundUsers = iUsersService.searchByUsername(username);
         model.addAttribute("teachers", foundUsers);
         return "TeachersList";
     }
-    @GetMapping("/student/search")
-    public String searchUsersStudent(@RequestParam("username") String username, Model model) {
+    @GetMapping("/search-student")
+    public String searchUsersStudent(@RequestParam("username") String username, Model model, HttpServletRequest request) {
+        String redirectUrl = updateDashboardData(model, request);
+        if (redirectUrl != null) {
+            return redirectUrl;
+        }
         List<User> foundStudents = iUsersService.searchByUsernameStudent(username);
         model.addAttribute("students", foundStudents);
         return "StudentsList";
