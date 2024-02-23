@@ -45,6 +45,7 @@ public class Filter extends OncePerRequestFilter {
                 requestURI.startsWith("/images/") ||
                 requestURI.startsWith("/Font/") ||
                 requestURI.startsWith("/fonts/") ||
-                requestURI.startsWith("/Js/");
+                requestURI.startsWith("/Js/") ||
+                requestURI.startsWith("/Information");
     }
 }

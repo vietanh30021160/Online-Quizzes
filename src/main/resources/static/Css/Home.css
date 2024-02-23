@@ -100,7 +100,7 @@ input[type="checkbox"]:checked + .filter-options {
     /* Thêm các thuộc tính CSS khi di chuột qua liên kết tại đây */
     text-decoration: underline; /* Ví dụ: làm cho văn bản có gạch chân khi di chuột qua */
 }
-#submitMessage {
+#message {
     position: absolute;
     top: 80%;
     left: 50%;
@@ -108,4 +108,7 @@ input[type="checkbox"]:checked + .filter-options {
     padding: 10px;
     color: black;
     border-radius: 5px;
+}
+.navbar-expand-lg .navbar-nav .nav-link{
+    margin: 1px;
 }
