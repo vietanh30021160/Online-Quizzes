@@ -165,3 +165,8 @@ h3{
 h4{
     color: red;
 }
+.topic{
+    color: black;
+    font-size: 1.17rem;
+    font-weight: bolder;
+}

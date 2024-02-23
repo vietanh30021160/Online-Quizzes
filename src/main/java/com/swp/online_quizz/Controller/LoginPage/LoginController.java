@@ -37,16 +37,29 @@ public class LoginController {
     @GetMapping("/register")
     public String registerPage(Model model, HttpSession session){
         String email = (String) session.getAttribute("email");
+        String firstnameEmail = (String) session.getAttribute("firstnameEmail");
+        String lastnameEmail = (String) session.getAttribute("lastnameEmail");
         if(email!=null){
             model.addAttribute("name",email);
+            model.addAttribute("lastnameEmail",lastnameEmail);
+            model.addAttribute("firstnameEmail",firstnameEmail);
         }
         model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
         return "Register";
     }
     @PostMapping("/register")
-    public String register(Model model, @ModelAttribute UserRegisterDtoRequest userRegisterDtoRequest,@RequestParam(value = "name1", required = false) String name1,@RequestParam(value = "repassword", required = false) String repassword){
+    public String register(Model model, @ModelAttribute UserRegisterDtoRequest userRegisterDtoRequest,@RequestParam(value = "name1", required = false) String name1
+            ,@RequestParam(value = "repassword", required = false) String repassword
+            ,@RequestParam(value = "firstnameEmail1", required = false) String firstnameEmail1
+            ,@RequestParam(value = "lastnameEmail1", required = false) String lastnameEmail1){
         if (name1 != null && !name1.isEmpty()) {
             model.addAttribute("name",name1);
+        }
+        if (firstnameEmail1 != null && !firstnameEmail1.isEmpty()) {
+            model.addAttribute("firstnameEmail",firstnameEmail1);
+        }
+        if (lastnameEmail1 != null && !lastnameEmail1.isEmpty()) {
+            model.addAttribute("lastnameEmail",lastnameEmail1);
         }
         String ms = "";
         boolean check = false;

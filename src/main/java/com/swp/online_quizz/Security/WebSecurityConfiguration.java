@@ -23,6 +23,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -59,14 +60,15 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
                 .authorizeHttpRequests((auth) -> {
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/homePageTeacher/**").hasRole("TEACHER");
-                    auth.requestMatchers("/", "/register", "/forgotpassword", "/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll();
+                    auth.requestMatchers("/", "/register", "/forgotpassword", "/forgot-password","/set-password", "/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(login -> login
                         .loginPage("/login").permitAll()
                         .failureUrl("/login?unsuccessful")
                         .successHandler(myAuthenticationSuccessHandler())
-                ).exceptionHandling(a->a.accessDeniedPage("/login?nopermit"))
+                )
+                .exceptionHandling(a->a.accessDeniedPage("/login?nopermit"))
                 .oauth2Login(a->a.loginPage("/login").successHandler(myAuthenticationSuccessHandler()))
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
 
@@ -96,14 +98,27 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
                 if (user==null) {
                     //Nếu k tồn tại
                     String redirectUrl = "/register";
+                    String firstname = userDetails.getGivenName();
+                    String lastname = userDetails.getFamilyName();
                     request.getSession().setAttribute("email",username);
+                    request.getSession().setAttribute("firstnameEmail",firstname);
+                    request.getSession().setAttribute("lastnameEmail",lastname);
                     SecurityContextHolder.clearContext();
                     redirectStrategy.sendRedirect(request,response,redirectUrl);
                 }
-                if(user!=null){
-                    //Nếu tồn tại
-                    CustomUserDetails userDetails1 = customUserDetailsServices.loadUserByUsername(username);
-                    authentication = new UsernamePasswordAuthenticationToken(userDetails1, authentication.getCredentials(), authentication.getAuthorities());
+                if(user!=null && authentication.getPrincipal() instanceof DefaultOidcUser){
+
+                    DefaultOidcUser oidcUser = (DefaultOidcUser) authentication.getPrincipal();
+
+                    //Lấy email từ DefaultOidcUser
+                    String email = oidcUser.getEmail();
+                    User user1 = usersRepository.findUserByEmail(email);
+                    UserDetails userDetail = customUserDetailsServices.loadUserByUsername(user1.getUsername());
+
+                    SecurityContextHolder.clearContext();
+
+                    authentication = new UsernamePasswordAuthenticationToken(userDetail,null,userDetail.getAuthorities());
+
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
