@@ -67,23 +67,37 @@ public class ClassesService implements IClassesService {
 
     @Override
     public Classes findById(Integer id) {
-        return null;
+
+        return this.classesRepository.findById(id).get();
     }
 
     @Override
     public Boolean updateClass(Classes classes) {
-        return null;
+        try {
+            this.classesRepository.save(classes);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
     public Boolean deleteClass(Integer id) {
-        return null;
+        try {
+            this.classesRepository.delete(findById(id));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
     public List<Classes> searchClassesByClassesNameAndUserID(String classesName, Integer userId) {
         return this.classesRepository.searchByClassNameAndUserId(classesName, userId);
     }
+
     @Override
     public Page<Classes> searchClassesByClassesNameAndUserID(String classesName, Integer pageNo, Integer userId) {
         List<Classes> allClasses = this.searchClassesByClassesNameAndUserID(classesName, userId);
@@ -106,14 +120,15 @@ public class ClassesService implements IClassesService {
     public List<Classes> getAllClassByUserId(Integer userID) {
         return this.classesRepository.getAllClassByUserId(userID);
     }
+
     @Override
     public Page<Classes> getAllClassByUserId(Integer userID, Integer pageNo) {
         List<Classes> allClasseById = this.getAllClassByUserId(userID);
         Pageable pageable = PageRequest.of(pageNo - 1, 5);
         Integer start = (int) pageable.getOffset();
-        Integer end = (start+pageable.getPageSize()) > allClasseById.size() ? allClasseById.size(): start + pageable.getPageSize();
-        allClasseById.subList(start,end);
-        return new PageImpl<Classes>(allClasseById,pageable,this.getAllClassByUserId(userID).size());
+        Integer end = (start + pageable.getPageSize()) > allClasseById.size() ? allClasseById.size() : start + pageable.getPageSize();
+        allClasseById.subList(start, end);
+        return new PageImpl<Classes>(allClasseById, pageable, this.getAllClassByUserId(userID).size());
     }
 
 

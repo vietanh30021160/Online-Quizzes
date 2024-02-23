@@ -59,7 +59,6 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
                         .successHandler(myAuthenticationSuccessHandler())
                 )
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
-
         return httpSecurity.build();
     }
 

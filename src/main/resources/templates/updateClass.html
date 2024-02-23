@@ -15,9 +15,10 @@
 <div class="headerMark">
     <div th:replace="HomeHeader :: header"></div>
 </div>
-<h1 class="d-flex justify-content-center p-3 title-Page">Add Classes</h1>
+<h1 class="d-flex justify-content-center p-3 title-Page">Update Classes</h1>
 <div class="container  d-flex justify-content-center">
-    <form class="w-25" th:object="${classes}" th:action="@{/Classes/addClass}" method="post">
+    <form class="w-25" th:object="${classes}" th:action="@{/Classes/updateNameClass}" method="post">
+        <input name="" class="form-control" placeholder="Class Name" type="hidden" th:field="*{classId}">
         <div class="form-group input-group mt-9">
             <div class="input-group-prepend">
                 <span class="input-group-text h-100"> <i class="fa fa-user"></i> </span>
@@ -26,7 +27,7 @@
         </div>
 
         <div class=" d-flex justify-content-center pt-4">
-            <button type="submit" class="btn btn-primary btn-block d-inline-block"> Create Class</button>
+            <button type="submit" class="btn btn-primary btn-block d-inline-block">Update Class</button>
         </div>
     </form>
 </div>
