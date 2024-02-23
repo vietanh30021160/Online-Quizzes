@@ -2,6 +2,7 @@ package com.swp.online_quizz.Interceptor;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +46,7 @@ public class MessageHandleInterceptor implements HandlerInterceptor {
         User user = userOptional.get();
         // Load messages before handling the request
         List<MessageRecipient> messages = iMessageRecipientsService.findByRecipient(user);
+        Collections.reverse(messages);
         request.setAttribute("messages", messages);
         return true;
     }

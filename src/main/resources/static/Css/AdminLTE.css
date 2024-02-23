@@ -1030,6 +1030,15 @@ a:focus {
   margin: 0;
   top: 100%;
 }
+.notify_info {
+  margin-left: 10px;
+  border-bottom: solid 1px #5c5a5a;
+  margin-bottom: 2px;
+}
+.notify_info p {
+  margin-bottom: 1px;
+}
+
 .navbar-nav > .notifications-menu > .dropdown-menu > li,
 .navbar-nav > .messages-menu > .dropdown-menu > li,
 .navbar-nav > .tasks-menu > .dropdown-menu > li {

@@ -33,7 +33,6 @@
                                 <div class="notify_info">
                                     <!-- Hiển thị nội dung và thời gian của thông báo -->
                                     <p th:text="${messageRecipient.getMessage().getMessageContent()}"></p>
-                                    <span th:text="${messageRecipient.getMessage().getMessageType()}"></span><br>
                                     <span class="notify_time" th:text="${messageRecipient.getMessage().getSendTime()}"></span>
                                 </div>
                             </div>
@@ -60,7 +59,7 @@
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="../images/user2-160x160.jpg" class="img-circle" alt="User Image">
+                            <img src="../images/user2-160x160.jpg" type="" class="img-circle" alt="User Image">
                                 <p  th:text="${userName}"></p>
 
                         </li>
