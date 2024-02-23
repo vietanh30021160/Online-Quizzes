@@ -48,7 +48,9 @@ public class Filter extends OncePerRequestFilter {
                 requestURI.equals("/login") ||
                 requestURI.equals("/forgotpassword")||
                 requestURI.equals("/forgot-password")||
-                requestURI.equals("/set-password") ||
+                requestURI.equals("/verifyaccount")||
+                requestURI.equals("/regenerateotp")||
+                requestURI.equals("/setpassword") ||
                 requestURI.startsWith("/Css/") ||
                 requestURI.startsWith("/images/") ||
                 requestURI.startsWith("/Font/") ||

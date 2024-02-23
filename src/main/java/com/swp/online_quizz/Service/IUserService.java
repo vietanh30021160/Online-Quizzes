@@ -9,9 +9,11 @@ public interface IUserService {
 
     boolean register(UserRegisterDtoRequest userRegisterDtoRequest);
 
-    String verifyAccount(String email, String otp);
+    boolean verifyAccount(String email, String otp);
 
-    String regenerateOtp(String email);
+    boolean regenerateOtp(String email);
 
-    String forgotPassword(String email);
+    Boolean forgotPassword(String email);
+
+    boolean setPassword(String email, String newPassword);
 }

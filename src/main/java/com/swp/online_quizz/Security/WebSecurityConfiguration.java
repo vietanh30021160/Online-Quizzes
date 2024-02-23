@@ -60,7 +60,7 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
                 .authorizeHttpRequests((auth) -> {
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/homePageTeacher/**").hasRole("TEACHER");
-                    auth.requestMatchers("/", "/register", "/forgotpassword", "/forgot-password","/set-password", "/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll();
+                    auth.requestMatchers("/", "/register", "/forgotpassword", "/verifyaccount","/regenerateotp","/setpassword", "/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(login -> login
@@ -94,7 +94,7 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
             if (authentication.getPrincipal() instanceof DefaultOidcUser) {
                 DefaultOidcUser userDetails = (DefaultOidcUser) authentication.getPrincipal();
                 String username = userDetails.getAttribute("email");
-                String user = usersRepository.findEmailByEmail(username);
+                String user = usersRepository.findEmailByEmailIgnoreCase(username);
                 if (user==null) {
                     //Nếu k tồn tại
                     String redirectUrl = "/register";
@@ -112,7 +112,7 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
 
                     //Lấy email từ DefaultOidcUser
                     String email = oidcUser.getEmail();
-                    User user1 = usersRepository.findUserByEmail(email);
+                    User user1 = usersRepository.findByEmailIgnoreCase(email).get();
                     UserDetails userDetail = customUserDetailsServices.loadUserByUsername(user1.getUsername());
 
                     SecurityContextHolder.clearContext();
@@ -125,18 +125,35 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
             if (authentication.getPrincipal() instanceof CustomUserDetails){
                 request.getSession().setAttribute("authentication", authentication);
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-            Collection<? extends GrantedAuthority> authorities = customUserDetails.getAuthorities();
+            User user = usersRepository.findByUsername(customUserDetails.getUsername()).get();
+            if(!user.getIsActive()){
+                request.getSession().invalidate();
+                SecurityContextHolder.clearContext();
+                if(user.getRole().equals("ROLE_TEACHER")){
+                    request.getSession().setAttribute("ms","This account have not been activated! Contacting ADMIN to be granted access");
+                    getRedirectStrategy().sendRedirect(request, response, "/login");
+                }
+                else if(user.getRole().equals("ROLE_STUDENT")){
+                    request.getSession().setAttribute("err","This account have not been verified! Click here to ");
+                    request.getSession().setAttribute("email",user.getEmail());
+                    getRedirectStrategy().sendRedirect(request, response, "/login");
+                }
 
-            String role = "";
-            if (!authorities.isEmpty()) {
-                role = authorities.iterator().next().getAuthority().trim();
+            }else{
+                Collection<? extends GrantedAuthority> authorities = customUserDetails.getAuthorities();
+
+                String role = "";
+                if (!authorities.isEmpty()) {
+                    role = authorities.iterator().next().getAuthority().trim();
+                }
+                if (role.contains("ROLE_ADMIN")) {
+                    // Nếu người dùng có vai trò ROLE_ADMIN, chuyển hướng đến URL "/admin"
+                    getRedirectStrategy().sendRedirect(request, response, "/admin");
+                } else {
+                    super.onAuthenticationSuccess(request, response, authentication);
+                }
             }
-            if (role.contains("ROLE_ADMIN")) {
-                // Nếu người dùng có vai trò ROLE_ADMIN, chuyển hướng đến URL "/admin"
-                getRedirectStrategy().sendRedirect(request, response, "/admin");
-            } else {
-                super.onAuthenticationSuccess(request, response, authentication);
-            }
+
         }
         }
     }

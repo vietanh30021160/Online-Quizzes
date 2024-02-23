@@ -44,8 +44,6 @@
                 </script>
             </div>
 
-
-
             <div th:if="${pw==null}" class="form-item">
                 <input type="password" class="form-element" th:field="*{password}" placeholder="Password *">
             </div>
@@ -60,6 +58,7 @@
             <div th:if="${rpw!=null}" class="form-item">
                 <input type="password" class="form-element1" name="repassword" th:placeholder="${rpw}">
             </div>
+
 
             <div th:if="${firstnameEmail==null}">
                 <div class="form-item">
@@ -113,8 +112,6 @@
                     <label for="female">Female</label>
                 </div>
             </div>
-
-
 
             <div th:if="${rl==null}" class="form-input-field">
                 <p class="topic">Role *</p>

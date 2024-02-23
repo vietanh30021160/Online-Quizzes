@@ -1,29 +1,45 @@
 package com.swp.online_quizz.Controller.ForgotPasswordPage;
 
+import com.swp.online_quizz.Entity.User;
+import com.swp.online_quizz.Repository.UsersRepository;
 import com.swp.online_quizz.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+import java.util.Optional;
+
+@Controller
 @RequiredArgsConstructor
 public class ForgotPasswordController {
     private final UserService userService;
-    @PutMapping("/verify-account")
-    public ResponseEntity<String> verifyAccount(@RequestParam String email, @RequestParam String otp){
-        return new ResponseEntity<>(userService.verifyAccount(email, otp), HttpStatus.OK);
+    private final UsersRepository usersRepository;
+    @GetMapping("/forgotpassword")
+    public String forgotPage(){
+        return "ForgotPassword";
     }
 
-    @PutMapping("regenerate-otp")
-    public ResponseEntity<String> regenerateOtp(@RequestParam String email){
-        return new ResponseEntity<>(userService.regenerateOtp(email), HttpStatus.OK);
-    }
+    @PostMapping("/forgotpassword")
+    public String forgotPassword(Model model, @RequestParam(value = "email") String email){
+        Optional<User> userOptional = usersRepository.findByEmailIgnoreCase(email);
+        if(userOptional.isEmpty()){
+            model.addAttribute("error","Email has not used yet! Do you want to ");
+            return "ForgotPassword";
+        }
+        User user = userOptional.get();
+        if(user.getIsActive()) {
+            if (!userService.forgotPassword(email)) {
+                model.addAttribute("error", "This email has not used yet! Do you want to ");
+                return "ForgotPassword";
+            }
+            model.addAttribute("ms", "Please check your email to set new password to your account");
+        }else{
+            model.addAttribute("ms", "Please activate your account first");
 
-    @PutMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestParam String email){
-        return new ResponseEntity<>(userService.forgotPassword(email), HttpStatus.OK);
+        }
+        return "ForgotPassword";
     }
 }

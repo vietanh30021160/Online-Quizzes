@@ -2,6 +2,8 @@ package com.swp.online_quizz.Controller.LoginPage;
 
 import com.swp.online_quizz.Dto.UserLoginDtoRequest;
 import com.swp.online_quizz.Dto.UserRegisterDtoRequest;
+import com.swp.online_quizz.Entity.User;
+import com.swp.online_quizz.Repository.UsersRepository;
 import com.swp.online_quizz.Service.CustomUserDetails;
 import com.swp.online_quizz.Service.CustomUserDetailsServices;
 import com.swp.online_quizz.Service.IUserService;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Collection;
+import java.util.Optional;
 
 
 @Controller
@@ -33,7 +36,7 @@ import java.util.Collection;
 public class LoginController {
 
     private final IUserService iUserService;
-    private final UserDetailsService userDetailsService;
+    private final UsersRepository usersRepository;
     @GetMapping("/register")
     public String registerPage(Model model, HttpSession session){
         String email = (String) session.getAttribute("email");
@@ -93,21 +96,26 @@ public class LoginController {
         }
         if(check){
             model.addAttribute("ms", "Register unsuccessfully!");
+            model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
             return "Register";
         }
 
         boolean isValid = iUserService.register(userRegisterDtoRequest);
-        if(isValid){
-            ms="Register successfully!";
+        if(isValid && userRegisterDtoRequest.getRole().equals("ROLE_STUDENT")){
+            ms="Click the link was sent to your gmail to verify your account within 5 minutes";
             model.addAttribute("ms", ms);
             model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
+            return "Login";
         }
-        return "Login";
-    }
-
-    @GetMapping("/forgotpassword")
-    public String forgotPage(){
-        return "ForgotPassword";
+        if(isValid && userRegisterDtoRequest.getRole().equals("ROLE_TEACHER")){
+            ms="Contacting ADMIN to be granted access";
+            model.addAttribute("ms", ms);
+            model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
+            return "Login";
+        }
+        model.addAttribute("ms", "Register unsuccessfully!");
+        model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
+        return "Register";
     }
 
     @GetMapping("/logout")
@@ -128,7 +136,54 @@ public class LoginController {
     }
 
     @GetMapping("/login")
-    public String loginPage(Model model) {
+    public String loginPage(Model model, HttpSession session) {
+        String ms = (String) session.getAttribute("ms");
+        String err = (String) session.getAttribute("err");
+        String email = (String) session.getAttribute("email");
+        if(ms!=null){
+            model.addAttribute("ms",ms);
+        }
+        if(err!=null){
+            model.addAttribute("err",err);
+            model.addAttribute("email",email);
+        }
+        model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
+        return "Login";
+    }
+    @GetMapping("/verifyaccount")
+    public String verifyAccount(Model model, @RequestParam String email, @RequestParam String otp){
+        if(iUserService.verifyAccount(email,otp)){
+            model.addAttribute("ms", "Otp verified you can log in");
+        }else{
+            model.addAttribute("err", "Otp is not true or expired click here to ");
+            model.addAttribute("email",email);
+        }
+        model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
+        return "Login";
+    }
+    @GetMapping("/regenerateotp")
+    public String regenerateOtp(Model model, @RequestParam String email){
+        if(email==null||email.isEmpty()){
+            model.addAttribute("ms","Choose email first");
+            model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
+            return "Login";
+        }
+        Optional<User> userOptional = usersRepository.findByEmailIgnoreCase(email);
+        if(userOptional.isEmpty()){
+            model.addAttribute("ms","Email is not found");
+            model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
+            return "Login";
+        }
+        String role = userOptional.get().getRole();
+        if(role.equals("ROLE_TEACHER")){
+            model.addAttribute("ms", "Contacting ADMIN to be granted access");
+        }else if(role.equals("ROLE_STUDENT")){
+            if(iUserService.regenerateOtp(email)){
+                model.addAttribute("ms", "Email sent... Please verify account within 5 minutes");
+            }
+        } else if (role.equals("ROLE_ADMIN")) {
+            return "redirect:/admin";
+        }
         model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
         return "Login";
     }
