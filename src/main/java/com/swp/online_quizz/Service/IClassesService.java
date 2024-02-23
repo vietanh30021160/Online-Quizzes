@@ -18,7 +18,12 @@ public interface IClassesService {
 
     Boolean deleteClass(Integer id);
 
-    List<Classes> searchClassesByClassesName(String classesName);
+    List<Classes> searchClassesByClassesNameAndUserID(String classesName,Integer userId);
+
+    Page<Classes> searchClassesByClassesNameAndUserID(String classesName,Integer pageNo,Integer userId);
 
     Page<Classes> getAll(Integer pageNo);
+
+    List<Classes> getAllClassByUserId(Integer userID);
+    Page<Classes> getAllClassByUserId(Integer userID,Integer userId);
 }

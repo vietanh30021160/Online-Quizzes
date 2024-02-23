@@ -10,6 +10,7 @@ import com.swp.online_quizz.Repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -80,13 +81,40 @@ public class ClassesService implements IClassesService {
     }
 
     @Override
-    public List<Classes> searchClassesByClassesName(String classesName) {
-        return this.classesRepository.searchByClassName(classesName);
+    public List<Classes> searchClassesByClassesNameAndUserID(String classesName, Integer userId) {
+        return this.classesRepository.searchByClassNameAndUserId(classesName, userId);
+    }
+    @Override
+    public Page<Classes> searchClassesByClassesNameAndUserID(String classesName, Integer pageNo, Integer userId) {
+        List<Classes> allClasses = this.searchClassesByClassesNameAndUserID(classesName, userId);
+
+        Pageable pageable = PageRequest.of(pageNo - 1, 5);
+        Integer start = (int) pageable.getOffset();
+        Integer end = (start + pageable.getPageSize()) > allClasses.size() ? allClasses.size() : start + pageable.getPageSize();
+        allClasses = allClasses.subList(start, end);
+        return new PageImpl<Classes>(allClasses, pageable, this.searchClassesByClassesNameAndUserID(classesName, userId).size());
     }
 
     @Override
     public Page<Classes> getAll(Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo-1,5);
+        Pageable pageable = PageRequest.of(pageNo - 1, 5);
         return this.classesRepository.findAll(pageable);
     }
+
+
+    @Override
+    public List<Classes> getAllClassByUserId(Integer userID) {
+        return this.classesRepository.getAllClassByUserId(userID);
+    }
+    @Override
+    public Page<Classes> getAllClassByUserId(Integer userID, Integer pageNo) {
+        List<Classes> allClasseById = this.getAllClassByUserId(userID);
+        Pageable pageable = PageRequest.of(pageNo - 1, 5);
+        Integer start = (int) pageable.getOffset();
+        Integer end = (start+pageable.getPageSize()) > allClasseById.size() ? allClasseById.size(): start + pageable.getPageSize();
+        allClasseById.subList(start,end);
+        return new PageImpl<Classes>(allClasseById,pageable,this.getAllClassByUserId(userID).size());
+    }
+
+
 }
