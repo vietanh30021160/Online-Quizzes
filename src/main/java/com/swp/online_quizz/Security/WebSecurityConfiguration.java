@@ -3,6 +3,12 @@ package com.swp.online_quizz.Security;
 import java.io.IOException;
 import java.util.Collection;
 
+import com.swp.online_quizz.Service.CustomUserDetails;
+import com.swp.online_quizz.Service.CustomUserDetailsServices;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,11 +50,14 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> {
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
+                    auth.requestMatchers("/", "/register", "/forgotpassword", "/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll();
+                   auth.requestMatchers("/homePageTeacher/**").hasRole("TEACHER");
                     auth.requestMatchers("/", "/quizzes/downloadsample", "/quizzes/**", "/test/**", "/register",
                             "/fsorgotpassword", "/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll();
                     auth.anyRequest().authenticated();
@@ -84,7 +93,7 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
             if (role.contains("ROLE_ADMIN")) {
                 // Nếu người dùng có vai trò ROLE_ADMIN, chuyển hướng đến URL "/admin"
                 getRedirectStrategy().sendRedirect(request, response, "/admin");
-            } else {
+            }  else {
                 super.onAuthenticationSuccess(request, response, authentication);
             }
         }

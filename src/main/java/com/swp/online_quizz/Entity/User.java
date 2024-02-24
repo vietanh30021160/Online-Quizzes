@@ -71,6 +71,9 @@ public class User {
     @Column(name = "IsActive")
     private Boolean isActive;
 
+    @Column(name = "Otp", length = 6)
+    private String otp;
+
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private Set<QuizAttempt> listQuizAttempts;

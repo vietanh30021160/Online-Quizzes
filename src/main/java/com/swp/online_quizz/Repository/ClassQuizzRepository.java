@@ -1,14 +1,16 @@
 package com.swp.online_quizz.Repository;
 
-import java.util.List;
-
+import com.swp.online_quizz.Entity.ClassQuizz;
+import com.swp.online_quizz.Entity.Feedback;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.swp.online_quizz.Entity.ClassQuizz;
-import com.swp.online_quizz.Entity.ClassQuizzId;
+import java.util.List;
 
 @Repository
-public interface ClassQuizzRepository extends JpaRepository<ClassQuizz, ClassQuizzId> {
+public interface ClassQuizzRepository extends JpaRepository<ClassQuizz, Integer> {
     List<ClassQuizz> findByQuizQuizId(Integer quizId);
+    @Query("SELECT cq FROM ClassQuizz cq WHERE cq.classes.classId IN :classIds")
+    List<ClassQuizz> findByClassesClassIdIn(List<Integer> classIds);
 }

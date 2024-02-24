@@ -1,12 +1,67 @@
 <!doctype html>
-<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{HomeHead :: head}"></head>
-<link th:href="@{Css/Home.css}" rel="stylesheet">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:replace="~{HomeHead :: head}"></div>
+
+<link th:href="@{css/Home.css}" rel="stylesheet">
 <body id="top">
 
 <main>
-    <div th:replace="~{HomeHeader :: header}"></div>
+    <nav class="navbar navbar-expand-lg" >
 
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="bi-back"></i>
+                <span>QuizTest</span>
+            </a>
+
+            <div class="d-lg-none ms-auto me-4">
+                <a href="#top" class="navbar-icon bi-person smoothscroll nav_iconPerson"></a>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_1">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_2">List Quizzes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" th:href="@{'/quizzes/list'}">Manager Quizzes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_5">Manager Class</a>
+                    </li>
+
+                </ul>
+                <form method="get" th:action="@{'/' + '?keyword=' + ${keyword} + (${subject != null ? '&subject=' + subject : ''}) + '#section_2'}" class="custom-form mt-4 pt-2 mb-lg-0 mb-5 inline-block-div" role="search">
+                    <div class="input-group input-group-sm hidden-xs" style="width: 400px;">
+                        <input type="text" name="keyword" class="form-control pull-right" placeholder="Search">
+                        <input type="hidden" th:if="${subject != null}" name="subject" th:value="${subject}">
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i> Search</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="d-none d-lg-block inline-block-div"  >
+                    <a href="#top" class="navbar-icon bi bi-bell smoothscroll"></a>
+                </div>
+
+                <div class="d-none d-lg-block inline-block-div"  >
+                    <a href="/logout" class="navbar-icon bi-person smoothscroll"></a>
+                </div>
+
+            </div>
+        </div>
+    </nav>
 
     <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
         <div class="container">
@@ -20,30 +75,53 @@
                             <span class="input-group-text bi-search" id="basic-addon1"></span>
                             <input type="search" name="classCode" class="form-control" placeholder=" Code join class,  ..."
                                    aria-label="Search">
-                            <button type="submit" class="form-control" >Join</button>
+                            <button type="submit" class="form-control">Join</button>
                         </div>
-                        <p  id="message" th:text="${mess}" ></p>
                     </form>
-
+                    <p id="submitMessage" ></p>
                 </div>
+
                 <script type="text/javascript">
-                    // Hàm để ẩn thông báo sau 3 giây
-                    function hideMessage() {
-                        var messageElement = document.getElementById("message");
-                        if (messageElement) {
-                            setTimeout(function () {
-                                messageElement.style.display = "none";
-                            }, 3000); // 3 giây
-                        }
-                    }
-                    // Gọi hàm hideMessage khi trang đã tải xong
-                    window.onload = hideMessage;
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var form = document.getElementById('joinForm');
+                        var submitMessage = document.getElementById('submitMessage');
+
+                        form.addEventListener('submit', function(event) {
+                            event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+                            // Lấy dữ liệu từ form
+                            var formData = new FormData(form);
+
+                            // Gửi yêu cầu HTTP POST bất đồng bộ
+                            fetch('/', {
+                                method: 'POST',
+                                body: formData
+                            })
+                                .then(function(response) {
+                                    if (response.ok) {
+                                        // Nếu yêu cầu thành công, hiển thị thông báo
+                                        submitMessage.innerText = 'Join class successfully!';
+                                        setTimeout(function() {
+                                            submitMessage.innerText = ''; // Xóa thông báo sau 3 giây
+                                        }, 3000);
+                                    } else {
+                                        // Nếu có lỗi, hiển thị thông báo lỗi
+                                        submitMessage.innerText = 'Error: You have already taken this class or the classcode is wrong ' + response.statusText;
+                                        setTimeout(function() {
+                                            submitMessage.innerText = ''; // Xóa thông báo sau 3 giây
+                                        }, 3000);
+                                    }
+                                })
+                                .catch(function(error) {
+                                    // Xử lý lỗi nếu fetch thất bại
+                                    submitMessage.innerText = 'Error: ' + error.message;
+                                });
+                        });
+                    });
                 </script>
-
-
             </div>
 
-            </div>
+        </div>
         </div>
     </section>
 
