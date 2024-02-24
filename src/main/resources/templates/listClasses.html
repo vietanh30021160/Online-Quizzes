@@ -71,8 +71,6 @@
                             <td>
                                 <a href="" class="edit" title="View" data-toggle="tooltip"><i
                                         class="fa-regular fa-eye"></i></a>
-<!--                                <a th:href="@{/updateNameClass/{id}{id=${class.classId}}}" class="view" title="Edit" data-toggle="tooltip"><i-->
-<!--                                        class="fa-solid fa-pencil"></i></a>-->
                                 <a th:href="@{updateNameClass/{id}(id=${class.classId})}" class="view" title="Edit" data-toggle="tooltip">
                                     <i class="fa fa-edit"></i>
                                 </a>
@@ -96,7 +94,7 @@
                             <span aria-hidden="true">«</span>
                         </a>
                     </li>
-                    <li class="page-item " th:each="i:${totalPage !=0 ? #numbers.sequence(1,totalPage) : 1}"
+                    <li class="page-item " th:each="i:${totalPage != 1 ? #numbers.sequence(1,totalPage) : 1}"
                         th:classappend="${i == currentPage ? 'active' : ''}"><a class="page-link"
                                                                                 th:href="@{${className != null && className != '' ? '?className=' + className + '&' : '?'} + 'pageNo='+${i}}"
                                                                                 th:text="${i}"></a></li>

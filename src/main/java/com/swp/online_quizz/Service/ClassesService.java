@@ -2,6 +2,7 @@ package com.swp.online_quizz.Service;
 
 import com.swp.online_quizz.Entity.ClassEnrollment;
 import com.swp.online_quizz.Entity.Classes;
+import com.swp.online_quizz.Entity.QuizAttempt;
 import com.swp.online_quizz.Entity.User;
 
 import com.swp.online_quizz.Repository.ClassEnrollmentRepository;
@@ -104,7 +105,7 @@ public class ClassesService implements IClassesService {
 
         Pageable pageable = PageRequest.of(pageNo - 1, 5);
         Integer start = (int) pageable.getOffset();
-        Integer end = (start + pageable.getPageSize()) > allClasses.size() ? allClasses.size() : start + pageable.getPageSize();
+        Integer end = (start + pageable.getPageSize()) > allClasses.size() ? allClasses.size() : (start + pageable.getPageSize());
         allClasses = allClasses.subList(start, end);
         return new PageImpl<Classes>(allClasses, pageable, this.searchClassesByClassesNameAndUserID(classesName, userId).size());
     }
@@ -123,12 +124,10 @@ public class ClassesService implements IClassesService {
 
     @Override
     public Page<Classes> getAllClassByUserId(Integer userID, Integer pageNo) {
-        List<Classes> allClasseById = this.getAllClassByUserId(userID);
-        Pageable pageable = PageRequest.of(pageNo - 1, 5);
-        Integer start = (int) pageable.getOffset();
-        Integer end = (start + pageable.getPageSize()) > allClasseById.size() ? allClasseById.size() : start + pageable.getPageSize();
-        allClasseById.subList(start, end);
-        return new PageImpl<Classes>(allClasseById, pageable, this.getAllClassByUserId(userID).size());
+        Pageable pageable = PageRequest.of(pageNo - 1, 2);
+        List<Classes> allClasseById = this.classesRepository.getAllByTeacherId(userID, pageable);
+//           List<Classes> list = allClasseById.subList((pageNo-1)*2, Integer.min((pageNo-1)*2+2, allClasseById.size()));
+        return new PageImpl<Classes>(allClasseById, pageable, classesRepository.getSizeAllClassByUserId(userID));
     }
 
 

@@ -28,18 +28,8 @@
     <div class="container">
         <h2>Questions</h2>
 
-        <!--        <form method="get" class="mx-sm-3" th:action="@{/quizzes/createQuizByListQuestions}" id="searchForm">-->
-        <!--            <div class="input-group">-->
-        <!--                <input style="border-radius: 10px " name="question" th:value="${question}"-->
-        <!--                       class="form-control form-control-lg" type="text" placeholder="Search Question ..."-->
-        <!--                       aria-describedby="button-addon2" autofocus>-->
-        <!--                <button style="border-radius: 10px" class="btn btn-secondary" id="button-addon2" type="button" onclick="searchQuestions()">-->
-        <!--                    Search-->
-        <!--                </button>-->
-        <!--            </div>-->
-        <!--        </form>-->
         <div class="input-group">
-            <input style="border-radius: 10px " id="question" th:value="${question}" name="question"
+            <input style="border-radius: 10px " id="questionSearch" th:value="${question}" name="question"
                    class="form-control form-control-lg" type="text" placeholder="Search Question ..."
                    aria-describedby="button-addon2" autofocus>
             <button style="border-radius: 10px" class="btn btn-secondary" id="button-addon2" type="button"
@@ -58,8 +48,8 @@
             </thead>
             <tbody>
             <tr th:each="question,index : ${ListQuestion}">
-                <td th:text="${index.count}"></td>
-                <td th:text="${question.questionContent}"></td>
+                <td th:text="${question.questionId}"></td>
+                <td th:text="${question.questionContent}" class="questions"></td>
 
                 <td>
                     <input type="checkbox" th:id="${index.count}"
@@ -70,14 +60,20 @@
         </table>
         <button type="submit">Create Quiz</button>
 
+    </div>
 </form>
-</div>
 <script>
     function searchQuestions() {
-            var searchTerm = document.getElementById("question").value;
-<!--            document.getElementById("quizForm").action = "/quizzes/createQuizByListQuestions?question=" + searchTerm;-->
-            document.getElementById("quizForm").submit();
-       }
+        const questionSearch = document.getElementById("questionSearch").value;
+        const questions = Array.from(document.querySelectorAll(".questions"));
+        questions.forEach(q => {
+            if(!q.innerText.includes(questionSearch)){
+                q.parentNode.style.display = 'none';
+            }else {
+                q.parentNode.style.display ="block";
+            }
+        })
+    }
 </script>
 
 </body>
