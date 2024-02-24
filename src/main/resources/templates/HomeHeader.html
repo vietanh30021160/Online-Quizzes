@@ -115,18 +115,14 @@
             </script>
             <!--End notification-->
             <div class="d-none d-lg-block inline-block-div"  >
-                <a href="/logout" class="navbar-icon bi-person smoothscroll"></a>
-            <div class="dropdown">
-                <!-- Button của dropdown -->
                 <button class="navbar-icon bi-person smoothscroll"></button>
                 <div class="dropdown-content">
                     <!-- Hiển thị thông tin người đăng nhập -->
                     <a th:href="@{/information}" class="btn btn-default btn-flat">Profile</a>
-
-                    <a  class="btn btn-default btn-flat" href="/logout">Logout</a>
-
+                
+                    <a class="btn btn-default btn-flat" href="/logout">Logout</a>
+                
                 </div>
-            </div>
         </div>
     </div>
 </nav>
