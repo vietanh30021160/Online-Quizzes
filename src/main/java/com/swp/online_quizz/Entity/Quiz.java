@@ -7,7 +7,17 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +39,7 @@ public class Quiz {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TeacherID")
     @JsonBackReference
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private User teacher;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,7 +48,6 @@ public class Quiz {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Subject subject;
 
-    @Column(name = "SubjectName", length = 100)
     private String subjectName;
 
     @Column(name = "QuizName", length = 100)
@@ -64,6 +73,7 @@ public class Quiz {
     // private Set<QuizAttempt> listQuizAttemps;
     @OneToMany(mappedBy = "quiz")
     private List<QuizAttempt> quizAttempts;
+
     public Quiz(User teacher, Subject subjectName, String quizName, Integer timeLimit, Boolean isCompleted) {
         this.teacher = teacher;
         this.subject = subjectName;

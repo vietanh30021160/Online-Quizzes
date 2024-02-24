@@ -229,33 +229,35 @@ public class QuizzesController {
     @GetMapping("/{quizID}")
     public String quizInfo(@PathVariable Integer quizID, HttpSession session, Model model, Authentication auth,
             HttpServletRequest request) {
-
-        String username = "";
-        if (request.getSession().getAttribute("authentication") != null) {
-            Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
-            username = authentication.getName();
-        }
-        Optional<User> userOptional = usersRepository.findByUsername(username);
-        if (userOptional.isEmpty()) {
-            // Nếu không có user thì làm gì đấy
-            return "redirect:/login";
-        }
-        // nếu có thì lấy ra user
-        User user1 = userOptional.get();
-
-        Quiz quiz = iQuizzesService.getOneQuizz(quizID);
-        List<QuizAttempt> listAttempts = iQuizAttemptsService.getAttemptByUserIdAndQuizzId(quiz, user1);
-        Integer highestMark = 0;
-        for (QuizAttempt quizAttempt : listAttempts) {
-            if (quizAttempt.getMarks() > highestMark) {
-                highestMark = quizAttempt.getMarks();
+        if (quizID == null) {
+            return "notFoundQuiz";
+        } else {
+            String username = "";
+            if (request.getSession().getAttribute("authentication") != null) {
+                Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
+                username = authentication.getName();
             }
-        }
-        model.addAttribute("listAttempts", listAttempts);
-        model.addAttribute("quiz", quiz);
-        model.addAttribute("highestMark", highestMark);
-        return "quizzInfo";
+            Optional<User> userOptional = usersRepository.findByUsername(username);
+            if (userOptional.isEmpty()) {
+                // Nếu không có user thì làm gì đấy
+                return "redirect:/login";
+            }
+            // nếu có thì lấy ra user
+            User user1 = userOptional.get();
 
+            Quiz quiz = iQuizzesService.getOneQuizz(quizID);
+            List<QuizAttempt> listAttempts = iQuizAttemptsService.getAttemptByUserIdAndQuizzId(quiz, user1);
+            Integer highestMark = 0;
+            for (QuizAttempt quizAttempt : listAttempts) {
+                if (quizAttempt.getMarks() > highestMark) {
+                    highestMark = quizAttempt.getMarks();
+                }
+            }
+            model.addAttribute("listAttempts", listAttempts);
+            model.addAttribute("quiz", quiz);
+            model.addAttribute("highestMark", highestMark);
+            return "quizzInfo";
+        }
     }
 
     @GetMapping("/Importxlsx")

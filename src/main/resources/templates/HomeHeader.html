@@ -55,12 +55,12 @@
                             <img src="https://lh3.googleusercontent.com/a/ACg8ocIkg8BFCv-em-xii-vQShSYsAFPtMEMSBSIFh6130LY=s288-c-no"
                                 alt="profile_pic" style="width: 50px">
                         </div>
-                        <div class="notify_info">
+                        <a th:href="@{/quizzes/{quizID}(quizID = ${messageRecipient.getMessage().getNote()})}" class="notify_info">
                             <!-- Hiển thị nội dung và thời gian của thông báo -->
                             <p th:text="${messageRecipient.getMessage().getMessageContent()}"></p>
                             <span th:text="${messageRecipient.getMessage().getMessageType()}"></span><br>
                             <span class="notify_time" th:text="${messageRecipient.getMessage().getSendTime()}"></span>
-                        </div>
+                        </a>
                         <div th:if="${!messageRecipient.getIsSeen()}" class="dot" style="background-color: #ccc;"></div>
                         <div th:if="${messageRecipient.getIsSeen()}" class="dot" style="background-color: green;"></div>
                     </div>
@@ -72,12 +72,21 @@
 
                         notifyItems.forEach(function (item) {
                             const dotElement = item.querySelector('.dot');
-                            dotElement.addEventListener('click', function () {
+                            const notifyElement = item.querySelector('.notify_info');
+
+                            function handleClick() {
                                 const messageRecipientId = item.querySelector('#messageRecipientID').getAttribute('value');
                                 const isSeen = item.classList.contains('seen');
-                            fetch(`/notif/updateSeenStatus/${messageRecipientId}`, {
-                                method: 'GET',
-                            })
+                                updateSeenStatus(messageRecipientId, isSeen);
+                            }
+
+                            dotElement.addEventListener('click', handleClick);
+                            notifyElement.addEventListener('click', handleClick);
+
+                            function updateSeenStatus(messageRecipientId, isSeen) {
+                                fetch(`/notif/updateSeenStatus/${messageRecipientId}`, {
+                                    method: 'GET',
+                                })
                                     .then(function (response) {
                                         if (response.ok) {
                                             if (!isSeen) {
@@ -94,9 +103,9 @@
                                     .catch(function (error) {
                                         console.error('Lỗi khi gửi yêu cầu cập nhật trạng thái đã xem:', error);
                                     });
-                            });
+                            }
                         });
-                });
+                    });
             </script>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script>

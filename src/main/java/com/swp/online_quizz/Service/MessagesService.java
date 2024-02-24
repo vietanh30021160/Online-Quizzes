@@ -33,7 +33,7 @@ public class MessagesService implements IMessagesService {
         message.setMessageContent("A new quiz titled '" + quiz.getQuizName()
                 + "' will be organized for students of class " + classes.getClassName());
         message.setSender(teacher);
-        message.setNote("ClassID: " + classes.getClassId() + ", QuizID: " + quiz.getQuizId());
+        message.setNote(quiz.getQuizId().toString());
         message.setSendTime(new Timestamp(System.currentTimeMillis()));
         message.setIsRead(false);
         message = messagesRepository.save(message);
@@ -52,7 +52,7 @@ public class MessagesService implements IMessagesService {
         message.setMessageContent("A new teacher account named '" + teacher.getFirstName() + " " + teacher.getLastName()
                 + "' is awaiting confirmation");
         message.setSender(teacher);
-        message.setNote("AccID: " + teacher.getUserId());
+        message.setNote(teacher.getUserId().toString());
         message.setSendTime(new Timestamp(System.currentTimeMillis()));
         message.setIsRead(false);
         message = messagesRepository.save(message);
