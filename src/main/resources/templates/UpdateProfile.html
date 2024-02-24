@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{AdminHead :: AdminHead}"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+    <div th:replace="~{AdminHeader :: header}"></div>
+
+    <div th:replace="~{AdminSidebar :: sidebar}"></div>
+    <!-- =============================================== -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Admin page
+                <small>it all starts here</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a th:href="@{/admin}"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">Admin page</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="profile-box">
+
+                <!-- /.profile-box-body -->
+                <!-- Default box -->
+                <div class="profile-update-form">
+                    <div class="container">
+                        <h2>Update Profile</h2>
+                        <form action="/admin/profile" th:action="@{/admin/profile}" th:object="${user}" method="post">
+                            <input type="hidden" th:name="_method" value="post" />
+                            <input type="hidden" th:name="userId" th:value="${user.userId}" />
+                            <label for="firstName">First Name:</label>
+                            <input type="text" id="firstName" name="firstName" th:field="*{firstName}" required><br>
+
+                            <label for="lastName">Last Name:</label>
+                            <input type="text" id="lastName" name="lastName" th:field="*{lastName}" required><br>
+
+                            <label for="dateOfBirth">Date of Birth:</label>
+                            <input type="date" id="dateOfBirth" name="dateOfBirth" th:value="${user.dateOfBirth != null} ? ${#temporals.format(user.dateOfBirth, 'yyyy-MM-dd')} : ''" required><br>
+
+                            <label for="phoneNumber">Phone Number:</label>
+                            <input type="text" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}"><br>
+
+                            <label for="address">Address:</label>
+                            <input type="text" id="address" name="address" th:field="*{address}"><br>
+
+                            <label for="gender">Gender:</label>
+                            <input type="text" id="gender" name="gender" th:field="*{gender}"><br>
+
+                            <label for="profilePictureURL">Profile Picture URL:</label>
+                            <input type="text" id="profilePictureURL" name="profilePictureURL" th:field="*{profilePictureURL}"><br>
+
+                            <button type="submit">Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+
+
+</div>
+<!-- ./wrapper -->
+<div th:replace="~{AdminFooter :: footer}"></div>
+<!-- jQuery 3 -->
+
+<div th:replace="~{ AdminScript :: script}"></div>
+</body>
+</html>
