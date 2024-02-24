@@ -226,6 +226,11 @@ public class QuizzesController {
         }
     }
 
+    @GetMapping("/")
+    public String quizIn() {
+        return "notFoundQuiz";
+    }
+
     @GetMapping("/{quizID}")
     public String quizInfo(@PathVariable Integer quizID, HttpSession session, Model model, Authentication auth,
             HttpServletRequest request) {
