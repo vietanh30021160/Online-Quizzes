@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -22,6 +23,6 @@ public class PasswordRecovery {
     private String token;
 
     @Column(name = "ExpiryTime")
-    private Instant expiryTime;
+    private LocalDate expiryTime;
 
 }

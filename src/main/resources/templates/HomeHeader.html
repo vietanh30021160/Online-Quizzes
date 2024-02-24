@@ -126,41 +126,11 @@
                 <div class="dropdown-content">
                     <!-- Hiển thị thông tin người đăng nhập -->
                     <a th:href="@{/information}" class="btn btn-default btn-flat">Profile</a>
-                    <!-- Hiển thị popup cho "Classes" -->
-                    <a  id="showClassesPopup" class="btn btn-default btn-flat">Classes</a>
+
                     <a  class="btn btn-default btn-flat" href="/logout">Logout</a>
-                    <!-- Thêm các mục khác tùy ý -->
+
                 </div>
             </div>
-
-            <!-- Popup cho "Information" -->
-            <div class="popup" id="informationPopup">
-                <!-- Nội dung của popup -->
-                <p>Thông tin người đăng nhập</p>
-                <!-- Thêm các thông tin cần hiển thị -->
-                <p th:text=" 'UserName:'+ ${userName}"></p>
-                <p th:text="'Email:' + ${userEmail}"></p>
-                <p th:text="'Phone:' + ${userPhone}"></p>
-                <!-- Thêm các thông tin khác tùy ý -->
-                <!-- Button để đóng popup -->
-                <button id="closeInformationPopup">Close</button>
-            </div>
-
-            <!-- Popup cho "Classes" -->
-            <div class="popup" id="classesPopup">
-                <!-- Nội dung của popup -->
-                <p>Các lớp học đã tham gia </p>
-                <ul>
-                    <li th:each="class : ${classes}">
-                        <span th:text="${class.className}" style="color: #000000"></span>
-                    </li>
-                </ul>
-                <!-- Thêm các thông tin về lớp học -->
-                <!-- Button để đóng popup -->
-                <button id="closeClassesPopup">Close</button>
-            </div>
-
-            <!-- Overlay -->
 
             </body>
         </div>

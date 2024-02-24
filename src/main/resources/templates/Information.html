@@ -35,18 +35,25 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0">Role</h6>
+                                        <h6 class="mb-0">FirstName</h6>
                                     </div>
-                                    <div class="col-sm-9 text-secondary" th:text="${user.role}">
+                                    <div class="col-sm-9 text-secondary" th:text="${user.firstName}">
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0">Password</h6>
+                                        <h6 class="mb-0">LastName</h6>
                                     </div>
-                                    <div class="col-sm-9 text-secondary" th:text="${user.passwordHash}">
-
+                                    <div class="col-sm-9 text-secondary" th:text="${user.lastName}">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Role</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary" th:text="${user.role}">
                                     </div>
                                 </div>
                                 <hr>
@@ -97,9 +104,11 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <a class="btn btn-info " target="__blank" href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills">Edit</a>
+                                        <a class="btn btn-info " target="__blank" href="/updateInformation">Edit</a>
+                                        <a class="btn btn-info " target="__blank" href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills" style="background-color: #dc3545">Fogot password</a>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
 
