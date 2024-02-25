@@ -94,7 +94,7 @@ h1{
     padding: 20px 30px;
     font-size: 18px;
     border-radius: 20px;
-    transition:box-shadow .2x;
+    /*transition:box-shadow .2x;*/
 
     &:focus{
         outline:none;
@@ -102,9 +102,28 @@ h1{
     }
 }
 
+.form-element1 {
+    width: 100%;
+    border: 1px solid #EC7063;
+
+    background-color: #f1f1f1;
+    padding: 20px 30px;
+    font-size: 18px;
+    border-radius: 20px;
+    /*transition:box-shadow .2x;*/
+
+    &:focus{
+        outline:none;
+        box-shadow: 0 0 0 2px #0037ff;
+    }
+}
+.form-element1::placeholder {
+    color: #EC7063;
+}
+
 form{
     margin-top: 3rem;
-    
+
     &>*{
         margin-top: 1rem;
     }
@@ -136,12 +155,18 @@ h3{
 }
 
 .form-input-field{
-    display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem;
 }
-
-.form-input-field #teacherRadio{
-    margin-left: 3rem;
+.form-input-field .role .gender{
+    margin-left: 5rem;
+}
+h4{
+    color: red;
+}
+.topic{
+    color: black;
+    font-size: 1.17rem;
+    font-weight: bolder;
 }

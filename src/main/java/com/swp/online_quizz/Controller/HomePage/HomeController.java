@@ -103,7 +103,7 @@ public class HomeController {
         return Optional.empty();
     }
 
-    private void handleStudentLogic(Model model, User user, String keyword, Integer pageNo, Integer min, Integer max, String subject, String classCode) {
+    private String handleStudentLogic(Model model, User user, String keyword, Integer pageNo, Integer min, Integer max, String subject, String classCode) {
 
         Integer userId = user.getUserId();
         List<Integer> classIds = iClassEnrollmentService.getClassIdsByStudentId(userId);
@@ -124,6 +124,7 @@ public class HomeController {
                 model.addAttribute("mess", "Join class successfully!");
             }
         }
+        return "HomePage";
     }
 
     @GetMapping("/information")
@@ -139,6 +140,7 @@ public class HomeController {
         return "Information.html";
     }
 
+       
     @GetMapping("/updateInformation")
     public String updateInformation(Model model, HttpServletRequest request) {
         Optional<User> userOptional = getUserFromSession(request);

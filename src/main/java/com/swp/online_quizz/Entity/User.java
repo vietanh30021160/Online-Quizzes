@@ -6,16 +6,21 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "[Users]")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -69,7 +74,14 @@ public class User {
     @Column(name = "Otp", length = 6)
     private String otp;
 
+    @Column(name = "OtpGeneratedTime")
+    private LocalDateTime otpGeneratedTime;
+
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private Set<QuizAttempt> listQuizAttempts;
+
+    @OneToMany(mappedBy = "studentID")
+    @JsonManagedReference
+    private Set<ClassEnrollment> listEnrollment;
 }
