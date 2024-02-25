@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{AdminHead :: AdminHead}"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+    <div th:replace="~{AdminHeader :: header}"></div>
+
+    <div th:replace="~{AdminSidebar :: sidebar}"></div>
+    <!-- =============================================== -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Admin page
+                <small>it all starts here</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a th:href="@{/admin}"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">Admin page</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="box">
+
+                <div class="box-body">
+                    Welcom to admin page!
+                </div>
+                <!-- /.box-body -->
+                <!-- Default box -->
+                <div class="box">
+                    <div class="box-body">
+                        <div class="search">
+                            <form class="search-form" th:action="@{/admin/search-teacher}" method="get">
+                                <input type="text" name="username" placeholder="Search by username...">
+                                <button type="submit">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+
+                        <div class="table">
+                            <div class="content">
+                    <h2>Teacher List</h2>
+                                <div class="table-wrapper">
+
+                    <table class="table" border="1">
+                        <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Join Date</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th th:text="${teachers.size() > 0 ? 'Active' : ''}">Active</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user : ${teachers}">
+                            <td th:text="${user.userId}"></td>
+                            <td th:text="${user.username}"></td>
+                            <td th:text="${user.email}"></td>
+                            <td th:text="${user.joinDate}"></td>
+                            <td th:text="${user.firstName}"></td>
+                            <td th:text="${user.lastName}"></td>
+                            <td>
+                                <form th:action="@{/admin/toggle-active}" method="post">
+                                    <input type="hidden" name="userId" th:value="${user.userId}">
+                                    <input type="hidden" name="redirectUrl" th:value="'/admin/teachers'">
+                                    <button type="submit" th:text="${user.isActive != null ? (user.isActive ? 'Active' : 'Inactive') : 'Unknown'}"></button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <!-- /.box -->
+
+
+            </div>
+            <!-- /.box-footer-->
+                </div>
+            <!-- /.box -->
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+
+
+</div>
+<!-- ./wrapper -->
+<div th:replace="~{AdminFooter :: footer}"></div>
+<!-- jQuery 3 -->
+
+<div th:replace="~{ AdminScript :: script}"></div>
+</body>
+</html>
