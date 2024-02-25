@@ -1,12 +1,18 @@
 package com.swp.online_quizz.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Repository.AnswersRepository;
 import com.swp.online_quizz.Repository.QuestionsRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -31,6 +37,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 
 public class QuizService implements IQuizzesService {
+    @PersistenceContext
+    private EntityManager entityManager;
     @Autowired
     private final QuizRepository quizRepository;
     @Autowired
@@ -212,18 +220,32 @@ public class QuizService implements IQuizzesService {
                     (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("timeLimit"), max));
         }
 
-        // Thêm điều kiện để lọc theo quizIds
-        if (!quizIds.isEmpty() ) {
+        if (!quizIds.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) -> root.get("quizId").in(quizIds));
         }
-        // Nếu quizIds là null hoặc rỗng thì trả về một Page rỗng
-        if (quizIds == null || quizIds.isEmpty()) {
-            return Page.empty();
+        // Lấy tất cả kết quả từ filteredQuiz
+        Page<Quiz> filteredQuiz = quizRepository.findAll(spec, PageRequest.of(0, Integer.MAX_VALUE));
+        if (quizIds.isEmpty()) {
+            filteredQuiz = Page.empty();
         }
 
+        // Lấy tất cả kết quả từ quizzesNotInClasses
+        Page<Quiz> quizzesNotInClasses = quizRepository.findQuizzesNotInAnyClass(PageRequest.of(0, Integer.MAX_VALUE));
 
-        Pageable pageable = PageRequest.of(pageNo -1, 3);
+        // Kết hợp các kết quả từ filteredQuiz và quizzesNotInClasses thành một danh sách duy nhất
+        List<Quiz> combinedList = new ArrayList<>();
+        combinedList.addAll(filteredQuiz.getContent());
+        combinedList.addAll(quizzesNotInClasses.getContent());
 
-        return quizRepository.findAll(spec, pageable);
+        // Tạo một Page mới từ danh sách kết quả kết hợp và trả về
+        int pageSize = 3; // Kích thước trang mong muốn
+        int totalSize = combinedList.size();
+        int startIndex = (pageNo - 1) * pageSize;
+        int endIndex = Math.min(startIndex + pageSize, totalSize);
+        List<Quiz> pageContent = combinedList.subList(startIndex, endIndex);
+
+        return new PageImpl<>(pageContent, PageRequest.of(pageNo - 1, pageSize), totalSize);
     }
+
+
 }

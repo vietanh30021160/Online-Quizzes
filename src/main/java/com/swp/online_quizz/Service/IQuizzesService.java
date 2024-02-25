@@ -44,6 +44,8 @@ public interface IQuizzesService {
 
 
     Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds);
+
+
 }
 
 
