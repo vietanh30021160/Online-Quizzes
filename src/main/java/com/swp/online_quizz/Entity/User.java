@@ -15,7 +15,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "[Users]")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -69,6 +69,9 @@ public class User {
     @Column(name = "Otp", length = 6)
     private String otp;
 
+    @Column(name = "OtpGeneratedTime")
+    private LocalDateTime otpGeneratedTime;
+  
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private Set<QuizAttempt> listQuizAttempts;
