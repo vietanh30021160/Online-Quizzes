@@ -6,6 +6,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.swp.online_quizz.Dto.CreateQuizzByQuestionBank;
+import com.swp.online_quizz.Entity.*;
+import com.swp.online_quizz.Repository.QuizRepository;
+import com.swp.online_quizz.Service.*;
+import com.swp.online_quizz.Repository.UsersRepository;
+import com.swp.online_quizz.Service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.poi.util.IOUtils;
 import org.hibernate.boot.beanvalidation.IntegrationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +52,11 @@ import com.swp.online_quizz.Service.IQuizzesService;
 import com.swp.online_quizz.Service.ISubjectService;
 import com.swp.online_quizz.Service.IUsersService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping(path = "/quizzes")
 public class QuizzesController {
-    @Autowired
-    private ExcelUploadService excelUploadService;
     @Autowired
     private IUsersService iUsersService;
     @Autowired
@@ -98,21 +102,17 @@ public class QuizzesController {
         }
         // nếu có thì lấy ra user
         int userId = userOptional.get().getUserId();
-        List<Quiz> quizList = iQuizzesService.getQuizByUserId(userId); // Thay thế bằng phương thức lấy danh sách quiz
-                                                                       // từ Service
+        List<Quiz> quizList = iQuizzesService.getQuizByUserId(userId); // Thay thế bằng phương thức lấy danh sách quiz từ Service
         model.addAttribute("quizList", quizList);
         return "showQuiz";
     }
-
     @Transactional
     @PostMapping("/createAll")
     public String createQuizWithQuestionsAndAnswers(@ModelAttribute("quiz") Quiz quiz, HttpServletRequest request) {
 
         String subjectName = quiz.getSubjectName();
-
         Subject subject = new Subject();
         subject.setSubjectName(subjectName);
-
         quiz.setSubject(subject);
         String username = "";
         if (request.getSession().getAttribute("authentication") != null) {
@@ -134,7 +134,9 @@ public class QuizzesController {
 
                 question.setQuiz(quiz);
 
+
                 iQuestionsService.createQuestion1(question);
+
 
                 for (Answer answer : question.getListAnswer()) {
 
@@ -151,7 +153,7 @@ public class QuizzesController {
     @GetMapping("/showCreateQuizPage")
     public String showCreateQuizPage(Model model) {
         Quiz quiz = iQuizzesService.getEmptyQuiz();
-        model.addAttribute("quiz", new Quiz());
+        model.addAttribute("quiz",new Quiz());
         List<String> questionContents = quiz.getListQuestions().stream()
                 .map(Question::getQuestionContent)
                 .collect(Collectors.toList());
@@ -159,6 +161,60 @@ public class QuizzesController {
         model.addAttribute("questionContents", questionContents);
 
         return "createQuiz";
+    }
+
+    @GetMapping("/createQuizByListQuestions")
+    public String showCreateQuizzPageByListQuestion(Model model,@RequestParam(value = "question",required = false) String question) {
+        List<Question> questions ;
+        if(question!=null){
+            questions = this.iQuestionsService.getALlQuestionBySearch(question);
+            model.addAttribute("question",question);
+        }
+        questions = this.iQuestionsService.getAllQuestionUnique();
+        model.addAttribute("ListQuestion", questions);
+        model.addAttribute("formObject", new CreateQuizzByQuestionBank());
+        return "CreateQuizzByBankQuestion";
+    }
+
+    @Transactional
+    @PostMapping("/createQuizByListQuestion")
+    public String createQuizWithListQuestions(@ModelAttribute("formObject") CreateQuizzByQuestionBank formObject,
+                                              HttpServletRequest request) {
+        Quiz quiz = formObject.getQuiz();
+        String subjectName = quiz.getSubjectName();
+        Subject subject = new Subject();
+        subject.setSubjectName(subjectName);
+        quiz.setSubject(subject);
+        String username = "";
+        if (request.getSession().getAttribute("authentication") != null) {
+            Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
+            username = authentication.getName();
+        }
+        Optional<User> userOptional = usersRepository.findByUsername(username);
+        if (userOptional.isEmpty()) {
+            return "redirect:/login";
+        }
+        int userId = userOptional.get().getUserId();
+        User defaultTeacher = iUsersService.getUsersByID(userId);
+        quiz.setTeacher(defaultTeacher);
+        boolean quizCreated = iQuizService.createQuiz1(quiz);
+
+        Integer quizId = quiz.getQuizId();
+        List<Question> questions = iQuestionsService.getQuestionsByIds(formObject.getSelectedQuestions());
+        if (quizCreated) {
+
+            for (Question question : questions) {
+                question.setQuiz(quiz);
+                iQuestionsService.createQuestion1(question);
+                for (Answer answer : question.getListAnswer()) {
+                    answer.setQuestion(question);
+                    iAnswerService.createAnswer1(answer, question.getQuestionId());
+                }
+            }
+            return "redirect:/quizzes/list";
+        } else {
+            return "redirect:/quizzes/createQuizByListQuestion";
+        }
     }
 
     @PostMapping("/updateAll/{quizId}")
@@ -201,7 +257,6 @@ public class QuizzesController {
 
         return "updateQuiz";
     }
-
     @GetMapping("/delete/{quizId}")
     public String deleteQuiz(@PathVariable Integer quizId) {
         try {

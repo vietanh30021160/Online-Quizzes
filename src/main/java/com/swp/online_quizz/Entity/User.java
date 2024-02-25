@@ -76,7 +76,7 @@ public class User {
 
     @Column(name = "OtpGeneratedTime")
     private LocalDateTime otpGeneratedTime;
-  
+
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private Set<QuizAttempt> listQuizAttempts;
