@@ -7,8 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import com.swp.online_quizz.Entity.Subject;
+
 public interface ISubjectService {
     public List<Subject> getAll();
+
     public boolean create(Subject subjects);
 
 
@@ -21,6 +24,11 @@ public interface ISubjectService {
 
     @Transactional
     Optional<Subject> updateSubjectBySubjectName(String subjectName, String newSubjectName, String newDescription);
+
+
+    public Subject find(Integer subjectID);
+
+    public Boolean update(Subject subjects);
 
     public Boolean delete(Integer subjectID);
 

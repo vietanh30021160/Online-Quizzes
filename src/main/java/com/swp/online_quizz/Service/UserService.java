@@ -1,5 +1,12 @@
 package com.swp.online_quizz.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.swp.online_quizz.Dto.UserLoginDtoRequest;
 import com.swp.online_quizz.Dto.UserRegisterDtoRequest;
 import com.swp.online_quizz.Entity.User;
@@ -7,28 +14,25 @@ import com.swp.online_quizz.Mapper.UserMapper;
 import com.swp.online_quizz.Repository.UsersRepository;
 import com.swp.online_quizz.Utill.EmailUtil;
 import com.swp.online_quizz.Utill.OtpUtil;
+
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements IUserService{
+public class UserService implements IUserService {
     private final UsersRepository usersRepository;
     private final PasswordEncoder passwordEncoder;
+    private final IMessagesService iMessagesService;
     private final EmailUtil emailUtil;
     private final OtpUtil otpUtil;
+
     @Override
     public boolean login(UserLoginDtoRequest userLoginDtoRequest) {
         Optional<User> userOptional = usersRepository.findByUsername(userLoginDtoRequest.getUsername());
-        if(userOptional.isEmpty()){
+        if (userOptional.isEmpty()) {
             return false;
-        }else{
+        } else {
             return passwordEncoder.matches(userLoginDtoRequest.getPassword(), userOptional.get().getPasswordHash());
         }
     }
@@ -37,7 +41,7 @@ public class UserService implements IUserService{
     public boolean register(UserRegisterDtoRequest userRegisterDtoRequest) {
         Optional<User> checkUsername = usersRepository.findByUsername(userRegisterDtoRequest.getUsername());
         String checkEmail = usersRepository.findEmailByEmailIgnoreCase(userRegisterDtoRequest.getEmail());
-        if (checkUsername.isEmpty() && checkEmail == null){
+        if (checkUsername.isEmpty() && checkEmail == null) {
             if (userRegisterDtoRequest.getRole().equals("ROLE_STUDENT")) {
                 String otp = otpUtil.generateOtp();
                 try {
@@ -48,27 +52,35 @@ public class UserService implements IUserService{
                 }
 
                 userRegisterDtoRequest.setPassword(passwordEncoder.encode(userRegisterDtoRequest.getPassword()));
-                usersRepository.save(UserMapper.toUser(userRegisterDtoRequest, otp));
+                User user = usersRepository.save(UserMapper.toUser(userRegisterDtoRequest, otp));
+                if (user.getRole().equalsIgnoreCase("ROLE_TEACHER")) {
+                    iMessagesService.createNotificationNewAcceptTeacher(user);
+                }
                 return true;
 
             } else {
-                    userRegisterDtoRequest.setPassword(passwordEncoder.encode(userRegisterDtoRequest.getPassword()));
-                    usersRepository.save(UserMapper.toUser(userRegisterDtoRequest));
-                    return true;
+                userRegisterDtoRequest.setPassword(passwordEncoder.encode(userRegisterDtoRequest.getPassword()));
+                User user = usersRepository.save(UserMapper.toUser(userRegisterDtoRequest));
+                if (user.getRole().equalsIgnoreCase("ROLE_TEACHER")) {
+                    iMessagesService.createNotificationNewAcceptTeacher(user);
+                }
+                return true;
             }
-    }
+        }
         return false;
     }
 
     @Override
     public boolean verifyAccount(String email, String otp) {
         Optional<User> userOptional = usersRepository.findByEmailIgnoreCase(email);
-        if(userOptional.isEmpty()){
+        if (userOptional.isEmpty()) {
             System.out.println("User not found");
             return false;
         }
         User user = userOptional.get();
-        if(user.getOtp().equals(otp)&& Duration.between(user.getOtpGeneratedTime(), LocalDateTime.now()).getSeconds()<(5*60)&&user.getRole().equals("ROLE_STUDENT")){
+        if (user.getOtp().equals(otp)
+                && Duration.between(user.getOtpGeneratedTime(), LocalDateTime.now()).getSeconds() < (5 * 60)
+                && user.getRole().equals("ROLE_STUDENT")) {
             user.setIsActive(true);
             usersRepository.save(user);
             return true;
@@ -79,12 +91,12 @@ public class UserService implements IUserService{
     @Override
     public boolean regenerateOtp(String email) {
         Optional<User> userOptional = usersRepository.findByEmailIgnoreCase(email);
-        if(userOptional.isEmpty()){
+        if (userOptional.isEmpty()) {
             System.out.println("User not found");
             return false;
         }
         User user = userOptional.get();
-        if(user.getRole().equals("ROLE_STUDENT")) {
+        if (user.getRole().equals("ROLE_STUDENT")) {
             String otp = otpUtil.generateOtp();
             try {
                 emailUtil.sendOtpEmail(email, otp);
@@ -102,7 +114,7 @@ public class UserService implements IUserService{
 
     @Override
     public Boolean forgotPassword(String email) {
-        if(email==null || email.isEmpty()){
+        if (email == null || email.isEmpty()) {
             return false;
         }
         try {
@@ -117,7 +129,7 @@ public class UserService implements IUserService{
     @Override
     public boolean setPassword(String email, String newPassword) {
         Optional<User> userOptional = usersRepository.findByEmailIgnoreCase(email);
-        if(userOptional.isEmpty()){
+        if (userOptional.isEmpty()) {
             System.out.println("User not found");
             return false;
         }

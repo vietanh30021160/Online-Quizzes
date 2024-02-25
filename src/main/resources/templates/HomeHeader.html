@@ -18,19 +18,19 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-lg-5 me-lg-auto">
                 <li class="nav-item">
-                    <a class="nav-link click-scroll"href="/" onclick="navigateToSection('section_1')">Home</a>
+                    <a class="nav-link click-scroll" href="#section_1">Home</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="/" onclick="navigateToSection('section_2')">List Quizzes</a>
+                    <a class="nav-link click-scroll" href="#section_2">List Quizzes</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="/" onclick="navigateToSection('section_3')">How it works</a>
+                    <a class="nav-link click-scroll" href="#section_3">How it works</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="/" onclick="navigateToSection('section_5')">Contact</a>
+                    <a class="nav-link click-scroll" href="#section_5">Contact</a>
                 </li>
 
             </ul>
@@ -43,21 +43,88 @@
                     </div>
                 </div>
             </form>
-            <div class="d-none d-lg-block inline-block-div"  >
-                <a href="#top" class="navbar-icon bi bi-bell smoothscroll"></a>
+            <!--notification-->
+            <div class="notification_wrap" name="Notification" value="Notification">
+                <div class=" notification_icon">
+                    <i  class="navbar-icon bi bi-bell smoothscroll"></i>
+                </div>
+                <div class="dropdown">
+                    <div th:if="${not #lists.isEmpty(messages)}" th:each="messageRecipient : ${messages}" class="notify_item" th:classappend="${messageRecipient.getIsSeen()} ? 'seen' : ''">
+                        <div id="messageRecipientID" th:value="${messageRecipient.getMessageRecipientId()}" style="display: none;"></div>
+                        <div class="notify_img">
+                            <img src="https://lh3.googleusercontent.com/a/ACg8ocIkg8BFCv-em-xii-vQShSYsAFPtMEMSBSIFh6130LY=s288-c-no"
+                                alt="profile_pic" style="width: 50px">
+                        </div>
+                        <a th:href="@{/quizzes/{quizID}(quizID = ${messageRecipient.getMessage().getNote()})}" class="notify_info">
+                            <!-- Hiển thị nội dung và thời gian của thông báo -->
+                            <p th:text="${messageRecipient.getMessage().getMessageContent()}"></p>
+                            <span th:text="${messageRecipient.getMessage().getMessageType()}"></span><br>
+                            <span class="notify_time" th:text="${messageRecipient.getMessage().getSendTime()}"></span>
+                        </a>
+                        <div th:if="${!messageRecipient.getIsSeen()}" class="dot" style="background-color: #ccc;"></div>
+                        <div th:if="${messageRecipient.getIsSeen()}" class="dot" style="background-color: green;"></div>
+                    </div>
+                </div>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                        const notifyItems = document.querySelectorAll('.notify_item');
 
+                        notifyItems.forEach(function (item) {
+                            const dotElement = item.querySelector('.dot');
+                            const notifyElement = item.querySelector('.notify_info');
+
+                            function handleClick() {
+                                const messageRecipientId = item.querySelector('#messageRecipientID').getAttribute('value');
+                                const isSeen = item.classList.contains('seen');
+                                updateSeenStatus(messageRecipientId, isSeen);
+                            }
+
+                            dotElement.addEventListener('click', handleClick);
+                            notifyElement.addEventListener('click', handleClick);
+
+                            function updateSeenStatus(messageRecipientId, isSeen) {
+                                fetch(`/notif/updateSeenStatus/${messageRecipientId}`, {
+                                    method: 'GET',
+                                })
+                                    .then(function (response) {
+                                        if (response.ok) {
+                                            if (!isSeen) {
+                                                dotElement.style.backgroundColor = 'green';
+                                                item.classList.add('seen');
+                                            } else {
+                                                dotElement.style.backgroundColor = '#ccc';
+                                                item.classList.remove('seen');
+                                            }
+                                        } else {
+                                            console.error('Cập nhật trạng thái đã xem thất bại');
+                                        }
+                                    })
+                                    .catch(function (error) {
+                                        console.error('Lỗi khi gửi yêu cầu cập nhật trạng thái đã xem:', error);
+                                    });
+                            }
+                        });
+                    });
+            </script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).on("click", ".notification_icon .bi-bell", function () {
+                        $(".notification_wrap .dropdown").toggleClass("active");
+                    });
+            </script>
+            <!--End notification-->
             <div class="dropdown">
                 <!-- Button của dropdown -->
                 <button class="navbar-icon bi-person smoothscroll"></button>
                 <div class="dropdown-content">
                     <!-- Hiển thị thông tin người đăng nhập -->
                     <a th:href="@{/information}" class="btn btn-default btn-flat">Profile</a>
-
-                    <a  class="btn btn-default btn-flat" href="/logout">Logout</a>
-
+            
+                    <a class="btn btn-default btn-flat" href="/logout">Logout</a>
+            
                 </div>
             </div>
-        </div>
+            </div>
     </div>
 </nav>

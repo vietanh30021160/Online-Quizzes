@@ -5,8 +5,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import com.swp.online_quizz.Entity.User;
+
 public interface IUsersService {
     public User getUsersByID(Integer userID);
+
     List<User> getAlList();
 
     List<User> getUserIsActive();
@@ -28,9 +31,7 @@ public interface IUsersService {
     boolean updateUser(Integer userId, User updatedUser);
 
     Boolean create(User users);
-
-
     User findById(Integer userID);
-
+    Boolean update(User users);
     Boolean delete(Integer userID);
 }

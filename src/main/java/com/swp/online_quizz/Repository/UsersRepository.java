@@ -1,5 +1,8 @@
 package com.swp.online_quizz.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.swp.online_quizz.Entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +13,8 @@ import java.util.Optional;
 
 @Repository
 public interface UsersRepository extends JpaRepository<User, Integer> {
+    List<User> findByRole(String role);
+
     @Query("SELECT u FROM User u WHERE u.username = :username")
     Optional<User> findByUsername(String username);
 
@@ -18,9 +23,11 @@ public interface UsersRepository extends JpaRepository<User, Integer> {
 
     Optional<User> findByEmailIgnoreCase(String username);
     List<User> findByRoleAndIsActive(String role, Boolean isActive);
-    List<User> findByRole(String role);
+
     List<User> findByUsernameIgnoreCaseContainingAndRole(String username, String role);
+
     List<User> findByIsActive(Boolean isActive);
+
     User findUserByEmail(String email);
     User findByuserId(Integer userId);
 }
