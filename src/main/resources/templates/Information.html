@@ -8,7 +8,119 @@
     <div th:replace="~{HomeHeader :: header}" style="color: #0ea3bf"></div>
 
     <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+        <div class="container">
+            <div class="main-body">
 
+                <h1 class="text-white text-center">User Profile</h1>
+                <!-- /Breadcrumb -->
+
+                <div class="row gutters-sm">
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex flex-column align-items-center text-center">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                                    <div class="mt-3">
+                                        <h4 th:text="${user.username}"></h4>
+                                        <p class="text-secondary mb-1" th:text="${user.email}"></p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">FirstName</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary" th:text="${user.firstName}">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">LastName</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary" th:text="${user.lastName}">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Role</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary" th:text="${user.role}">
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Gender</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary" th:text="${user.gender}">
+
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">JoinDate</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary" th:text="${user.joinDate}">
+
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">DateOfBirth</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary"  th:text="${user.dateOfBirth}">
+
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Phone</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary" th:text="${user.phoneNumber}">
+
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Address</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary" th:text="${user.address}">
+
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <a class="btn btn-info " target="__blank" href="/updateInformation">Edit</a>
+                                        <a class="btn btn-info " target="__blank" href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills" style="background-color: #dc3545">Fogot password</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </section>
 
 

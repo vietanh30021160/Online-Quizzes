@@ -10,6 +10,9 @@ import java.util.List;
 
 public interface IQuizzesService {
     List<Quiz> getAll();
+
+    List<Quiz> getQuizByUserId(Integer userId);
+
     public Subject find(Integer quizId);
     public Quiz findByID(Integer quizID);
 

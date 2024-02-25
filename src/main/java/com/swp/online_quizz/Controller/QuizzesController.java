@@ -64,32 +64,45 @@ public class QuizzesController {
     }
 
     @GetMapping("/list")
-    public String showQuizList(Model model) {
-        List<Quiz> quizList = iQuizzesService.getAll(); // Thay thế bằng phương thức lấy danh sách quiz từ Service
+    public String showQuizList(Model model, HttpServletRequest request) {
+        String username = "";
+        if (request.getSession().getAttribute("authentication") != null) {
+            Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
+            username = authentication.getName();
+        }
+        Optional<User> userOptional = usersRepository.findByUsername(username);
+        if (userOptional.isEmpty()) {
+            return "redirect:/login";
+        }
+        // nếu có thì lấy ra user
+        int userId = userOptional.get().getUserId();
+        List<Quiz> quizList = iQuizzesService.getQuizByUserId(userId); // Thay thế bằng phương thức lấy danh sách quiz từ Service
         model.addAttribute("quizList", quizList);
         return "showQuiz";
     }
     @Transactional
     @PostMapping("/createAll")
-    public String createQuizWithQuestionsAndAnswers(@ModelAttribute("quiz") Quiz quiz
+    public String createQuizWithQuestionsAndAnswers(@ModelAttribute("quiz") Quiz quiz, HttpServletRequest request
 
     ) {
 //
 
         String subjectName = quiz.getSubjectName();
-
-
         Subject subject = new Subject();
         subject.setSubjectName(subjectName);
-
-
-
         quiz.setSubject(subject);
-        if (quiz.getTeacher() == null) {
-
-            User defaultTeacher = iUsersService.getUsersByID(1);
-            quiz.setTeacher(defaultTeacher);
+        String username = "";
+        if (request.getSession().getAttribute("authentication") != null) {
+            Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
+            username = authentication.getName();
         }
+        Optional<User> userOptional = usersRepository.findByUsername(username);
+        if (userOptional.isEmpty()) {
+            return "redirect:/login";
+        } // nếu có thì lấy ra user
+        int userId = userOptional.get().getUserId();
+        User defaultTeacher = iUsersService.getUsersByID(userId);
+        quiz.setTeacher(defaultTeacher);
         boolean quizCreated = iQuizService.createQuiz1(quiz);
 
         if (quizCreated) {

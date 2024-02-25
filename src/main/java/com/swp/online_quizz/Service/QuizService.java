@@ -49,7 +49,10 @@ public class QuizService implements IQuizzesService {
     public List<Quiz> getAll() {
         return quizRepository.findAll();
     }
-
+    @Override
+    public List<Quiz> getQuizByUserId(Integer userId){
+        return quizRepository.findByTeacherUserId(userId);
+    }
     @Override
     public Subject find(Integer quizId) {
         return null;

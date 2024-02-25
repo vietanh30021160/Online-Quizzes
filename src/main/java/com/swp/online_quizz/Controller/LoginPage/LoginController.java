@@ -125,10 +125,7 @@ public class LoginController {
         return "redirect:/";
     }
 
-    @GetMapping("/admin")
-    public String adminPage(){
-        return "Admin";
-    }
+
 
     @GetMapping("/homePageTeacher")
     public String teacherPage(){
