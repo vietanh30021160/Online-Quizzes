@@ -5,6 +5,9 @@ body {
 
     font-weight: 300;
 }
+.totalClass{
+    font-family: 'Times New Roman', Times, serif;
+}
 html{
     scroll-behavior: smooth;
 }
@@ -12,7 +15,6 @@ html{
     /*background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);*/
     background-color: #0ea3bf;
     background-image: linear-gradient(160deg, #0ea3bf 0%, #6db6e0 50%, #3bbfc9 100%);
-
 }
 p {
     color: rgba(182, 179, 179, 0.5);
@@ -326,6 +328,9 @@ h2 {
     background-image: linear-gradient(90deg, #3d899b 0%, #7ecec5 50%);
 
 }
+.navbar-expand-lg .navbar-nav .nav-link{
+    margin: 1px;
+}
 .use_Student{
     color: #0e0e0e;
     margin: 0;
@@ -378,4 +383,41 @@ h2 {
 }
 .btnAddClass{
 padding-left : 50px;
+}
+.filter-options span:hover {
+    text-decoration: underline;
+}
+.nav-link:hover {
+    /* Thêm các thuộc tính CSS khi di chuột qua liên kết tại đây */
+    text-decoration: underline; /* Ví dụ: làm cho văn bản có gạch chân khi di chuột qua */
+}
+#submitMessage {
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    color: black;
+    border-radius: 5px;
+}
+.navbar-expand-lg .navbar-nav .nav-link{
+    margin: 1px;
+}
+.buttonAddClass{
+    padding: 0 10px;
+}
+.fromSearchClass{
+    margin-right: 0;
+}
+.inline-block-div{
+    padding: 0 10px;
+}
+nav{
+    min-height: 121px;
+}
+.searchButtonQuestion{
+    padding: 0 5px;
+}
+#questionSearch{
+    margin: 0;
 }

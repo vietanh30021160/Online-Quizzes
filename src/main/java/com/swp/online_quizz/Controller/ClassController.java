@@ -44,10 +44,13 @@ public class ClassController {
             return "redirect:/login";
         }
         Page<Classes> listClasses = this.classesService.getAllClassByUserId(userOptional.get().getUserId(), pageNo);
+        List<Classes> TotalClass = this.classesService.getAllClassByUserId(userOptional.get().getUserId());
+
         if (className != null) {
             listClasses = this.classesService.searchClassesByClassesNameAndUserID(className, pageNo, userOptional.get().getUserId());
             model.addAttribute("className", className);
         }
+        model.addAttribute("TotalClass",TotalClass.size());
         model.addAttribute("totalPage", listClasses.getTotalPages());
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("username", username); /// lấy class đầu tiên để lấy teacher
