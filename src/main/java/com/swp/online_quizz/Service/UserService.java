@@ -124,6 +124,14 @@ public class UserService implements IUserService{
         User user = userOptional.get();
         user.setPasswordHash(passwordEncoder.encode(newPassword));
         usersRepository.save(user);
+        String subject = "Change password";
+        String text = "Your account's password has recently been changed";
+        try {
+            emailUtil.sendNotication(email,subject,text);
+        } catch (MessagingException e) {
+            System.out.println("Unable to send otp please try again");
+            return false;
+        }
         return true;
     }
 
