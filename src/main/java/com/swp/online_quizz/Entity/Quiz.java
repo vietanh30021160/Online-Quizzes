@@ -38,7 +38,7 @@ public class Quiz {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Subject subject;
 
-    @Column(name = "SubjectName", length = 100)
+
     private String subjectName;
 
     @Column(name = "QuizName", length = 100)

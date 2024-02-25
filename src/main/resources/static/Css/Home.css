@@ -111,6 +111,7 @@ input[type="checkbox"]:checked + .filter-options {
 }
 .navbar-expand-lg .navbar-nav .nav-link{
     margin: 1px;
+
 }
 /* Style cho dropdown */
 .dropdown {
@@ -141,3 +142,4 @@ input[type="checkbox"]:checked + .filter-options {
 
 /* Hiển thị dropdown khi hover */
 .dropdown:hover .dropdown-content {display: block;}
+

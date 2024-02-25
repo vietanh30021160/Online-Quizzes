@@ -136,6 +136,7 @@ public class HomeController {
         return "Information.html";
     }
 
+       
     @GetMapping("/updateInformation")
     public String updateInformation(Model model, HttpServletRequest request) {
         Optional<User> userOptional = getUserFromSession(request);
