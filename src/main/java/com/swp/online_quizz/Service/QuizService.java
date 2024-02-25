@@ -213,24 +213,20 @@ public class QuizService implements IQuizzesService {
                     (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("timeLimit"), max));
         }
 
-        // Thêm điều kiện để lọc theo quizIds
         if (!quizIds.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) -> root.get("quizId").in(quizIds));
         }
-
         // Lấy tất cả kết quả từ filteredQuiz
         Page<Quiz> filteredQuiz = quizRepository.findAll(spec, PageRequest.of(0, Integer.MAX_VALUE));
+        if (quizIds.isEmpty()) {
+            filteredQuiz = Page.empty();
+        }
 
         // Lấy tất cả kết quả từ quizzesNotInClasses
         Page<Quiz> quizzesNotInClasses = quizRepository.findQuizzesNotInAnyClass(PageRequest.of(0, Integer.MAX_VALUE));
 
         // Kết hợp các kết quả từ filteredQuiz và quizzesNotInClasses thành một danh sách duy nhất
         List<Quiz> combinedList = new ArrayList<>();
-        // Nếu filteredQuiz rỗng, thêm tất cả kết quả từ quizzesNotInClasses vào combinedList
-        if (filteredQuiz.isEmpty()) {
-            combinedList.addAll(quizzesNotInClasses.getContent());
-        }
-
         combinedList.addAll(filteredQuiz.getContent());
         combinedList.addAll(quizzesNotInClasses.getContent());
 
