@@ -130,7 +130,6 @@ public class QuizzesController {
             return "redirect:/quizzes/createAll";
         }
     }
-
     @GetMapping("/showCreateQuizPage")
     public String showCreateQuizPage(Model model) {
         Quiz quiz = iQuizzesService.getEmptyQuiz();
@@ -238,7 +237,6 @@ public class QuizzesController {
 
         return "updateQuiz";
     }
-
     @GetMapping("/delete/{quizId}")
     public String deleteQuiz(@PathVariable Integer quizId) {
         try {
@@ -262,7 +260,6 @@ public class QuizzesController {
             return "redirect:/quizzes/list";
         }
     }
-
     @GetMapping("/{quizID}")
     public String quizInfo(@PathVariable Integer quizID, HttpSession session, Model model, Authentication auth, HttpServletRequest request) {
 

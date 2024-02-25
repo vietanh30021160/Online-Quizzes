@@ -26,7 +26,7 @@ public class ClassesService implements IClassesService {
 
     @Autowired
     private ClassEnrollmentRepository classEnrollmentRepository;
-
+    @Override
     public void joinClass(String classCode, Integer studentId) {
 
         // Tìm lớp học dựa trên classCode

@@ -1,6 +1,8 @@
 package com.swp.online_quizz.Security;
 
 
+import com.swp.online_quizz.Entity.User;
+import com.swp.online_quizz.Repository.UsersRepository;
 import com.swp.online_quizz.Service.CustomUserDetails;
 import com.swp.online_quizz.Service.CustomUserDetailsServices;
 import jakarta.servlet.ServletException;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -19,16 +22,23 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Optional;
 
 @Configuration
 @EnableWebSecurity
@@ -49,16 +59,19 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> {
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
-                    auth.requestMatchers("/", "/register", "/forgotpassword", "/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll();
-                   auth.requestMatchers("/homePageTeacher/**").hasRole("TEACHER");
+                    auth.requestMatchers("/homePageTeacher/**").hasRole("TEACHER");
+                    auth.requestMatchers("/", "/register", "/forgotpassword", "/verifyaccount","/regenerateotp","/setpassword", "/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(login -> login
                         .loginPage("/login").permitAll()
-                        .failureUrl("/login2?unsuccessful")
+                        .failureUrl("/login?unsuccessful")
                         .successHandler(myAuthenticationSuccessHandler())
                 )
+                .exceptionHandling(a->a.accessDeniedPage("/login?nopermit"))
+                .oauth2Login(a->a.loginPage("/login").successHandler(myAuthenticationSuccessHandler()))
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
+
         return httpSecurity.build();
     }
 
@@ -67,25 +80,81 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
         return new MyAuthenticationSuccessHandler();
     }
 
+    @Component
     public static class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+        @Autowired
+        private UsersRepository usersRepository;
+        @Autowired
+        private CustomUserDetailsServices customUserDetailsServices;
+        private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 //            SecurityContext context = SecurityContextHolder.createEmptyContext();
 //            context.setAuthentication(authentication);
-            request.getSession().setAttribute("authentication",authentication);
-            CustomUserDetails customUserDetails = (CustomUserDetails)authentication.getPrincipal();
-            Collection<? extends GrantedAuthority> authorities = customUserDetails.getAuthorities();
+            if (authentication.getPrincipal() instanceof DefaultOidcUser) {
+                DefaultOidcUser userDetails = (DefaultOidcUser) authentication.getPrincipal();
+                String username = userDetails.getAttribute("email");
+                String user = usersRepository.findEmailByEmailIgnoreCase(username);
+                if (user==null) {
+                    //Nếu k tồn tại
+                    String redirectUrl = "/register";
+                    String firstname = userDetails.getGivenName();
+                    String lastname = userDetails.getFamilyName();
+                    request.getSession().setAttribute("email",username);
+                    request.getSession().setAttribute("firstnameEmail",firstname);
+                    request.getSession().setAttribute("lastnameEmail",lastname);
+                    SecurityContextHolder.clearContext();
+                    redirectStrategy.sendRedirect(request,response,redirectUrl);
+                }
+                if(user!=null && authentication.getPrincipal() instanceof DefaultOidcUser){
 
-            String role = "";
-            if (!authorities.isEmpty()) {
-                role = authorities.iterator().next().getAuthority().trim();
+                    DefaultOidcUser oidcUser = (DefaultOidcUser) authentication.getPrincipal();
+
+                    //Lấy email từ DefaultOidcUser
+                    String email = oidcUser.getEmail();
+                    User user1 = usersRepository.findByEmailIgnoreCase(email).get();
+                    UserDetails userDetail = customUserDetailsServices.loadUserByUsername(user1.getUsername());
+
+                    SecurityContextHolder.clearContext();
+
+                    authentication = new UsernamePasswordAuthenticationToken(userDetail,null,userDetail.getAuthorities());
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
-            if (role.contains("ROLE_ADMIN")) {
-                // Nếu người dùng có vai trò ROLE_ADMIN, chuyển hướng đến URL "/admin"
-                getRedirectStrategy().sendRedirect(request, response, "/admin");
-            }  else {
-                super.onAuthenticationSuccess(request, response, authentication);
+            if (authentication.getPrincipal() instanceof CustomUserDetails){
+                request.getSession().setAttribute("authentication", authentication);
+            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+            User user = usersRepository.findByUsername(customUserDetails.getUsername()).get();
+            if(!user.getIsActive()){
+                request.getSession().invalidate();
+                SecurityContextHolder.clearContext();
+                if(user.getRole().equals("ROLE_TEACHER")){
+                    request.getSession().setAttribute("ms","This account have not been activated! Contacting ADMIN to be granted access");
+                    getRedirectStrategy().sendRedirect(request, response, "/login");
+                }
+                else if(user.getRole().equals("ROLE_STUDENT")){
+                    request.getSession().setAttribute("err","This account have not been verified! Click here to ");
+                    request.getSession().setAttribute("email",user.getEmail());
+                    getRedirectStrategy().sendRedirect(request, response, "/login");
+                }
+
+            }else{
+                Collection<? extends GrantedAuthority> authorities = customUserDetails.getAuthorities();
+
+                String role = "";
+                if (!authorities.isEmpty()) {
+                    role = authorities.iterator().next().getAuthority().trim();
+                }
+                if (role.contains("ROLE_ADMIN")) {
+                    // Nếu người dùng có vai trò ROLE_ADMIN, chuyển hướng đến URL "/admin"
+                    getRedirectStrategy().sendRedirect(request, response, "/admin");
+                } else {
+                    super.onAuthenticationSuccess(request, response, authentication);
+                }
             }
+
+        }
         }
     }
 

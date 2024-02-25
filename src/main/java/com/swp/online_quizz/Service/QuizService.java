@@ -2,6 +2,7 @@ package com.swp.online_quizz.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Repository.AnswersRepository;
@@ -179,5 +180,44 @@ public class QuizService implements IQuizzesService {
 
         return quizRepository.findAll(spec, pageable);
     }
+    @Override
+    public Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds) {
+        Specification<Quiz> spec = Specification.where(null);
 
+        if (keyword != null && !keyword.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.or(
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("quizName")),
+                            "%" + keyword.toLowerCase() + "%"),
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("subject").get("subjectName")),
+                            "%" + keyword.toLowerCase() + "%")));
+        }
+
+        if (subject != null && !subject.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("subject").get("subjectName"), subject));
+        }
+
+        if (min != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get("timeLimit"), min));
+        }
+
+        if (max != null) {
+            spec = spec.and(
+                    (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("timeLimit"), max));
+        }
+
+        // Thêm điều kiện để lọc theo quizIds
+        if (!quizIds.isEmpty() ) {
+            spec = spec.and((root, query, criteriaBuilder) -> root.get("quizId").in(quizIds));
+        }
+        // Nếu quizIds là null hoặc rỗng thì trả về một Page rỗng
+        if (quizIds == null || quizIds.isEmpty()) {
+            return Page.empty();
+        }
+
+
+        Pageable pageable = PageRequest.of(pageNo -1, 3);
+
+        return quizRepository.findAll(spec, pageable);
+    }
 }

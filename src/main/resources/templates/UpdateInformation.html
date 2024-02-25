@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{HomeHead :: head}"></head>
+<link th:href="@{css/Home.css}" rel="stylesheet">
+<body id="top">
+
+
+<div th:replace="~{HomeHeader :: header}" style="color: #0ea3bf"></div>
+
+<section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+    <div class="container">
+        <div class="main-body">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+
+
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                                <div class="mt-3">
+                                    <h4 th:text="${user.username}"></h4>
+                                    <p class="text-secondary mb-1" th:text="${user.email}"></p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="post" th:action="@{/updateInformation}" th:object="${user}">
+                                <!-- FirstName -->
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">FirstName</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" class="form-control" th:value="${user.firstName}" name="firstName">
+                                    </div>
+                                </div>
+                                <!-- LastName -->
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">LastName</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" class="form-control" th:value="${user.lastName}" name="lastName">
+                                    </div>
+                                </div>
+                                <!-- Phone -->
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Phone</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" class="form-control" th:value="${user.phoneNumber}" name="phoneNumber">
+                                    </div>
+                                </div>
+                                <!-- DateOfBirth -->
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">DateOfBirth</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="date" class="form-control" th:value="${user.dateOfBirth}" name="dateOfBirth">
+                                    </div>
+                                </div>
+                                <!-- Address -->
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Address</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" class="form-control" th:text="${user.address}" name="address">
+                                    </div>
+                                </div>
+                                <!-- Gender -->
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">Gender</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <label><input type="radio" th:checked="${user.gender == 'Male'}" th:value="Male" name="gender"> Male</label>
+                                        <label><input type="radio" th:checked="${user.gender == 'Female'}" th:value="Female" name="gender"> Female</label>
+                                    </div>
+                                </div>
+                                <!-- ProfilePicture -->
+                                <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">ProfilePicture</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="text" class="form-control" th:text="${user.profilePictureURL}" name="profilePictureURL">
+                                    </div>
+                                </div>
+                                <!-- Button -->
+                                <div class="row">
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-9 text-secondary">
+                                        <input type="submit" class="btn btn-primary px-4" value="Save Changes">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+</section>
+
+
+
+
+
+
+<div th:replace="~{HomeFooter :: footer}"></div>
+
+<div th:replace="~{HomeScript :: script}"></div>
+
+
+</body>
+</html>

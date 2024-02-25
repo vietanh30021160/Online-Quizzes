@@ -20,51 +20,28 @@
                             <span class="input-group-text bi-search" id="basic-addon1"></span>
                             <input type="search" name="classCode" class="form-control" placeholder=" Code join class,  ..."
                                    aria-label="Search">
-                            <button type="submit" class="form-control">Join</button>
+                            <button type="submit" class="form-control" >Join</button>
                         </div>
+                        <p  id="message" th:text="${mess}" ></p>
                     </form>
-                    <p id="submitMessage" ></p>
-                </div>
 
+                </div>
                 <script type="text/javascript">
-                    document.addEventListener('DOMContentLoaded', function() {
-                        var form = document.getElementById('joinForm');
-                        var submitMessage = document.getElementById('submitMessage');
-
-                        form.addEventListener('submit', function(event) {
-                            event.preventDefault(); // Ngăn chặn hành động mặc định của form
-
-                            // Lấy dữ liệu từ form
-                            var formData = new FormData(form);
-
-                            // Gửi yêu cầu HTTP POST bất đồng bộ
-                            fetch('/', {
-                                method: 'POST',
-                                body: formData
-                            })
-                                .then(function(response) {
-                                    if (response.ok) {
-                                        // Nếu yêu cầu thành công, hiển thị thông báo
-                                        submitMessage.innerText = 'Join class successfully!';
-                                        setTimeout(function() {
-                                            submitMessage.innerText = ''; // Xóa thông báo sau 3 giây
-                                        }, 3000);
-                                    } else {
-                                        // Nếu có lỗi, hiển thị thông báo lỗi
-                                        submitMessage.innerText = 'Error: You have already taken this class or the classcode is wrong ' + response.statusText;
-                                        setTimeout(function() {
-                                            submitMessage.innerText = ''; // Xóa thông báo sau 3 giây
-                                        }, 3000);
-                                    }
-                                })
-                                .catch(function(error) {
-                                    // Xử lý lỗi nếu fetch thất bại
-                                    submitMessage.innerText = 'Error: ' + error.message;
-                                });
-                        });
-                    });
+                    // Hàm để ẩn thông báo sau 3 giây
+                    function hideMessage() {
+                        var messageElement = document.getElementById("message");
+                        if (messageElement) {
+                            setTimeout(function () {
+                                messageElement.style.display = "none";
+                            }, 3000); // 3 giây
+                        }
+                    }
+                    // Gọi hàm hideMessage khi trang đã tải xong
+                    window.onload = hideMessage;
                 </script>
-                </div>
+
+
+            </div>
 
             </div>
         </div>

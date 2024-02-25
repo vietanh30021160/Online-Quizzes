@@ -18,19 +18,19 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-lg-5 me-lg-auto">
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_1">Home</a>
+                    <a class="nav-link click-scroll"href="/" onclick="navigateToSection('section_1')">Home</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_2">List Quizzes</a>
+                    <a class="nav-link click-scroll" href="/" onclick="navigateToSection('section_2')">List Quizzes</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_3">How it works</a>
+                    <a class="nav-link click-scroll" href="/" onclick="navigateToSection('section_3')">How it works</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_5">Contact</a>
+                    <a class="nav-link click-scroll" href="/" onclick="navigateToSection('section_5')">Contact</a>
                 </li>
 
             </ul>
@@ -47,10 +47,17 @@
                 <a href="#top" class="navbar-icon bi bi-bell smoothscroll"></a>
             </div>
 
-            <div class="d-none d-lg-block inline-block-div"  >
-                <a href="/logout" class="navbar-icon bi-person smoothscroll"></a>
-            </div>
+            <div class="dropdown">
+                <!-- Button của dropdown -->
+                <button class="navbar-icon bi-person smoothscroll"></button>
+                <div class="dropdown-content">
+                    <!-- Hiển thị thông tin người đăng nhập -->
+                    <a th:href="@{/information}" class="btn btn-default btn-flat">Profile</a>
 
+                    <a  class="btn btn-default btn-flat" href="/logout">Logout</a>
+
+                </div>
+            </div>
         </div>
     </div>
 </nav>
