@@ -6,13 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.swp.online_quizz.Dto.CreateQuizzByQuestionBank;
-import com.swp.online_quizz.Entity.*;
-import com.swp.online_quizz.Repository.QuizRepository;
-import com.swp.online_quizz.Service.*;
-import com.swp.online_quizz.Repository.UsersRepository;
-import com.swp.online_quizz.Service.*;
-import jakarta.servlet.http.HttpServletRequest;
 import org.apache.poi.util.IOUtils;
 import org.hibernate.boot.beanvalidation.IntegrationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.swp.online_quizz.Dto.CreateQuizzByQuestionBank;
 import com.swp.online_quizz.Entity.Answer;
 import com.swp.online_quizz.Entity.Question;
 import com.swp.online_quizz.Entity.Quiz;
@@ -52,6 +46,7 @@ import com.swp.online_quizz.Service.IQuizzesService;
 import com.swp.online_quizz.Service.ISubjectService;
 import com.swp.online_quizz.Service.IUsersService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -67,6 +62,8 @@ public class QuizzesController {
     private QuizRepository quizRepository;
     @Autowired
     private IQuizzesService iQuizService;
+    @Autowired
+    private ExcelUploadService excelUploadService;
     @Autowired
     private IQuestionsService iQuestionsService;
     @Autowired
@@ -102,10 +99,12 @@ public class QuizzesController {
         }
         // nếu có thì lấy ra user
         int userId = userOptional.get().getUserId();
-        List<Quiz> quizList = iQuizzesService.getQuizByUserId(userId); // Thay thế bằng phương thức lấy danh sách quiz từ Service
+        List<Quiz> quizList = iQuizzesService.getQuizByUserId(userId); // Thay thế bằng phương thức lấy danh sách quiz
+                                                                       // từ Service
         model.addAttribute("quizList", quizList);
         return "showQuiz";
     }
+
     @Transactional
     @PostMapping("/createAll")
     public String createQuizWithQuestionsAndAnswers(@ModelAttribute("quiz") Quiz quiz, HttpServletRequest request) {
@@ -134,9 +133,7 @@ public class QuizzesController {
 
                 question.setQuiz(quiz);
 
-
                 iQuestionsService.createQuestion1(question);
-
 
                 for (Answer answer : question.getListAnswer()) {
 
@@ -153,7 +150,7 @@ public class QuizzesController {
     @GetMapping("/showCreateQuizPage")
     public String showCreateQuizPage(Model model) {
         Quiz quiz = iQuizzesService.getEmptyQuiz();
-        model.addAttribute("quiz",new Quiz());
+        model.addAttribute("quiz", new Quiz());
         List<String> questionContents = quiz.getListQuestions().stream()
                 .map(Question::getQuestionContent)
                 .collect(Collectors.toList());
@@ -164,11 +161,12 @@ public class QuizzesController {
     }
 
     @GetMapping("/createQuizByListQuestions")
-    public String showCreateQuizzPageByListQuestion(Model model,@RequestParam(value = "question",required = false) String question) {
-        List<Question> questions ;
-        if(question!=null){
+    public String showCreateQuizzPageByListQuestion(Model model,
+            @RequestParam(value = "question", required = false) String question) {
+        List<Question> questions;
+        if (question != null) {
             questions = this.iQuestionsService.getALlQuestionBySearch(question);
-            model.addAttribute("question",question);
+            model.addAttribute("question", question);
         }
         questions = this.iQuestionsService.getAllQuestionUnique();
         model.addAttribute("ListQuestion", questions);
@@ -179,7 +177,7 @@ public class QuizzesController {
     @Transactional
     @PostMapping("/createQuizByListQuestion")
     public String createQuizWithListQuestions(@ModelAttribute("formObject") CreateQuizzByQuestionBank formObject,
-                                              HttpServletRequest request) {
+            HttpServletRequest request) {
         Quiz quiz = formObject.getQuiz();
         String subjectName = quiz.getSubjectName();
         Subject subject = new Subject();
@@ -257,6 +255,7 @@ public class QuizzesController {
 
         return "updateQuiz";
     }
+
     @GetMapping("/delete/{quizId}")
     public String deleteQuiz(@PathVariable Integer quizId) {
         try {
@@ -345,7 +344,7 @@ public class QuizzesController {
     }
 
     @GetMapping("/downloadsample")
-    public ResponseEntity<?> downloadSample() throws IOException {
+    public ResponseEntity<byte[]> downloadSample() throws IOException {
         String fileName = "ExampleFormQuiz.xlsx";
         InputStream is = this.getClass().getResourceAsStream("/ExampleFormQuiz.xlsx");
         try {

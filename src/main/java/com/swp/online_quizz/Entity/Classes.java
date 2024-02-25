@@ -25,7 +25,6 @@ import lombok.Setter;
 @Table(name = "Classes")
 public class Classes {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ClassID", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer classId;

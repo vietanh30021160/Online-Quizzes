@@ -122,7 +122,7 @@ public class QuizAttemptController {
             QuizAttempt attemp = iQuizAttemptsService.getQuizAttempts(attemptID);
             List<QuizProgress> listQProg = new ArrayList<>(attemp.getListQuizzProgress());
             for (QuizProgress quizProgress : listQProg) {
-                if (quizProgress.getQuestionOrder() == page) {
+                if (quizProgress.getQuestionOrder().equals(page)) {
                     attemp.setCurrentQuestion(quizProgress.getQuestion());
                     iQuizAttemptsService.updateAttempts(attemptID, attemp);
                 }
