@@ -53,11 +53,11 @@ public class Filter extends OncePerRequestFilter {
                 requestURI.equals("/verifyaccount") ||
                 requestURI.equals("/regenerateotp") ||
                 requestURI.equals("/setpassword") ||
-                requestURI.startsWith("/Css/") ||
+                requestURI.startsWith("/css/") ||
                 requestURI.startsWith("/images/") ||
                 requestURI.startsWith("/Font/") ||
                 requestURI.startsWith("/fonts/") ||
-                requestURI.startsWith("/Js/") ||
+                requestURI.startsWith("/js/") ||
                 requestURI.startsWith("/Information");
     }
 }
