@@ -61,8 +61,8 @@
                             <span th:text="${messageRecipient.getMessage().getMessageType()}"></span><br>
                             <span class="notify_time" th:text="${messageRecipient.getMessage().getSendTime()}"></span>
                         </a>
-                        <div th:if="${!messageRecipient.getIsSeen()}" class="dot" style="background-color: #ccc;"></div>
-                        <div th:if="${messageRecipient.getIsSeen()}" class="dot" style="background-color: green;"></div>
+                        <div th:if="${!messageRecipient.getIsSeen()}" class="dot" style="background-color: green;"></div>
+                        <div th:if="${messageRecipient.getIsSeen()}" class="dot" style="background-color: #ccc;"></div>
                     </div>
                 </div>
             </div>
@@ -90,10 +90,10 @@
                                     .then(function (response) {
                                         if (response.ok) {
                                             if (!isSeen) {
-                                                dotElement.style.backgroundColor = 'green';
+                                                dotElement.style.backgroundColor = '#ccc';
                                                 item.classList.add('seen');
                                             } else {
-                                                dotElement.style.backgroundColor = '#ccc';
+                                                dotElement.style.backgroundColor = 'green';
                                                 item.classList.remove('seen');
                                             }
                                         } else {

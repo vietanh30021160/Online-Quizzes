@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.poi.util.IOUtils;
-import org.hibernate.boot.beanvalidation.IntegrationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -348,12 +347,17 @@ public class QuizzesController {
         String fileName = "ExampleFormQuiz.xlsx";
         InputStream is = this.getClass().getResourceAsStream("/ExampleFormQuiz.xlsx");
         try {
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
-                    .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
-                    .body(IOUtils.toByteArray(is));
-        } catch (IntegrationException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            byte[] fileContent = IOUtils.toByteArray(is);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentDispositionFormData("attachment", fileName);
+            headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
+            return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } finally {
+            if (is != null) {
+                is.close();
+            }
         }
     }
 }

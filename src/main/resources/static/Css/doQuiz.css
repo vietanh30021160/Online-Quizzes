@@ -132,6 +132,13 @@
 .multipages{
     margin: 5px;
 }
+.qnbutton .complete .free{
+    background: #ccc !important;
+    border: none;
+}
+.qnbutton .complete .free .active {
+    background: #232629;
+}
 .mod_quiz-prev-nav,
 .mod_quiz-next-nav {
     margin: 10px;
@@ -257,4 +264,9 @@
 .button-load .type1:hover::after {
     visibility: visible;
     transform: scale(100) translateX(2px);
+}
+.button-load div a {
+    display: flex;
+        justify-content: center;
+        align-items: center;
 }
