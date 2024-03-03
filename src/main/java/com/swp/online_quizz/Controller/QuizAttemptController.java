@@ -71,7 +71,7 @@ public class QuizAttemptController {
         // nếu có thì lấy ra user
         User user = userOptional.get();
         if (user != null) {
-            Quiz quizz = iQuizzesService.getOneQuizz(quizId);
+            Quiz quizz = iQuizzesService.getOneQuiz(quizId);
             Timestamp startTime = new Timestamp(System.currentTimeMillis());
             long endTimeMillis = startTime.getTime() + (quizz.getTimeLimit() * 60 * 1000);
             Timestamp endTime = new Timestamp(endTimeMillis);
@@ -264,7 +264,7 @@ public class QuizAttemptController {
     }
 
     public List<Question> getRandomQuestionsFromSet(@PathVariable Integer quizId, @PathVariable Integer n) {
-        List<Question> questionSet = iQuizzesService.getOneQuizz(quizId).getListQuestions();
+        List<Question> questionSet = iQuizzesService.getOneQuiz(quizId).getListQuestions();
         List<Question> questionList = new ArrayList<>(questionSet);
         Collections.shuffle(questionList);
         List<Question> randomQuestions = questionList.subList(0, Math.min(n, questionList.size()));

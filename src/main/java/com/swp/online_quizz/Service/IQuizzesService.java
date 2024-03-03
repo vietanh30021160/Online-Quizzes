@@ -1,12 +1,12 @@
 package com.swp.online_quizz.Service;
 
-import com.swp.online_quizz.Entity.Quiz;
-import com.swp.online_quizz.Entity.Subject;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.swp.online_quizz.Entity.Quiz;
+import com.swp.online_quizz.Entity.Subject;
 
 public interface IQuizzesService {
     List<Quiz> getAll();
@@ -14,8 +14,8 @@ public interface IQuizzesService {
     List<Quiz> getQuizByUserId(Integer userId);
 
     public Subject find(Integer quizId);
-    public Quiz findByID(Integer quizID);
 
+    public Quiz findByID(Integer quizID);
 
     Quiz findQuizById(Integer quizId);
 
@@ -36,17 +36,13 @@ public interface IQuizzesService {
     public Page<Quiz> searchQuizzes(String keyword, Integer pageNo);
 
     // lấy ra quizz
-    public Quiz getOneQuizz(Integer quizId);
+    public Quiz getOneQuiz(Integer quizId);
 
     public List<Quiz> getAllQuizzes();
 
     Page<Quiz> searchAndFilterAndSubject(String keyword, Integer pageNo, Integer min, Integer max, String subject);
 
-
-    Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds);
-
+    Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max,
+            String subject, List<Integer> quizIds);
 
 }
-
-
-

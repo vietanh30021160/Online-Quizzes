@@ -98,11 +98,11 @@
                             <div class="qn_buttons clearfix multipages" th:each="quizProgress2, quizProgress2Index : ${listQProg}">
                                 <a th:class="${quizProgress2.getIsAnswered() ? 'qnbutton complete free btn btn-secondary thispage active' : 'qnbutton complete free btn btn-secondary thispage'}"
                                     id="quiznavbutton1" th:title="${quizProgress2.getIsAnswered() ? 'Answered' : 'Not answered'}" data-quiz-page="0"
-                                    href="/attempt/test"
+                                    href="/attempt/test"  th:style="${quizProgress2.getIsAnswered() ? 'background: #232629; border: none; color: white;' : 'background: #ccc; border: none; color: black;'}" 
                                     th:href="@{/attempt/attemptQuiz/{quizID}/{attemptID}/{page}(quizID = ${quiz.getQuizId()}, attemptID = ${attemp.getAttemptId()}, page = ${quizProgress2.getQuestionOrder()})}">
                                     <span class="thispageholder"></span>
                                     <span class="trafficlight"></span>
-                                    <span class="accesshide" th:text="'Question' + ${quizProgress2.getQuestionOrder()}"></span>
+                                    <span class="accesshide" th:text="'Q' + ${quizProgress2.getQuestionOrder()}"></span>
                                     <span class="accesshide"><span class="flagstate"></span></span>
                                 </a>
                             </div>
@@ -118,9 +118,9 @@
                 <button type="submit" name="next" value="Next page" class="btn btn-secondary button type1"><span
                         class="btn-txt">Next page</span></button>
                 <div>
-                    <a id="submitButton" onclick="submitQuiz()" class="mod_quiz-next-nav" href="/attempt/test"
+                    <a id="submitButton" onclick="submitQuiz()" class="othernav btn btn-secondary button type1" href="/attempt/test"
                         th:href="@{/attempt/attemptQuiz/{quizID}/{attemptID}/finish(quizID = ${quiz.getQuizId()}, attemptID = ${attemp.getAttemptId()})}">
-                        <div class="othernav btn btn-secondary button type1">
+                        <div>
                             <span class="btn-txt">Finish quiz</span>
                         </div>
                     </a>
