@@ -1,13 +1,73 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <div th:replace="HomeHead :: head"></div>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Quiz</title>
-    <link rel="stylesheet" type="text/css" media="all" href="/css/updateQuiz.css" th:href="@{/css/updateQuiz.css}">
+    <title>Document</title>
+    <link th:href="@{../../css/listClasses.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all"
+          href="/css/updateQuiz.css" th:href="@{/css/updateQuiz.css}">
 </head>
-
 <body>
+<div class="headerMark">
+    <nav class="navbar navbar-expand-lg" th:fragment="header">
+
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="bi-back"></i>
+                <span>QuizTest</span>
+            </a>
+
+            <div class="d-lg-none ms-auto me-4">
+                <a href="#top" class="navbar-icon bi-person smoothscroll nav_iconPerson"></a>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_1">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_2">List Quizzes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" th:href="@{'/quizzes/list'}">Manager Quizzes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" th:href="@{'/Classes/listClasses'}">Manager Class</a>
+                    </li>
+
+                </ul>
+                <!--                <form method="get" th:action="@{'/' + '?keyword=' + ${keyword} + (${subject != null ? '&subject=' + subject : ''}) + '#section_2'}" class="custom-form mt-4 pt-2 mb-lg-0 mb-5 inline-block-div" role="search">-->
+                <!--                    <div class="input-group input-group-sm hidden-xs" style="width: 400px;">-->
+                <!--                        <input type="text" name="keyword" class="form-control pull-right" placeholder="Search">-->
+                <!--                        <input type="hidden" th:if="${subject != null}" name="subject" th:value="${subject}">-->
+                <!--                        <div class="input-group-btn">-->
+                <!--                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i> Search</button>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </form>-->
+                <div class="d-none d-lg-block inline-block-div"  >
+                    <a href="#top" class="navbar-icon bi bi-bell smoothscroll"></a>
+                </div>
+
+                <div class="d-none d-lg-block inline-block-div"  >
+                    <a href="/logout" class="navbar-icon bi-person smoothscroll"></a>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</div>
 <h1>Update Quiz</h1>
 
 <form id="quizForm" action="/quizzes/updateAll/${quiz.quizId}" th:action="@{'/quizzes/updateAll/' + ${quiz.quizId}}" th:object="${quiz}" method="post">
