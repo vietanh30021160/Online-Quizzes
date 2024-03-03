@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Quiz</title>
-    <link rel="stylesheet" type="text/css" media="all" href="/Css/createQuiz.css" th:href="@{/Css/createQuiz.css}">
+    <link rel="stylesheet" type="text/css" media="all" href="/css/createQuiz.css" th:href="@{/css/createQuiz.css}">
 </head>
 
 <body>
@@ -30,10 +30,10 @@
                 <h4>Question Content:</h4>
                 <h4>Question Content:</h4>
                 <input type="hidden" th:id="${'listQuestions[' + questionIndex.index + '].questionId'}"
-                       th:field="*{listQuestions[__${questionIndex.index}__].questionId}"  required>
+                        th:field="*{listQuestions[__${questionIndex.index}__].questionId}"  required>
             </label>
             <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].questionContent'}"
-                   th:field="*{listQuestions[__${questionIndex.index}__].questionContent}"  required>
+                    th:field="*{listQuestions[__${questionIndex.index}__].questionContent}"  required>
 
             <label th:for="${'listQuestions[' + questionIndex.index + '].questionType'}">Question Type:</label>
             <select th:id="${'listQuestions[' + questionIndex.index + '].questionType'}"
@@ -45,25 +45,25 @@
 
             <label th:for="${'listQuestions[' + questionIndex.index + '].imageUrl'}">Image URL:</label>
             <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].imageUrl'}"
-                   th:field="*{listQuestions[__${questionIndex.index}__].imageUrl}" >
+                    th:field="*{listQuestions[__${questionIndex.index}__].imageUrl}" >
 
             <label th:for="${'listQuestions[' + questionIndex.index + '].videoUrl'}">Video URL:</label>
             <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].videoUrl'}"
-                   th:field="*{listQuestions[__${questionIndex.index}__].videoUrl}">
+                    th:field="*{listQuestions[__${questionIndex.index}__].videoUrl}">
             <hr>
             <h4>Answers</h4>
 
             <div class="answersContainer">
                 <div th:each="answer, answerIndex : ${question.listAnswer}" class="answer">
                     <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].answerId'}"
-                           th:field="*{listQuestions[__${questionIndex.index}__].listAnswer[__${answerIndex.index}__].answerId}" required>
+                            th:field="*{listQuestions[__${questionIndex.index}__].listAnswer[__${answerIndex.index}__].answerId}" required>
                     <label th:for="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].answerContent'}">Answer Content:</label>
                     <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].answerContent'}"
-                           th:field="*{listQuestions[__${questionIndex.index}__].listAnswer[__${answerIndex.index}__].answerContent}" required>
+                            th:field="*{listQuestions[__${questionIndex.index}__].listAnswer[__${answerIndex.index}__].answerContent}" required>
 
                     <label th:for="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].isCorrect'}">Is Correct:</label>
                     <input type="checkbox" th:id="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].isCorrect'}"
-                           th:field="*{listQuestions[__${questionIndex.index}__].listAnswer[__${answerIndex.index}__].isCorrect}" th:checked="${true}">
+                            th:field="*{listQuestions[__${questionIndex.index}__].listAnswer[__${answerIndex.index}__].isCorrect}" th:checked="${true}">
                 </div>
             </div>
 
@@ -88,11 +88,11 @@
         answerDiv.innerHTML = `
             <label for="answerContent">Answer Content:</label>
             <input type="text" th:id="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].answerContent'}"
-                   name="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].answerContent'}" required>
+                    name="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].answerContent'}" required>
 
             <label for="isCorrect">Is Correct:</label>
             <input type="checkbox" th:id="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].isCorrect'}"
-                   name="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].isCorrect'}">
+                    name="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].isCorrect'}">
         `;
 
         answersContainer.appendChild(answerDiv);

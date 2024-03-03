@@ -15,7 +15,7 @@
 }
 
 .notification_wrap .dropdown {
-    width: 400px;
+    width: 450px;
     max-height: 500px;
     overflow-y: scroll;
     background: #fff;
@@ -26,6 +26,9 @@
     position: absolute;
     display: none;
     transform: translateX(-43%);
+}
+.notify_info {
+    width: 300px;
 }
 
 .notification_wrap .dropdown .notify_item {
@@ -78,7 +81,7 @@
     cursor: pointer;
 }
 .seen .dot {
-    background-color: green;
+    background-color: #ccc;
 }
 
 .notification_wrap .dropdown.active {

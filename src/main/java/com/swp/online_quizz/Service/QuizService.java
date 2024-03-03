@@ -2,11 +2,7 @@ package com.swp.online_quizz.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import com.swp.online_quizz.Entity.User;
-import com.swp.online_quizz.Repository.AnswersRepository;
-import com.swp.online_quizz.Repository.QuestionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -25,7 +21,6 @@ import com.swp.online_quizz.Repository.QuestionsRepository;
 import com.swp.online_quizz.Repository.QuizRepository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,16 +42,16 @@ public class QuizService implements IQuizzesService {
     @Autowired
     private AnswersRepository answersRepository;
 
-
-
     @Override
     public List<Quiz> getAll() {
         return quizRepository.findAll();
     }
+
     @Override
-    public List<Quiz> getQuizByUserId(Integer userId){
+    public List<Quiz> getQuizByUserId(Integer userId) {
         return quizRepository.findByTeacherUserId(userId);
     }
+
     @Override
     public Subject find(Integer quizId) {
         return null;
@@ -66,8 +61,6 @@ public class QuizService implements IQuizzesService {
     public Quiz findByID(Integer quizID) {
         return quizRepository.findById(quizID).orElse(null);
     }
-
-
 
     @Override
     public Quiz findQuizById(Integer quizId) {
@@ -122,6 +115,7 @@ public class QuizService implements IQuizzesService {
         Optional<Quiz> optionalQuiz = quizRepository.findByQuizId(quizId);
         optionalQuiz.ifPresent(quiz -> quizRepository.delete(quiz));
     }
+
     @Override
     public List<Quiz> searchQuizzes(String keyword) {
         return quizRepository.findByKeywordContainingIgnoreCase(keyword);
@@ -129,7 +123,7 @@ public class QuizService implements IQuizzesService {
 
     @Override
     public Page<Quiz> getAll(Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo -1, 3);
+        Pageable pageable = PageRequest.of(pageNo - 1, 3);
         return this.quizRepository.findAll(pageable);
     }
 
@@ -145,7 +139,7 @@ public class QuizService implements IQuizzesService {
     }
 
     @Override
-    public Quiz getOneQuizz(Integer quizId) {
+    public Quiz getOneQuiz(Integer quizId) {
         return quizRepository.getReferenceById(quizId);
     }
 
@@ -153,7 +147,6 @@ public class QuizService implements IQuizzesService {
     public List<Quiz> getAllQuizzes() {
         return quizRepository.findAll();
     }
-
 
     @Override
     public Page<Quiz> searchAndFilterAndSubject(String keyword, Integer pageNo, Integer min, Integer max,
@@ -186,8 +179,10 @@ public class QuizService implements IQuizzesService {
 
         return quizRepository.findAll(spec, pageable);
     }
+
     @Override
-    public Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds) {
+    public Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max,
+            String subject, List<Integer> quizIds) {
         Specification<Quiz> spec = Specification.where(null);
 
         if (keyword != null && !keyword.isEmpty()) {
@@ -199,8 +194,8 @@ public class QuizService implements IQuizzesService {
         }
 
         if (subject != null && !subject.isEmpty()) {
-            spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get("subject").get("subjectName"), subject));
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
+                    .equal(root.get("subject").get("subjectName"), subject));
         }
 
         if (min != null) {
@@ -213,7 +208,7 @@ public class QuizService implements IQuizzesService {
         }
 
         // Thêm điều kiện để lọc theo quizIds
-        if (!quizIds.isEmpty() ) {
+        if (!quizIds.isEmpty()) {
             spec = spec.and((root, query, criteriaBuilder) -> root.get("quizId").in(quizIds));
         }
         // Nếu quizIds là null hoặc rỗng thì trả về một Page rỗng
@@ -221,8 +216,7 @@ public class QuizService implements IQuizzesService {
             return Page.empty();
         }
 
-
-        Pageable pageable = PageRequest.of(pageNo -1, 3);
+        Pageable pageable = PageRequest.of(pageNo - 1, 3);
 
         return quizRepository.findAll(spec, pageable);
     }

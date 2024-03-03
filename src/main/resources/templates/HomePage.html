@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{HomeHead :: head}"></head>
-<link th:href="@{Css/Home.css}" rel="stylesheet">
+<link th:href="@{css/Home.css}" rel="stylesheet" href="css/Home.css">
 <body id="top">
 
 <main>
@@ -19,7 +19,7 @@
                         <div class="input-group input-group-lg">
                             <span class="input-group-text bi-search" id="basic-addon1"></span>
                             <input type="search" name="classCode" class="form-control" placeholder=" Code join class,  ..."
-                                   aria-label="Search">
+                                    aria-label="Search">
                             <button type="submit" class="form-control" >Join</button>
                         </div>
                         <p  id="message" th:text="${mess}" ></p>
@@ -64,9 +64,9 @@
                     <ul class="nav nav-tabs"  >
                         <li class="nav-item"  th:each="subject : ${listSubject}">
                             <a class="nav-link active"
-                               th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'subject='+ ${subject.subjectName} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max:''}+ '#section_2'}"
-                               th:text="${subject.subjectName}"
-                               style="color: #000000"></a>
+                                th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'subject='+ ${subject.subjectName} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max:''}+ '#section_2'}"
+                                th:text="${subject.subjectName}"
+                                style="color: #000000"></a>
                         </li>
                     </ul>
                 </div>
