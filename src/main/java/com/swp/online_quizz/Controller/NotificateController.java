@@ -34,7 +34,7 @@ public class NotificateController {
     }
 
     @GetMapping("/updateSeenStatus/{messageRecipientId}")
-    public String getUpdateQuizForm(@PathVariable Integer messageRecipientId, Model model) {
+    public String updateNotificateStatus(@PathVariable Integer messageRecipientId, Model model) {
         MessageRecipient messageRecipient = messageRecipientsRepository.getReferenceById(messageRecipientId);
         if (messageRecipient.getIsSeen()) {
             messageRecipient.setIsSeen(false);
@@ -43,6 +43,14 @@ public class NotificateController {
             messageRecipient.setIsSeen(true);
             messageRecipientsRepository.save(messageRecipient);
         }
+        return "HomeHeader";
+    }
+
+    @GetMapping("/updateIsSeen/{messageRecipientId}")
+    public String getNotificateIsSeen(@PathVariable Integer messageRecipientId, Model model) {
+        MessageRecipient messageRecipient = messageRecipientsRepository.getReferenceById(messageRecipientId);
+        messageRecipient.setIsSeen(true);
+        messageRecipientsRepository.save(messageRecipient);
         return "HomeHeader";
     }
 }

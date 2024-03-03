@@ -27,6 +27,9 @@
     display: none;
     transform: translateX(-43%);
 }
+.notify_info {
+    width: 300px;
+}
 
 .notification_wrap .dropdown .notify_item {
     display: flex;
@@ -78,7 +81,7 @@
     cursor: pointer;
 }
 .seen .dot {
-    background-color: green;
+    background-color: #ccc;
 }
 
 .notification_wrap .dropdown.active {

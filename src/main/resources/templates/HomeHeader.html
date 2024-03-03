@@ -61,8 +61,8 @@
                             <span th:text="${messageRecipient.getMessage().getMessageType()}"></span><br>
                             <span class="notify_time" th:text="${messageRecipient.getMessage().getSendTime()}"></span>
                         </a>
-                        <div th:if="${!messageRecipient.getIsSeen()}" class="dot" style="background-color: #ccc;"></div>
-                        <div th:if="${messageRecipient.getIsSeen()}" class="dot" style="background-color: green;"></div>
+                        <div th:if="${!messageRecipient.getIsSeen()}" class="dot" style="background-color: green;"></div>
+                        <div th:if="${messageRecipient.getIsSeen()}" class="dot" style="background-color: #ccc;"></div>
                     </div>
                 </div>
             </div>
@@ -79,9 +79,33 @@
                                 const isSeen = item.classList.contains('seen');
                                 updateSeenStatus(messageRecipientId, isSeen);
                             }
+                            function handleClick1() {
+                                const messageRecipientId = item.querySelector('#messageRecipientID').getAttribute('value');
+                                const isSeen = item.classList.contains('seen');
+                                updateIsSeen(messageRecipientId, isSeen);
+                            }
 
                             dotElement.addEventListener('click', handleClick);
-                            notifyElement.addEventListener('click', handleClick);
+                            notifyElement.addEventListener('click', handleClick1);
+
+                            function updateIsSeen(messageRecipientId, isSeen) {
+                                fetch(`/notif/updateIsSeen/${messageRecipientId}`, {
+                                    method: 'GET',
+                                })
+                                    .then(function (response) {
+                                        if (response.ok) {
+                                            if (!isSeen) {
+                                                dotElement.style.backgroundColor = '#ccc';
+                                                item.classList.add('seen');
+                                            } 
+                                        } else {
+                                            console.error('Cập nhật trạng thái đã xem thất bại');
+                                        }
+                                    })
+                                    .catch(function (error) {
+                                        console.error('Lỗi khi gửi yêu cầu cập nhật trạng thái đã xem:', error);
+                                    });
+                            }
 
                             function updateSeenStatus(messageRecipientId, isSeen) {
                                 fetch(`/notif/updateSeenStatus/${messageRecipientId}`, {
@@ -90,10 +114,10 @@
                                     .then(function (response) {
                                         if (response.ok) {
                                             if (!isSeen) {
-                                                dotElement.style.backgroundColor = 'green';
+                                                dotElement.style.backgroundColor = '#ccc';
                                                 item.classList.add('seen');
                                             } else {
-                                                dotElement.style.backgroundColor = '#ccc';
+                                                dotElement.style.backgroundColor = 'green';
                                                 item.classList.remove('seen');
                                             }
                                         } else {

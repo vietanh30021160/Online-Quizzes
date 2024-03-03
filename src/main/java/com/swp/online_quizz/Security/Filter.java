@@ -55,7 +55,7 @@ public class Filter extends OncePerRequestFilter {
                 requestURI.equals("/setpassword") ||
                 requestURI.startsWith("/css/") ||
                 requestURI.startsWith("/images/") ||
-                requestURI.startsWith("/Font/") ||
+                requestURI.startsWith("/font/") ||
                 requestURI.startsWith("/fonts/") ||
                 requestURI.startsWith("/js/") ||
                 requestURI.startsWith("/Information");
