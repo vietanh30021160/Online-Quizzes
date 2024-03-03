@@ -3,17 +3,7 @@ package com.swp.online_quizz.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import com.swp.online_quizz.Entity.User;
-import com.swp.online_quizz.Repository.AnswersRepository;
-import com.swp.online_quizz.Repository.QuestionsRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -31,8 +21,9 @@ import com.swp.online_quizz.Repository.AnswersRepository;
 import com.swp.online_quizz.Repository.QuestionsRepository;
 import com.swp.online_quizz.Repository.QuizRepository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -56,16 +47,16 @@ public class QuizService implements IQuizzesService {
     @Autowired
     private AnswersRepository answersRepository;
 
-
-
     @Override
     public List<Quiz> getAll() {
         return quizRepository.findAll();
     }
+
     @Override
-    public List<Quiz> getQuizByUserId(Integer userId){
+    public List<Quiz> getQuizByUserId(Integer userId) {
         return quizRepository.findByTeacherUserId(userId);
     }
+
     @Override
     public Subject find(Integer quizId) {
         return null;
@@ -75,8 +66,6 @@ public class QuizService implements IQuizzesService {
     public Quiz findByID(Integer quizID) {
         return quizRepository.findById(quizID).orElse(null);
     }
-
-
 
     @Override
     public Quiz findQuizById(Integer quizId) {
@@ -131,6 +120,7 @@ public class QuizService implements IQuizzesService {
         Optional<Quiz> optionalQuiz = quizRepository.findByQuizId(quizId);
         optionalQuiz.ifPresent(quiz -> quizRepository.delete(quiz));
     }
+
     @Override
     public List<Quiz> searchQuizzes(String keyword) {
         return quizRepository.findByKeywordContainingIgnoreCase(keyword);
@@ -138,7 +128,7 @@ public class QuizService implements IQuizzesService {
 
     @Override
     public Page<Quiz> getAll(Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo -1, 3);
+        Pageable pageable = PageRequest.of(pageNo - 1, 3);
         return this.quizRepository.findAll(pageable);
     }
 
@@ -154,7 +144,7 @@ public class QuizService implements IQuizzesService {
     }
 
     @Override
-    public Quiz getOneQuizz(Integer quizId) {
+    public Quiz getOneQuiz(Integer quizId) {
         return quizRepository.getReferenceById(quizId);
     }
 
@@ -162,7 +152,6 @@ public class QuizService implements IQuizzesService {
     public List<Quiz> getAllQuizzes() {
         return quizRepository.findAll();
     }
-
 
     @Override
     public Page<Quiz> searchAndFilterAndSubject(String keyword, Integer pageNo, Integer min, Integer max,
@@ -195,8 +184,10 @@ public class QuizService implements IQuizzesService {
 
         return quizRepository.findAll(spec, pageable);
     }
+
     @Override
-    public Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds) {
+    public Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max,
+            String subject, List<Integer> quizIds) {
         Specification<Quiz> spec = Specification.where(null);
 
         if (keyword != null && !keyword.isEmpty()) {
@@ -208,8 +199,8 @@ public class QuizService implements IQuizzesService {
         }
 
         if (subject != null && !subject.isEmpty()) {
-            spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get("subject").get("subjectName"), subject));
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
+                    .equal(root.get("subject").get("subjectName"), subject));
         }
 
         if (min != null) {
@@ -233,7 +224,8 @@ public class QuizService implements IQuizzesService {
         // Lấy tất cả kết quả từ quizzesNotInClasses
         Page<Quiz> quizzesNotInClasses = quizRepository.findQuizzesNotInAnyClass(PageRequest.of(0, Integer.MAX_VALUE));
 
-        // Kết hợp các kết quả từ filteredQuiz và quizzesNotInClasses thành một danh sách duy nhất
+        // Kết hợp các kết quả từ filteredQuiz và quizzesNotInClasses thành một danh
+        // sách duy nhất
         List<Quiz> combinedList = new ArrayList<>();
         combinedList.addAll(filteredQuiz.getContent());
         combinedList.addAll(quizzesNotInClasses.getContent());
@@ -247,6 +239,5 @@ public class QuizService implements IQuizzesService {
 
         return new PageImpl<>(pageContent, PageRequest.of(pageNo - 1, pageSize), totalSize);
     }
-
 
 }
