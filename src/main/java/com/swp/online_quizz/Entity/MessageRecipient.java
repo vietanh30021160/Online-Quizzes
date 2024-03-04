@@ -39,11 +39,11 @@ public class MessageRecipient {
     private User recipient;
 
     @Column(name = "IsSeen")
-    private Boolean IsSeen;
+    private Boolean isSeen;
 
     public MessageRecipient(Message message, User recipient, Boolean isSeen) {
         this.message = message;
         this.recipient = recipient;
-        IsSeen = isSeen;
+        isSeen = isSeen;
     }
 }

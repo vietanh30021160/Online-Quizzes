@@ -7,15 +7,42 @@ body {
     box-sizing: border-box;
 }
 
-h1 {
+.quiz-list-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-list-heading {
     text-align: center;
     color: #333;
 }
 
-table {
+.quiz-actions {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.action-link {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #80d0c7;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.quiz-table-container {
+    overflow-x: auto;
+}
+
+.quiz-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
 }
 
 th, td {
@@ -25,7 +52,7 @@ th, td {
 }
 
 th {
-    background-color: #337ab7;
+    background-color: #80d0c7;
     color: white;
 }
 
@@ -33,26 +60,18 @@ tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-a {
+.button {
     display: inline-block;
-    margin: 10px 0;
-    padding: 10px 20px;
-    background-color: #337ab7;
+    margin: 5px;
+    padding: 8px 16px;
+    background-color: #80d0c7;
     color: white;
     text-decoration: none;
     border-radius: 4px;
+    border: none;
+    cursor: pointer;
 }
 
-a:hover {
-    background-color: #337ab7;
-}
-button {
-    display: inline-block;
-    margin: 10px 0;
-    padding: 10px 20px;
-    background-color: #337ab7;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    border: 0px;
+.button:hover {
+    background-color: #80d0c7;
 }

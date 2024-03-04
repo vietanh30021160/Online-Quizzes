@@ -81,32 +81,32 @@
                             updateSeenStatus(messageRecipientId, isSeen);
                         }
 
-                        dotElement.addEventListener('click', handleClick);
-                        notifyElement.addEventListener('click', handleClick);
+                            dotElement.addEventListener('click', handleClick);
+                            notifyElement.addEventListener('click', handleClick);
 
-                        function updateSeenStatus(messageRecipientId, isSeen) {
-                            fetch(`/notif/updateSeenStatus/${messageRecipientId}`, {
-                                method: 'GET',
-                            })
-                                .then(function (response) {
-                                    if (response.ok) {
-                                        if (!isSeen) {
-                                            dotElement.style.backgroundColor = 'green';
-                                            item.classList.add('seen');
-                                        } else {
-                                            dotElement.style.backgroundColor = '#ccc';
-                                            item.classList.remove('seen');
-                                        }
-                                    } else {
-                                        console.error('Cập nhật trạng thái đã xem thất bại');
-                                    }
+                            function updateSeenStatus(messageRecipientId, isSeen) {
+                                fetch(`/notif/updateSeenStatus/${messageRecipientId}`, {
+                                    method: 'GET',
                                 })
-                                .catch(function (error) {
-                                    console.error('Lỗi khi gửi yêu cầu cập nhật trạng thái đã xem:', error);
-                                });
-                        }
+                                    .then(function (response) {
+                                        if (response.ok) {
+                                            if (!isSeen) {
+                                                dotElement.style.backgroundColor = 'green';
+                                                item.classList.add('seen');
+                                            } else {
+                                                dotElement.style.backgroundColor = '#ccc';
+                                                item.classList.remove('seen');
+                                            }
+                                        } else {
+                                            console.error('Cập nhật trạng thái đã xem thất bại');
+                                        }
+                                    })
+                                    .catch(function (error) {
+                                        console.error('Lỗi khi gửi yêu cầu cập nhật trạng thái đã xem:', error);
+                                    });
+                            }
+                        });
                     });
-                });
             </script>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script>

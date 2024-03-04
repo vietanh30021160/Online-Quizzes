@@ -18,9 +18,17 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.swp.online_quizz.Entity.Quiz;
+import com.swp.online_quizz.Entity.Subject;
 import com.swp.online_quizz.Entity.User;
+import com.swp.online_quizz.Repository.AnswersRepository;
+import com.swp.online_quizz.Repository.QuestionsRepository;
+import com.swp.online_quizz.Repository.QuizRepository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -45,16 +53,16 @@ public class QuizService implements IQuizzesService {
     @Autowired
     private QuizRepositoryCustom quizRepositoryCustom;
 
-
-
     @Override
     public List<Quiz> getAll() {
         return quizRepository.findAll();
     }
+
     @Override
-    public List<Quiz> getQuizByUserId(Integer userId){
+    public List<Quiz> getQuizByUserId(Integer userId) {
         return quizRepository.findByTeacherUserId(userId);
     }
+
     @Override
     public Subject find(Integer quizId) {
         return null;
@@ -64,8 +72,6 @@ public class QuizService implements IQuizzesService {
     public Quiz findByID(Integer quizID) {
         return quizRepository.findById(quizID).orElse(null);
     }
-
-
 
     @Override
     public Quiz findQuizById(Integer quizId) {
@@ -120,6 +126,7 @@ public class QuizService implements IQuizzesService {
         Optional<Quiz> optionalQuiz = quizRepository.findByQuizId(quizId);
         optionalQuiz.ifPresent(quiz -> quizRepository.delete(quiz));
     }
+
     @Override
     public List<Quiz> searchQuizzes(String keyword) {
         return quizRepository.findByKeywordContainingIgnoreCase(keyword);
@@ -127,7 +134,7 @@ public class QuizService implements IQuizzesService {
 
     @Override
     public Page<Quiz> getAll(Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo -1, 3);
+        Pageable pageable = PageRequest.of(pageNo - 1, 3);
         return this.quizRepository.findAll(pageable);
     }
 
@@ -143,7 +150,7 @@ public class QuizService implements IQuizzesService {
     }
 
     @Override
-    public Quiz getOneQuizz(Integer quizId) {
+    public Quiz getOneQuiz(Integer quizId) {
         return quizRepository.getReferenceById(quizId);
     }
 
@@ -151,7 +158,6 @@ public class QuizService implements IQuizzesService {
     public List<Quiz> getAllQuizzes() {
         return quizRepository.findAll();
     }
-
 
     @Override
     public Page<Quiz> searchAndFilterAndSubject(String keyword, Integer pageNo, Integer min, Integer max,
@@ -197,6 +203,7 @@ public class QuizService implements IQuizzesService {
 
         return quizRepository.findAll(spec, pageable);
     }
+
     @Override
     public Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds, String className) {
         Specification<Quiz> spec = Specification.where(null);

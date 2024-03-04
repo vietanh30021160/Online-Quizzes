@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.poi.util.IOUtils;
-import org.hibernate.boot.beanvalidation.IntegrationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -298,24 +297,32 @@ public class QuizzesController {
             }
             Optional<User> userOptional = usersRepository.findByUsername(username);
             if (userOptional.isEmpty()) {
-                // Nếu không có user thì làm gì đấy
+                // If there is no user, do something
                 return "redirect:/login";
             }
-            // nếu có thì lấy ra user
+            // If there is a user, retrieve the user
             User user1 = userOptional.get();
-
-            Quiz quiz = iQuizzesService.getOneQuizz(quizID);
-            List<QuizAttempt> listAttempts = iQuizAttemptsService.getAttemptByUserIdAndQuizzId(quiz, user1);
-            Integer highestMark = 0;
-            for (QuizAttempt quizAttempt : listAttempts) {
-                if (quizAttempt.getMarks() > highestMark) {
-                    highestMark = quizAttempt.getMarks();
+            // Get information about the quiz using the provided quiz ID
+            Quiz quiz = iQuizzesService.getOneQuiz(quizID);
+            if (quiz.getQuizName().isEmpty()) {
+                return "notFoundQuiz";
+            } else {
+                // Retrieve quiz attempts made by the user for this quiz
+                List<QuizAttempt> listAttempts = iQuizAttemptsService.getAttemptByUserIdAndQuizzId(quiz, user1);
+                Integer highestMark = 0;
+                // Calculate the highest mark achieved by the user in attempts for this quiz
+                for (QuizAttempt quizAttempt : listAttempts) {
+                    if (quizAttempt.getMarks() > highestMark) {
+                        highestMark = quizAttempt.getMarks();
+                    }
                 }
+                // Add attributes to the model to be rendered in the view
+                model.addAttribute("listAttempts", listAttempts);
+                model.addAttribute("quiz", quiz);
+                model.addAttribute("highestMark", highestMark);
+                // Return the view name
+                return "quizzInfo";
             }
-            model.addAttribute("listAttempts", listAttempts);
-            model.addAttribute("quiz", quiz);
-            model.addAttribute("highestMark", highestMark);
-            return "quizzInfo";
         }
     }
 
@@ -348,12 +355,17 @@ public class QuizzesController {
         String fileName = "ExampleFormQuiz.xlsx";
         InputStream is = this.getClass().getResourceAsStream("/ExampleFormQuiz.xlsx");
         try {
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
-                    .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
-                    .body(IOUtils.toByteArray(is));
-        } catch (IntegrationException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            byte[] fileContent = IOUtils.toByteArray(is);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentDispositionFormData("attachment", fileName);
+            headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
+            return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } finally {
+            if (is != null) {
+                is.close();
+            }
         }
     }
 }

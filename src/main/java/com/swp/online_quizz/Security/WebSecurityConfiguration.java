@@ -60,7 +60,7 @@ public class WebSecurityConfiguration extends SecurityConfigurerAdapter<DefaultS
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/homePageTeacher/**").hasRole("TEACHER");
                     auth.requestMatchers("/", "/register", "/forgotpassword", "/verifyaccount", "/regenerateotp",
-                            "/setpassword", "/Css/**", "/images/**", "/Font/**", "/fonts/**", "/Js/**").permitAll();
+                            "/setpassword", "/css/**", "/images/**", "/Font/**", "/fonts/**", "/js/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(login -> login
