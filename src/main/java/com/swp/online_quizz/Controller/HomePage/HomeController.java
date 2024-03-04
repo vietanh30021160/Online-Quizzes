@@ -57,14 +57,11 @@ public class HomeController {
                        @RequestParam(required = false) String className,
                        HttpServletRequest request) {
         List<Subject> listSubject = iSubjectService.getAll();
-        Page<Quiz> listQuiz = iQuizzesService.searchAndFilterAndSubject(keyword, pageNo, min, max, subject, className);
-        int totalPage = listQuiz.getTotalPages();
-        List<Classes> listClasses = iClassesService.searchByClassName(keyword);
-        model.addAttribute("listQuiz", listQuiz);
-        model.addAttribute("totalPage", totalPage);
-        model.addAttribute("listClasses", listClasses);
-
-
+//        Page<Quiz> listQuiz = iQuizzesService.searchAndFilterAndSubjectForQuizzesNoClass(keyword, pageNo, min, max, subject);
+//        int totalPage = listQuiz.getTotalPages();
+//        List<Classes> listClasses = null;
+//        model.addAttribute("listQuiz", listQuiz);
+//        model.addAttribute("totalPage", totalPage);
         Optional<User> userOptional = getUserFromSession(request);
 
         User user = null;
@@ -84,7 +81,7 @@ public class HomeController {
                 return "redirect:/login";
             }
         }
-
+        model.addAttribute("user", user);
         model.addAttribute("min", min);
         model.addAttribute("max", max);
         model.addAttribute("keyword", keyword);
@@ -109,7 +106,7 @@ public class HomeController {
         Integer userId = user.getUserId();
         List<Integer> classIds = iClassEnrollmentService.getClassIdsByStudentId(userId);
         List<Integer> quizIds = iClassQuizzService.getQuizIdsByClassIds(classIds);
-        Page<Quiz> filteredQuiz = iQuizzesService.searchAndFilterAndSubjectForQuizzesNoClass(keyword, pageNo, min, max, subject, quizIds,className);
+        Page<Quiz> filteredQuiz = iQuizzesService.CombineQuizzes(keyword, pageNo, min, max, subject, quizIds,className);
         List<Classes> listClassesInUser = iClassesService.getClassesByStudentID(userId);
         int totalPage = filteredQuiz.getTotalPages();
         model.addAttribute("listClasses", listClassesInUser);

@@ -156,4 +156,25 @@ input[type="checkbox"]:checked + .filter-options {
 .list-Classes p.comma {
     margin-right: 0; /* Loại bỏ khoảng cách phải của dấu phẩy */
 }
+/* ------------------------------------------------------------ */
+.login-register-buttons {
+    display: flex;
+    align-items: center; /* Để căn giữa các phần tử theo chiều dọc */
+}
+
+.login-register-buttons a {
+    background-color: white; /* Màu nền trắng */
+    color: black; /* Màu chữ đen */
+    padding: 10px; /* Kích thước nút */
+    text-decoration: none; /* Bỏ gạch chân */
+}
+
+.login-register-buttons a:hover {
+    background-color: lightgray; /* Màu nền xám nhạt khi di chuột qua */
+}
+
+
+
+/* ------------------------------------------------------------ */
+
 

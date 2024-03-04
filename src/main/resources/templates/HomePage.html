@@ -11,20 +11,27 @@
     <section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
         <div class="container">
             <div class="row">
-
                 <div class="col-lg-8 col-12 mx-auto">
                     <h1 class="text-white text-center">Test. Learn. Enjoy</h1>
                     <h6 class="text-center">Easy to use for teachers and students</h6>
-                    <form id="joinForm" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
-                        <div class="input-group input-group-lg">
-                            <span class="input-group-text bi-search" id="basic-addon1"></span>
-                            <input type="search" name="classCode" class="form-control" placeholder=" Code join class,  ..."
-                                   aria-label="Search">
-                            <button type="submit" class="form-control" >Join</button>
+                    <!-- Sử dụng th:if để kiểm tra xem người dùng đã đăng nhập hay chưa -->
+                    <div th:if="${user != null}">
+                        <!-- Biểu mẫu đăng ký -->
+                        <form id="joinForm" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bi-search" id="basic-addon1"></span>
+                                <input type="search" name="classCode" class="form-control" placeholder=" Code join class,  ..."
+                                       aria-label="Search">
+                                <button type="submit" class="form-control">Join</button>
+                            </div>
+                            <p id="message" th:text="${mess}"></p>
+                        </form>
+                    </div>
+                    <div th:if="${user == null}">
+                        <div style="text-align: center;">
+                            <a type="button" class="btn btn-primary btn-sm" href="/login" style="background-color: #80d0c7; padding: 10px; font-size: 16px;">Login for free</a>
                         </div>
-                        <p  id="message" th:text="${mess}" ></p>
-                    </form>
-
+                    </div>
                 </div>
                 <script type="text/javascript">
                     // Hàm để ẩn thông báo sau 3 giây
@@ -39,15 +46,11 @@
                     // Gọi hàm hideMessage khi trang đã tải xong
                     window.onload = hideMessage;
                 </script>
-
-
             </div>
-
-        </div>
         </div>
     </section>
 
-    <section class="contact-section section-padding section-bg" id="section_2">
+    <section class="contact-section section-padding section-bg" id="section_2" th:if="${user != null}">
         <div class="container">
             <div class="row">
 
@@ -70,7 +73,8 @@
             </div>
         </div>
     </section>
-    <section class="explore-section section-padding" id="section_3">
+
+    <section class="explore-section section-padding" id="section_3" th:if="${user != null}">
         <div class="container">
 
             <div class="col-12 text-center">
