@@ -30,4 +30,6 @@ public interface IClassesService {
     List<Classes> searchByClassName(String keyword);
 
     List<Classes> getClassesByStudentID(Integer studentID);
+    String getClassCodeByClassId(Integer classID);
+    Classes getClassByClassId(Integer classId);
 }

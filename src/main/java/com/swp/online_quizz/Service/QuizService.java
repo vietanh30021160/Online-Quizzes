@@ -21,8 +21,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.swp.online_quizz.Entity.Quiz;
 import com.swp.online_quizz.Entity.Subject;
 import com.swp.online_quizz.Entity.User;
+import com.swp.online_quizz.Repository.AnswersRepository;
+import com.swp.online_quizz.Repository.QuestionsRepository;
 import com.swp.online_quizz.Repository.QuizRepository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -47,6 +51,10 @@ public class QuizService implements IQuizzesService {
     private ClassQuizzRepository classQuizzRepository;
     @Autowired
     private QuizRepositoryCustom quizRepositoryCustom;
+    @Autowired
+    private QuestionsRepository questionsRepository;
+    @Autowired
+    private AnswersRepository answersRepository;
 
     @Override
     public List<Quiz> getAll() {
@@ -154,6 +162,38 @@ public class QuizService implements IQuizzesService {
         return quizRepository.findAll();
     }
 
+    @Override
+    public Page<Quiz> searchAndFilterAndSubject(String keyword, Integer pageNo, Integer min, Integer max,
+                                                String subject) {
+        Specification<Quiz> spec = Specification.where(null);
+
+        if (keyword != null && !keyword.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.or(
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("quizName")),
+                            "%" + keyword.toLowerCase() + "%"),
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("subject").get("subjectName")),
+                            "%" + keyword.toLowerCase() + "%")));
+        }
+
+        if (subject != null && !subject.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
+                    .equal(root.get("subject").get("subjectName"), subject));
+        }
+
+        if (min != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get("timeLimit"), min));
+        }
+
+        if (max != null) {
+            spec = spec.and(
+                    (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("timeLimit"), max));
+        }
+
+        Pageable pageable = PageRequest.of(pageNo - 1, 3);
+
+        return quizRepository.findAll(spec, pageable);
+    }
+
 
     @Override
     public Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds, String className) {
@@ -223,8 +263,9 @@ public class QuizService implements IQuizzesService {
 //
 //        return new PageImpl<>(pageContent, PageRequest.of(pageNo - 1, pageSize), totalSize);
     }
+
     @Override
-    public Page<Quiz> searchAndFilterAndSubjectForQuizzesNoClass(String keyword, Integer pageNo, Integer min, Integer max, String subject,String className){
+    public Page<Quiz> searchAndFilterAndSubjectForQuizzesNoClass(String keyword, Integer pageNo, Integer min, Integer max, String subject, String className) {
         Specification<Quiz> spec = Specification.where(null);
 
         if (keyword != null && !keyword.isEmpty()) {
@@ -270,11 +311,12 @@ public class QuizService implements IQuizzesService {
         return quizzesNotInClasses;
 
     }
+
     @Override
-    public Page<Quiz> CombineQuizzes(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds, String className){
-        Page<Quiz> filteredQuiz = searchAndFilterAndSubjectAndQuizIds(keyword,pageNo,min,max,subject,quizIds,className);
-        Page<Quiz> quizzesNotInClasses = searchAndFilterAndSubjectForQuizzesNoClass(keyword,pageNo,min,max,subject,className);
-                // Kết hợp các kết quả từ filteredQuiz và quizzesNotInClasses thành một danh sách duy nhất
+    public Page<Quiz> CombineQuizzes(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds, String className) {
+        Page<Quiz> filteredQuiz = searchAndFilterAndSubjectAndQuizIds(keyword, pageNo, min, max, subject, quizIds, className);
+        Page<Quiz> quizzesNotInClasses = searchAndFilterAndSubjectForQuizzesNoClass(keyword, pageNo, min, max, subject, className);
+        // Kết hợp các kết quả từ filteredQuiz và quizzesNotInClasses thành một danh sách duy nhất
         List<Quiz> combinedList = new ArrayList<>();
         combinedList.addAll(filteredQuiz.getContent());
         combinedList.addAll(quizzesNotInClasses.getContent());
@@ -287,8 +329,6 @@ public class QuizService implements IQuizzesService {
         List<Quiz> pageContent = combinedList.subList(startIndex, endIndex);
 
         return new PageImpl<>(pageContent, PageRequest.of(pageNo - 1, pageSize), totalSize);
-
     }
-
 
 }

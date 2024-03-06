@@ -1,7 +1,6 @@
 package com.swp.online_quizz.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
@@ -14,10 +13,11 @@ import java.util.Objects;
 @Embeddable
 public class ClassQuizzId implements Serializable {
     private static final long serialVersionUID = 851785899005299916L;
-    @Column(name = "ClassID", nullable = false)
+
+    @Column(name = "ClassID", nullable = false, insertable = false, updatable = false)
     private Integer classId;
 
-    @Column(name = "QuizID", nullable = false)
+    @Column(name = "QuizID", nullable = false, insertable = false, updatable = false)
     private Integer quizId;
 
     @Override
@@ -31,7 +31,7 @@ public class ClassQuizzId implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(classId, quizId);
+        return Objects.hash(this.quizId, this.quizId);
     }
 
 }

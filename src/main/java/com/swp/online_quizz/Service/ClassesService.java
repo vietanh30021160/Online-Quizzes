@@ -2,10 +2,13 @@ package com.swp.online_quizz.Service;
 
 import com.swp.online_quizz.Entity.ClassEnrollment;
 import com.swp.online_quizz.Entity.Classes;
+import com.swp.online_quizz.Entity.QuizAttempt;
 import com.swp.online_quizz.Entity.User;
 
 import com.swp.online_quizz.Repository.ClassEnrollmentRepository;
 import com.swp.online_quizz.Repository.ClassesRepository;
+import com.swp.online_quizz.Repository.UsersRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,6 +27,7 @@ public class ClassesService implements IClassesService {
 
     @Autowired
     private ClassEnrollmentRepository classEnrollmentRepository;
+
     @Override
     public void joinClass(String classCode, Integer studentId) {
 
@@ -154,6 +158,15 @@ public class ClassesService implements IClassesService {
         }
 
         return getClassesByStudentID;
+    }
+    @Override
+    public String getClassCodeByClassId(Integer classID) {
+        return this.getClassCodeByClassId(classID);
+    }
+
+    @Override
+    public Classes getClassByClassId(Integer classId) {
+        return this.classesRepository.getClassByClassId(classId);
     }
 
 

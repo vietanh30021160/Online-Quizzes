@@ -57,21 +57,17 @@ public class HomeController {
                        @RequestParam(required = false) String className,
                        HttpServletRequest request) {
         List<Subject> listSubject = iSubjectService.getAll();
-//        Page<Quiz> listQuiz = iQuizzesService.searchAndFilterAndSubjectForQuizzesNoClass(keyword, pageNo, min, max, subject);
-//        int totalPage = listQuiz.getTotalPages();
-//        List<Classes> listClasses = null;
-//        model.addAttribute("listQuiz", listQuiz);
-//        model.addAttribute("totalPage", totalPage);
+        Page<Quiz> listQuiz = iQuizzesService.searchAndFilterAndSubjectForQuizzesNoClass(keyword, pageNo, min, max, subject,className);
+        int totalPage = listQuiz.getTotalPages();
+        List<Classes> listClasses = null;
+        model.addAttribute("listQuiz", listQuiz);
+        model.addAttribute("totalPage", totalPage);
         Optional<User> userOptional = getUserFromSession(request);
 
         User user = null;
         if (userOptional.isPresent()) {
             user = userOptional.get();
             String role = user.getRole();
-            if ("ROLE_TEACHER".equals(role)) {
-                return "HomePageTeacher";
-            }
-
             if ("ROLE_STUDENT".equals(role)) {
                 handleStudentLogic(model, user, keyword, pageNo, min, max, subject, classCode,className);
             }
@@ -81,14 +77,17 @@ public class HomeController {
                 return "redirect:/login";
             }
         }
-        model.addAttribute("user", user);
+
         model.addAttribute("min", min);
         model.addAttribute("max", max);
         model.addAttribute("keyword", keyword);
         model.addAttribute("subject", subject);
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("listSubject", listSubject);
-        model.addAttribute("className", className);
+        if ("ROLE_TEACHER".equals(userOptional.get().getRole())) {
+            handleStudentLogic(model, user, keyword, pageNo, min, max, subject, classCode,className);
+            return "HomePageTeacher";
+        }
         return "HomePage";
     }
 
