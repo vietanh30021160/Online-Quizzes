@@ -24,6 +24,7 @@ $.each(sectionArray, function(index, value){
 
 
         var offsetClick = $('#' + 'section_' + value).offset().top-50;
+>>>>>>> develop
         e.preventDefault();
         $('html, body').animate({
             'scrollTop':offsetClick
