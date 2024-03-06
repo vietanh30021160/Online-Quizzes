@@ -12,14 +12,12 @@ public class ClassQuizz {
     @EmbeddedId
     private ClassQuizzId id;
 
-    @MapsId("classId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "ClassID", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ClassID", nullable = false, insertable = false, updatable = false)
     private Classes classes;
 
-    @MapsId("quizId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "QuizID", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "QuizID", nullable = false, insertable = false, updatable = false)
     private Quiz quiz;
 
 }

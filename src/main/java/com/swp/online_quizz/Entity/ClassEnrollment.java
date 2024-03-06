@@ -22,12 +22,13 @@ public class ClassEnrollment {
     @Column(name = "EnrollmentID", nullable = false)
     private Integer enrollmentId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ClassID")
     private Classes classes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "StudentID")
     private User studentID;
+
 
 }

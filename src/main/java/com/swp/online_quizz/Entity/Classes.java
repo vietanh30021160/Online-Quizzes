@@ -2,6 +2,7 @@ package com.swp.online_quizz.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -42,4 +43,7 @@ public class Classes {
     @OneToMany(mappedBy = "classes", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<ClassEnrollment> listEnrollment = new ArrayList<>();
+
+    @OneToMany(mappedBy = "classes",cascade = CascadeType.ALL)
+    Set<ClassQuizz> idClassQuizzs;
 }
