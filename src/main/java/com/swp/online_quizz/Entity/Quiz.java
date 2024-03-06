@@ -67,6 +67,10 @@ public class Quiz {
     @JsonManagedReference
     private List<QuizAttempt> listQuizAttemps;
 
+    @OneToMany(mappedBy = "quiz") // Thêm mối quan hệ mới ở đây
+    @JsonManagedReference
+    private List<ClassQuizz> classQuizzes; // Thêm List<ClassQuizz>
+
     // @OneToMany(mappedBy = "quiz")
     // @JsonManagedReference
     // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

@@ -59,11 +59,11 @@
 
         <div class="container col-md-8">
             <div class="question ml-sm-5 pl-sm-5 pt-2 no-pointer-events"
-                th:each="questionAttempt,index  : ${QuestionAttemptsList}">
+                 th:each="questionAttempt,index  : ${QuestionAttemptsList}">
                 <div class="py-2 h5 title-question" th:id="${index.index+1}"><b
                         th:text="${index.index + 1}+') '+${questionAttempt.question.questionContent}"></b></div>
                 <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3"
-                    th:each="answer,answerIndex  : ${questionAttempt.question.listAnswer}">
+                     th:each="answer,answerIndex  : ${questionAttempt.question.listAnswer}">
 
                     <label class="options answer">
                         <input type="radio" th:checked="${answer.answerId+'' == questionAttempt.answer}" disabled>
@@ -74,6 +74,55 @@
                 </div>
             </div>
         </div>
+        <hr>
+        <hr>
+        <h3 class="panel-title">Feedback</h3>
+        <!-- Phần panel chứa feedback -->
+        <div class="panel panel-default" th:if="${useRole == 'ROLE_STUDENT'}">
+            <div class="panel-heading">
+
+            </div>
+            <div class="panel-body">
+
+                <ul>
+                    <!-- Khởi tạo một biến để kiểm tra xem tên người dùng đã được hiển thị hay chưa -->
+                    <th:block th:with="shownUser=false">
+                        <li th:each="feedback : ${feedback}">
+                            <div class="feedback-panel">
+                                <!-- Kiểm tra xem tên người dùng đã được hiển thị hay chưa -->
+                                <th:block th:if="${not shownUser}">
+                                    <div class="feedback-user" th:text="${feedback.user.username}"></div>
+                                    <!-- Cập nhật biến shownUser để chỉ hiển thị tên người dùng một lần -->
+                                    <th:block th:with="shownUser=true"></th:block>
+                                </th:block>
+                                <!-- Hiển thị nội dung phản hồi -->
+                                <div class="feedback-comment" th:text="${feedback.comment}"></div>
+                            </div>
+                        </li>
+                    </th:block>
+                </ul>
+
+
+            </div>
+        </div>
+
+        <div th:if="${useRole == 'ROLE_TEACHER'}">
+            <form action="/feedback/createFeedback/{attemptID}"
+                  th:action="@{'/feedback/createFeedback/' + ${attemptID} }"
+                  th:object="${feedback}" method="post">
+                <div id="ctl00_mainContent_divTitle"></div>
+                Comment:
+                <textarea name="comment" rows="5" cols="70" id="txtFeedback"></textarea><br>
+                <input type="hidden" name="feedback.attemptId" th:value="${attemptID}">
+                <input type="hidden" name="feedback.userId" th:value="${userId}">
+
+                <input type="submit" value="Send feedback" id="feedbackContent"><br>
+            </form>
+
+        </div>
+
+
+
     </div>
 </div>
 <div class="footer"><div th:replace="HomeFooter :: footer"></div></div>

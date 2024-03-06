@@ -1,9 +1,6 @@
 package com.swp.online_quizz.Controller.HomePage;
 
-import com.swp.online_quizz.Entity.Classes;
-import com.swp.online_quizz.Entity.Quiz;
-import com.swp.online_quizz.Entity.Subject;
-import com.swp.online_quizz.Entity.User;
+import com.swp.online_quizz.Entity.*;
 import com.swp.online_quizz.Repository.ClassEnrollmentRepository;
 import com.swp.online_quizz.Repository.ClassesRepository;
 import com.swp.online_quizz.Repository.UsersRepository;
@@ -57,14 +54,14 @@ public class HomeController {
                        @RequestParam(required = false) Integer min,
                        @RequestParam(required = false) Integer max,
                        @RequestParam(required = false) String classCode,
+                       @RequestParam(required = false) String className,
                        HttpServletRequest request) {
         List<Subject> listSubject = iSubjectService.getAll();
-        Page<Quiz> listQuiz = iQuizzesService.searchAndFilterAndSubject(keyword, pageNo, min, max, subject);
-        int totalPage = listQuiz.getTotalPages();
-        model.addAttribute("listQuiz", listQuiz);
-        model.addAttribute("totalPage", totalPage);
-
-
+//        Page<Quiz> listQuiz = iQuizzesService.searchAndFilterAndSubjectForQuizzesNoClass(keyword, pageNo, min, max, subject);
+//        int totalPage = listQuiz.getTotalPages();
+//        List<Classes> listClasses = null;
+//        model.addAttribute("listQuiz", listQuiz);
+//        model.addAttribute("totalPage", totalPage);
         Optional<User> userOptional = getUserFromSession(request);
 
         User user = null;
@@ -76,7 +73,7 @@ public class HomeController {
             }
 
             if ("ROLE_STUDENT".equals(role)) {
-                handleStudentLogic(model, user, keyword, pageNo, min, max, subject, classCode);
+                handleStudentLogic(model, user, keyword, pageNo, min, max, subject, classCode,className);
             }
         } else {
             // Nếu người dùng chưa đăng nhập và nhập class code
@@ -84,13 +81,14 @@ public class HomeController {
                 return "redirect:/login";
             }
         }
-
+        model.addAttribute("user", user);
         model.addAttribute("min", min);
         model.addAttribute("max", max);
         model.addAttribute("keyword", keyword);
         model.addAttribute("subject", subject);
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("listSubject", listSubject);
+        model.addAttribute("className", className);
         return "HomePage";
     }
 
@@ -103,14 +101,15 @@ public class HomeController {
         return Optional.empty();
     }
 
-    private String handleStudentLogic(Model model, User user, String keyword, Integer pageNo, Integer min, Integer max, String subject, String classCode) {
+    private String handleStudentLogic(Model model, User user, String keyword, Integer pageNo, Integer min, Integer max, String subject, String classCode,String className) {
 
         Integer userId = user.getUserId();
         List<Integer> classIds = iClassEnrollmentService.getClassIdsByStudentId(userId);
         List<Integer> quizIds = iClassQuizzService.getQuizIdsByClassIds(classIds);
-        Page<Quiz> filteredQuiz = iQuizzesService.searchAndFilterAndSubjectAndQuizIds(keyword, pageNo, min, max, subject, quizIds);
-
+        Page<Quiz> filteredQuiz = iQuizzesService.CombineQuizzes(keyword, pageNo, min, max, subject, quizIds,className);
+        List<Classes> listClassesInUser = iClassesService.getClassesByStudentID(userId);
         int totalPage = filteredQuiz.getTotalPages();
+        model.addAttribute("listClasses", listClassesInUser);
         model.addAttribute("listQuiz", filteredQuiz);
         model.addAttribute("totalPage", totalPage);
 

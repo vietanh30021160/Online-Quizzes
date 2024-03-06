@@ -2,13 +2,10 @@ package com.swp.online_quizz.Service;
 
 import com.swp.online_quizz.Entity.ClassEnrollment;
 import com.swp.online_quizz.Entity.Classes;
-import com.swp.online_quizz.Entity.QuizAttempt;
 import com.swp.online_quizz.Entity.User;
 
 import com.swp.online_quizz.Repository.ClassEnrollmentRepository;
 import com.swp.online_quizz.Repository.ClassesRepository;
-import com.swp.online_quizz.Repository.UsersRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -16,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -128,6 +126,34 @@ public class ClassesService implements IClassesService {
         List<Classes> allClasseById = this.classesRepository.getAllByTeacherId(userID, pageable);
 //           List<Classes> list = allClasseById.subList((pageNo-1)*2, Integer.min((pageNo-1)*2+2, allClasseById.size()));
         return new PageImpl<Classes>(allClasseById, pageable, classesRepository.getSizeAllClassByUserId(userID));
+    }
+    @Override
+    public List<Classes> searchByClassName(String keyword) {
+        List<Classes> result;
+        if (keyword != null && !keyword.isEmpty()) {
+            result = classesRepository.findByClassNameContainingIgnoreCase(keyword);
+        } else {
+            result = classesRepository.findAll(); // Lấy tất cả nếu không có từ khóa
+        }
+        // Kiểm tra xem kết quả trả về có rỗng không
+        if (result.isEmpty()) {
+            result = classesRepository.findAll(); // Lấy tất cả nếu không có kết quả nào
+        }
+        return result;
+    }
+    @Override
+    public List<Classes> getClassesByStudentID(Integer studentID){
+        List<Classes> getClassesByStudentID = new ArrayList<>();
+
+        // Lấy danh sách các đăng ký lớp học của sinh viên từ ClassEnrollmentRepository
+        List<ClassEnrollment> classEnrollments = classEnrollmentRepository.findbystudentID(studentID);
+
+        // Lấy thông tin chi tiết của từng lớp học từ ClassesRepository và thêm vào danh sách enrolledClasses
+        for (ClassEnrollment enrollment : classEnrollments) {
+            getClassesByStudentID.add(enrollment.getClasses());
+        }
+
+        return getClassesByStudentID;
     }
 
 
