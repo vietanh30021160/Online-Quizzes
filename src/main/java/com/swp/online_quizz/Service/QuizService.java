@@ -195,7 +195,6 @@ public class QuizService implements IQuizzesService {
     }
 
 
-
     @Override
     public Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds, String className) {
         Specification<Quiz> spec = Specification.where(null);
