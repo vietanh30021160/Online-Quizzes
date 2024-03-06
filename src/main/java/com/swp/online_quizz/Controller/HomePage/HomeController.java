@@ -68,10 +68,6 @@ public class HomeController {
         if (userOptional.isPresent()) {
             user = userOptional.get();
             String role = user.getRole();
-            if ("ROLE_TEACHER".equals(role)) {
-                return "HomePageTeacher";
-            }
-
             if ("ROLE_STUDENT".equals(role)) {
                 handleStudentLogic(model, user, keyword, pageNo, min, max, subject, classCode,className);
             }
@@ -88,7 +84,12 @@ public class HomeController {
         model.addAttribute("subject", subject);
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("listSubject", listSubject);
-        model.addAttribute("className", className);
+        if (userOptional.isPresent()) {
+            if ("ROLE_TEACHER".equals(userOptional.get().getRole())) {
+                handleStudentLogic(model, user, keyword, pageNo, min, max, subject, classCode, className);
+                return "HomePageTeacher";
+            }
+        }
         return "HomePage";
     }
 
