@@ -35,21 +35,6 @@ public class FeedbackController {
         this.iFeedbackService = feedbackService;
     }
 
-    @GetMapping("/attemptQuiz/{attemptID}/feedbacks")
-    public String viewFeedbacks(@PathVariable Integer quizId, @PathVariable Integer attemptID, Model model) {
-
-        List<Feedback> feedbacks = feedbackRepository.findByAttemptAttemptId(attemptID);
-
-
-        model.addAttribute("feedbacks", feedbacks);
-
-
-        return "ReviewMark";
-    }
-
-
-
-
     @PostMapping("/createFeedback/{attemptID}")
     public String createFeedback(@ModelAttribute("feedback") Feedback feedback,
                                  @PathVariable Integer attemptID,
@@ -83,5 +68,17 @@ public class FeedbackController {
         return "redirect:/class/mark/"+existingQuizAttempt.getQuiz().getQuizId()+"/attempt/"+attemptID;
     }
 
+    @PutMapping("/updateFeedback/{feedbackID}")
+    public String updateFeedback(@PathVariable Integer feedbackID,
+                                 @PathVariable Integer attemptID,
+                                 @ModelAttribute("feedback") Feedback feedback) {
+        QuizAttempt existingQuizAttempt = quizAttemptsRepository.findByAttemptId(attemptID);
+        boolean updated = iFeedbackService.updateFeedback(feedbackID, feedback);
+        if (updated) {
+            return "redirect:/class/mark/"+existingQuizAttempt.getQuiz().getQuizId()+"/attempt/"+attemptID;
+        } else {
+            return "redirect:/login";
+        }
+    }
 
 }

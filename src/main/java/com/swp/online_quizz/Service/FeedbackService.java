@@ -26,18 +26,31 @@ public class FeedbackService implements IFeedbackService{
 
     @Transactional
     @Override
-    public boolean createFeedback(Feedback feedback) {
+    public Feedback createFeedback(Feedback feedback) {
         try {
-            QuizAttempt existingQuizAttempt = quizAttemptsRepository.findByAttemptId(feedback.getAttempt().getAttemptId());
+            QuizAttempt existingQuizAttempt = quizAttemptsRepository
+                    .findByAttemptId(feedback.getAttempt().getAttemptId());
 
             User user = iUsersService.getUsersByID(feedback.getUser().getUserId());
             feedback.setAttempt(existingQuizAttempt);
             feedback.setUser(user);
-            feedbackRepository.save(feedback);
-            return true;
+            return feedbackRepository.save(feedback);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
+    }
+    @Transactional
+    @Override
+    public Boolean updateFeedback(Integer id, Feedback feedback) {
+        try {
+            Feedback uFeedback = feedbackRepository.getReferenceById(id);
+            uFeedback.setComment(feedback.getComment());
+
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 }
