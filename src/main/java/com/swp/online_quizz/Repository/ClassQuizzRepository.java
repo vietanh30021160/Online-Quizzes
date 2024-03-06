@@ -17,4 +17,6 @@ public interface ClassQuizzRepository extends JpaRepository<ClassQuizz, ClassQui
     List<ClassQuizz> findByClassesClassIdIn(List<Integer> classIds);
     @Query("SELECT cq FROM ClassQuizz cq WHERE cq.classes.className = :className")
     List<ClassQuizz> findByClassesClassName(String className);
+    @Query("SELECT cq from ClassQuizz cq where cq.classes.classId = ?1")
+    List<ClassQuizz> findQuizByClassID(Integer classID);
 }

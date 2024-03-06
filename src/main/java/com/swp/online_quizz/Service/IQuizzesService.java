@@ -44,6 +44,10 @@ public interface IQuizzesService {
 
 
     Page<Quiz> searchAndFilterAndSubjectForQuizzesNoClass(String keyword, Integer pageNo, Integer min, Integer max, String subject,String ClassName);
+    Page<Quiz> searchAndFilterAndSubject(String keyword, Integer pageNo, Integer min, Integer max, String subject);
+
+//    Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max,
+//                                                   String subject, List<Integer> quizIds);
 
     Page<Quiz> CombineQuizzes(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds, String className);
 }
