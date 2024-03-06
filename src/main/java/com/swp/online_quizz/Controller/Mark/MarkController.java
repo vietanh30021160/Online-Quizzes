@@ -1,9 +1,7 @@
 package com.swp.online_quizz.Controller.Mark;
 
-import com.swp.online_quizz.Entity.QuestionAttempt;
-import com.swp.online_quizz.Entity.QuizAttempt;
-import com.swp.online_quizz.Entity.Quiz;
-import com.swp.online_quizz.Entity.User;
+import com.swp.online_quizz.Entity.*;
+import com.swp.online_quizz.Repository.FeedbackRepository;
 import com.swp.online_quizz.Repository.UsersRepository;
 import com.swp.online_quizz.Service.IQuestionAttemptsService;
 import com.swp.online_quizz.Service.IQuizAttemptsService;
@@ -39,6 +37,8 @@ public class MarkController {
     private IQuestionAttemptsService questionAttemptsService;
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private FeedbackRepository feedbackRepository;
 
     @GetMapping("/mark/{quizzId}")
     public String index( Model model, @RequestParam(value = "username", required = false) String username, @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
@@ -91,11 +91,12 @@ public class MarkController {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
             username = authentication.getName();
         }
+        List<Feedback> feedback =feedbackRepository.findByAttemptAttemptId(attemptID);
         Optional<User> userOptional = usersRepository.findByUsername(username);
         model.addAttribute("useRole",userOptional.get().getRole());
         model.addAttribute("QuizAttempts", quizAttempts);
         model.addAttribute("QuestionAttemptsList", questionAttemptList);
-
+        model.addAttribute("feedback", feedback);
         return "ReviewMark";
     }
 }

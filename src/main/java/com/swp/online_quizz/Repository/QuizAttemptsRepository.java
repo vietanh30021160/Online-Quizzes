@@ -13,6 +13,7 @@ import java.util.List;
 @Repository
 public interface QuizAttemptsRepository extends JpaRepository<QuizAttempt,Integer> {
     List<QuizAttempt> findByQuizQuizId(Integer quizId);
+    QuizAttempt findByAttemptId(Integer quizAttemptId);
     @Query(value = "SELECT qa FROM QuizAttempt qa WHERE qa.quiz.quizId = ?1")
     public List<QuizAttempt> findQuizAttemptsByQuizID(Integer quizID, Sort sort);
 

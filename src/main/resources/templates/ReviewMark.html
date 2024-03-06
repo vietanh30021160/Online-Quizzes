@@ -74,7 +74,29 @@
                 </div>
             </div>
         </div>
+        <hr>
+        <hr>
+        <h3>Feedback:</h3>
+        <ul>
+            <li th:each="feedback : ${feedbacks}">
+                <p th:text="${feedback.comment}"></p>
 
+            </li>
+        </ul>
+        <div th:if="${useRole == 'ROLE_TEACHER'}">
+            <form action="/feedback/createFeedback/{attemptID}"
+                  th:action="@{'/feedback/createFeedback/' + ${attemptID} }"
+                  th:object="${feedback}" method="post">
+                <div id="ctl00_mainContent_divTitle"></div>
+                Comment:
+                <textarea name="comment" rows="5" cols="70" id="txtFeedback"></textarea><br>
+                <input type="hidden" name="feedback.attemptId" th:value="${attemptID}">
+                <input type="hidden" name="feedback.userId" th:value="${userId}">
+
+                <input type="submit" value="Send feedback" id="feedbackContent"><br>
+            </form>
+
+        </div>
 
 
 
