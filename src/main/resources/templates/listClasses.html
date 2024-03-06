@@ -58,24 +58,51 @@
 <!--                        </div>-->
 <!--                    </div>-->
 <!--                </form>-->
-                <div class="d-none d-lg-block inline-block-div"  >
-                    <a href="#top" class="navbar-icon bi bi-bell smoothscroll"></a>
-                </div>
-
-                <div class="d-none d-lg-block inline-block-div"  >
-                    <a href="/logout" class="navbar-icon bi-person smoothscroll"></a>
-                </div>
-                <div class="dropdown">
+                <div class="dropdown" >
                     <!-- Button của dropdown -->
                     <button class="navbar-icon bi-person smoothscroll"></button>
                     <div class="dropdown-content">
                         <!-- Hiển thị thông tin người đăng nhập -->
                         <a th:href="@{/information}" class="btn btn-default btn-flat">Profile</a>
-
-                        <a  class="btn btn-default btn-flat" href="/logout">Logout</a>
-
+                        <a class="btn btn-default btn-flat" href="/logout">Logout</a>
                     </div>
                 </div>
+                <style>
+                    /* Style cho dropdown */
+                    .dropdown {
+                        position: relative;
+                        display: inline-block;
+                    }
+
+                    /* Style cho nội dung của dropdown */
+                    .dropdown-content {
+                        display: none;
+                        position: absolute;
+                        background-color: #f9f9f9;
+                        min-width: 160px;
+                        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                        z-index: 1;
+                    }
+
+                    /* Style cho mỗi mục trong dropdown */
+                    .dropdown-content a {
+                        color: black;
+                        padding: 12px 16px;
+                        text-decoration: none;
+                        display: block;
+                    }
+
+                    /* Hover style cho mỗi mục trong dropdown */
+                    .dropdown-content a:hover {
+                        background-color: #f1f1f1;
+                    }
+
+                    /* Hiển thị dropdown khi hover */
+                    .dropdown:hover .dropdown-content {
+                        display: block;
+                    }
+                </style>
+
             </div>
         </div>
     </nav>
