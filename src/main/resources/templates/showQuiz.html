@@ -10,99 +10,97 @@
           href="/css/showQuiz.css" th:href="@{/css/showQuiz.css}">
 </head>
 <body>
-<div class="headerMark">
-    <nav class="navbar navbar-expand-lg" th:fragment="header">
+    <div class="headerMark">
+        <nav class="navbar navbar-expand-lg" th:fragment="header">
 
-        <div class="container">
-            <a class="navbar-brand" th:href="@{/}">
-                <i class="bi-back"></i>
-                <span>QuizTest</span>
-            </a>
+            <div class="container">
+                <a class="navbar-brand" th:href="@{/}">
+                    <i class="bi-back"></i>
+                    <span>QuizTest</span>
+                </a>
 
-            <div class="d-lg-none ms-auto me-4">
-                <a href="#top" class="navbar-icon bi-person smoothscroll nav_iconPerson"></a>
-            </div>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-lg-5 me-lg-auto">
-                    <li class="nav-item">
-                        <a class="nav-link click-scroll" href="#section_1">Home</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link click-scroll" href="#section_2">List Quizzes</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link click-scroll" th:href="@{'/quizzes/list'}">Manager Quizzes</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link click-scroll" th:href="@{'/Classes/listClasses'}">Manager Class</a>
-                    </li>
-
-                </ul>
-                <!--                <form method="get" th:action="@{'/' + '?keyword=' + ${keyword} + (${subject != null ? '&subject=' + subject : ''}) + '#section_2'}" class="custom-form mt-4 pt-2 mb-lg-0 mb-5 inline-block-div" role="search">-->
-                <!--                    <div class="input-group input-group-sm hidden-xs" style="width: 400px;">-->
-                <!--                        <input type="text" name="keyword" class="form-control pull-right" placeholder="Search">-->
-                <!--                        <input type="hidden" th:if="${subject != null}" name="subject" th:value="${subject}">-->
-                <!--                        <div class="input-group-btn">-->
-                <!--                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i> Search</button>-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                </form>-->
-                <div class="d-none d-lg-block inline-block-div"  >
-                    <a href="#top" class="navbar-icon bi bi-bell smoothscroll"></a>
+                <div class="d-lg-none ms-auto me-4">
+                    <a href="#top" class="navbar-icon bi-person smoothscroll nav_iconPerson"></a>
                 </div>
 
-                <div class="d-none d-lg-block inline-block-div"  >
-                    <a href="/logout" class="navbar-icon bi-person smoothscroll"></a>
-                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_1">Home</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_2">List Quizzes</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" th:href="@{'/quizzes/list'}">Manager Quizzes</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" th:href="@{'/Classes/listClasses'}">Manager Class</a>
+                        </li>
+
+                    </ul>
+                    <!--                <form method="get" th:action="@{'/' + '?keyword=' + ${keyword} + (${subject != null ? '&subject=' + subject : ''}) + '#section_2'}" class="custom-form mt-4 pt-2 mb-lg-0 mb-5 inline-block-div" role="search">-->
+                    <!--                    <div class="input-group input-group-sm hidden-xs" style="width: 400px;">-->
+                    <!--                        <input type="text" name="keyword" class="form-control pull-right" placeholder="Search">-->
+                    <!--                        <input type="hidden" th:if="${subject != null}" name="subject" th:value="${subject}">-->
+                    <!--                        <div class="input-group-btn">-->
+                    <!--                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i> Search</button>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <!--                </form>-->
+                    <div class="d-none d-lg-block inline-block-div"  >
+                        <a href="#top" class="navbar-icon bi bi-bell smoothscroll"></a>
+                    </div>
+
+                    <div class="d-none d-lg-block inline-block-div"  >
+                        <a href="/logout" class="navbar-icon bi-person smoothscroll"></a>
+                    </div>
+
+                </div>
             </div>
+        </nav>
+    </div>
+    <div class="quiz-list-container">
+        <h1 class="quiz-list-heading">Quiz List</h1>
+        <div class="quiz-actions">
+            <a class="action-link" th:href="@{'/quizzes/showCreateQuizPage'}">Add Quiz</a>
+            <a class="action-link" th:href="@{'/quizzes/createQuizByListQuestions'}">Add Quiz By BankQuizz</a>
+            <a class="action-link" th:href="@{'/quizzes/Importxlsx'}">Import XLSX</a>
         </div>
-    </nav>
-</div>
-<div class="quiz-list-container">
-    <h1 class="quiz-list-heading">Quiz List</h1>
-    <div class="quiz-actions">
-        <a class="action-link" th:href="@{'/quizzes/showCreateQuizPage'}">Add Quiz</a>
-        <a class="action-link" th:href="@{'/quizzes/createQuizByListQuestions'}">Add Quiz By BankQuizz</a>
-        <a class="action-link" th:href="@{'/quizzes/Importxlsx'}">Import XLSX</a>
+        <div class="quiz-table-container">
+            <table border="1" class="quiz-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Teacher</th>
+                    <th>Subject</th>
+                    <th>Name</th>
+                    <th>Time Limit</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="quiz, quizIndex : ${quizList}">
+                    <td th:text="${quizIndex.index}"></td>
+                    <td th:text="${quiz.teacher.username}"></td>
+                    <td th:text="${quiz.subject.subjectName}"></td>
+                    <td th:text="${quiz.quizName}"></td>
+                    <td th:text="${quiz.timeLimit}"></td>
+                    <td><a class="button" th:href="@{'/quizzes/showUpdateQuizPage/' + ${quiz.quizId}}">Update</a></td>
+                    <td><a class="button" th:href="@{'/quizzes/delete/' + ${quiz.quizId}}">Delete</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div class="quiz-table-container">
-        <table border="1" class="quiz-table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Teacher</th>
-                <th>Subject</th>
-                <th>Name</th>
-                <th>Time Limit</th>
-                <th>Update</th>
-                <th>Delete</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="quiz : ${quizList}">
-                <td th:text="${quiz.quizId}"></td>
-                <td th:text="${quiz.teacher.username}"></td>
-                <td th:text="${quiz.subject.subjectName}"></td>
-                <td th:text="${quiz.quizName}"></td>
-                <td th:text="${quiz.timeLimit}"></td>
-                <td><a class="button" th:href="@{'/quizzes/showUpdateQuizPage/' + ${quiz.quizId}}">Update</a></td>
-                <td><a class="button" th:href="@{'/quizzes/delete/' + ${quiz.quizId}}">Delete</a></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-
 </body>
 </html>

@@ -97,6 +97,7 @@
                                             if (!isSeen) {
                                                 dotElement.style.backgroundColor = '#ccc';
                                                 item.classList.add('seen');
+                                                console.log('Cập nhật trạng thái đã xem tành công');
                                             } 
                                         } else {
                                             console.error('Cập nhật trạng thái đã xem thất bại');
@@ -119,6 +120,7 @@
                                             } else {
                                                 dotElement.style.backgroundColor = 'green';
                                                 item.classList.remove('seen');
+                                                console.log('Cập nhật trạng thái đã xem tành công');
                                             }
                                         } else {
                                             console.error('Cập nhật trạng thái đã xem thất bại');
