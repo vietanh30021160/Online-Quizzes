@@ -119,7 +119,9 @@
                     </tr>
                     <tr th:each="listQuiz,index:${listQuizInClass}">
                         <td th:text="${index.count}"></td>
-                        <td class="textQuizName text-end text-center" th:text="${listQuiz.quiz.quizName}"></td>
+                        <td class="textQuizName text-end text-center" >
+                            <a th:href="@{/class/mark/{quizID}(quizID = ${listQuiz.quiz.getQuizId()})}" th:text="${listQuiz.quiz.quizName}"></a>
+                        </td>
                     </tr>
 
                     </tbody>

@@ -90,13 +90,18 @@
                 </thead>
                 <tbody>
                 <tr th:each="quiz, quizIndex : ${quizList}">
-                    <td th:text="${quizIndex.index}"></td>
+                    <td th:text="${quizIndex.index + 1}"></td>
                     <td th:text="${quiz.teacher.username}"></td>
                     <td th:text="${quiz.subject.subjectName}"></td>
                     <td th:text="${quiz.quizName}"></td>
                     <td th:text="${quiz.timeLimit}"></td>
                     <td><a class="button" th:href="@{'/quizzes/showUpdateQuizPage/' + ${quiz.quizId}}">Update</a></td>
-                    <td><a class="button" th:href="@{'/quizzes/delete/' + ${quiz.quizId}}">Delete</a></td>
+                    <td><a class="button" th:href="@{'/quizzes/delete/' + ${quiz.quizId}}" onclick="return confirmDelete()">Delete</a></td>
+                    <script>
+                        function confirmDelete() {
+                            return confirm("Are you sure you want to delete this quiz?");
+                        }
+                    </script>
                 </tr>
                 </tbody>
             </table>

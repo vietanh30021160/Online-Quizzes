@@ -1,28 +1,32 @@
 package com.swp.online_quizz.Controller.Mark;
 
-import com.swp.online_quizz.Entity.*;
-import com.swp.online_quizz.Repository.FeedbackRepository;
-import com.swp.online_quizz.Repository.UsersRepository;
-import com.swp.online_quizz.Service.IQuestionAttemptsService;
-import com.swp.online_quizz.Service.IQuizAttemptsService;
-import com.swp.online_quizz.Service.IQuizzesService;
-import com.swp.online_quizz.Service.IUsersService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-import java.util.Optional;
+import com.swp.online_quizz.Entity.Feedback;
+import com.swp.online_quizz.Entity.QuestionAttempt;
+import com.swp.online_quizz.Entity.Quiz;
+import com.swp.online_quizz.Entity.QuizAttempt;
+import com.swp.online_quizz.Entity.User;
+import com.swp.online_quizz.Repository.FeedbackRepository;
+import com.swp.online_quizz.Repository.UsersRepository;
+import com.swp.online_quizz.Service.IQuestionAttemptsService;
+import com.swp.online_quizz.Service.IQuizAttemptsService;
+import com.swp.online_quizz.Service.IQuizzesService;
+import com.swp.online_quizz.Service.IUsersService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/class")
@@ -41,12 +45,14 @@ public class MarkController {
     private FeedbackRepository feedbackRepository;
 
     @GetMapping("/mark/{quizzId}")
-    public String index( Model model, @RequestParam(value = "username", required = false) String username, @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-                        @PathVariable("quizzId") Integer quizzId, @RequestParam(value = "sort", defaultValue = "marks") String sort, @RequestParam(value = "dir", defaultValue = "asc") String dir) {
+    public String index(Model model, @RequestParam(value = "username", required = false) String username,
+            @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+            @PathVariable("quizzId") Integer quizzId, @RequestParam(value = "sort", defaultValue = "marks") String sort,
+            @RequestParam(value = "dir", defaultValue = "asc") String dir) {
 
         Sort s = Sort.by(Sort.Direction.fromString(dir), sort);
         Page<QuizAttempt> listQuizAttempts = this.quizAttemptsService.findQuizAttemptsByQuizID(quizzId, pageNo, s);
-        List<QuizAttempt> ListQuizAttemptsSatic = this.quizAttemptsService.findQuizAttemptsByQuizID(quizzId,s);
+        List<QuizAttempt> ListQuizAttemptsSatic = this.quizAttemptsService.findQuizAttemptsByQuizID(quizzId, s);
         int mark_low = 0, mark_medium = 0, mark_high = 0, index = 0;
         for (QuizAttempt quizAttempt : ListQuizAttemptsSatic) {
             index = index + 1;
@@ -83,7 +89,8 @@ public class MarkController {
     }
 
     @GetMapping("mark/{quizzId}/attempt/{attemptID}")
-    public String reviewAttempt(HttpServletRequest request,Model model, @PathVariable(value = "quizzId") Integer quizzId, @PathVariable("attemptID") Integer attemptID) {
+    public String reviewAttempt(HttpServletRequest request, Model model,
+            @PathVariable(value = "quizzId") Integer quizzId, @PathVariable("attemptID") Integer attemptID) {
         QuizAttempt quizAttempts = this.quizAttemptsService.findById(attemptID);
         List<QuestionAttempt> questionAttemptList = this.questionAttemptsService.findByAttemptID(attemptID);
         String username = "";
@@ -91,9 +98,28 @@ public class MarkController {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
             username = authentication.getName();
         }
-        List<Feedback> feedback =feedbackRepository.findByAttemptAttemptId(attemptID);
+        List<Feedback> feedback = feedbackRepository.findByAttemptAttemptId(attemptID);
         Optional<User> userOptional = usersRepository.findByUsername(username);
-        model.addAttribute("useRole",userOptional.get().getRole());
+        model.addAttribute("useRole", userOptional.get().getRole());
+        model.addAttribute("QuizAttempts", quizAttempts);
+        model.addAttribute("QuestionAttemptsList", questionAttemptList);
+        model.addAttribute("feedback", feedback);
+        return "ReviewMark";
+    }
+
+    @GetMapping("mark/attempt/{attemptID}")
+    public String reviewAttemptV2(HttpServletRequest request, Model model,
+            @PathVariable(value = "quizzId") Integer quizzId, @PathVariable("attemptID") Integer attemptID) {
+        QuizAttempt quizAttempts = this.quizAttemptsService.findById(attemptID);
+        List<QuestionAttempt> questionAttemptList = this.questionAttemptsService.findByAttemptID(attemptID);
+        String username = "";
+        if (request.getSession().getAttribute("authentication") != null) {
+            Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
+            username = authentication.getName();
+        }
+        List<Feedback> feedback = feedbackRepository.findByAttemptAttemptId(attemptID);
+        Optional<User> userOptional = usersRepository.findByUsername(username);
+        model.addAttribute("useRole", userOptional.get().getRole());
         model.addAttribute("QuizAttempts", quizAttempts);
         model.addAttribute("QuestionAttemptsList", questionAttemptList);
         model.addAttribute("feedback", feedback);

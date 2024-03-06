@@ -69,7 +69,7 @@ public class MessagesService implements IMessagesService {
     @Override
     public Message createNotificationNewFeedback(Feedback feedback) {
         Message message = new Message();
-        message.setMessageType("system");
+        message.setMessageType("feedback");
         message.setMessageContent(
                 "You have new feedback from teacher '" + feedback.getUser().getFirstName() + " "
                         + feedback.getUser().getLastName()
