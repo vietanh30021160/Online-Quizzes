@@ -2,6 +2,7 @@ package com.swp.online_quizz.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -67,6 +68,10 @@ public class Quiz {
     @JsonManagedReference
     private List<QuizAttempt> listQuizAttemps;
 
+    @OneToMany(mappedBy = "quiz") // Thêm mối quan hệ mới ở đây
+    @JsonManagedReference
+    private List<ClassQuizz> classQuizzes; // Thêm List<ClassQuizz>
+
     // @OneToMany(mappedBy = "quiz")
     // @JsonManagedReference
     // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -80,4 +85,6 @@ public class Quiz {
         this.timeLimit = timeLimit;
         this.isCompleted = isCompleted;
     }
+    @OneToMany(mappedBy = "quiz",cascade = CascadeType.ALL)
+    Set<ClassQuizz> idClassQuizzs;
 }

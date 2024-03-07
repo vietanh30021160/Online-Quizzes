@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{HomeHead :: head}"></head>
+<link th:href="@{../../../../../css/listClasses.css}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<body id="top">
+
+
+<div class="headerMark">
+    <nav class="navbar navbar-expand-lg" th:fragment="header">
+
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="bi-back"></i>
+                <span>QuizTest</span>
+            </a>
+
+            <div class="d-lg-none ms-auto me-4">
+                <a href="#top" class="navbar-icon bi-person smoothscroll nav_iconPerson"></a>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_1">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_2">List Quizzes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" th:href="@{'/quizzes/list'}">Manager Quizzes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" th:href="@{'/Classes/listClasses'}">Manager Class</a>
+                    </li>
+
+                </ul>
+                <div class="d-none d-lg-block inline-block-div">
+                    <a href="#top" class="navbar-icon bi bi-bell smoothscroll"></a>
+                </div>
+
+
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script>
+                    $(document).on("click", ".notification_icon .bi-bell", function () {
+                        $(".notification_wrap .dropdown").toggleClass("active");
+                    });
+                </script>
+                <!-- End notification -->
+                <div class="dropdown">
+                    <!-- Button của dropdown -->
+                    <button class="navbar-icon bi-person smoothscroll"></button>
+                    <div class="dropdown-content">
+                        <!-- Hiển thị thông tin người đăng nhập -->
+                        <!-- Conditional rendering for the Profile link -->
+                        <a th:if="${someCondition}" th:href="@{/information}" class="btn btn-default btn-flat">Profile</a>
+
+                        <!-- Logout link with Thymeleaf th:href -->
+                        <a class="btn btn-default btn-flat" th:href="@{/logout}">Logout</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </nav>
+</div>
+<section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
+    <div class="container" th:object="${profileStudent}">
+        <div class="main-body">
+
+            <h1 class="text-white text-center">Profile Student</h1>
+
+            <div class="row gutters-sm">
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
+                                     class="rounded-circle" width="150">
+                                <div class="mt-3">
+                                    <h4 th:text="${profileStudent.username}"></h4>
+                                    <p class="text-secondary mb-1" th:text="${profileStudent.email}"></p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-8">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">FirstName</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary" th:text="${profileStudent.firstName}">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">LastName</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary" th:text="${profileStudent.lastName}">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Gender</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary" th:text="${profileStudent.gender}">
+
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">JoinDate</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary" th:text="${profileStudent.joinDate}">
+
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">DateOfBirth</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary" th:text="${profileStudent.dateOfBirth}">
+
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Phone</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary" th:text="${profileStudent.phoneNumber}">
+
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h6 class="mb-0">Address</h6>
+                                </div>
+                                <div class="col-sm-9 text-secondary" th:text="${profileStudent.address}">
+
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <a class="btn btn-primary" th:href="@{../../../listClasses/{classId}(classId=${classId})}" role="button">Back</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<div th:replace="~{HomeFooter :: footer}"></div>
+
+<div th:replace="~{HomeScript :: script}"></div>
+
+
+</body>
+</html>

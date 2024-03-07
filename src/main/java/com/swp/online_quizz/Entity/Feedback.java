@@ -15,6 +15,7 @@ import lombok.Setter;
 public class Feedback {
     @Id
     @Column(name = "FeedbackID", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer feedbackId;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,5 +1,19 @@
 package com.swp.online_quizz.Controller.HomePage;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.swp.online_quizz.Entity.Classes;
 import com.swp.online_quizz.Entity.Quiz;
 import com.swp.online_quizz.Entity.Subject;
@@ -7,24 +21,14 @@ import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Repository.ClassEnrollmentRepository;
 import com.swp.online_quizz.Repository.ClassesRepository;
 import com.swp.online_quizz.Repository.UsersRepository;
-import com.swp.online_quizz.Service.*;
+import com.swp.online_quizz.Service.IClassEnrollmentService;
+import com.swp.online_quizz.Service.IClassQuizzService;
+import com.swp.online_quizz.Service.IClassesService;
+import com.swp.online_quizz.Service.IQuizzesService;
+import com.swp.online_quizz.Service.ISubjectService;
+import com.swp.online_quizz.Service.IUsersService;
+
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 
 @Controller
 
@@ -48,35 +52,25 @@ public class HomeController {
     @Autowired
     private IUsersService iUsersService;
 
-
     @RequestMapping("")
     public String home(Model model,
-                       @RequestParam(required = false) String keyword,
-                       @RequestParam(required = false) String subject,
-                       @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                       @RequestParam(required = false) Integer min,
-                       @RequestParam(required = false) Integer max,
-                       @RequestParam(required = false) String classCode,
-                       HttpServletRequest request) {
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String subject,
+            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+            @RequestParam(required = false) Integer min,
+            @RequestParam(required = false) Integer max,
+            @RequestParam(required = false) String classCode,
+            @RequestParam(required = false) String className,
+            HttpServletRequest request) {
         List<Subject> listSubject = iSubjectService.getAll();
-        Page<Quiz> listQuiz = iQuizzesService.searchAndFilterAndSubject(keyword, pageNo, min, max, subject);
-        int totalPage = listQuiz.getTotalPages();
-        model.addAttribute("listQuiz", listQuiz);
-        model.addAttribute("totalPage", totalPage);
-
-
         Optional<User> userOptional = getUserFromSession(request);
 
         User user = null;
         if (userOptional.isPresent()) {
             user = userOptional.get();
             String role = user.getRole();
-            if ("ROLE_TEACHER".equals(role)) {
-                return "HomePageTeacher";
-            }
-
             if ("ROLE_STUDENT".equals(role)) {
-                handleStudentLogic(model, user, keyword, pageNo, min, max, subject, classCode);
+                handleStudentLogic(model, user, keyword, pageNo, min, max, subject, classCode, className);
             }
         } else {
             // Nếu người dùng chưa đăng nhập và nhập class code
@@ -84,13 +78,19 @@ public class HomeController {
                 return "redirect:/login";
             }
         }
-
+        model.addAttribute("user", user);
         model.addAttribute("min", min);
         model.addAttribute("max", max);
         model.addAttribute("keyword", keyword);
         model.addAttribute("subject", subject);
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("listSubject", listSubject);
+        if (userOptional.isPresent()) {
+            if ("ROLE_TEACHER".equals(userOptional.get().getRole())) {
+                handleStudentLogic(model, user, keyword, pageNo, min, max, subject, classCode, className);
+                return "HomePageTeacher";
+            }
+        }
         return "HomePage";
     }
 
@@ -103,14 +103,17 @@ public class HomeController {
         return Optional.empty();
     }
 
-    private String handleStudentLogic(Model model, User user, String keyword, Integer pageNo, Integer min, Integer max, String subject, String classCode) {
+    private String handleStudentLogic(Model model, User user, String keyword, Integer pageNo, Integer min, Integer max,
+            String subject, String classCode, String className) {
 
         Integer userId = user.getUserId();
         List<Integer> classIds = iClassEnrollmentService.getClassIdsByStudentId(userId);
         List<Integer> quizIds = iClassQuizzService.getQuizIdsByClassIds(classIds);
-        Page<Quiz> filteredQuiz = iQuizzesService.searchAndFilterAndSubjectAndQuizIds(keyword, pageNo, min, max, subject, quizIds);
-
+        Page<Quiz> filteredQuiz = iQuizzesService.CombineQuizzes(keyword, pageNo, min, max, subject, quizIds,
+                className);
+        List<Classes> listClassesInUser = iClassesService.getClassesByStudentID(userId);
         int totalPage = filteredQuiz.getTotalPages();
+        model.addAttribute("listClasses", listClassesInUser);
         model.addAttribute("listQuiz", filteredQuiz);
         model.addAttribute("totalPage", totalPage);
 
@@ -131,16 +134,15 @@ public class HomeController {
     public String informationPage(Model model, HttpServletRequest request) {
         Optional<User> userOptional = getUserFromSession(request);
         if (userOptional.isEmpty()) {
-            //Nếu không có user thì làm gì đấy
+            // Nếu không có user thì làm gì đấy
             return "redirect:/login";
         }
-        //nếu có thì lấy ra user
+        // nếu có thì lấy ra user
         User user = userOptional.get();
         model.addAttribute("user", user);
         return "Information.html";
     }
 
-       
     @GetMapping("/updateInformation")
     public String updateInformation(Model model, HttpServletRequest request) {
         Optional<User> userOptional = getUserFromSession(request);
@@ -154,15 +156,14 @@ public class HomeController {
 
     // Phương thức xử lý yêu cầu POST từ trang cập nhật thông tin người dùng
     @PostMapping("/updateInformation")
-    public String updateInformation(HttpServletRequest request,@ModelAttribute User updatedUser) {
+    public String updateInformation(HttpServletRequest request, @ModelAttribute User updatedUser) {
         Optional<User> userOptional = getUserFromSession(request);
         // Thực hiện cập nhật thông tin người dùng
-        if(userOptional.isEmpty()) {
+        if (userOptional.isEmpty()) {
             // Nếu không có người dùng, chuyển hướng đến trang đăng nhập
             return "redirect:/login";
         }
-         iUsersService.updateUser(userOptional.get().getUserId(),updatedUser);
+        iUsersService.updateUser(userOptional.get().getUserId(), updatedUser);
         return "redirect:/information";
     }
 }
-

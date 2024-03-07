@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.swp.online_quizz.Entity.*;
+import com.swp.online_quizz.Repository.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -42,6 +46,11 @@ public class QuizService implements IQuizzesService {
     private ISubjectService iSubjectService;
     @Autowired
     private IUsersService iUsersService;
+
+    @Autowired
+    private ClassQuizzRepository classQuizzRepository;
+    @Autowired
+    private QuizRepositoryCustom quizRepositoryCustom;
     @Autowired
     private QuestionsRepository questionsRepository;
     @Autowired
@@ -155,7 +164,7 @@ public class QuizService implements IQuizzesService {
 
     @Override
     public Page<Quiz> searchAndFilterAndSubject(String keyword, Integer pageNo, Integer min, Integer max,
-            String subject) {
+                                                String subject) {
         Specification<Quiz> spec = Specification.where(null);
 
         if (keyword != null && !keyword.isEmpty()) {
@@ -185,9 +194,78 @@ public class QuizService implements IQuizzesService {
         return quizRepository.findAll(spec, pageable);
     }
 
+
     @Override
-    public Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max,
-            String subject, List<Integer> quizIds) {
+    public Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds, String className) {
+        Specification<Quiz> spec = Specification.where(null);
+
+        if (keyword != null && !keyword.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.or(
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("quizName")),
+                            "%" + keyword.toLowerCase() + "%"),
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("subject").get("subjectName")),
+                            "%" + keyword.toLowerCase() + "%")));
+        }
+
+        if (subject != null && !subject.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("subject").get("subjectName"), subject));
+        }
+
+        if (min != null) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.greaterThan(root.get("timeLimit"), min));
+        }
+
+        if (max != null) {
+            spec = spec.and(
+                    (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("timeLimit"), max));
+        }
+
+        if (!quizIds.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> root.get("quizId").in(quizIds));
+        }
+
+        // Lọc bằng className nếu className được cung cấp
+        if (className != null && !className.isEmpty()) {
+            // Lấy danh sách classQuizzes dựa trên className
+            List<ClassQuizz> classQuizzes = classQuizzRepository.findByClassesClassName(className);
+
+            // Tạo danh sách các quizIds từ classQuizzes
+            List<Integer> classQuizIds = new ArrayList<>();
+            for (ClassQuizz classQuizz : classQuizzes) {
+                classQuizIds.add(classQuizz.getQuiz().getQuizId());
+            }
+
+            // Thêm điều kiện lọc theo classQuizIds
+            spec = spec.and((root, query, criteriaBuilder) -> root.get("quizId").in(classQuizIds));
+        }
+
+        // Lấy tất cả kết quả từ filteredQuiz
+        Page<Quiz> filteredQuiz = quizRepository.findAll(spec, PageRequest.of(0, Integer.MAX_VALUE));
+        if (quizIds.isEmpty()) {
+            filteredQuiz = Page.empty();
+        }
+        return filteredQuiz;
+        // Lấy tất cả kết quả từ quizzesNotInClasses
+//        Page<Quiz> quizzesNotInClasses = quizRepositoryCustom.findQuizzesNotInAnyClass(spec, PageRequest.of(0, Integer.MAX_VALUE));
+//
+//        // Kết hợp các kết quả từ filteredQuiz và quizzesNotInClasses thành một danh sách duy nhất
+//        List<Quiz> combinedList = new ArrayList<>();
+//        combinedList.addAll(filteredQuiz.getContent());
+//        combinedList.addAll(quizzesNotInClasses.getContent());
+//
+//        // Tạo một Page mới từ danh sách kết quả kết hợp và trả về
+//        int pageSize = 3; // Kích thước trang mong muốn
+//        int totalSize = combinedList.size();
+//        int startIndex = (pageNo - 1) * pageSize;
+//        int endIndex = Math.min(startIndex + pageSize, totalSize);
+//        List<Quiz> pageContent = combinedList.subList(startIndex, endIndex);
+//
+//        return new PageImpl<>(pageContent, PageRequest.of(pageNo - 1, pageSize), totalSize);
+    }
+
+    @Override
+    public Page<Quiz> searchAndFilterAndSubjectForQuizzesNoClass(String keyword, Integer pageNo, Integer min, Integer max, String subject, String className) {
         Specification<Quiz> spec = Specification.where(null);
 
         if (keyword != null && !keyword.isEmpty()) {
@@ -211,21 +289,34 @@ public class QuizService implements IQuizzesService {
             spec = spec.and(
                     (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("timeLimit"), max));
         }
+        // Lọc bằng className nếu className được cung cấp
+        if (className != null && !className.isEmpty()) {
+            // Lấy danh sách classQuizzes dựa trên className
+            List<ClassQuizz> classQuizzes = classQuizzRepository.findByClassesClassName(className);
 
-        if (!quizIds.isEmpty()) {
-            spec = spec.and((root, query, criteriaBuilder) -> root.get("quizId").in(quizIds));
+            // Tạo danh sách các quizIds từ classQuizzes
+            List<Integer> classQuizIds = new ArrayList<>();
+            for (ClassQuizz classQuizz : classQuizzes) {
+                classQuizIds.add(classQuizz.getQuiz().getQuizId());
+            }
+
+            // Thêm điều kiện lọc theo classQuizIds
+            spec = spec.and((root, query, criteriaBuilder) -> root.get("quizId").in(classQuizIds));
         }
-        // Lấy tất cả kết quả từ filteredQuiz
-        Page<Quiz> filteredQuiz = quizRepository.findAll(spec, PageRequest.of(0, Integer.MAX_VALUE));
-        if (quizIds.isEmpty()) {
-            filteredQuiz = Page.empty();
-        }
 
-        // Lấy tất cả kết quả từ quizzesNotInClasses
-        Page<Quiz> quizzesNotInClasses = quizRepository.findQuizzesNotInAnyClass(PageRequest.of(0, Integer.MAX_VALUE));
+        Pageable pageable = PageRequest.of(pageNo - 1, 3);
+        Page<Quiz> quizzesNotInClasses = quizRepositoryCustom.findQuizzesNotInAnyClass(spec, pageable);
 
-        // Kết hợp các kết quả từ filteredQuiz và quizzesNotInClasses thành một danh
-        // sách duy nhất
+
+        return quizzesNotInClasses;
+
+    }
+
+    @Override
+    public Page<Quiz> CombineQuizzes(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds, String className) {
+        Page<Quiz> filteredQuiz = searchAndFilterAndSubjectAndQuizIds(keyword, pageNo, min, max, subject, quizIds, className);
+        Page<Quiz> quizzesNotInClasses = searchAndFilterAndSubjectForQuizzesNoClass(keyword, pageNo, min, max, subject, className);
+        // Kết hợp các kết quả từ filteredQuiz và quizzesNotInClasses thành một danh sách duy nhất
         List<Quiz> combinedList = new ArrayList<>();
         combinedList.addAll(filteredQuiz.getContent());
         combinedList.addAll(quizzesNotInClasses.getContent());

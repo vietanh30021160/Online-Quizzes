@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <div th:replace="HomeHead :: head"></div>
-    <link th:href="@{../../css/listClasses.css}" rel="stylesheet">
+    <link th:href="@{../../Css/listClasses.css}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -49,70 +49,32 @@
                     </li>
 
                 </ul>
-<!--                <form method="get" th:action="@{'/' + '?keyword=' + ${keyword} + (${subject != null ? '&subject=' + subject : ''}) + '#section_2'}" class="custom-form mt-4 pt-2 mb-lg-0 mb-5 inline-block-div" role="search">-->
-<!--                    <div class="input-group input-group-sm hidden-xs" style="width: 400px;">-->
-<!--                        <input type="text" name="keyword" class="form-control pull-right" placeholder="Search">-->
-<!--                        <input type="hidden" th:if="${subject != null}" name="subject" th:value="${subject}">-->
-<!--                        <div class="input-group-btn">-->
-<!--                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i> Search</button>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </form>-->
-                <div class="dropdown" >
-                    <!-- Button của dropdown -->
+                <div class="d-none d-lg-block inline-block-div">
+                    <a href="#top" class="navbar-icon bi bi-bell smoothscroll"></a>
+                </div>
+
+                <div class="d-none d-lg-block inline-block-div">
+                    <a href="/logout" class="navbar-icon bi-person smoothscroll"></a>
+                </div>
+                <div class="dropdown">
                     <button class="navbar-icon bi-person smoothscroll"></button>
                     <div class="dropdown-content">
-                        <!-- Hiển thị thông tin người đăng nhập -->
                         <a th:href="@{/information}" class="btn btn-default btn-flat">Profile</a>
+
                         <a class="btn btn-default btn-flat" href="/logout">Logout</a>
+
                     </div>
                 </div>
-                <style>
-                    /* Style cho dropdown */
-                    .dropdown {
-                        position: relative;
-                        display: inline-block;
-                    }
-
-                    /* Style cho nội dung của dropdown */
-                    .dropdown-content {
-                        display: none;
-                        position: absolute;
-                        background-color: #f9f9f9;
-                        min-width: 160px;
-                        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                        z-index: 1;
-                    }
-
-                    /* Style cho mỗi mục trong dropdown */
-                    .dropdown-content a {
-                        color: black;
-                        padding: 12px 16px;
-                        text-decoration: none;
-                        display: block;
-                    }
-
-                    /* Hover style cho mỗi mục trong dropdown */
-                    .dropdown-content a:hover {
-                        background-color: #f1f1f1;
-                    }
-
-                    /* Hiển thị dropdown khi hover */
-                    .dropdown:hover .dropdown-content {
-                        display: block;
-                    }
-                </style>
-
             </div>
         </div>
     </nav>
 </div>
-<h1 class="d-flex justify-content-center p-3 title-Page">Manager Classes</h1>
+<h1 class="d-flex justify-content-center p-3 title-Page">Manager Students In Class</h1>
 <div class="container">
     <div class="row">
         <div class="col-sm-6 btnAddClass fs-3">Hello,
-            <span th:text="${username}" class="fs-4"></span>
-            <div class="fs-5 totalClass">You are managing a total of <span th:text="${TotalClass}"></span> classes</div>
+            <span th:text="${nameTeacher}" class="fs-4"></span>
+            <div class="fs-5 totalClass">This class currently has <span th:text="${size}"></span> students</div>
         </div>
         <div class="col-sm-2 ">
             <div th:if="${not #strings.isEmpty(mss)}">
@@ -122,18 +84,55 @@
         <div class="price-range col-sm-4 d-flex align-items-end">
             <form method="get" class="mx-sm-3 fromSearchClass">
                 <div class="input-group">
-                    <input style="border-radius: 10px " name="className" th:value="${className}"
-                           class="form-control form-control-lg" type="text" placeholder="Search Class ..."
+                    <input style="border-radius: 10px " name="firstName" th:value="${firstName}"
+                           class="form-control form-control-lg" type="text" placeholder="Search Student ..."
                            aria-describedby="button-addon2" autofocus>
                     <button style="border-radius: 10px" class="btn btn-secondary" id="button-addon2" type="submit">
                         Search
                     </button>
                 </div>
             </form>
-            <button type="button" class="btn btn-outline-secondary buttonAddClass"><a th:href="@{/Classes/addClass}">Add
-                Class</a>
+            <button type="button" class="btn btn-outline-secondary buttonAddClass"><a
+                    th:href="@{${classId}+'/addStudent'}">Add Student</a>
+            </button>
+            <button type="button" class="btn btn-outline-secondary buttonAddQuiz"><a
+                    th:href="@{${classId}+'/createQuizz'}">Add Quiz</a>
             </button>
         </div>
+    </div>
+</div>
+<div class="container containerTableListQuiz">
+    <div class="table-wrapper-scroll-y my-custom-scrollbar ">
+
+        <table class="table table-bordered table-striped mb-0 tableListQuiz">
+            <thead>
+
+            </thead>
+            <tbody>
+            <td colspan="1" class="p-0">
+                <table class="table table-borderless ">
+                    <tbody >
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col" class="text-end">Quizz Name</th>
+
+                    </tr>
+                    <tr th:each="listQuiz,index:${listQuizInClass}">
+                        <td th:text="${index.count}"></td>
+                        <td class="textQuizName text-end text-center" >
+                            <a th:href="@{/class/mark/{quizID}(quizID = ${listQuiz.quiz.getQuizId()})}" th:text="${listQuiz.quiz.quizName}"></a>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </td>
+
+            </tr>
+
+            </tbody>
+        </table>
+
     </div>
 </div>
 <div class="container">
@@ -148,39 +147,41 @@
 
                 <table class="table table-striped custom-table text-center">
                     <thead>
+
                     <tr>
                         <th scope="col">No</th>
-                        <th scope="col">ClassId</th>
-                        <th scope="col">Class Name</th>
-                        <th scope="col">Class Code</th>
-                        <th scope="col">Actions</th>
+                        <th scope="col">StudentID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Date Of Birth</th>
+                        <th scope="col">Active</th>
+
                     </tr>
                     </thead>
                     <tbody>
-                    <tr scope="row " th:each="class,index : ${ListClasses}" class="tableInfo">
 
-                        <div th:if="${index.count != 0}">
-                            <td th:text="${index.count}"></td>
-                            <td th:text="${class.classId}">
+                    <tr th:each="student,index : ${listStudents}">
 
-                            </td>
-                            <td th:text="${class.className}"> </td>
-                            <td th:text="${class.classCode}"></td>
-                            <td>
-                                <a th:href="@{listClasses/{classId}(classId=${class.classId})}" class="edit"
-                                   title="View" data-toggle="tooltip"><i
-                                        class="fa-regular fa-eye"></i></a>
-                                <a th:href="@{updateNameClass/{id}(id=${class.classId})}" class="view" title="Edit"
-                                   data-toggle="tooltip">
-                                    <i class="fa fa-edit"></i>
-                                </a>
+                        <td th:text="${index.count}"></td>
+                        <td th:text="${student.studentID.userId}"></td>
+                        <td th:text="${student.studentID.firstName}"></td>
+                        <td th:text="${student.studentID.email}"></td>
+                        <td th:text="${student.studentID.address}"></td>
+                        <td th:text="${student.studentID.dateOfBirth}"></td>
+                        <td>
+                            <a th:href="@{${student.classes.classId}+'/profile/'+${student.studentID.userId}}"
+                               class="edit" title="View" data-toggle="tooltip"><i
+                                    class="fa-regular fa-eye"></i></a>
 
-                                <a th:href="@{deleteClasses/{id}(id=${class.classId})}" class="delete" title="Delete"
-                                   data-toggle="tooltip"><i
-                                        class="fa-solid fa-trash-can"></i></a>
-                            </td>
-                        </div>
+
+                            <a th:href="@{${student.classes.classId}+'/deleteStudent/'+${student.enrollmentId}}"
+                               class="delete" title="Delete"
+                               data-toggle="tooltip"><i
+                                    class="fa-solid fa-trash-can"></i></a>
+                        </td>
                     </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -190,14 +191,15 @@
         <div class="demo">
             <nav class="pagination-outer " aria-label="Page navigation">
                 <ul class="pagination">
-                    <li class="page-item" th:if="${currentPage > 1}" id="movePaging">
+                    <li class="page-item" th:if="${currentPage > 1 }" id="movePaging">
                         <a th:href="@{'?pageNo='+${currentPage - 1}}" class="page-link" aria-label="Previous">
                             <span aria-hidden="true">«</span>
                         </a>
                     </li>
-                    <li class="page-item " th:each="i:${totalPage != 1 && currentPage!=1 ? #numbers.sequence(1,totalPage) : 1}"
+                    <li class="page-item "
+                        th:each="i:${totalPage != 1 && currentPage!=1 ? #numbers.sequence(1,totalPage) :1}"
                         th:classappend="${i == currentPage ? 'active' : ''}"><a class="page-link"
-                                                                                th:href="@{${className != null && className != '' ? '?className=' + className + '&' : '?'} + 'pageNo='+${i}}"
+                                                                                th:href="@{${firstName != null && firstName != '' ? '?firstName=' + firstName + '&' : '?'} + 'pageNo='+${i}}"
                                                                                 th:text="${i}"></a></li>
                     <li class="page-item" th:if="${currentPage < totalPage}">
                         <a th:href="@{'?pageNo='+${currentPage + 1}}" class="page-link" aria-label="Next"
@@ -209,7 +211,6 @@
             </nav>
         </div>
     </div>
-</div>
 </div>
 <div class="footer">
     <div th:replace="HomeFooter :: footer"></div>

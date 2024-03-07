@@ -142,4 +142,39 @@ input[type="checkbox"]:checked + .filter-options {
 
 /* Hiển thị dropdown khi hover */
 .dropdown:hover .dropdown-content {display: block;}
+.list-Classes {
+    display: flex;
+    justify-content: center;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* Ba cột có chiều rộng bằng nhau */
+    grid-gap: 10px; /* Khoảng cách giữa các cột */
+}
+
+.list-Classes p.comma {
+    margin-right: 0; /* Loại bỏ khoảng cách phải của dấu phẩy */
+}
+/* ------------------------------------------------------------ */
+.login-register-buttons {
+    display: flex;
+    align-items: center; /* Để căn giữa các phần tử theo chiều dọc */
+}
+
+.login-register-buttons a {
+    background-color: white; /* Màu nền trắng */
+    color: black; /* Màu chữ đen */
+    padding: 10px; /* Kích thước nút */
+    text-decoration: none; /* Bỏ gạch chân */
+}
+
+.login-register-buttons a:hover {
+    background-color: lightgray; /* Màu nền xám nhạt khi di chuột qua */
+}
+
+
+
+/* ------------------------------------------------------------ */
+
 
