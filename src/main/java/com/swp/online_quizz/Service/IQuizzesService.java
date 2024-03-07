@@ -40,7 +40,8 @@ public interface IQuizzesService {
 
     public List<Quiz> getAllQuizzes();
 
-    Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds,String ClassName);
+
+    Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds, String ClassName);
 
 
     Page<Quiz> searchAndFilterAndSubjectForQuizzesNoClass(String keyword, Integer pageNo, Integer min, Integer max, String subject,String ClassName);
