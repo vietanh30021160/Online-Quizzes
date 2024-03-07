@@ -109,7 +109,7 @@ public class MarkController {
 
     @GetMapping("mark/attempt/{attemptID}")
     public String reviewAttemptV2(HttpServletRequest request, Model model,
-            @PathVariable(value = "quizzId") Integer quizzId, @PathVariable("attemptID") Integer attemptID) {
+            @PathVariable("attemptID") Integer attemptID) {
         QuizAttempt quizAttempts = this.quizAttemptsService.findById(attemptID);
         List<QuestionAttempt> questionAttemptList = this.questionAttemptsService.findByAttemptID(attemptID);
         String username = "";

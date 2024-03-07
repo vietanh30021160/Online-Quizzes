@@ -1,26 +1,44 @@
 package com.swp.online_quizz.Controller;
 
-import com.swp.online_quizz.Entity.*;
-import com.swp.online_quizz.Repository.ClassEnrollmentRepository;
-import com.swp.online_quizz.Repository.UsersRepository;
-import com.swp.online_quizz.Service.*;
-import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.swp.online_quizz.Entity.Answer;
+import com.swp.online_quizz.Entity.ClassEnrollment;
+import com.swp.online_quizz.Entity.ClassQuizz;
+import com.swp.online_quizz.Entity.Classes;
+import com.swp.online_quizz.Entity.Question;
+import com.swp.online_quizz.Entity.Quiz;
+import com.swp.online_quizz.Entity.Subject;
+import com.swp.online_quizz.Entity.User;
+import com.swp.online_quizz.Repository.UsersRepository;
+import com.swp.online_quizz.Service.AnswerService;
+import com.swp.online_quizz.Service.ClassEnrollmentService;
+import com.swp.online_quizz.Service.ClassQuizzService;
+import com.swp.online_quizz.Service.ClassesService;
+import com.swp.online_quizz.Service.IClassesService;
+import com.swp.online_quizz.Service.IMessagesService;
+import com.swp.online_quizz.Service.IQuizzesService;
+import com.swp.online_quizz.Service.IUsersService;
+import com.swp.online_quizz.Service.QuestionsService;
+import com.swp.online_quizz.Service.UsersService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/Classes")
@@ -32,8 +50,9 @@ public class ClassController {
     @Autowired
     private IUsersService iUsersService;
     @Autowired
-    private ClassEnrollmentService
-            classEnrollmentService;
+    private ClassEnrollmentService classEnrollmentService;
+    @Autowired
+    IMessagesService iMessagesService;
     @Autowired
     private IClassesService iClassesService;
     @Autowired
@@ -48,8 +67,8 @@ public class ClassController {
     private AnswerService answerService;
 
     @GetMapping("/listClasses")
-    public String index(Model model, @RequestParam(value = "className", required = false) String className, @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo
-            , HttpServletRequest request) {
+    public String index(Model model, @RequestParam(value = "className", required = false) String className,
+            @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo, HttpServletRequest request) {
         String username = "";
         if (request.getSession().getAttribute("authentication") != null) {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
@@ -62,7 +81,8 @@ public class ClassController {
         Page<Classes> listClasses = this.classesService.getAllClassByUserId(userOptional.get().getUserId(), pageNo);
         List<Classes> TotalClass = this.classesService.getAllClassByUserId(userOptional.get().getUserId());
         if (className != null) {
-            listClasses = this.classesService.searchClassesByClassesNameAndUserID(className, pageNo, userOptional.get().getUserId());
+            listClasses = this.classesService.searchClassesByClassesNameAndUserID(className, pageNo,
+                    userOptional.get().getUserId());
             model.addAttribute("className", className);
         }
         model.addAttribute("TotalClass", TotalClass.size());
@@ -82,7 +102,8 @@ public class ClassController {
     }
 
     @PostMapping("/addClass")
-    public String save(@ModelAttribute("classes") Classes classes, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+    public String save(@ModelAttribute("classes") Classes classes, RedirectAttributes redirectAttributes,
+            HttpServletRequest request) {
         String username = "";
         if (request.getSession().getAttribute("authentication") != null) {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
@@ -114,7 +135,8 @@ public class ClassController {
     }
 
     @PostMapping("/updateNameClass")
-    public String update(@ModelAttribute("classes") Classes classes, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+    public String update(@ModelAttribute("classes") Classes classes, RedirectAttributes redirectAttributes,
+            HttpServletRequest request) {
         String username = "";
         if (request.getSession().getAttribute("authentication") != null) {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
@@ -151,8 +173,9 @@ public class ClassController {
     }
 
     @GetMapping("listClasses/{classId}")
-    public String listStudentinClass(Model model, @PathVariable("classId") Integer classId, @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-                                     @RequestParam(value = "firstName", required = false) String firstName, HttpServletRequest request) {
+    public String listStudentinClass(Model model, @PathVariable("classId") Integer classId,
+            @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+            @RequestParam(value = "firstName", required = false) String firstName, HttpServletRequest request) {
         String username = "";
         if (request.getSession().getAttribute("authentication") != null) {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
@@ -181,7 +204,8 @@ public class ClassController {
     }
 
     @GetMapping("listClasses/{classId}/profile/{useID}")
-    public String profileStudent(Model model, @PathVariable("classId") Integer classId, @PathVariable("useID") Integer useID) {
+    public String profileStudent(Model model, @PathVariable("classId") Integer classId,
+            @PathVariable("useID") Integer useID) {
         User user = this.usersRepository.findByuserId(useID);
         model.addAttribute("profileStudent", user);
         model.addAttribute("classId", classId);
@@ -198,7 +222,8 @@ public class ClassController {
     }
 
     @PostMapping("listClasses/{classId}/addStudent")
-    public String AddStudentInClass(Model model, @PathVariable("classId") Integer classId, @ModelAttribute("userStudent") User user, RedirectAttributes redirectAttributes) {
+    public String AddStudentInClass(Model model, @PathVariable("classId") Integer classId,
+            @ModelAttribute("userStudent") User user, RedirectAttributes redirectAttributes) {
         Classes classes = this.classesService.findById(classId);
         User user1 = this.usersService.getUsersByID(user.getUserId());
         ClassEnrollment addStudent = new ClassEnrollment();
@@ -226,8 +251,8 @@ public class ClassController {
 
     @GetMapping("/listClasses/{classId}/createQuizz")
     public String ShowCreateQuizInClass(Model model,
-                                        @RequestParam(value = "question", required = false) String question,
-                                        @PathVariable(value = "classId") Integer classId) {
+            @RequestParam(value = "question", required = false) String question,
+            @PathVariable(value = "classId") Integer classId) {
         Quiz quiz = iQuizzesService.getEmptyQuiz();
         model.addAttribute("quiz", new Quiz());
         List<String> questionContents = quiz.getListQuestions().stream()
@@ -241,7 +266,8 @@ public class ClassController {
 
     @Transactional
     @PostMapping("/listClasses/{classId}/createQuizz")
-    public String createQuizWithQuestionsAndAnswers(@ModelAttribute("quiz") Quiz quiz, HttpServletRequest request, @PathVariable(value = "classId") Integer classId) {
+    public String createQuizWithQuestionsAndAnswers(@ModelAttribute("quiz") Quiz quiz, HttpServletRequest request,
+            @PathVariable(value = "classId") Integer classId) {
         Classes classes = new Classes();
         String subjectName = quiz.getSubjectName();
         Subject subject = new Subject();
@@ -261,7 +287,7 @@ public class ClassController {
         quiz.setTeacher(defaultTeacher);
         ClassQuizz classQuizz = new ClassQuizz();
         boolean quizCreated = iQuizzesService.createQuiz1(quiz);
-        classes= this.classesService.getClassByClassId(classId);
+        classes = this.classesService.getClassByClassId(classId);
         if (quizCreated) {
 
             for (Question question : quiz.getListQuestions()) {
@@ -278,6 +304,7 @@ public class ClassController {
             }
             boolean addQuizzInClass = classQuizzService.isAddQuizInClass(classes, quiz);
             if (addQuizzInClass) {
+                iMessagesService.createNotificationNewQuiz(quiz, classes, defaultTeacher);
                 return "redirect:/Classes/listClasses/{classId}";
             } else {
                 return "createQuizz";
