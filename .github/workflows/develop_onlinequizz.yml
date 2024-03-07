@@ -50,4 +50,4 @@ jobs:
           app-name: 'onlineQuizz'
           slot-name: 'Production'
           package: '*.jar'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DC9BB63BEB8E4F2F9DAC8EEFE443F992 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6FAE1B0277124EE8AEB81F2AEEABCC86 }}
