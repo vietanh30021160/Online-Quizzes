@@ -77,7 +77,7 @@ public class HomeController {
             user = userOptional.get();
             String role = user.getRole();
             if ("ROLE_STUDENT".equals(role)) {
-                handleStudentLogic(model, user, keyword, pageNo, min, max, subject, classCode, className);
+                handleStudentLogic(model, user, keyword, pageNo, min, max, subject, classCode,className);
             }
         } else {
             // Nếu người dùng chưa đăng nhập và nhập class code
@@ -110,14 +110,12 @@ public class HomeController {
         return Optional.empty();
     }
 
-    private String handleStudentLogic(Model model, User user, String keyword, Integer pageNo, Integer min, Integer max,
-            String subject, String classCode, String className) {
+    private String handleStudentLogic(Model model, User user, String keyword, Integer pageNo, Integer min, Integer max, String subject, String classCode,String className) {
 
         Integer userId = user.getUserId();
         List<Integer> classIds = iClassEnrollmentService.getClassIdsByStudentId(userId);
         List<Integer> quizIds = iClassQuizzService.getQuizIdsByClassIds(classIds);
-        Page<Quiz> filteredQuiz = iQuizzesService.CombineQuizzes(keyword, pageNo, min, max, subject, quizIds,
-                className);
+        Page<Quiz> filteredQuiz = iQuizzesService.CombineQuizzes(keyword, pageNo, min, max, subject, quizIds,className);
         List<Classes> listClassesInUser = iClassesService.getClassesByStudentID(userId);
         int totalPage = filteredQuiz.getTotalPages();
         model.addAttribute("listClasses", listClassesInUser);
@@ -141,15 +139,16 @@ public class HomeController {
     public String informationPage(Model model, HttpServletRequest request) {
         Optional<User> userOptional = getUserFromSession(request);
         if (userOptional.isEmpty()) {
-            // Nếu không có user thì làm gì đấy
+            //Nếu không có user thì làm gì đấy
             return "redirect:/login";
         }
-        // nếu có thì lấy ra user
+        //nếu có thì lấy ra user
         User user = userOptional.get();
         model.addAttribute("user", user);
         return "Information.html";
     }
 
+       
     @GetMapping("/updateInformation")
     public String updateInformation(Model model, HttpServletRequest request) {
         Optional<User> userOptional = getUserFromSession(request);
@@ -163,14 +162,15 @@ public class HomeController {
 
     // Phương thức xử lý yêu cầu POST từ trang cập nhật thông tin người dùng
     @PostMapping("/updateInformation")
-    public String updateInformation(HttpServletRequest request, @ModelAttribute User updatedUser) {
+    public String updateInformation(HttpServletRequest request,@ModelAttribute User updatedUser) {
         Optional<User> userOptional = getUserFromSession(request);
         // Thực hiện cập nhật thông tin người dùng
-        if (userOptional.isEmpty()) {
+        if(userOptional.isEmpty()) {
             // Nếu không có người dùng, chuyển hướng đến trang đăng nhập
             return "redirect:/login";
         }
-        iUsersService.updateUser(userOptional.get().getUserId(), updatedUser);
+         iUsersService.updateUser(userOptional.get().getUserId(),updatedUser);
         return "redirect:/information";
     }
 }
+
