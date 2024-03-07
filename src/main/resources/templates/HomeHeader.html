@@ -11,7 +11,7 @@
         </div>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -22,66 +22,111 @@
                 </li>
                 <!-- Kiểm tra nếu có người dùng đăng nhập -->
                 <li class="nav-item" th:if="${user != null}">
-                    <a class="nav-link click-scroll" href="#section_2" onclick="navigateToSection('section_2')">List Classes</a>
+                    <a class="nav-link click-scroll" href="#section_2" onclick="navigateToSection('section_2')">List
+                        Classes</a>
                 </li>
                 <li class="nav-item" th:if="${user != null}">
-                    <a class="nav-link click-scroll" href="#section_3" onclick="navigateToSection('section_3')">List Quizzes</a>
+                    <a class="nav-link click-scroll" href="#section_3" onclick="navigateToSection('section_3')">List
+                        Quizzes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_5" onclick="navigateToSection('section_5')">How it works</a>
+                    <a class="nav-link click-scroll" href="#section_5" onclick="navigateToSection('section_5')">How it
+                        works</a>
                 </li>
             </ul>
-            <form method="get" th:action="@{'/' + '?keyword=' + ${keyword} + (${subject != null ? '&subject=' + subject : ''}) + '#section_3'}" class="custom-form mt-4 pt-2 mb-lg-0 mb-5 inline-block-div" role="search">
+            <form method="get"
+                th:action="@{'/' + '?keyword=' + ${keyword} + (${subject != null ? '&subject=' + subject : ''}) + '#section_3'}"
+                class="custom-form mt-4 pt-2 mb-lg-0 mb-5 inline-block-div" role="search">
                 <div class="input-group input-group-sm hidden-xs" style="width: 400px;">
                     <input type="text" name="keyword" class="form-control pull-right" placeholder="Search">
                     <input type="hidden" th:if="${subject != null}" name="subject" th:value="${subject}">
                     <div class="input-group-btn">
                         <!-- Thymeleaf conditional expression để kiểm tra nếu user chưa đăng nhập -->
-                        <button type="submit" class="btn btn-default" th:if="${user == null}" onclick="window.location.href='/login'; return false;"><i class="fa fa-search"></i> Search</button>
+                        <button type="submit" class="btn btn-default" th:if="${user == null}"
+                            onclick="window.location.href='/login'; return false;"><i class="fa fa-search"></i>
+                            Search</button>
                         <!-- Nếu user đã đăng nhập, không cần chuyển hướng, submit form như bình thường -->
-                        <button type="submit" class="btn btn-default" th:if="${user != null}"><i class="fa fa-search"></i> Search</button>
+                        <button type="submit" class="btn btn-default" th:if="${user != null}"><i
+                                class="fa fa-search"></i> Search</button>
                     </div>
                 </div>
             </form>
             <!--notification-->
             <div class="notification_wrap" name="Notification" value="Notification" th:if="${user != null}">
-                <div class=" notification_icon">
-                    <i  class="navbar-icon bi bi-bell smoothscroll"></i>
+                <div class=" notification_icon notifier">
+                    <i class="navbar-icon bi bi-bell smoothscroll"></i>
                 </div>
                 <div class="dropdown">
-                    <div th:if="${not #lists.isEmpty(messages)}" th:each="messageRecipient : ${messages}" class="notify_item" th:classappend="${messageRecipient.getIsSeen()} ? 'seen' : ''">
-                        <div id="messageRecipientID" th:value="${messageRecipient.getMessageRecipientId()}" style="display: none;"></div>
+                    <div th:if="${not #lists.isEmpty(messages)}" th:each="messageRecipient : ${messages}"
+                        class="notify_item" th:classappend="${messageRecipient.getIsSeen()} ? 'seen' : ''">
+                        <div id="messageRecipientID" th:value="${messageRecipient.getMessageRecipientId()}"
+                            style="display: none;"></div>
                         <div class="notify_img">
                             <img src="https://lh3.googleusercontent.com/a/ACg8ocIkg8BFCv-em-xii-vQShSYsAFPtMEMSBSIFh6130LY=s288-c-no"
-                                 alt="profile_pic" style="width: 50px">
+                                alt="profile_pic" style="width: 50px">
                         </div>
-                        <a th:href="@{/quizzes/{quizID}(quizID = ${messageRecipient.getMessage().getNote()})}" class="notify_info">
+                        <a th:if="${messageRecipient.getMessage().getMessageType().equals('teacher')}"
+                            th:href="@{/quizzes/{quizID}(quizID = ${messageRecipient.getMessage().getNote()})}" class="notify_info">
                             <!-- Hiển thị nội dung và thời gian của thông báo -->
                             <p th:text="${messageRecipient.getMessage().getMessageContent()}"></p>
                             <span th:text="${messageRecipient.getMessage().getMessageType()}"></span><br>
                             <span class="notify_time" th:text="${messageRecipient.getMessage().getSendTime()}"></span>
                         </a>
-                        <div th:if="${!messageRecipient.getIsSeen()}" class="dot" style="background-color: #ccc;"></div>
-                        <div th:if="${messageRecipient.getIsSeen()}" class="dot" style="background-color: green;"></div>
+                        <a th:if="${messageRecipient.getMessage().getMessageType().equals('feedback')}"
+                            th:href="@{/class/mark/attempt/{attemptId}(attemptId = ${messageRecipient.getMessage().getNote()})}"
+                            class="notify_info">
+                            <!-- Hiển thị nội dung và thời gian của thông báo -->
+                            <p th:text="${messageRecipient.getMessage().getMessageContent()}"></p>
+                            <span th:text="${messageRecipient.getMessage().getMessageType()}"></span><br>
+                            <span class="notify_time" th:text="${messageRecipient.getMessage().getSendTime()}"></span>
+                        </a>
+                        <div th:if="${!messageRecipient.getIsSeen()}" class="dot" style="background-color: green;"></div>
+                        <div th:if="${messageRecipient.getIsSeen()}" class="dot" style="background-color: #ccc;"></div>
                     </div>
                 </div>
             </div>
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                    const notifyItems = document.querySelectorAll('.notify_item');
+                        const notifyItems = document.querySelectorAll('.notify_item');
 
-                    notifyItems.forEach(function (item) {
-                        const dotElement = item.querySelector('.dot');
-                        const notifyElement = item.querySelector('.notify_info');
+                        notifyItems.forEach(function (item) {
+                            const dotElement = item.querySelector('.dot');
+                            const notifyElement = item.querySelector('.notify_info');
 
-                        function handleClick() {
-                            const messageRecipientId = item.querySelector('#messageRecipientID').getAttribute('value');
-                            const isSeen = item.classList.contains('seen');
-                            updateSeenStatus(messageRecipientId, isSeen);
-                        }
+                            function handleClick() {
+                                const messageRecipientId = item.querySelector('#messageRecipientID').getAttribute('value');
+                                const isSeen = item.classList.contains('seen');
+                                updateSeenStatus(messageRecipientId, isSeen);
+                            }
+                            function handleClick1() {
+                                const messageRecipientId = item.querySelector('#messageRecipientID').getAttribute('value');
+                                const isSeen = item.classList.contains('seen');
+                                updateIsSeen(messageRecipientId, isSeen);
+                            }
 
                             dotElement.addEventListener('click', handleClick);
-                            notifyElement.addEventListener('click', handleClick);
+                            notifyElement.addEventListener('click', handleClick1);
+
+                            function updateIsSeen(messageRecipientId, isSeen) {
+                                fetch(`/notif/updateIsSeen/${messageRecipientId}`, {
+                                    method: 'GET',
+                                })
+                                    .then(function (response) {
+                                        if (response.ok) {
+                                            if (!isSeen) {
+                                                dotElement.style.backgroundColor = '#ccc';
+                                                item.classList.add('seen');
+                                                console.log('Cập nhật trạng thái đã xem tành công');
+                                            }
+                                        } else {
+                                            console.error('Cập nhật trạng thái đã xem thất bại');
+                                        }
+                                    })
+                                    .catch(function (error) {
+                                        console.error('Lỗi khi gửi yêu cầu cập nhật trạng thái đã xem:', error);
+                                    });
+                            }
+                            notifyElement.addEventListener('click', handleClick1);
 
                             function updateSeenStatus(messageRecipientId, isSeen) {
                                 fetch(`/notif/updateSeenStatus/${messageRecipientId}`, {
@@ -90,10 +135,10 @@
                                     .then(function (response) {
                                         if (response.ok) {
                                             if (!isSeen) {
-                                                dotElement.style.backgroundColor = 'green';
+                                                dotElement.style.backgroundColor = '#ccc';
                                                 item.classList.add('seen');
                                             } else {
-                                                dotElement.style.backgroundColor = '#ccc';
+                                                dotElement.style.backgroundColor = 'green';
                                                 item.classList.remove('seen');
                                             }
                                         } else {

@@ -117,8 +117,23 @@
     <label for="quizName">Quiz Name:</label>
     <input type="text" id="quizName" name="quizName" required>
 
-    <label for="timeLimit">Time Limit:</label>
-    <input type="number" id="timeLimit" name="timeLimit"  required>
+    <label for="timeLimit">Time Limit (Minutes):</label>
+    <input type="number" id="timeLimit" name="timeLimit" min="0" required>
+    <span id="timeLimitError" style="color: red; display: none;">Please enter a non-negative number.</span>
+
+    <script>
+        const timeLimitInput = document.getElementById('timeLimit');
+        const timeLimitError = document.getElementById('timeLimitError');
+
+        timeLimitInput.addEventListener('input', function() {
+            const timeLimitValue = parseInt(timeLimitInput.value);
+            if (timeLimitValue < 0) {
+                timeLimitError.style.display = 'inline';
+            } else {
+                timeLimitError.style.display = 'none';
+            }
+        });
+    </script>
 
     <label for="subjectName">Subject Name:</label>
     <input type="text" id="subjectName" name="subjectName" required>

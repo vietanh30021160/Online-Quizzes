@@ -143,13 +143,13 @@
                 <option value="shortanswer" th:selected="${question.questionType == 'shortanswer'}">shortanswer</option>
             </select>
 
-            <label th:for="${'listQuestions[' + questionIndex.index + '].imageUrl'}">Image URL:</label>
-            <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].imageUrl'}"
-                   th:field="*{listQuestions[__${questionIndex.index}__].imageUrl}" th:value="${question.imageUrl}">
+<!--            <label th:for="${'listQuestions[' + questionIndex.index + '].imageUrl'}">Image URL:</label>-->
+<!--            <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].imageUrl'}"-->
+<!--                   th:field="*{listQuestions[__${questionIndex.index}__].imageUrl}" th:value="${question.imageUrl}">-->
 
-            <label th:for="${'listQuestions[' + questionIndex.index + '].videoUrl'}">Video URL:</label>
-            <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].videoUrl'}"
-                   th:field="*{listQuestions[__${questionIndex.index}__].videoUrl}" th:value="${question.videoUrl}">
+<!--            <label th:for="${'listQuestions[' + questionIndex.index + '].videoUrl'}">Video URL:</label>-->
+<!--            <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].videoUrl'}"-->
+<!--                   th:field="*{listQuestions[__${questionIndex.index}__].videoUrl}" th:value="${question.videoUrl}">-->
             <hr>
 
             <h4>Answers</h4>

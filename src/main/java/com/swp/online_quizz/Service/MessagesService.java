@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.swp.online_quizz.Entity.ClassEnrollment;
 import com.swp.online_quizz.Entity.Classes;
+import com.swp.online_quizz.Entity.Feedback;
 import com.swp.online_quizz.Entity.Message;
 import com.swp.online_quizz.Entity.MessageRecipient;
 import com.swp.online_quizz.Entity.Quiz;
@@ -22,7 +23,8 @@ public class MessagesService implements IMessagesService {
     MessagesRepository messagesRepository;
     @Autowired
     private MessageRecipientsRepository messageRecipientsRepository;
-
+    @Autowired
+    ClassEnrollmentService classEnrollmentService;
     @Autowired
     UsersRepository usersRepository;
 
@@ -37,9 +39,10 @@ public class MessagesService implements IMessagesService {
         message.setSendTime(new Timestamp(System.currentTimeMillis()));
         message.setIsRead(false);
         message = messagesRepository.save(message);
-        List<ClassEnrollment> listClassEnrol = classes.getListEnrollment();
+        List<ClassEnrollment> listClassEnrol = this.classEnrollmentService.getAllStudentByClassId(classes.getClassId());
         for (ClassEnrollment classEnrollment : listClassEnrol) {
-            message.getListMessageRecipient().add(new MessageRecipient(message, classEnrollment.getStudentID(), false));
+            message.getListMessageRecipient().add(messageRecipientsRepository
+                    .save(new MessageRecipient(message, classEnrollment.getStudentID(), false)));
         }
         message = messagesRepository.save(message);
         return message;
@@ -61,6 +64,25 @@ public class MessagesService implements IMessagesService {
             message.getListMessageRecipient().add(messageRecipientsRepository.save(
                     new MessageRecipient(message, user, false)));
         }
+        message = messagesRepository.save(message);
+        return message;
+    }
+
+    @Override
+    public Message createNotificationNewFeedback(Feedback feedback) {
+        Message message = new Message();
+        message.setMessageType("feedback");
+        message.setMessageContent(
+                "You have new feedback from teacher '" + feedback.getUser().getFirstName() + " "
+                        + feedback.getUser().getLastName()
+                        + "'about " + feedback.getAttempt().getQuiz().getQuizName() + " quiz");
+        message.setSender(feedback.getUser());
+        message.setNote(feedback.getAttempt().getAttemptId().toString());
+        message.setSendTime(new Timestamp(System.currentTimeMillis()));
+        message.setIsRead(false);
+        message = messagesRepository.save(message);
+        message.getListMessageRecipient().add(messageRecipientsRepository.save(
+                new MessageRecipient(message, feedback.getAttempt().getUser(), false)));
         message = messagesRepository.save(message);
         return message;
     }
