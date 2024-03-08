@@ -155,19 +155,12 @@
 
             <label th:for="${'listQuestions[' + questionIndex.index + '].questionType'}">Question Type:</label>
             <select th:id="${'listQuestions[' + questionIndex.index + '].questionType'}"
-                    th:field="*{listQuestions[__${questionIndex.index}__].questionType}" required>
-
-                <option value="multiplechoice" th:selected="${question.questionType == 'multiplechoice'}">multiplechoice</option>
-                <option value="shortanswer" th:selected="${question.questionType == 'shortanswer'}">shortanswer</option>
+                th:field="*{listQuestions[__${questionIndex.index}__].questionType}" required>
+            
+                <option th:value="multiplechoice">multiplechoice</option>
+                <option value="yesno">yes/no</option>
             </select>
 
-            <label th:for="${'listQuestions[' + questionIndex.index + '].imageUrl'}">Image URL:</label>
-            <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].imageUrl'}"
-                   th:field="*{listQuestions[__${questionIndex.index}__].imageUrl}" >
-
-            <label th:for="${'listQuestions[' + questionIndex.index + '].videoUrl'}">Video URL:</label>
-            <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].videoUrl'}"
-                   th:field="*{listQuestions[__${questionIndex.index}__].videoUrl}">
             <hr>
             <h4>Answers</h4>
 
@@ -228,10 +221,13 @@
             <input type="text" th:id="${'listQuestions[' + questionIndex + '].questionContent'}"
                    name="${'listQuestions[' + questionIndex + '].questionContent'}" required>
 
-            <label for="questionType">Question Type:</label>
-            <input type="text" th:id="${'listQuestions[' + questionIndex + '].questionType'}"
-                   name="${'listQuestions[' + questionIndex + '].questionType'}" required>
+            <label th:for="${'listQuestions[' + questionIndex.index + '].questionType'}">Question Type:</label>
+            <select th:id="${'listQuestions[' + questionIndex.index + '].questionType'}"
+                th:field="*{listQuestions[__${questionIndex.index}__].questionType}" required>
             
+                <option th:value="multiplechoice">multiplechoice</option>
+                <option value="yesno">yes/no</option>
+            </select>
             <hr>
 
             <h4>Answers</h4>
