@@ -145,11 +145,11 @@
         answerDiv.innerHTML = `
             <label for="answerContent">Answer Content:</label>
             <input type="text" th:id="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].answerContent'}"
-                   name="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].answerContent'}" required>
+                    name="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].answerContent'}" required>
 
             <label for="isCorrect">Is Correct:</label>
             <input type="checkbox" th:id="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].isCorrect'}"
-                   name="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].isCorrect'}">
+                    name="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].isCorrect'}">
         `;
 
         answersContainer.appendChild(answerDiv);
@@ -165,7 +165,7 @@
         newQuestionDiv.innerHTML = `
             <label for="questionContent"><h4>Question Content:</h4></label>
             <input type="text" th:id="${'listQuestions[' + questionIndex + '].questionContent'}"
-                   name="${'listQuestions[' + questionIndex + '].questionContent'}" required>
+                    name="${'listQuestions[' + questionIndex + '].questionContent'}" required>
 
             <label th:for="${'listQuestions[' + questionIndex.index + '].questionType'}">Question Type:</label>
             <select th:id="${'listQuestions[' + questionIndex.index + '].questionType'}"
