@@ -11,7 +11,8 @@
 }
 
 .feedback-actions a {
-    margin-left: 5px; /* Khoảng cách giữa các nút action */
+    margin-left: 5px;
+    margin-top: 15px
 }
 .panel.panel-default {
     max-width: 400px;
