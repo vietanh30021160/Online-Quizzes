@@ -7,9 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.swp.online_quizz.Entity.Feedback;
+import com.swp.online_quizz.Entity.QuizAttempt;
+import com.swp.online_quizz.Entity.User;
+import com.swp.online_quizz.Repository.FeedbackRepository;
+import com.swp.online_quizz.Repository.QuizAttemptsRepository;
+
 @Service
-public class FeedbackService implements IFeedbackService{
+public class FeedbackService implements IFeedbackService {
     @Autowired
     public FeedbackRepository feedbackRepository;
     @Autowired
@@ -43,7 +48,10 @@ public class FeedbackService implements IFeedbackService{
             e.printStackTrace();
             return null;
         }
-    }
+
+        }
+
+
     @Transactional
     @Override
     public Boolean updateFeedback(Integer id, Feedback feedback) {

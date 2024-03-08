@@ -30,5 +30,4 @@ public class ClassEnrollment {
     @JoinColumn(name = "StudentID")
     private User studentID;
 
-
 }

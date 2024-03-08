@@ -44,6 +44,6 @@ public class MessageRecipient {
     public MessageRecipient(Message message, User recipient, Boolean isSeen) {
         this.message = message;
         this.recipient = recipient;
-        isSeen = isSeen;
+        this.isSeen = isSeen != null ? isSeen : false;
     }
 }

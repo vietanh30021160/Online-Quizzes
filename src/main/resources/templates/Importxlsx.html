@@ -17,7 +17,22 @@
                     <h4>Select File here</h4>
                 </header>
                 <p>Files Supported: XLSX</p>
-                <form id="uploadForm" method="post" th:action="@{/quizzes/uploadquizdata}" enctype="multipart/form-data">
+                <script>
+                    function validateFile() {
+                        var fileName = document.getElementById("input-file").value;
+                        var idxDot = fileName.lastIndexOf(".") + 1;
+                        var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+                        if (extFile == "xlsx") {
+                            //TO DO
+                        } else {
+                            alert("Only xlsx files are allowed!");
+                            return false;
+                        }
+                    }
+                </script>
+                
+                <form id="uploadForm" method="post" th:action="@{/quizzes/uploadquizdata}" enctype="multipart/form-data"
+                    onsubmit="return validateFile()">
                     <input id="input-file" type="file" name="file" />
                     <button class="btn btn-sm btn-outline-success float-right" type="submit">
                         Upload
