@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -100,7 +101,6 @@ public class FeedbackController {
             @ModelAttribute("feedback") Feedback feedback) {
         QuizAttempt existingQuizAttempt = quizAttemptsRepository.findByAttemptId(attemptID);
         iFeedbackService.deleteFeedbackByFeedbackId(feedbackID);
-        return "redirect:/class/mark/" + existingQuizAttempt.getQuiz().getQuizId() + "/attempt/" + attemptID;
         feedback = iFeedbackService.createFeedback(feedback);
         iMessagesService.createNotificationNewFeedback(feedback);
         return "redirect:/class/mark/" + existingQuizAttempt.getQuiz().getQuizId() + "/attempt/" + attemptID;
