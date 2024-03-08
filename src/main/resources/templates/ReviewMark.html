@@ -107,15 +107,17 @@
                         <div class="feedback-panel">
                             <!-- Hiển thị tên người dùng và nội dung phản hồi -->
                             <div class="feedback-content">
+
                                 <span class="feedback-user" th:text="${feedback.user.username}"></span>:
-                                <span class="feedback-comment" th:text="${feedback.comment}"></span>
+                                <input type="text" class="feedback-comment" th:value="${feedback.comment}"></input>
                             </div>
+                            <input type="hidden" th:value="${feedback.feedbackId}" id="feedbackId" name="feedbackId">
                             <!-- Nút chỉnh sửa và xóa feedback -->
                             <div class="feedback-actions">
-                                <a href="#" class="view" data-toggle="tooltip" aria-label="Edit" data-bs-original-title="Edit">
+                                <a th:href="@{'/feedback/updateFeedback/'+ ${attemptID}+'/' + ${feedback.feedbackId}}" class="view" data-toggle="tooltip" aria-label="Edit" data-bs-original-title="Edit">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <a href="#" class="delete" data-toggle="tooltip" aria-label="Delete" data-bs-original-title="Delete">
+                                <a th:href="@{'/feedback/deleteFeedback/'+ ${attemptID}+'/' + ${feedback.feedbackId}}" class="delete" data-toggle="tooltip" aria-label="Delete" data-bs-original-title="Delete">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </a>
                             </div>

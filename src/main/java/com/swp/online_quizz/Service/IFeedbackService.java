@@ -9,6 +9,9 @@ public interface IFeedbackService {
     void deleteFeedbackByAttemptId(Integer attemptId);
 
     @Transactional
+    void deleteFeedbackByFeedbackId(Integer feedbackId);
+
+    @Transactional
     Feedback createFeedback(Feedback feedback);
 
     @Transactional

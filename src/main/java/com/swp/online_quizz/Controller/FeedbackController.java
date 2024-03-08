@@ -68,17 +68,24 @@ public class FeedbackController {
         return "redirect:/class/mark/"+existingQuizAttempt.getQuiz().getQuizId()+"/attempt/"+attemptID;
     }
 
-    @PutMapping("/updateFeedback/{feedbackID}")
+    @GetMapping("/updateFeedback/{attemptID}/{feedbackID}")
     public String updateFeedback(@PathVariable Integer feedbackID,
                                  @PathVariable Integer attemptID,
                                  @ModelAttribute("feedback") Feedback feedback) {
         QuizAttempt existingQuizAttempt = quizAttemptsRepository.findByAttemptId(attemptID);
-        boolean updated = iFeedbackService.updateFeedback(feedbackID, feedback);
-        if (updated) {
-            return "redirect:/class/mark/"+existingQuizAttempt.getQuiz().getQuizId()+"/attempt/"+attemptID;
-        } else {
-            return "redirect:/login";
-        }
-    }
 
+         iFeedbackService.updateFeedback(feedbackID, feedback);
+
+            return "redirect:/class/mark/"+existingQuizAttempt.getQuiz().getQuizId()+"/attempt/"+attemptID;
+
+    }
+    @GetMapping("/deleteFeedback/{attemptID}/{feedbackID}")
+    public String deleteFeedback(@PathVariable Integer feedbackID,
+                                 @PathVariable Integer attemptID,
+                                 @ModelAttribute("feedback") Feedback feedback
+    ){
+        QuizAttempt existingQuizAttempt = quizAttemptsRepository.findByAttemptId(attemptID);
+        iFeedbackService.deleteFeedbackByFeedbackId(feedbackID);
+        return "redirect:/class/mark/"+existingQuizAttempt.getQuiz().getQuizId()+"/attempt/"+attemptID;
+    }
 }

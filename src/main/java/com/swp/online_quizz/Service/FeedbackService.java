@@ -22,8 +22,12 @@ public class FeedbackService implements IFeedbackService{
         List<Feedback> feedbackList = feedbackRepository.findByAttemptAttemptId(attemptId);
         feedbackRepository.deleteAll(feedbackList);
     }
-
-
+    @Override
+    @Transactional
+    public void deleteFeedbackByFeedbackId (Integer feedbackId){
+        Feedback feedback =feedbackRepository.getReferenceById(feedbackId);
+        feedbackRepository.delete(feedback);
+    }
     @Transactional
     @Override
     public Feedback createFeedback(Feedback feedback) {
@@ -44,13 +48,15 @@ public class FeedbackService implements IFeedbackService{
     @Override
     public Boolean updateFeedback(Integer id, Feedback feedback) {
         try {
-            Feedback uFeedback = feedbackRepository.getReferenceById(id);
-            uFeedback.setComment(feedback.getComment());
+            Feedback uFeedback = feedbackRepository.findByFeedbackId(id);
 
+            uFeedback.setComment(feedback.getComment());
+            this.feedbackRepository.save(uFeedback);
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return false;
     }
+
 }
