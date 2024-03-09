@@ -80,8 +80,19 @@ public class ExcelUploadService {
             Row currentRow = quizSheet.getRow(rowNumber++);
             Question question = new Question();
             question.setQuiz(quiz);
-            question.setQuestionContent(currentRow.getCell(0).getStringCellValue());
-            question.setQuestionType(currentRow.getCell(1).getStringCellValue());
+            if (currentRow.getCell(0).getStringCellValue() != null
+                    && currentRow.getCell(0).getStringCellValue().isEmpty() == false) {
+                question.setQuestionContent(currentRow.getCell(0).getStringCellValue());
+            } else {
+                question.setQuestionContent("No content");
+            }
+            if (currentRow.getCell(1).getStringCellValue() != null
+                    && currentRow.getCell(1).getStringCellValue().isEmpty() == false) {
+                question.setQuestionType(currentRow.getCell(1).getStringCellValue());
+            } else {
+                question.setQuestionType("multiplechoice");
+            }
+
             Cell correctAnswerCell = currentRow.getCell(6);
             List<Integer> correctAnswerList = new ArrayList<>();
 

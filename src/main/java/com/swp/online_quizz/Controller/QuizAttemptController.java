@@ -173,7 +173,9 @@ public class QuizAttemptController {
         QuizAttempt attemp = iQuizAttemptsService.getQuizAttempts(attempID);
         for (QuestionAttempt questionAttempts : attemp.getListQuestionAttempts()) {
             if (questionAttempts.getQuestion().getQuestionId() == questionProgress.getQuestionId()) {
-                if (answerProgress != null) {
+                if (answerProgress != null
+                        && questionAttempts.getQuestion() != null
+                        && questionAttempts.getQuestion().getQuestionType() != null) {
                     if (questionAttempts.getQuestion().getQuestionType().equalsIgnoreCase("multiplechoice")
                             || questionAttempts.getQuestion().getQuestionType().equalsIgnoreCase("yesno")) {
                         String[] arrayStringAnswerProgress = answerProgress.split(",");
