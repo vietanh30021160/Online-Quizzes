@@ -1,7 +1,8 @@
 package com.swp.online_quizz.Controller;
 
-import java.util.Optional;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import com.swp.online_quizz.Repository.UsersRepository;
 import com.swp.online_quizz.Service.IFeedbackService;
 import com.swp.online_quizz.Service.IMessagesService;
 import com.swp.online_quizz.Service.IUsersService;
+
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
@@ -58,7 +60,6 @@ public class FeedbackController {
             @PathVariable Integer attemptID,
             HttpServletRequest request) {
 
-
         String username = "";
         if (request.getSession().getAttribute("authentication") != null) {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
@@ -68,7 +69,6 @@ public class FeedbackController {
         if (userOptional.isEmpty()) {
             return "redirect:/login";
         }
-
 
         User user = userOptional.get();
         QuizAttempt existingQuizAttempt = quizAttemptsRepository.findByAttemptId(attemptID);
@@ -80,8 +80,8 @@ public class FeedbackController {
         feedback.setUser(user);
         feedback.setAttempt(existingQuizAttempt);
 
-        iFeedbackService.createFeedback(feedback);
-
+        feedback = iFeedbackService.createFeedback(feedback);
+        iMessagesService.createNotificationNewFeedback(feedback);
         return "redirect:/class/mark/" + existingQuizAttempt.getQuiz().getQuizId() + "/attempt/" + attemptID;
     }
 
@@ -101,8 +101,6 @@ public class FeedbackController {
             @ModelAttribute("feedback") Feedback feedback) {
         QuizAttempt existingQuizAttempt = quizAttemptsRepository.findByAttemptId(attemptID);
         iFeedbackService.deleteFeedbackByFeedbackId(feedbackID);
-        feedback = iFeedbackService.createFeedback(feedback);
-        iMessagesService.createNotificationNewFeedback(feedback);
         return "redirect:/class/mark/" + existingQuizAttempt.getQuiz().getQuizId() + "/attempt/" + attemptID;
     }
 
