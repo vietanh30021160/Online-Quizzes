@@ -1,6 +1,22 @@
+
+.feedback-panel {
+    display: flex; /* Sử dụng Flexbox */
+    align-items: center; /* Căn chỉnh các phần tử trong feedback-panel theo chiều dọc */
+}
+
+
+
+.feedback-actions {
+    margin-left: 10px; /* Khoảng cách giữa nội dung phản hồi và các nút action */
+}
+
+.feedback-actions a {
+    margin-left: 5px;
+    margin-top: 15px
+}
 .panel.panel-default {
     max-width: 400px;
-    border: 1px solid #ddd;
+
     float: left; /* Di chuyển cuộc trò chuyện sang trái */
     clear: both; /* Đảm bảo không có phần tử khác nằm chồng lên */
 }

@@ -1,8 +1,7 @@
 package com.swp.online_quizz.Controller;
 
-import java.util.List;
 import java.util.Optional;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -22,7 +21,6 @@ import com.swp.online_quizz.Repository.UsersRepository;
 import com.swp.online_quizz.Service.IFeedbackService;
 import com.swp.online_quizz.Service.IMessagesService;
 import com.swp.online_quizz.Service.IUsersService;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
@@ -60,6 +58,7 @@ public class FeedbackController {
             @PathVariable Integer attemptID,
             HttpServletRequest request) {
 
+
         String username = "";
         if (request.getSession().getAttribute("authentication") != null) {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
@@ -69,6 +68,7 @@ public class FeedbackController {
         if (userOptional.isEmpty()) {
             return "redirect:/login";
         }
+
 
         User user = userOptional.get();
         QuizAttempt existingQuizAttempt = quizAttemptsRepository.findByAttemptId(attemptID);
@@ -80,6 +80,27 @@ public class FeedbackController {
         feedback.setUser(user);
         feedback.setAttempt(existingQuizAttempt);
 
+        iFeedbackService.createFeedback(feedback);
+
+        return "redirect:/class/mark/" + existingQuizAttempt.getQuiz().getQuizId() + "/attempt/" + attemptID;
+    }
+
+    @PostMapping("/updateFeedback/{feedbackID}")
+    public String updateFeedback(@PathVariable Integer feedbackID,
+            @ModelAttribute("feedback") Feedback feedback) {
+        Feedback fb = feedbackRepository.getReferenceById(feedbackID);
+        fb.setComment(feedback.getComment());
+        feedbackRepository.save(fb);
+        return "redirect:/class/mark/" + fb.getAttempt().getQuiz().getQuizId() + "/attempt/"
+                + fb.getAttempt().getAttemptId();
+    }
+
+    @GetMapping("/deleteFeedback/{attemptID}/{feedbackID}")
+    public String deleteFeedback(@PathVariable Integer feedbackID,
+            @PathVariable Integer attemptID,
+            @ModelAttribute("feedback") Feedback feedback) {
+        QuizAttempt existingQuizAttempt = quizAttemptsRepository.findByAttemptId(attemptID);
+        iFeedbackService.deleteFeedbackByFeedbackId(feedbackID);
         feedback = iFeedbackService.createFeedback(feedback);
         iMessagesService.createNotificationNewFeedback(feedback);
         return "redirect:/class/mark/" + existingQuizAttempt.getQuiz().getQuizId() + "/attempt/" + attemptID;

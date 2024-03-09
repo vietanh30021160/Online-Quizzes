@@ -79,10 +79,8 @@
         <h3 class="panel-title">Feedback</h3>
         <!-- Phần panel chứa feedback -->
         <div class="panel panel-default" th:if="${useRole == 'ROLE_STUDENT'}">
-            <div class="panel-heading">
 
-            </div>
-            <div class="panel-body">
+            <div class="feedback-list">
 
                 <ul>
                     <!-- Khởi tạo một biến để kiểm tra xem tên người dùng đã được hiển thị hay chưa -->
@@ -90,23 +88,50 @@
                         <li th:each="feedback : ${feedback}">
                             <div class="feedback-panel">
                                 <!-- Kiểm tra xem tên người dùng đã được hiển thị hay chưa -->
-                                <th:block th:if="${not shownUser}">
-                                    <div class="feedback-user" th:text="${feedback.user.username}"></div>
-                                    <!-- Cập nhật biến shownUser để chỉ hiển thị tên người dùng một lần -->
-                                    <th:block th:with="shownUser=true"></th:block>
-                                </th:block>
-                                <!-- Hiển thị nội dung phản hồi -->
-                                <div class="feedback-comment" th:text="${feedback.comment}"></div>
+                                <div class="feedback-content">
+                                    <span class="feedback-user" th:text="${feedback.user.username}"></span>:
+                                    <span class="feedback-comment" th:text="${feedback.comment}"></span>
+                                </div>
                             </div>
                         </li>
                     </th:block>
                 </ul>
-
-
             </div>
         </div>
 
         <div th:if="${useRole == 'ROLE_TEACHER'}">
+            <!-- Hiển thị danh sách feedback -->
+            <div class="feedback-list">
+                <ul>
+                    <li th:each="feedback : ${feedback}">
+                        <div class="feedback-panel">
+                            <!-- Hiển thị tên người dùng và nội dung phản hồi -->
+                            <form action="/feedback/updateFeedback/{feedbackID}" th:action="@{'/feedback/updateFeedback/' + ${feedback.feedbackId}}"
+                                th:object="${feedback}" method="post" style="display: flex;">
+                                <div class="feedback-content">
+                                    <span class="feedback-user" th:text="${feedback.user.username}"></span>:
+                                    <input type="text" class="feedback-comment" name="comment" th:value="${feedback.getComment()}"></input>
+                                </div>
+                                <input type="hidden" th:value="${feedback.feedbackId}" id="feedbackId" name="feedbackId">
+                                <!-- Nút chỉnh sửa và xóa feedback -->
+                                <div class="feedback-actions">
+                                    <button type="submit" class="view" data-toggle="tooltip" aria-label="Edit" data-bs-original-title="Edit" style="border: none; background-color: #deebfc; color: #13547a;">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+                                    <a th:href="@{'/feedback/deleteFeedback/'+ ${attemptID} + '/' + ${feedback.feedbackId}}" class="delete"
+                                        data-toggle="tooltip" aria-label="Delete" data-bs-original-title="Delete">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </a>
+                                </div>
+                            </form>
+                            <div class="clearfix"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div th:if="${useRole == 'ROLE_TEACHER'}">
+            <!-- Form để tạo feedback mới -->
             <form action="/feedback/createFeedback/{attemptID}"
                   th:action="@{'/feedback/createFeedback/' + ${attemptID} }"
                   th:object="${feedback}" method="post">
@@ -118,8 +143,8 @@
 
                 <input type="submit" value="Send feedback" id="feedbackContent"><br>
             </form>
-
         </div>
+
 
 
 
