@@ -94,10 +94,10 @@
 
             <label th:for="${'listQuestions[' + questionIndex.index + '].questionType'}">Question Type:</label>
             <select th:id="${'listQuestions[' + questionIndex.index + '].questionType'}"
-                    th:field="*{listQuestions[__${questionIndex.index}__].questionType}" required>
-
-                <option value="multiplechoice" th:selected="${question.questionType == 'multiplechoice'}">multiplechoice</option>
-                <option value="shortanswer" th:selected="${question.questionType == 'shortanswer'}">shortanswer</option>
+                th:field="*{listQuestions[__${questionIndex.index}__].questionType}" required>
+            
+                <option th:value="multiplechoice">multiplechoice</option>
+                <option value="yesno">yes/no</option>
             </select>
 
             <label th:for="${'listQuestions[' + questionIndex.index + '].imageUrl'}">Image URL:</label>
@@ -145,11 +145,11 @@
         answerDiv.innerHTML = `
             <label for="answerContent">Answer Content:</label>
             <input type="text" th:id="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].answerContent'}"
-                   name="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].answerContent'}" required>
+                    name="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].answerContent'}" required>
 
             <label for="isCorrect">Is Correct:</label>
             <input type="checkbox" th:id="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].isCorrect'}"
-                   name="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].isCorrect'}">
+                    name="${'listQuestions[' + questionIndex + '].listAnswer[' + answersContainer.childElementCount + '].isCorrect'}">
         `;
 
         answersContainer.appendChild(answerDiv);
@@ -165,12 +165,15 @@
         newQuestionDiv.innerHTML = `
             <label for="questionContent"><h4>Question Content:</h4></label>
             <input type="text" th:id="${'listQuestions[' + questionIndex + '].questionContent'}"
-                   name="${'listQuestions[' + questionIndex + '].questionContent'}" required>
+                    name="${'listQuestions[' + questionIndex + '].questionContent'}" required>
 
-            <label for="questionType">Question Type:</label>
-            <input type="text" th:id="${'listQuestions[' + questionIndex + '].questionType'}"
-                   name="${'listQuestions[' + questionIndex + '].questionType'}" required>
-
+            <label th:for="${'listQuestions[' + questionIndex.index + '].questionType'}">Question Type:</label>
+            <select th:id="${'listQuestions[' + questionIndex.index + '].questionType'}"
+                th:field="*{listQuestions[__${questionIndex.index}__].questionType}" required>
+            
+                <option th:value="multiplechoice">multiplechoice</option>
+                <option value="yesno">yes/no</option>
+            </select>
             <hr>
 
             <h4>Answers</h4>
