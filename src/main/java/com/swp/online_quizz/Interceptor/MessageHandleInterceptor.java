@@ -47,6 +47,7 @@ public class MessageHandleInterceptor implements HandlerInterceptor {
         // Load messages before handling the request
         List<MessageRecipient> messages = iMessageRecipientsService.findByRecipient(user);
         Collections.reverse(messages);
+        request.setAttribute("user", user);
         request.setAttribute("messages", messages);
         return true;
     }

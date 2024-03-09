@@ -63,6 +63,13 @@ public class HomeController {
             @RequestParam(required = false) String className,
             HttpServletRequest request) {
         List<Subject> listSubject = iSubjectService.getAll();
+        // Page<Quiz> listQuiz =
+        // iQuizzesService.searchAndFilterAndSubjectForQuizzesNoClass(keyword, pageNo,
+        // min, max, subject);
+        // int totalPage = listQuiz.getTotalPages();
+        // List<Classes> listClasses = null;
+        // model.addAttribute("listQuiz", listQuiz);
+        // model.addAttribute("totalPage", totalPage);
         Optional<User> userOptional = getUserFromSession(request);
 
         User user = null;

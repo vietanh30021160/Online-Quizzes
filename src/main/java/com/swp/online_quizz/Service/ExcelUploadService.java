@@ -116,7 +116,8 @@ public class ExcelUploadService {
             }
             int cellNumber = 2;
             while (cellNumber <= 5) {
-                if (currentRow.getCell(cellNumber) != null) {
+                if (currentRow.getCell(cellNumber) != null
+                        && currentRow.getCell(cellNumber).getStringCellValue().isEmpty() == false) {
                     String answerContent = currentRow.getCell(cellNumber).getStringCellValue();
                     Answer answer = new Answer();
                     answer.setAnswerContent(answerContent);
