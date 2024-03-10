@@ -17,11 +17,10 @@
 
 
                             <div class="d-flex flex-column align-items-center text-center">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                                <img th:src="${user.gender == 'Male' ? 'https://bootdey.com/img/Content/avatar/avatar7.png' : 'https://bootdey.com/img/Content/avatar/avatar3.png'}" alt="Admin" class="rounded-circle" width="150">
                                 <div class="mt-3">
                                     <h4 th:text="${user.username}"></h4>
                                     <p class="text-secondary mb-1" th:text="${user.email}"></p>
-
                                 </div>
                             </div>
                         </div>
@@ -37,16 +36,17 @@
                                         <h6 class="mb-0">FirstName</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" th:value="${user.firstName}" name="firstName">
+                                        <input type="text" class="form-control" th:value="${user.firstName}" name="firstName" pattern="[A-ÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬĐE-ÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴ][a-zA-ZÀÁẢÃẠẦẤẨẪẬẬẰẮẲẴẶẹèéẻẽẹêếềểễệỂỄỆỀỄỆỈỉịÍÌÌỈỊÌÍĨĨỈỊÓÒÒỎÕỌỐỒỔỖỘỒÓỌÕỘỜỞỠỚỜỞỠỢỌỘÔỐỐỔỔỘỔỌỘỘỢỞỠỡỠỢỢỢỤỤỦŨỨỪỬỮỰỮỬỨỨỤỤỤỤỤỤỰỰỰỰỰỴỴỶỸỶỸỴỴỴỴỴỴ]{0,}" title="Tên phải bắt đầu bằng chữ cái in hoa và chỉ chứa chữ cái">
                                     </div>
                                 </div>
+
                                 <!-- LastName -->
                                 <div class="row mb-3">
                                     <div class="col-sm-3">
                                         <h6 class="mb-0">LastName</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" th:value="${user.lastName}" name="lastName">
+                                        <input type="text" class="form-control" th:value="${user.lastName}" name="lastName" pattern="[A-ÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬĐE-ÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴ][a-zA-ZÀÁẢÃẠẦẤẨẪẬẬẰẮẲẴẶẹèéẻẽẹêếềểễệỂỄỆỀỄỆỈỉịÍÌÌỈỊÌÍĨĨỈỊÓÒÒỎÕỌỐỒỔỖỘỒÓỌÕỘỜỞỠỚỜỞỠỢỌỘÔỐỐỔỔỘỔỌỘỘỢỞỠỡỠỢỢỢỤỤỦŨỨỪỬỮỰỮỬỨỨỤỤỤỤỤỤỰỰỰỰỰỰỴỴỶỸỶỸỴỴỴỴỴỴỴỴ]{0,}" title="Tên phải bắt đầu bằng chữ cái in hoa và chỉ chứa chữ cái">
                                     </div>
                                 </div>
                                 <!-- Phone -->
@@ -55,18 +55,43 @@
                                         <h6 class="mb-0">Phone</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" th:value="${user.phoneNumber}" name="phoneNumber">
+                                        <input type="text" class="form-control" th:value="${user.phoneNumber}" name="phoneNumber" pattern="[0-9]{10}" title="Phone number must be 10 digits">
                                     </div>
                                 </div>
+                                <!-- DateOfBirth -->
                                 <!-- DateOfBirth -->
                                 <div class="row mb-3">
                                     <div class="col-sm-3">
                                         <h6 class="mb-0">DateOfBirth</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="date" class="form-control" th:value="${user.dateOfBirth}" name="dateOfBirth">
+                                        <input type="date" class="form-control" th:value="${user.dateOfBirth}" name="dateOfBirth" id="dateOfBirth">
+                                        <small class="form-text text-danger" id="dateOfBirthError"></small>
                                     </div>
                                 </div>
+
+                                <script>
+                                    // Lấy ngày hiện tại
+                                    var currentDate = new Date();
+                                    var dd = String(currentDate.getDate()).padStart(2, '0');
+                                    var mm = String(currentDate.getMonth() + 1).padStart(2, '0'); //Tháng bắt đầu từ 0
+                                    var yyyy = currentDate.getFullYear();
+                                    currentDate = yyyy + '-' + mm + '-' + dd;
+
+                                    // Đặt thuộc tính max của input date là ngày hiện tại
+                                    document.getElementById("dateOfBirth").setAttribute("max", currentDate);
+
+                                    // Validate ngày sinh
+                                    document.getElementById("dateOfBirth").addEventListener("change", function() {
+                                        var selectedDate = document.getElementById("dateOfBirth").value;
+                                        if (selectedDate > currentDate) {
+                                            document.getElementById("dateOfBirthError").innerText = "Ngày sinh không thể là ngày trong tương lai.";
+                                            document.getElementById("dateOfBirth").value = "";
+                                        } else {
+                                            document.getElementById("dateOfBirthError").innerText = "";
+                                        }
+                                    });
+                                </script>
                                 <!-- Address -->
                                 <div class="row mb-3">
                                     <div class="col-sm-3">
@@ -86,15 +111,15 @@
                                         <label><input type="radio" th:checked="${user.gender == 'Female'}" th:value="Female" name="gender"> Female</label>
                                     </div>
                                 </div>
-                                <!-- ProfilePicture -->
-                                <div class="row mb-3">
-                                    <div class="col-sm-3">
-                                        <h6 class="mb-0">ProfilePicture</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" th:text="${user.profilePictureURL}" name="profilePictureURL">
-                                    </div>
-                                </div>
+<!--                                &lt;!&ndash; ProfilePicture &ndash;&gt;-->
+<!--                                <div class="row mb-3">-->
+<!--                                    <div class="col-sm-3">-->
+<!--                                        <h6 class="mb-0">ProfilePicture</h6>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-sm-9 text-secondary">-->
+<!--                                        <input type="text" class="form-control" th:text="${user.profilePictureURL}" name="profilePictureURL">-->
+<!--                                    </div>-->
+<!--                                </div>-->
                                 <!-- Button -->
                                 <div class="row">
                                     <div class="col-sm-3"></div>
