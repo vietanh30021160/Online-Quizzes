@@ -7,18 +7,22 @@
     box-sizing: border-box;
 }
 
-body{
+:root {
+    --main-color: #80d0c7;
+}
+
+body {
     font-family: 'Poppins', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
     padding: 1.5rem;
-    &:after{
+    &:after {
         content: '';
         position: fixed;
         inset: 0;
-        background-color: #0037ff;
+        background-color: var(--main-color);
         height: 100vh;
         z-index: -1;
     }
@@ -63,14 +67,14 @@ a{
             display: inline-block;
             padding: 12px 30px;
             font-size: 16px;
-            border: 2px solid #0037ff;
+            border: 2px solid var(--main-color);
             color: black;
             border-radius: 50px;
             cursor: pointer;
             transition: all .3s;
             font-weight: 600;
             &:hover{
-                background-color: #0037ff;
+                background-color: var(--main-color);
                 color: white;
             }
         }
@@ -99,11 +103,11 @@ h1{
 
     &:focus{
         outline:none;
-        box-shadow: 0 0 0 2px #0037ff;
+        box-shadow: 0 0 0 2px var(--main-color);
     }
 }
 input[type=checkbox]{
-    accent-color: #0037ff;
+    accent-color: var(--main-color);
     width: 16px;
     height: 16px;
 }
@@ -114,7 +118,7 @@ form{
         margin-top: 1rem;
     }
     .button{
-        background-color: #0037ff;
+        background-color: var(--main-color);
         color: white;
         border: none;
         padding: 20px 40px;
@@ -125,7 +129,7 @@ form{
         transition: all .2s;
         &:active{
             scale: .95;
-            background-color: darken(#0037ff, 10%);
+            background-color: darken(var(--main-color), 10%);
         }
     }
 
