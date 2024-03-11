@@ -49,7 +49,6 @@ public class EmailUtil {
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
         mimeMessageHelper.setTo(email);
         mimeMessageHelper.setSubject(subject);
-        String domain = extractDomain(request.getRequestURL().toString());
         mimeMessageHelper.setText("""
                 <div>
                     <p>%s</p>
