@@ -1,8 +1,13 @@
 package com.swp.online_quizz.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.swp.online_quizz.Entity.Classes;
+import com.swp.online_quizz.Repository.ClassQuizzRepository;
+import com.swp.online_quizz.Repository.ClassesRepository;
+import com.swp.online_quizz.Repository.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +22,12 @@ import lombok.RequiredArgsConstructor;
 public class SubjectService implements ISubjectService {
     @Autowired
     private final SubjectRepository subrepository;
+    @Autowired
+    private final ClassesRepository classesRepository;
+    @Autowired
+    private final ClassQuizzRepository classQuizzRepository;
+    @Autowired
+    private final QuizRepository quizRepository;
 
     @Override
     public List<Subject> getAll() {
@@ -80,5 +91,20 @@ public class SubjectService implements ISubjectService {
     @Override
     public Boolean delete(Integer subjectID) {
         return null;
+    }
+
+    @Override
+    public List<Subject> getSubjectsByClasses(List<Classes> classes) {
+        List<Integer> classIds = classesRepository.findClassIdsByClasses(classes);
+        List<Subject> subjects = new ArrayList<>();
+        for (Integer classId : classIds) {
+            List<Integer> quizIds = classQuizzRepository.findQuizIdsByClassId(classId);
+            List<Integer> subjectIds = quizRepository.findSubjectIdsByQuizIds(quizIds);
+            for (Integer subjectId : subjectIds) {
+                Optional<Subject> subject = subrepository.findById(subjectId);
+                subject.ifPresent(subjects::add);
+            }
+        }
+        return subjects;
     }
 }
