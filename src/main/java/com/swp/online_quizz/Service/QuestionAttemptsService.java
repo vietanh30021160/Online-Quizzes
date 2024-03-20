@@ -11,8 +11,8 @@ import java.util.List;
 @Service
 
 public class QuestionAttemptsService implements IQuestionAttemptsService {
-    @Autowired
-    QuestionAttemptsRepository questionAttemptsRepository;
+        @Autowired
+        QuestionAttemptsRepository questionAttemptsRepository;
 
     @Override
     @Transactional
