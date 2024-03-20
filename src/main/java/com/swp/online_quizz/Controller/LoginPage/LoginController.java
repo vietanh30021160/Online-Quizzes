@@ -103,7 +103,7 @@ public class LoginController {
         check = SetPasswordController.isCheck(model, password, repassword, check, matcher);
         String role = userRegisterDtoRequest.getRole();
         if(role==null){
-            model.addAttribute("rl", "Role can not null");
+            model.addAttribute("rl", "* Role can not null");
             check = true;
         }
         if(check){
