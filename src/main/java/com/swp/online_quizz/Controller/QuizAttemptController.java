@@ -78,7 +78,7 @@ public class QuizAttemptController {
             long startTimeSearchMillis = startTime.getTime() - (10);
             Timestamp startTimeSearch = new Timestamp(startTimeSearchMillis);
             // số lượng câu hỏi trong 1 bài quiz được tạo
-            Integer numbOfQuestion = 4; // Initialize it to null or some value
+            Integer numbOfQuestion = 25; // Initialize it to null or some value
             if (numbOfQuestion == null) {
                 numbOfQuestion = quizz.getListQuestions().size();
             }
