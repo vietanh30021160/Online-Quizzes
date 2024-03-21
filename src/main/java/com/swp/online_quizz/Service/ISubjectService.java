@@ -1,11 +1,13 @@
 package com.swp.online_quizz.Service;
 
+import com.swp.online_quizz.Entity.Classes;
 import com.swp.online_quizz.Entity.Quiz;
 import com.swp.online_quizz.Entity.Subject;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import com.swp.online_quizz.Entity.Subject;
 
@@ -32,4 +34,6 @@ public interface ISubjectService {
 
     public Boolean delete(Integer subjectID);
 
+
+    Set<Subject> getSubjectsByClasses(List<Classes> classes);
 }

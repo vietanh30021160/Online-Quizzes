@@ -2,6 +2,7 @@ package com.swp.online_quizz.Controller.HomePage;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ import com.swp.online_quizz.Service.ISubjectService;
 import com.swp.online_quizz.Service.IUsersService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 
@@ -62,17 +64,11 @@ public class HomeController {
             @RequestParam(required = false) String classCode,
             @RequestParam(required = false) String className,
             HttpServletRequest request) {
-        List<Subject> listSubject = iSubjectService.getAll();
-        // Page<Quiz> listQuiz =
-        // iQuizzesService.searchAndFilterAndSubjectForQuizzesNoClass(keyword, pageNo,
-        // min, max, subject);
-        // int totalPage = listQuiz.getTotalPages();
-        // List<Classes> listClasses = null;
-        // model.addAttribute("listQuiz", listQuiz);
-        // model.addAttribute("totalPage", totalPage);
         Optional<User> userOptional = getUserFromSession(request);
-
         User user = null;
+        List<Classes> listClassesInUser = iClassesService.getClassesByStudentID(userOptional.get().getUserId());
+        Set<Subject> listSubject = iSubjectService.getSubjectsByClasses(listClassesInUser);
+
         if (userOptional.isPresent()) {
             user = userOptional.get();
             String role = user.getRole();
@@ -124,17 +120,28 @@ public class HomeController {
         model.addAttribute("listQuiz", filteredQuiz);
         model.addAttribute("totalPage", totalPage);
 
+        return "HomePage";
+    }
+    @PostMapping("/join")
+    public String joinClass(@RequestParam("classCode") String classCode, RedirectAttributes redirectAttributes,HttpServletRequest request) {
+        Optional<User> userOptional = getUserFromSession(request);
+        if (userOptional.isEmpty()) {
+            return "redirect:/login";
+        }
+
         if (classCode != null) {
 
-            if (iClassEnrollmentService.existsByStudentIdAndClassCode(userId, classCode)) {
-                model.addAttribute("mess", "You have already taken this class or the classcode is wrong");
+            if (iClassEnrollmentService.existsByStudentIdAndClassCode(userOptional.get().getUserId(), classCode)) {
+                redirectAttributes.addFlashAttribute("mess", "You have already taken this class or the classcode is wrong");
             } else {
-                iClassesService.joinClass(classCode, userId);
-                model.addAttribute("classCode", classCode);
-                model.addAttribute("mess", "Join class successfully!");
+                iClassesService.joinClass(classCode, userOptional.get().getUserId());
+                redirectAttributes.addFlashAttribute("classCode", classCode);
+                redirectAttributes.addFlashAttribute("mess", "Join class successfully!");
             }
         }
-        return "HomePage";
+
+        // Redirect to home page
+        return "redirect:/";
     }
 
     @GetMapping("/information")

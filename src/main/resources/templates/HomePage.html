@@ -18,15 +18,15 @@
                     <!-- Sử dụng th:if để kiểm tra xem người dùng đã đăng nhập hay chưa -->
                     <div th:if="${user != null}">
                         <!-- Biểu mẫu đăng ký -->
-                        <form id="joinForm" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" role="search">
+                        <form id="joinForm" class="custom-form mt-4 pt-2 mb-lg-0 mb-5" action="/join" method="post">
                             <div class="input-group input-group-lg">
                                 <span class="input-group-text bi-search" id="basic-addon1"></span>
                                 <input type="search" name="classCode" class="form-control" placeholder=" Code join class,  ..."
                                        aria-label="Search">
                                 <button type="submit" class="form-control">Join</button>
                             </div>
-                            <p id="message" th:text="${mess}"></p>
                         </form>
+                        <p id="message" th:text="${mess}"></p>
                     </div>
                     <div th:if="${user == null}">
                         <div style="text-align: center;">
@@ -124,9 +124,10 @@
                                             <div class="d-flex">
                                                 <div>
                                                     <h5 class="mb-2" th:text="${quizzes.quizName}"></h5>
-                                                    <p class="mb-0" th:text="${quizzes.subject.subjectName}"></p>
-                                                    <p class="mb-0" th:text="${quizzes.timeLimit}+ ' minute'"></p>
+                                                    <p class="mb-0" th:text="'Subject: '+${quizzes.subject.subjectName}"></p>
+                                                    <p class="mb-0" th:text="'Time: '+${quizzes.timeLimit}+ ' minute'"></p>
                                                     <div class="list-Classes">
+                                                        <p th:text="'Classes:'"></p>
                                                         <p class="mb-0 mr-2" th:each="classQuizz, iterStat : ${quizzes.classQuizzes}">
                                                             <span th:text="${classQuizz.classes.className}"></span>
                                                             <span th:unless="${iterStat.last}" class="comma">,</span>

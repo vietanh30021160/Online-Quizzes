@@ -30,4 +30,7 @@ public interface QuizRepository extends JpaRepository<Quiz, Integer>, JpaSpecifi
             "(SELECT cq.quiz.quizId FROM ClassQuizz cq)")
     Page<Quiz> findQuizzesNotInAnyClass(Pageable pageable);
 
+    @Query("select s.subject.subjectId from Quiz s where s.quizId in :quizIds")
+    List<Integer> findSubjectIdsByQuizIds(@Param("quizIds") List<Integer> quizIds);
+
 }
