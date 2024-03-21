@@ -326,8 +326,10 @@ public class QuizService implements IQuizzesService {
         int totalSize = combinedList.size();
         int startIndex = (pageNo - 1) * pageSize;
         int endIndex = Math.min(startIndex + pageSize, totalSize);
-        List<Quiz> pageContent = combinedList.subList(startIndex, endIndex);
-
+        List<Quiz> pageContent = new ArrayList<>();
+        if (startIndex <= endIndex) {
+            pageContent = combinedList.subList(startIndex, endIndex);
+        }
         return new PageImpl<>(pageContent, PageRequest.of(pageNo - 1, pageSize), totalSize);
     }
 

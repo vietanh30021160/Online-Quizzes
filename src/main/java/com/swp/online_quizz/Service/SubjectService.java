@@ -1,8 +1,6 @@
 package com.swp.online_quizz.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import com.swp.online_quizz.Entity.Classes;
 import com.swp.online_quizz.Repository.ClassQuizzRepository;
@@ -94,9 +92,9 @@ public class SubjectService implements ISubjectService {
     }
 
     @Override
-    public List<Subject> getSubjectsByClasses(List<Classes> classes) {
+    public Set<Subject> getSubjectsByClasses(List<Classes> classes) {
         List<Integer> classIds = classesRepository.findClassIdsByClasses(classes);
-        List<Subject> subjects = new ArrayList<>();
+        Set<Subject> subjects = new HashSet<>();
         for (Integer classId : classIds) {
             List<Integer> quizIds = classQuizzRepository.findQuizIdsByClassId(classId);
             List<Integer> subjectIds = quizRepository.findSubjectIdsByQuizIds(quizIds);
