@@ -41,7 +41,7 @@ public class LoginController {
     private final IUserService iUserService;
     private final UsersRepository usersRepository;
     private String usRegex ="[a-z0-9_-]{6,12}$";
-    private String pwRegex ="((?=.*\\\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!]).{6,20})";
+    private String pwRegex ="^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$";
     @GetMapping("/register")
     public String registerPage(Model model, HttpSession session, HttpServletRequest request){
         String username = "";
@@ -103,7 +103,7 @@ public class LoginController {
         check = SetPasswordController.isCheck(model, password, repassword, check, matcher);
         String role = userRegisterDtoRequest.getRole();
         if(role==null){
-            model.addAttribute("rl", "Role can not null");
+            model.addAttribute("rl", "* Role can not null");
             check = true;
         }
         if(check){

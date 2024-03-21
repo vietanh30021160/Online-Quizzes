@@ -36,9 +36,9 @@
                                         <h6 class="mb-0">FirstName</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" th:value="${user.firstName}" name="firstName" pattern="[A-ÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬĐE-ÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴ][a-zA-ZÀÁẢÃẠẦẤẨẪẬẬẰẮẲẴẶẹèéẻẽẹêếềểễệỂỄỆỀỄỆỈỉịÍÌÌỈỊÌÍĨĨỈỊÓÒÒỎÕỌỐỒỔỖỘỒÓỌÕỘỜỞỠỚỜỞỠỢỌỘÔỐỐỔỔỘỔỌỘỘỢỞỠỡỠỢỢỢỤỤỦŨỨỪỬỮỰỮỬỨỨỤỤỤỤỤỤỰỰỰỰỰỴỴỶỸỶỸỴỴỴỴỴỴ]{0,}" title="Tên phải bắt đầu bằng chữ cái in hoa và chỉ chứa chữ cái">
+                                        <input type="text" class="form-control" th:value="${user.firstName}" name="firstName" pattern="[A-Z][a-zA-ZÀ-ỹ]*" title="Tên phải bắt đầu bằng chữ cái in hoa và chỉ chứa chữ cái">
                                     </div>
-                                </div>
+                                    </div>
 
                                 <!-- LastName -->
                                 <div class="row mb-3">
@@ -46,7 +46,7 @@
                                         <h6 class="mb-0">LastName</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" th:value="${user.lastName}" name="lastName" pattern="[A-ÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬĐE-ÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊOÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢUÚÙỦŨỤƯỨỪỬỮỰYÝỲỶỸỴ][a-zA-ZÀÁẢÃẠẦẤẨẪẬẬẰẮẲẴẶẹèéẻẽẹêếềểễệỂỄỆỀỄỆỈỉịÍÌÌỈỊÌÍĨĨỈỊÓÒÒỎÕỌỐỒỔỖỘỒÓỌÕỘỜỞỠỚỜỞỠỢỌỘÔỐỐỔỔỘỔỌỘỘỢỞỠỡỠỢỢỢỤỤỦŨỨỪỬỮỰỮỬỨỨỤỤỤỤỤỤỰỰỰỰỰỰỴỴỶỸỶỸỴỴỴỴỴỴỴỴ]{0,}" title="Tên phải bắt đầu bằng chữ cái in hoa và chỉ chứa chữ cái">
+                                        <input type="text" class="form-control" th:value="${user.lastName}" name="lastName" pattern="[A-Z][a-zA-ZÀ-ỹ]*" title="Tên phải bắt đầu bằng chữ cái in hoa và chỉ chứa chữ cái">
                                     </div>
                                 </div>
                                 <!-- Phone -->
@@ -98,7 +98,7 @@
                                         <h6 class="mb-0">Address</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" th:text="${user.address}" name="address">
+                                        <input type="text" class="form-control" th:value="${user.address}" name="address" style="display: inline-block; vertical-align: middle;">
                                     </div>
                                 </div>
                                 <!-- Gender -->
