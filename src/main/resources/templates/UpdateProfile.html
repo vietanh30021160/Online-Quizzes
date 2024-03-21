@@ -44,8 +44,8 @@
                             <label for="lastName">Last Name:</label>
                             <input type="text" id="lastName" name="lastName" th:field="*{lastName}" required><br>
 
-                            <label for="dateOfBirth">Date of Birth:</label>
-                            <input type="date" id="dateOfBirth" name="dateOfBirth" th:value="${user.dateOfBirth != null} ? ${#temporals.format(user.dateOfBirth, 'yyyy-MM-dd')} : ''" required><br>
+<!--                            <label for="dateOfBirth">Date of Birth:</label>-->
+<!--                            <input type="date" id="dateOfBirth" name="dateOfBirth" th:value="${user.dateOfBirth != null} ? ${#temporals.format(user.dateOfBirth, 'yyyy-MM-dd')} : ''" required><br>-->
 
                             <label for="phoneNumber">Phone Number:</label>
                             <input type="text" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}"><br>

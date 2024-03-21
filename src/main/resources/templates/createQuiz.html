@@ -33,11 +33,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-lg-5 me-lg-auto">
                     <li class="nav-item">
-                        <a class="nav-link click-scroll" href="/">Home</a>
+                        <a class="nav-link click-scroll" th:href="@{/}">Home</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link click-scroll" href="#section_2">List Quizzes</a>
+                        <a class="nav-link click-scroll" th:href="@{/}">List Quizzes</a>
                     </li>
 
                     <li class="nav-item">
@@ -156,10 +156,11 @@
             <label th:for="${'listQuestions[' + questionIndex.index + '].questionType'}">Question Type:</label>
             <select th:id="${'listQuestions[' + questionIndex.index + '].questionType'}"
                 th:field="*{listQuestions[__${questionIndex.index}__].questionType}" required>
-            
+
                 <option th:value="multiplechoice">multiplechoice</option>
                 <option value="yesno">yes/no</option>
             </select>
+
 
             <hr>
             <h4>Answers</h4>
@@ -183,6 +184,7 @@
     </div>
 
     <button type="button" onclick="addQuestion()">Add Question</button>
+
     <hr>
 
     <button type="button" onclick="submitForms()">Create Quiz</button>
@@ -224,7 +226,7 @@
             <label th:for="${'listQuestions[' + questionIndex.index + '].questionType'}">Question Type:</label>
             <select th:id="${'listQuestions[' + questionIndex.index + '].questionType'}"
                 th:field="*{listQuestions[__${questionIndex.index}__].questionType}" required>
-            
+
                 <option th:value="multiplechoice">multiplechoice</option>
                 <option value="yesno">yes/no</option>
             </select>
