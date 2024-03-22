@@ -61,24 +61,20 @@ public class HomeController {
             @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
             @RequestParam(required = false) Integer min,
             @RequestParam(required = false) Integer max,
-            @RequestParam(required = false) String classCode,
             @RequestParam(required = false) String className,
             HttpServletRequest request) {
         Optional<User> userOptional = getUserFromSession(request);
         User user = null;
-        List<Classes> listClassesInUser = iClassesService.getClassesByStudentID(userOptional.get().getUserId());
-        Set<Subject> listSubject = iSubjectService.getSubjectsByClasses(listClassesInUser);
+
 
         if (userOptional.isPresent()) {
             user = userOptional.get();
             String role = user.getRole();
+            List<Classes> listClassesInUser = iClassesService.getClassesByStudentID(userOptional.get().getUserId());
+            Set<Subject> listSubject = iSubjectService.getSubjectsByClasses(listClassesInUser);
+            model.addAttribute("listSubject", listSubject);
             if ("ROLE_STUDENT".equals(role)) {
-                handleStudentLogic(model, user, keyword, pageNo, min, max, subject, classCode, className);
-            }
-        } else {
-            // Nếu người dùng chưa đăng nhập và nhập class code
-            if (classCode != null && !classCode.isEmpty()) {
-                return "redirect:/login";
+                handleStudentLogic(model, user, keyword, pageNo, min, max, subject, className);
             }
         }
         model.addAttribute("user", user);
@@ -87,10 +83,10 @@ public class HomeController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("subject", subject);
         model.addAttribute("currentPage", pageNo);
-        model.addAttribute("listSubject", listSubject);
+
         if (userOptional.isPresent()) {
             if ("ROLE_TEACHER".equals(userOptional.get().getRole())) {
-                handleStudentLogic(model, user, keyword, pageNo, min, max, subject, classCode, className);
+                handleStudentLogic(model, user, keyword, pageNo, min, max, subject, className);
                 return "HomePageTeacher";
             }
         }
@@ -107,7 +103,7 @@ public class HomeController {
     }
 
     private String handleStudentLogic(Model model, User user, String keyword, Integer pageNo, Integer min, Integer max,
-            String subject, String classCode, String className) {
+            String subject, String className) {
 
         Integer userId = user.getUserId();
         List<Integer> classIds = iClassEnrollmentService.getClassIdsByStudentId(userId);
@@ -116,6 +112,7 @@ public class HomeController {
                 className);
         List<Classes> listClassesInUser = iClassesService.getClassesByStudentID(userId);
         int totalPage = filteredQuiz.getTotalPages();
+
         model.addAttribute("listClasses", listClassesInUser);
         model.addAttribute("listQuiz", filteredQuiz);
         model.addAttribute("totalPage", totalPage);
