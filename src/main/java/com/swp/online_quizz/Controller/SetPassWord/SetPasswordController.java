@@ -1,7 +1,7 @@
 package com.swp.online_quizz.Controller.SetPassWord;
 
 import com.swp.online_quizz.Dto.UserLoginDtoRequest;
-import com.swp.online_quizz.Service.IUserService;
+import com.swp.online_quizz.Service.IUsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 @Controller
 @RequiredArgsConstructor
 public class SetPasswordController {
-    private final IUserService iUserService;
+    private final IUsersService iUserService;
     private String pwRegex ="^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$";
 
     @GetMapping("/setpassword")
