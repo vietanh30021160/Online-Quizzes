@@ -7,7 +7,7 @@ import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Repository.UsersRepository;
 import com.swp.online_quizz.Service.CustomUserDetails;
 import com.swp.online_quizz.Service.CustomUserDetailsServices;
-import com.swp.online_quizz.Service.IUserService;
+import com.swp.online_quizz.Service.IUsersService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class LoginController {
 
-    private final IUserService iUserService;
+    private final IUsersService iUserService;
     private final UsersRepository usersRepository;
     private String usRegex ="[a-z0-9_-]{6,12}$";
     private String pwRegex ="^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$";
