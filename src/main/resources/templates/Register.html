@@ -104,7 +104,7 @@
 
             <div class="form-item">
                 <p class="topic">Date of birth</p>
-                <input type="date" class="form-element" th:field="*{dateofbirth}" placeholder="Date of Birth">
+                <input type="date" class="form-element" th:field="*{dateofbirth}" placeholder="Date of Birth" th:max="${dateNow}">
             </div>
 
             <div class="form-input-field">
