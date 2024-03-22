@@ -5,6 +5,7 @@ import com.swp.online_quizz.Entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,4 +32,7 @@ public interface ClassesRepository extends JpaRepository<Classes, Integer> {
 
     @Query("select c from Classes c where c.classId = ?1")
     Classes getClassByClassId(Integer classID);
+    // Trong ClassesRepository.java
+    @Query("select c.classId from Classes c where c in :classes")
+    List<Integer> findClassIdsByClasses(@Param("classes") List<Classes> classes);
 }

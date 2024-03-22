@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.swp.online_quizz.Entity.ClassQuizz;
@@ -19,4 +20,7 @@ public interface ClassQuizzRepository extends JpaRepository<ClassQuizz, ClassQui
     List<ClassQuizz> findByClassesClassName(String className);
     @Query("SELECT cq from ClassQuizz cq where cq.classes.classId = ?1")
     List<ClassQuizz> findQuizByClassID(Integer classID);
+    @Query("select q.quiz.quizId from ClassQuizz q where q.classes.classId = :classId")
+    List<Integer> findQuizIdsByClassId(@Param("classId") Integer classId);
+
 }
