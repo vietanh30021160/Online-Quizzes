@@ -78,6 +78,7 @@ public class HomeController {
             }
         }
         model.addAttribute("user", user);
+        model.addAttribute("className", className);
         model.addAttribute("min", min);
         model.addAttribute("max", max);
         model.addAttribute("keyword", keyword);
@@ -108,8 +109,7 @@ public class HomeController {
         Integer userId = user.getUserId();
         List<Integer> classIds = iClassEnrollmentService.getClassIdsByStudentId(userId);
         List<Integer> quizIds = iClassQuizzService.getQuizIdsByClassIds(classIds);
-        Page<Quiz> filteredQuiz = iQuizzesService.CombineQuizzes(keyword, pageNo, min, max, subject, quizIds,
-                className);
+        Page<Quiz> filteredQuiz = iQuizzesService.CombineQuizzes(keyword, pageNo, min, max, subject, quizIds, className);
         List<Classes> listClassesInUser = iClassesService.getClassesByStudentID(userId);
         int totalPage = filteredQuiz.getTotalPages();
 
