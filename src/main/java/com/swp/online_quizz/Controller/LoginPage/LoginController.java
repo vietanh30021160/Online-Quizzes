@@ -28,6 +28,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -40,7 +42,7 @@ public class LoginController {
 
     private final IUsersService iUserService;
     private final UsersRepository usersRepository;
-    private String usRegex ="[a-z0-9_-]{6,12}$";
+    private String usRegex ="^.{6,}$";
     private String pwRegex ="^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$";
     @GetMapping("/register")
     public String registerPage(Model model, HttpSession session, HttpServletRequest request){
@@ -51,6 +53,11 @@ public class LoginController {
         }
         Optional<User> userOptional = usersRepository.findByUsername(username);
         if(userOptional.isEmpty()){
+            LocalDate currentDate = LocalDate.now().minusYears(18);
+
+            // Định dạng ngày thành chuỗi "yyyy-MM-dd"
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = currentDate.format(formatter);
             String email = (String) session.getAttribute("email");
             String firstnameEmail = (String) session.getAttribute("firstnameEmail");
             String lastnameEmail = (String) session.getAttribute("lastnameEmail");
@@ -60,6 +67,7 @@ public class LoginController {
                 model.addAttribute("firstnameEmail",firstnameEmail);
             }
             model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
+            model.addAttribute("dateNow", formattedDate);
             return "Register";
         }else{
             return "redirect:/";
@@ -89,7 +97,7 @@ public class LoginController {
             model.addAttribute("us", "Username can not null");
             check = true;
         }else if(!matcher.matches()){
-            model.addAttribute("us", "At least 6, unsigned and no space!");
+            model.addAttribute("us", "At least 6 characters");
             check = true;
         }
         String email = userRegisterDtoRequest.getEmail();
@@ -109,6 +117,12 @@ public class LoginController {
         if(check){
             model.addAttribute("ms", "Register unsuccessfully!");
             model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
+            LocalDate currentDate = LocalDate.now().minusYears(18);
+
+            // Định dạng ngày thành chuỗi "yyyy-MM-dd"
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String formattedDate = currentDate.format(formatter);
+            model.addAttribute("dateNow", formattedDate);
             return "Register";
         }
 
@@ -127,6 +141,12 @@ public class LoginController {
         }
         model.addAttribute("ms", "Register unsuccessfully!");
         model.addAttribute("userRegisterDtoRequest", UserRegisterDtoRequest.builder().build());
+        LocalDate currentDate = LocalDate.now().minusYears(18);
+
+        // Định dạng ngày thành chuỗi "yyyy-MM-dd"
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedDate = currentDate.format(formatter);
+        model.addAttribute("dateNow", formattedDate);
         return "Register";
     }
 
