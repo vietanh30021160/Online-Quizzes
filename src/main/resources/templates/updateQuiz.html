@@ -31,11 +31,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-lg-5 me-lg-auto">
                     <li class="nav-item">
-                        <a class="nav-link click-scroll" href="#section_1">Home</a>
+                        <a class="nav-link click-scroll" th:href="@{/}">Home</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link click-scroll" href="#section_2">List Quizzes</a>
+                        <a class="nav-link click-scroll" th:href="@{/}">List Quizzes</a>
                     </li>
 
                     <li class="nav-item">
@@ -117,6 +117,7 @@
 
     <label for="timeLimit">Time Limit:</label>
     <input type="number" id="timeLimit" name="timeLimit" th:value="${quiz.timeLimit}" required>
+    <div id="timeLimitError" style="color: red;"></div>
 
     <label for="subjectName">Subject Name:</label>
     <input type="text" id="subjectName" name="subjectName" th:value="${quiz.subject.subjectName}" required>
@@ -161,18 +162,32 @@
             </div>
 
         </div>
+
     </div>
 
     <hr>
 
-    <button type="button" onclick="submitForms()">Update Quiz</button>
+    <button type="button" onclick="validateAndSubmit()">Update Quiz</button>
 </form>
 
 <script th:inline="javascript">
-    function submitForms() {
+    function validateAndSubmit() {
+        // Validate time limit
+        var timeLimitInput = document.getElementById("timeLimit");
+        var timeLimitValue = parseInt(timeLimitInput.value);
+        var timeLimitError = document.getElementById("timeLimitError");
+
+        if (timeLimitValue < 0 || isNaN(timeLimitValue)) {
+            timeLimitError.innerText = "Time limit must be a non-negative number."; // Hiển thị thông báo lỗi
+            return;
+        } else {
+            timeLimitError.innerText = ""; // Xóa thông báo lỗi nếu có
+        }
+
         // Submit the main quiz form
         document.getElementById('quizForm').submit();
     }
+
 </script>
 
 </body>

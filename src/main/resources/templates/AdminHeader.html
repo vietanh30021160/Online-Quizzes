@@ -53,13 +53,13 @@
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
                     <a th:href="@{#}" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="../images/user2-160x160.jpg" class="user-image" alt="User Image">
+                        <img th:src="${user.gender == 'Male' ? 'https://bootdey.com/img/Content/avatar/avatar7.png' : 'https://bootdey.com/img/Content/avatar/avatar3.png'}" class="user-image" alt="User Image">
                         <span class="hidden-xs" th:text="${userName}">>  </span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="../images/user2-160x160.jpg" type="" class="img-circle" alt="User Image">
+                            <img th:src="${user.gender == 'Male' ? 'https://bootdey.com/img/Content/avatar/avatar7.png' : 'https://bootdey.com/img/Content/avatar/avatar3.png'}" type="" class="img-circle" alt="User Image">
                                 <p  th:text="${userName}"></p>
 
                         </li>

@@ -64,7 +64,31 @@ h2 {
 .isCorrect {
     margin-top: 8px;
 }
+button.delete-question {
+    color: white;
+    background-color: red;
+    border: none;
+    width: 20px; /* Điều chỉnh kích thước chiều rộng */
+    height: 20px; /* Điều chỉnh kích thước chiều cao */
+    border-radius: 5px; /* Điều chỉnh để tạo hình vuông */
+    cursor: pointer;
+    display: flex; /* Sử dụng flexbox */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+}
 
+button.delete-question:hover {
+    background-color: darkred;
+}
+.question-wrapper {
+    display: flex;
+    align-items: center; /* Canh chỉnh các phần tử con theo chiều dọc */
+}
+
+.questionContent {
+    flex-grow: 1; /* Phần tử questionContent sẽ mở rộng để lấp đầy không gian còn lại */
+    margin-right: 10px; /* Tạo khoảng cách giữa questionContent và delete button */
+}
 .answersContainer {
     display: flex;
     flex-direction: row;
