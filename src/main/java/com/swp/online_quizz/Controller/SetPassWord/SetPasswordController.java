@@ -1,7 +1,7 @@
 package com.swp.online_quizz.Controller.SetPassWord;
 
 import com.swp.online_quizz.Dto.UserLoginDtoRequest;
-import com.swp.online_quizz.Service.IUserService;
+import com.swp.online_quizz.Service.IUsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,10 +9,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Controller
 @RequiredArgsConstructor
 public class SetPasswordController {
-    private final IUserService iUserService;
+    private final IUsersService iUserService;
+    private String pwRegex ="^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$";
+
     @GetMapping("/setpassword")
     public String setPasswordRedirect(){
         return "SetNewPassword";
@@ -20,22 +25,9 @@ public class SetPasswordController {
     @PostMapping("/setpassword")
         public String setPassword(Model model,@RequestParam String email, @RequestParam String newPassword, @RequestParam String reNewPassword){
         boolean check = false;
-        if(newPassword==null || newPassword.isEmpty()){
-            model.addAttribute("pw", "Password can not null");
-            check = true;
-        }
-        if(newPassword.length()<6 && !newPassword.isEmpty()){
-            model.addAttribute("pw", "Password must have at least 6 digits");
-            check = true;
-        }
-         if(!reNewPassword.equals(newPassword)){
-            model.addAttribute("rpw","Re-enter password does not match");
-            check = true;
-        }
-        if(reNewPassword.isEmpty()){
-            model.addAttribute("rpw","Re-enter password can not null");
-            check = true;
-        }
+        Pattern pattern = Pattern.compile(pwRegex);
+        Matcher matcher = pattern.matcher(newPassword);
+        check = isCheck(model, newPassword, reNewPassword, check, matcher);
         if(check){
             model.addAttribute("ms", "Set new password unsuccessfully!");
             model.addAttribute("email", email);
@@ -50,5 +42,24 @@ public class SetPasswordController {
         model.addAttribute("ms","Set new password successfully");
         model.addAttribute("userLoginDtoRequest", UserLoginDtoRequest.builder().build());
         return "Login";
+    }
+
+    public static boolean isCheck(Model model, @RequestParam String newPassword, @RequestParam String reNewPassword, boolean check, Matcher matcher) {
+        if(newPassword==null || newPassword.isEmpty()){
+            model.addAttribute("pw", "Password can not null");
+            check = true;
+        }else if(!matcher.matches()){
+            model.addAttribute("pw", "At least a digit, a lowercase word, a uppercase word and a special character");
+            check = true;
+        }
+        if(!reNewPassword.equals(newPassword)){
+           model.addAttribute("rpw","Re-enter password does not match");
+           check = true;
+       }
+        if(reNewPassword.isEmpty()){
+            model.addAttribute("rpw","Re-enter password can not null");
+            check = true;
+        }
+        return check;
     }
 }

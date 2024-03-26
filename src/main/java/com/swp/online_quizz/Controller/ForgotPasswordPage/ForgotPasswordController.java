@@ -2,10 +2,8 @@ package com.swp.online_quizz.Controller.ForgotPasswordPage;
 
 import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Repository.UsersRepository;
-import com.swp.online_quizz.Service.UserService;
+import com.swp.online_quizz.Service.UsersService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +13,7 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 public class ForgotPasswordController {
-    private final UserService userService;
+    private final UsersService userService;
     private final UsersRepository usersRepository;
     @GetMapping("/forgotpassword")
     public String forgotPage(){
