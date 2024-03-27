@@ -246,22 +246,7 @@ public class QuizService implements IQuizzesService {
             filteredQuiz = Page.empty();
         }
         return filteredQuiz;
-        // Lấy tất cả kết quả từ quizzesNotInClasses
-//        Page<Quiz> quizzesNotInClasses = quizRepositoryCustom.findQuizzesNotInAnyClass(spec, PageRequest.of(0, Integer.MAX_VALUE));
-//
-//        // Kết hợp các kết quả từ filteredQuiz và quizzesNotInClasses thành một danh sách duy nhất
-//        List<Quiz> combinedList = new ArrayList<>();
-//        combinedList.addAll(filteredQuiz.getContent());
-//        combinedList.addAll(quizzesNotInClasses.getContent());
-//
-//        // Tạo một Page mới từ danh sách kết quả kết hợp và trả về
-//        int pageSize = 3; // Kích thước trang mong muốn
-//        int totalSize = combinedList.size();
-//        int startIndex = (pageNo - 1) * pageSize;
-//        int endIndex = Math.min(startIndex + pageSize, totalSize);
-//        List<Quiz> pageContent = combinedList.subList(startIndex, endIndex);
-//
-//        return new PageImpl<>(pageContent, PageRequest.of(pageNo - 1, pageSize), totalSize);
+
     }
 
     @Override
