@@ -352,23 +352,25 @@ public class QuizService implements IQuizzesService {
     @Override
     public boolean checkUserAndQuiz(Integer userId, Integer quizId) {
         List<Quiz> quizzesNotInAnyClass = quizRepository.findQuizzesNotInAnyClass();
-        Quiz quiz = quizRepository.getReferenceById(quizId);
-        if (quizzesNotInAnyClass != null && !quizzesNotInAnyClass.isEmpty() && quizzesNotInAnyClass.contains(quiz)) {
-            return true;
+        Quiz quizz = quizRepository.getReferenceById(quizId);
+
+        if (quizzesNotInAnyClass != null && !quizzesNotInAnyClass.isEmpty() && quizzesNotInAnyClass.contains(quizz)) {
+            return true; // The quiz is not associated with any class, so it's accessible to all users
         } else {
-            List<Classes> classesByUser = classesRepository.getAllClassByUserId(userId);
-            List<ClassQuizz> classesByQuiz = quiz.getClassQuizzes();
-            List<Classes> classes = new ArrayList<>();
-            for (ClassQuizz classQuizz : classesByQuiz) {
-                if (classesByUser.contains(classQuizz.getClasses())) {
-                    classes.add(classQuizz.getClasses());
+            List<Classes> listClassesInUser = iClassesService.getClassesByStudentID(userId);
+            for (Classes classes : listClassesInUser) {
+                Page<Quiz> quizPage = searchAndFilterAndSubjectAndQuizIds(null, null, null, null, null, null,
+                        classes.getClassName());
+                List<Quiz> quizzes = quizPage.getContent();
+                for (Quiz quiz : quizzes) {
+                    if (quiz.getQuizId().equals(quizz.getQuizId())) {
+                        // Quiz found in the current class, return true immediately
+                        return true;
+                    }
                 }
             }
-            if (classes != null && !classes.isEmpty()) {
-                return true;
-            } else {
-                return false;
-            }
+            // Quiz not found in any of the user's classes, return false
+            return false;
         }
     }
 }
