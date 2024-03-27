@@ -135,7 +135,7 @@
                        th:field="*{listQuestions[__${questionIndex.index}__].questionId}" th:value="${question.questionId}" required>
             </label>
             <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].questionContent'}"
-                   th:field="*{listQuestions[__${questionIndex.index}__].questionContent}" th:value="${question.questionContent}" required>
+                   th:field="*{listQuestions[__${questionIndex.index}__].questionContent}" th:value="${question.questionContent}" class="questionContent" required>
                 <button type="button" class="delete-question" onclick="deleteQuestion(this)">X</button>
             </div>
             <label th:for="${'listQuestions[' + questionIndex.index + '].questionType'}">Question Type:</label>

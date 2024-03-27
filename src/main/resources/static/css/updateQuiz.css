@@ -74,6 +74,10 @@ input, select, textarea {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
 }
 
 hr {
@@ -104,7 +108,10 @@ h2 {
 .isCorrect {
     margin-top: 8px;
 }
-
+.questionContent {
+    flex-grow: 1; /* Phần tử questionContent sẽ mở rộng để lấp đầy không gian còn lại */
+    margin-right: 10px; /* Tạo khoảng cách giữa questionContent và delete button */
+}
 .answersContainer {
     display: flex;
     flex-direction: row;
