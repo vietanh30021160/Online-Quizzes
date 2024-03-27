@@ -78,6 +78,7 @@ public class Quiz {
     // private Set<QuizAttempt> listQuizAttemps;
     @OneToMany(mappedBy = "quiz")
     private List<QuizAttempt> quizAttempts;
+
     public Quiz(User teacher, Subject subjectName, String quizName, Integer timeLimit, Boolean isCompleted) {
         this.teacher = teacher;
         this.subject = subjectName;
@@ -85,6 +86,7 @@ public class Quiz {
         this.timeLimit = timeLimit;
         this.isCompleted = isCompleted;
     }
-    @OneToMany(mappedBy = "quiz",cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
     Set<ClassQuizz> idClassQuizzs;
 }

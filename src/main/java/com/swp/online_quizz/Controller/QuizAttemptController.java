@@ -160,6 +160,8 @@ public class QuizAttemptController {
 
     @PostMapping("/progress")
     public RedirectView progress(@ModelAttribute() QuizProgress progress,
+            @RequestParam(name = "pageChange", required = false) String pageChange,
+            @RequestParam(name = "submit", required = false) String submit,
             @RequestParam(name = "previous", required = false) String previous,
             @RequestParam(name = "next", required = false) String next,
             @RequestParam(name = "attempID", required = false) String attempIDString,
@@ -236,6 +238,17 @@ public class QuizAttemptController {
             } else if (page == attemp.getListQuizzProgress().size()) {
                 page = 1;
             }
+            return new RedirectView(
+                    "/attempt/attemptQuiz/" + attemp.getQuiz().getQuizId() + "/" + attemp.getAttemptId() + "/"
+                            + (page));
+        }
+        if (submit != null) {
+            return new RedirectView(
+                    "/attempt/attemptQuiz/" + attemp.getQuiz().getQuizId() + "/" + attemp.getAttemptId() + "/"
+                            + "finish");
+        }
+        if (pageChange != null) {
+            page = Integer.parseInt(pageChange);
             return new RedirectView(
                     "/attempt/attemptQuiz/" + attemp.getQuiz().getQuizId() + "/" + attemp.getAttemptId() + "/"
                             + (page));
