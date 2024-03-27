@@ -64,6 +64,22 @@ h2 {
 .isCorrect {
     margin-top: 8px;
 }
+button.delete-answer {
+    color: white;
+    background-color: red;
+    border: none;
+    width: 20px; /* Điều chỉnh kích thước chiều rộng */
+    height: 20px; /* Điều chỉnh kích thước chiều cao */
+    border-radius: 5px; /* Điều chỉnh để tạo hình vuông */
+    cursor: pointer;
+    display: flex; /* Sử dụng flexbox */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+}
+
+button.delete-answer:hover {
+    background-color: darkred;
+}
 button.delete-question {
     color: white;
     background-color: red;
