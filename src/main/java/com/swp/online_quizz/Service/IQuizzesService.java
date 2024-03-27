@@ -11,6 +11,8 @@ import com.swp.online_quizz.Entity.Subject;
 public interface IQuizzesService {
     List<Quiz> getAll();
 
+    boolean checkUserAndQuiz(Integer userId, Integer quizId);
+
     List<Quiz> getQuizByUserId(Integer userId);
 
     public Subject find(Integer quizId);
@@ -40,18 +42,19 @@ public interface IQuizzesService {
 
     public List<Quiz> getAllQuizzes();
 
+    Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max,
+            String subject, List<Integer> quizIds, String ClassName);
 
-    Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds, String ClassName);
+    Page<Quiz> searchAndFilterAndSubjectForQuizzesNoClass(String keyword, Integer pageNo, Integer min, Integer max,
+            String subject, String ClassName);
 
-
-    Page<Quiz> searchAndFilterAndSubjectForQuizzesNoClass(String keyword, Integer pageNo, Integer min, Integer max, String subject,String ClassName);
     Page<Quiz> searchAndFilterAndSubject(String keyword, Integer pageNo, Integer min, Integer max, String subject);
 
-//    Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max,
-//                                                   String subject, List<Integer> quizIds);
+    // Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer
+    // pageNo, Integer min, Integer max,
+    // String subject, List<Integer> quizIds);
 
-    Page<Quiz> CombineQuizzes(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds, String className);
+    Page<Quiz> CombineQuizzes(String keyword, Integer pageNo, Integer min, Integer max, String subject,
+            List<Integer> quizIds, String className);
+
 }
-
-
-

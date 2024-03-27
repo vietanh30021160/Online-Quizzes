@@ -53,16 +53,14 @@
                     <a href="#top" class="navbar-icon bi bi-bell smoothscroll"></a>
                 </div>
 
-                <div class="d-none d-lg-block inline-block-div">
-                    <a href="/logout" class="navbar-icon bi-person smoothscroll"></a>
-                </div>
-                <div class="dropdown">
+
+                <div class="dropdown" >
+                    <!-- Button của dropdown -->
                     <button class="navbar-icon bi-person smoothscroll"></button>
-                    <div class="dropdown-content">
-                        <a th:href="@{/information}" class="btn btn-default btn-flat">Profile</a>
-
-                        <a class="btn btn-default btn-flat" href="/logout">Logout</a>
-
+                    <div class="dropdown-menu">
+                        <!-- Hiển thị thông tin người đăng nhập -->
+                        <a th:href="@{/information}" class="btn btn-default btn-flat dropdown-item">Profile</a>
+                        <a class="btn btn-default btn-flat dropdown-item" href="/logout">Logout</a>
                     </div>
                 </div>
             </div>
@@ -72,7 +70,7 @@
 <h1 class="d-flex justify-content-center p-3 title-Page">Manager Students In Class</h1>
 <div class="container">
     <div class="row">
-        <div class="col-sm-6 btnAddClass fs-3">Hello,
+        <div class="col-sm-5 btnAddClass fs-3">Hello,
             <span th:text="${nameTeacher}" class="fs-4"></span>
             <div class="fs-5 totalClass">This class currently has <span th:text="${size}"></span> students</div>
         </div>
@@ -81,10 +79,10 @@
                 <button type="button" class="btn btn-success" th:text="${mss}"></button>
             </div>
         </div>
-        <div class="price-range col-sm-4 d-flex align-items-end">
+        <div class="price-range col-sm-5 d-flex align-items-end">
             <form method="get" class="mx-sm-3 fromSearchClass">
                 <div class="input-group">
-                    <input style="border-radius: 10px " name="firstName" th:value="${firstName}"
+                    <input style="border-radius: 10px ; box-sizing: border-box;max-width: 360px" name="firstName" th:value="${firstName}"
                            class="form-control form-control-lg" type="text" placeholder="Search Student ..."
                            aria-describedby="button-addon2" autofocus>
                     <button style="border-radius: 10px" class="btn btn-secondary" id="button-addon2" type="submit">
@@ -220,6 +218,9 @@
 <script>
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
+    });
+    $('.dropdown').hover(function(){
+        $('.dropdown-toggle', this).trigger('click');
     });
 </script>
 

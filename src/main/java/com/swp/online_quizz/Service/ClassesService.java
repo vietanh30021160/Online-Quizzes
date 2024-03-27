@@ -105,7 +105,7 @@ public class ClassesService implements IClassesService {
     public Page<Classes> searchClassesByClassesNameAndUserID(String classesName, Integer pageNo, Integer userId) {
         List<Classes> allClasses = this.searchClassesByClassesNameAndUserID(classesName, userId);
 
-        Pageable pageable = PageRequest.of(pageNo - 1, 5);
+        Pageable pageable = PageRequest.of(pageNo - 1, 8);
         Integer start = (int) pageable.getOffset();
         Integer end = (start + pageable.getPageSize()) > allClasses.size() ? allClasses.size() : (start + pageable.getPageSize());
         allClasses = allClasses.subList(start, end);
@@ -114,7 +114,7 @@ public class ClassesService implements IClassesService {
 
     @Override
     public Page<Classes> getAll(Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo - 1, 5);
+        Pageable pageable = PageRequest.of(pageNo - 1, 8);
         return this.classesRepository.findAll(pageable);
     }
 
@@ -126,7 +126,7 @@ public class ClassesService implements IClassesService {
 
     @Override
     public Page<Classes> getAllClassByUserId(Integer userID, Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo - 1, 2);
+        Pageable pageable = PageRequest.of(pageNo - 1, 8);
         List<Classes> allClasseById = this.classesRepository.getAllByTeacherId(userID, pageable);
 //           List<Classes> list = allClasseById.subList((pageNo-1)*2, Integer.min((pageNo-1)*2+2, allClasseById.size()));
         return new PageImpl<Classes>(allClasseById, pageable, classesRepository.getSizeAllClassByUserId(userID));

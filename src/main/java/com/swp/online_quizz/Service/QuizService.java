@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.swp.online_quizz.Entity.*;
-import com.swp.online_quizz.Repository.*;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -18,12 +14,19 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.swp.online_quizz.Entity.ClassQuizz;
+import com.swp.online_quizz.Entity.Classes;
 import com.swp.online_quizz.Entity.Quiz;
 import com.swp.online_quizz.Entity.Subject;
 import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Repository.AnswersRepository;
+import com.swp.online_quizz.Repository.ClassEnrollmentRepository;
+import com.swp.online_quizz.Repository.ClassQuizzRepository;
+import com.swp.online_quizz.Repository.ClassesRepository;
 import com.swp.online_quizz.Repository.QuestionsRepository;
 import com.swp.online_quizz.Repository.QuizRepository;
+import com.swp.online_quizz.Repository.QuizRepositoryCustom;
+import com.swp.online_quizz.Repository.QuizRepositoryCustomImpl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -46,11 +49,16 @@ public class QuizService implements IQuizzesService {
     private ISubjectService iSubjectService;
     @Autowired
     private IUsersService iUsersService;
-
+    @Autowired
+    private ClassEnrollmentRepository classEnrollmentRepository;
     @Autowired
     private ClassQuizzRepository classQuizzRepository;
     @Autowired
     private QuizRepositoryCustom quizRepositoryCustom;
+    @Autowired
+    private QuizRepositoryCustomImpl quizRepositoryCustomImpl;
+    @Autowired
+    private ClassesRepository classesRepository;
     @Autowired
     private QuestionsRepository questionsRepository;
     @Autowired
@@ -164,7 +172,7 @@ public class QuizService implements IQuizzesService {
 
     @Override
     public Page<Quiz> searchAndFilterAndSubject(String keyword, Integer pageNo, Integer min, Integer max,
-                                                String subject) {
+            String subject) {
         Specification<Quiz> spec = Specification.where(null);
 
         if (keyword != null && !keyword.isEmpty()) {
@@ -196,7 +204,8 @@ public class QuizService implements IQuizzesService {
 
 
     @Override
-    public Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds, String className) {
+    public Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max,
+            String subject, List<Integer> quizIds, String className) {
         Specification<Quiz> spec = Specification.where(null);
 
         if (keyword != null && !keyword.isEmpty()) {
@@ -208,8 +217,8 @@ public class QuizService implements IQuizzesService {
         }
 
         if (subject != null && !subject.isEmpty()) {
-            spec = spec.and((root, query, criteriaBuilder) ->
-                    criteriaBuilder.equal(root.get("subject").get("subjectName"), subject));
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
+                    .equal(root.get("subject").get("subjectName"), subject));
         }
 
         if (min != null) {
@@ -246,11 +255,27 @@ public class QuizService implements IQuizzesService {
             filteredQuiz = Page.empty();
         }
         return filteredQuiz;
-
+        // Lấy tất cả kết quả từ quizzesNotInClasses
+//        Page<Quiz> quizzesNotInClasses = quizRepositoryCustom.findQuizzesNotInAnyClass(spec, PageRequest.of(0, Integer.MAX_VALUE));
+//
+//        // Kết hợp các kết quả từ filteredQuiz và quizzesNotInClasses thành một danh sách duy nhất
+//        List<Quiz> combinedList = new ArrayList<>();
+//        combinedList.addAll(filteredQuiz.getContent());
+//        combinedList.addAll(quizzesNotInClasses.getContent());
+//
+//        // Tạo một Page mới từ danh sách kết quả kết hợp và trả về
+//        int pageSize = 3; // Kích thước trang mong muốn
+//        int totalSize = combinedList.size();
+//        int startIndex = (pageNo - 1) * pageSize;
+//        int endIndex = Math.min(startIndex + pageSize, totalSize);
+//        List<Quiz> pageContent = combinedList.subList(startIndex, endIndex);
+//
+//        return new PageImpl<>(pageContent, PageRequest.of(pageNo - 1, pageSize), totalSize);
     }
 
     @Override
-    public Page<Quiz> searchAndFilterAndSubjectForQuizzesNoClass(String keyword, Integer pageNo, Integer min, Integer max, String subject, String className) {
+    public Page<Quiz> searchAndFilterAndSubjectForQuizzesNoClass(String keyword, Integer pageNo, Integer min,
+            Integer max, String subject, String className) {
         Specification<Quiz> spec = Specification.where(null);
 
         if (keyword != null && !keyword.isEmpty()) {
@@ -298,10 +323,14 @@ public class QuizService implements IQuizzesService {
     }
 
     @Override
-    public Page<Quiz> CombineQuizzes(String keyword, Integer pageNo, Integer min, Integer max, String subject, List<Integer> quizIds, String className) {
-        Page<Quiz> filteredQuiz = searchAndFilterAndSubjectAndQuizIds(keyword, pageNo, min, max, subject, quizIds, className);
-        Page<Quiz> quizzesNotInClasses = searchAndFilterAndSubjectForQuizzesNoClass(keyword, pageNo, min, max, subject, className);
-        // Kết hợp các kết quả từ filteredQuiz và quizzesNotInClasses thành một danh sách duy nhất
+    public Page<Quiz> CombineQuizzes(String keyword, Integer pageNo, Integer min, Integer max, String subject,
+            List<Integer> quizIds, String className) {
+        Page<Quiz> filteredQuiz = searchAndFilterAndSubjectAndQuizIds(keyword, pageNo, min, max, subject, quizIds,
+                className);
+        Page<Quiz> quizzesNotInClasses = searchAndFilterAndSubjectForQuizzesNoClass(keyword, pageNo, min, max, subject,
+                className);
+        // Kết hợp các kết quả từ filteredQuiz và quizzesNotInClasses thành một danh
+        // sách duy nhất
         List<Quiz> combinedList = new ArrayList<>();
         combinedList.addAll(filteredQuiz.getContent());
         combinedList.addAll(quizzesNotInClasses.getContent());
@@ -318,4 +347,26 @@ public class QuizService implements IQuizzesService {
         return new PageImpl<>(pageContent, PageRequest.of(pageNo - 1, pageSize), totalSize);
     }
 
+    @Override
+    public boolean checkUserAndQuiz(Integer userId, Integer quizId) {
+        List<Quiz> quizzesNotInAnyClass = quizRepository.findQuizzesNotInAnyClass();
+        Quiz quiz = quizRepository.getReferenceById(quizId);
+        if (quizzesNotInAnyClass != null && !quizzesNotInAnyClass.isEmpty() && quizzesNotInAnyClass.contains(quiz)) {
+            return true;
+        } else {
+            List<Classes> classesByUser = classesRepository.getAllClassByUserId(userId);
+            List<ClassQuizz> classesByQuiz = quiz.getClassQuizzes();
+            List<Classes> classes = new ArrayList<>();
+            for (ClassQuizz classQuizz : classesByQuiz) {
+                if (classesByUser.contains(classQuizz.getClasses())) {
+                    classes.add(classQuizz.getClasses());
+                }
+            }
+            if (classes != null && !classes.isEmpty()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 }
