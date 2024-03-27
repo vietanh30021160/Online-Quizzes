@@ -41,7 +41,7 @@ public class ClassEnrollmentService implements IClassEnrollmentService {
 
     @Override
     public Page<ClassEnrollment> getAllStudentByClassId(Integer classID, Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo - 1, 2);
+        Pageable pageable = PageRequest.of(pageNo - 1, 8);
         List<ClassEnrollment> listStudentInClass = this.classEnrollmentRepository.findStudenByClassId(classID, pageable);
         return new PageImpl<ClassEnrollment>(listStudentInClass, pageable, this.classEnrollmentRepository.getSizeAllStudentInClass(classID));
     }
@@ -53,7 +53,7 @@ public class ClassEnrollmentService implements IClassEnrollmentService {
 
     @Override
     public Page<ClassEnrollment> getAllStudentBySearch(Integer classID, String firstName, Integer page) {
-        Pageable pageable = PageRequest.of(page - 1, 2);
+        Pageable pageable = PageRequest.of(page - 1, 8);
         List<ClassEnrollment> listStudentInClassBySearch = this.classEnrollmentRepository.ListStudentBySearch(classID, firstName, pageable);
 
         return new PageImpl<ClassEnrollment>(listStudentInClassBySearch, pageable, this.classEnrollmentRepository.getSizeListStudentBySearch(classID, firstName));

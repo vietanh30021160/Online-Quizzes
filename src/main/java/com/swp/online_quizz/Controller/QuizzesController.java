@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.swp.online_quizz.Entity.*;
-import com.swp.online_quizz.Service.*;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +33,7 @@ import com.swp.online_quizz.Entity.Subject;
 import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Repository.QuizRepository;
 import com.swp.online_quizz.Repository.UsersRepository;
+import com.swp.online_quizz.Service.ClassesService;
 import com.swp.online_quizz.Service.ExcelUploadService;
 import com.swp.online_quizz.Service.IAnswerService;
 import com.swp.online_quizz.Service.IClassQuizzService;
@@ -47,6 +46,7 @@ import com.swp.online_quizz.Service.IQuizzesService;
 import com.swp.online_quizz.Service.ISubjectService;
 import com.swp.online_quizz.Service.IUsersService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -165,7 +165,7 @@ public class QuizzesController {
 
     @GetMapping("/createQuizByListQuestions")
     public String showCreateQuizzPageByListQuestion(Model model,
-                                                    @RequestParam(value = "question", required = false) String question) {
+            @RequestParam(value = "question", required = false) String question) {
         List<Question> questions;
         if (question != null) {
             questions = this.iQuestionsService.getALlQuestionBySearch(question);
@@ -300,9 +300,9 @@ public class QuizzesController {
 
     @GetMapping("/{quizID}")
     public String quizInfo(@PathVariable Integer quizID, HttpSession session, Model model, Authentication auth,
-                           HttpServletRequest request) {
+            HttpServletRequest request) {
         if (quizID == null) {
-            return "notFoundQuiz";
+            throw new IllegalArgumentException("QuizID cannot be null");
         } else {
             String username = "";
             if (request.getSession().getAttribute("authentication") != null) {
@@ -317,9 +317,19 @@ public class QuizzesController {
             // If there is a user, retrieve the user
             User user1 = userOptional.get();
             // Get information about the quiz using the provided quiz ID
-            Quiz quiz = iQuizzesService.getOneQuiz(quizID);
-            if (quiz.getQuizName().isEmpty()) {
-                return "notFoundQuiz";
+            Quiz quiz = new Quiz();
+            boolean flag = false;
+            try {
+                quiz = iQuizzesService.getOneQuiz(quizID);
+                flag = quiz.getQuizName().isEmpty();
+            } catch (Exception e) {
+                throw new EntityNotFoundException("Quiz not found");
+            }
+            if (!iQuizService.checkUserAndQuiz(user1.getUserId(), quizID)) {
+                throw new IllegalArgumentException("Cannot access this quiz");
+            }
+            if (flag) {
+                throw new EntityNotFoundException("Quiz not found");
             } else {
                 // Retrieve quiz attempts made by the user for this quiz
                 List<QuizAttempt> listAttempts = iQuizAttemptsService.getAttemptByUserIdAndQuizzId(quiz, user1);
@@ -347,7 +357,7 @@ public class QuizzesController {
 
     @PostMapping("/uploadquizdata")
     public String uploadQuizData(@RequestParam("file") MultipartFile file, HttpSession session, Model model,
-                                 Authentication auth, HttpServletRequest request) throws IOException {
+            Authentication auth, HttpServletRequest request) throws IOException {
         String username = "";
         if (request.getSession().getAttribute("authentication") != null) {
             Authentication authentication = (Authentication) request.getSession().getAttribute("authentication");
@@ -384,4 +394,3 @@ public class QuizzesController {
     }
 
 }
-

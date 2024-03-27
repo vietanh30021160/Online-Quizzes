@@ -22,4 +22,6 @@ public interface SubjectRepository extends JpaRepository<Subject, Integer> {
     void updateSubjectBySubjectName(@Param("subjectName") String subjectName,
                                     @Param("newSubjectName") String newSubjectName,
                                     @Param("newDescription") String newDescription);
+    @Query("select s.subjectName from Subject s where s.subjectId = :subjectId")
+    String findSubjectNameBySubjectId(@Param("subjectId") Integer subjectId);
 }

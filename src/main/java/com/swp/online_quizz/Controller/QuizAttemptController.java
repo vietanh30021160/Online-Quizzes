@@ -78,7 +78,7 @@ public class QuizAttemptController {
             long startTimeSearchMillis = startTime.getTime() - (10);
             Timestamp startTimeSearch = new Timestamp(startTimeSearchMillis);
             // số lượng câu hỏi trong 1 bài quiz được tạo
-            Integer numbOfQuestion = 4; // Initialize it to null or some value
+            Integer numbOfQuestion = 25; // Initialize it to null or some value
             if (numbOfQuestion == null) {
                 numbOfQuestion = quizz.getListQuestions().size();
             }
@@ -160,6 +160,8 @@ public class QuizAttemptController {
 
     @PostMapping("/progress")
     public RedirectView progress(@ModelAttribute() QuizProgress progress,
+            @RequestParam(name = "pageChange", required = false) String pageChange,
+            @RequestParam(name = "submit", required = false) String submit,
             @RequestParam(name = "previous", required = false) String previous,
             @RequestParam(name = "next", required = false) String next,
             @RequestParam(name = "attempID", required = false) String attempIDString,
@@ -173,7 +175,9 @@ public class QuizAttemptController {
         QuizAttempt attemp = iQuizAttemptsService.getQuizAttempts(attempID);
         for (QuestionAttempt questionAttempts : attemp.getListQuestionAttempts()) {
             if (questionAttempts.getQuestion().getQuestionId() == questionProgress.getQuestionId()) {
-                if (answerProgress != null) {
+                if (answerProgress != null
+                        && questionAttempts.getQuestion() != null
+                        && questionAttempts.getQuestion().getQuestionType() != null) {
                     if (questionAttempts.getQuestion().getQuestionType().equalsIgnoreCase("multiplechoice")
                             || questionAttempts.getQuestion().getQuestionType().equalsIgnoreCase("yesno")) {
                         String[] arrayStringAnswerProgress = answerProgress.split(",");
@@ -234,6 +238,17 @@ public class QuizAttemptController {
             } else if (page == attemp.getListQuizzProgress().size()) {
                 page = 1;
             }
+            return new RedirectView(
+                    "/attempt/attemptQuiz/" + attemp.getQuiz().getQuizId() + "/" + attemp.getAttemptId() + "/"
+                            + (page));
+        }
+        if (submit != null) {
+            return new RedirectView(
+                    "/attempt/attemptQuiz/" + attemp.getQuiz().getQuizId() + "/" + attemp.getAttemptId() + "/"
+                            + "finish");
+        }
+        if (pageChange != null) {
+            page = Integer.parseInt(pageChange);
             return new RedirectView(
                     "/attempt/attemptQuiz/" + attemp.getQuiz().getQuizId() + "/" + attemp.getAttemptId() + "/"
                             + (page));
