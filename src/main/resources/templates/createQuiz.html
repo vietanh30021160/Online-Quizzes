@@ -146,7 +146,7 @@
         <div class="question" th:each="question, questionIndex : ${quiz.listQuestions}">
             <label th:for="${'listQuestions[' + questionIndex.index + '].questionContent'}">
                 <h4>Question Content:</h4>
-                <h4>Question Content:</h4>
+
                 <input type="hidden" th:id="${'listQuestions[' + questionIndex.index + '].questionId'}"
                         th:field="*{listQuestions[__${questionIndex.index}__].questionId}"  required>
             </label>
@@ -218,12 +218,11 @@
         newQuestionDiv.classList.add('question');
 
         newQuestionDiv.innerHTML = `
-        <div class="question-wrapper">
-            <label th:for="${'listQuestions[' + questionIndex.index + '].questionContent'}">
-                <h7>Question Content:</h7>
-            </label>
-            <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].questionContent'}"
-                th:field="*{listQuestions[__${questionIndex.index}__].questionContent}" class="questionContent" required>
+             <div class="question-wrapper">
+            <label for="questionContent"><h8>Question Content:</h8></label>
+            <input type="text" th:id="${'listQuestions[' + questionIndex + '].questionContent'}"
+                   name="${'listQuestions[' + questionIndex + '].questionContent'}" required>
+
             <button type="button" class="delete-question" onclick="deleteQuestion(this)">X</button>
         </div>
         <label th:for="${'listQuestions[' + questionIndex + '].questionType'}">Question Type:</label>
