@@ -167,16 +167,6 @@
 
             <div class="answersContainer">
                 <div th:each="answer, answerIndex : ${question.listAnswer}" class="answer">
-                    <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].answerId'}"
-                            th:field="*{listQuestions[__${questionIndex.index}__].listAnswer[__${answerIndex.index}__].answerId}" required>
-                    <label th:for="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].answerContent'}">Answer Content:</label>
-                    <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].answerContent'}"
-                            th:field="*{listQuestions[__${questionIndex.index}__].listAnswer[__${answerIndex.index}__].answerContent}" required>
-
-                    <label th:for="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].isCorrect'}">Is Correct:</label>
-                    <input type="checkbox" th:id="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].isCorrect'}"
-                            th:field="*{listQuestions[__${questionIndex.index}__].listAnswer[__${answerIndex.index}__].isCorrect}" th:checked="${true}">
-                    <button type="button" onclick="deleteAnswer(this, ${questionIndex.index})">Delete Answer</button>
 
                 </div>
             </div>
@@ -228,14 +218,14 @@
         newQuestionDiv.classList.add('question');
 
         newQuestionDiv.innerHTML = `
-      <div class="question-wrapper">
-        <label th:for="${'listQuestions[' + questionIndex.index + '].questionContent'}">
-            <h7>Question Content:</h7>
-        </label>
-        <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].questionContent'}"
-               th:field="*{listQuestions[__${questionIndex.index}__].questionContent}" class="questionContent" required>
-        <button type="button" class="delete-question" onclick="deleteQuestion(this)">X</button>
-    </div>
+        <div class="question-wrapper">
+            <label th:for="${'listQuestions[' + questionIndex.index + '].questionContent'}">
+                <h7>Question Content:</h7>
+            </label>
+            <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].questionContent'}"
+                th:field="*{listQuestions[__${questionIndex.index}__].questionContent}" class="questionContent" required>
+            <button type="button" class="delete-question" onclick="deleteQuestion(this)">X</button>
+        </div>
         <label th:for="${'listQuestions[' + questionIndex + '].questionType'}">Question Type:</label>
         <select th:id="${'listQuestions[' + questionIndex + '].questionType'}"
             th:field="*{listQuestions[__${questionIndex}__].questionType}" required>
@@ -259,8 +249,8 @@
                 <label for="isCorrect">Is Correct:</label>
                 <input type="checkbox" th:id="${'listQuestions[' + questionIndex + '].listAnswer[0].isCorrect'}"
                     name="${'listQuestions[' + questionIndex + '].listAnswer[0].isCorrect'}">
+                <button type="button" class="delete-answer" onClick="deleteAnswer(this, ${questionIndex})">X</button>
             </div>
-             <button type="button" class="delete-answer" onClick="deleteAnswer(this, ${questionIndex})">X</button>
         </div>
 
         <button type="button" onclick="addAnswer(this, ${questionIndex})">Add Answer</button>
@@ -277,29 +267,12 @@
         questionDiv.remove();
     }
 
-    function deleteAnswer(button, questionIndex) {
-        var answerDiv = button.closest('.answer');
-        var answerId = answerDiv.querySelector('input[type="hidden"]').value; // Lấy giá trị của trường ẩn lưu trữ ID của câu trả lời
-        var questionId = document.getElementById('listQuestions[' + questionIndex + '].questionId').value; // Lấy giá trị của trường ẩn lưu trữ ID của câu hỏi
+    function deleteAnswer(deleteButton, questionIndex) {
+            var answerDiv = deleteButton.closest('.answer');
+            answerDiv.remove();
 
-        // Make an AJAX request to delete the answer
-        fetch('/deleteAnswer', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ questionId: questionId, answerId: answerId })
-        })
-            .then(response => {
-                if (response.ok) {
-                    // Remove the answer from the UI
-                    answerDiv.remove();
-                } else {
-                    console.error('Failed to delete answer');
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    }
+            // If needed, you can adjust other elements or perform additional actions here.
+        }
 
     function submitForms() {
         // Submit the main quiz form
