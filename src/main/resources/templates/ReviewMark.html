@@ -66,7 +66,7 @@
                      th:each="answer,answerIndex  : ${questionAttempt.question.listAnswer}">
 
                     <label class="options answer">
-                        <input type="radio" th:checked="${answer.answerId+'' == questionAttempt.answer}" disabled>
+                        <input type="checkbox" th:checked="${answer.answerId+'' == questionAttempt.answer}" disabled>
                         <span th:text="${answerIndex.index + 1} + '.'"></span>
                         <span th:text="${answer.answerContent}" th:classappend="${answer.isCorrect?'text-primary':'text-danger'}"></span>
                         <span th:if="${answer.isCorrect}"><i class="fa-solid fa-check"></i></span>
