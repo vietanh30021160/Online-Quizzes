@@ -1,8 +1,7 @@
 package com.swp.online_quizz.Service;
 
-import com.swp.online_quizz.Entity.*;
-import com.swp.online_quizz.Repository.FeedbackRepository;
-import com.swp.online_quizz.Repository.QuizAttemptsRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,8 +12,6 @@ import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Repository.FeedbackRepository;
 import com.swp.online_quizz.Repository.QuizAttemptsRepository;
 
-import java.util.List;
-
 @Service
 public class FeedbackService implements IFeedbackService {
     @Autowired
@@ -23,18 +20,21 @@ public class FeedbackService implements IFeedbackService {
     public QuizAttemptsRepository quizAttemptsRepository;
     @Autowired
     public IUsersService iUsersService;
+
     @Override
     @Transactional
     public void deleteFeedbackByAttemptId(Integer attemptId) {
         List<Feedback> feedbackList = feedbackRepository.findByAttemptAttemptId(attemptId);
         feedbackRepository.deleteAll(feedbackList);
     }
+
     @Override
     @Transactional
-    public void deleteFeedbackByFeedbackId (Integer feedbackId){
-        Feedback feedback =feedbackRepository.getReferenceById(feedbackId);
+    public void deleteFeedbackByFeedbackId(Integer feedbackId) {
+        Feedback feedback = feedbackRepository.getReferenceById(feedbackId);
         feedbackRepository.delete(feedback);
     }
+
     @Transactional
     @Override
     public Feedback createFeedback(Feedback feedback) {
@@ -51,8 +51,7 @@ public class FeedbackService implements IFeedbackService {
             return null;
         }
 
-        }
-
+    }
 
     @Transactional
     @Override

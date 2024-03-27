@@ -5,17 +5,21 @@ body {
 
     font-weight: 300;
 }
-.totalClass{
+
+.totalClass {
     font-family: 'Times New Roman', Times, serif;
 }
-html{
+
+html {
     scroll-behavior: smooth;
 }
-.navTopPage{
+
+.navTopPage {
     /*background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);*/
     background-color: #0ea3bf;
     background-image: linear-gradient(160deg, #0ea3bf 0%, #6db6e0 50%, #3bbfc9 100%);
 }
+
 p {
     color: rgba(182, 179, 179, 0.5);
     font-weight: 300;
@@ -72,6 +76,7 @@ h2 {
     -o-transition: .3s all ease;
     transition: .3s all ease;
 }
+
 .status_left h5 {
     font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
@@ -81,19 +86,21 @@ h2 {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman',
     serif;
 }
-.custom-table tbody th small, .custom-table tbody td p{
+
+.custom-table tbody th small, .custom-table tbody td p {
     color: rgba(2, 12, 12, 0.3);
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman',
     serif;
     margin-bottom: 0;
 
 }
+
 .custom-table tbody th a, .custom-table tbody td a {
     color: rgba(100, 98, 98, 0.93);
 
 }
 
-.custom-table tbody td a:hover ,.custom-table tbody th small, .custom-table tbody td p:hover{
+.custom-table tbody td a:hover, .custom-table tbody th small, .custom-table tbody td p:hover {
     color: rgb(0, 89, 255);
 }
 
@@ -208,13 +215,17 @@ h2 {
     padding-left: 80px;
 }
 
-.pagination-outer{ text-align: center; }
-.pagination{
+.pagination-outer {
+    text-align: center;
+}
+
+.pagination {
     font-family: 'Poppins', sans-serif;
     display: inline-flex;
     position: relative;
 }
-.pagination li a.page-link{
+
+.pagination li a.page-link {
     color: #444;
     font-size: 18px;
     font-weight: 600;
@@ -229,22 +240,25 @@ h2 {
     z-index: 1;
     transition: all 0.4s ease 0s;
 }
+
 .pagination li:first-child a.page-link,
-.pagination li:last-child a.page-link{
+.pagination li:last-child a.page-link {
     font-size: 30px;
     line-height: 50px;
     font-weight: 400;
 }
+
 .pagination li a.page-link:hover,
 .pagination li a.page-link:focus,
 .pagination li.active a.page-link:hover,
-.pagination li.active a.page-link{
+.pagination li.active a.page-link {
     color: rgb(0, 119, 255);
     background-color: transparent;
     border-color: rgb(0, 119, 255);
-    box-shadow: 4px 4px rgba(0,0,0,0.2);
+    box-shadow: 4px 4px rgba(0, 0, 0, 0.2);
 }
-.pagination li a.page-link:before{
+
+.pagination li a.page-link:before {
     content: '';
     background-color: #444;
     width: 100%;
@@ -255,149 +269,183 @@ h2 {
     z-index: -1;
     transition: all 0.4s ease 0s;
 }
+
 .pagination li a.page-link:hover:before,
 .pagination li a.page-link:focus:before,
 .pagination li.active a.page-link:hover:before,
-.pagination li.active a.page-link:before{
+.pagination li.active a.page-link:before {
     background-color: rgb(82, 161, 252);
     height: 11px;
     top: 0;
 }
-@media only screen and (max-width: 480px){
-    .pagination{
+
+@media only screen and (max-width: 480px) {
+    .pagination {
         font-size: 0;
         display: inline-block;
     }
-    .pagination li{
+
+    .pagination li {
         display: inline-block;
         vertical-align: top;
         margin: 10px 0;
     }
 }
-.demo{
+
+.demo {
     margin-top: 50px;
 }
-.demo .pagination-outer{
+
+.demo .pagination-outer {
     position: relative;
 }
-.demo .title_NavQuizQuestions{
+
+.demo .title_NavQuizQuestions {
     color: black;
     margin: 0;
     position: absolute;
     left: 35px;
     top: -10px;
 }
-.demo .page-link{
+
+.demo .page-link {
     margin: 0;
     padding: 0;
 }
-.demo .finishReview{
+
+.demo .finishReview {
     color: black;
     margin: 0;
     position: absolute;
     left: 35px;
     top: 100px;
 }
-.demo .finishReview:hover{
+
+.demo .finishReview:hover {
     color: #4fecb4;
 }
-.status_left{
+
+.status_left {
     margin-left: 15px;
 }
 
-.title-Page{
+.title-Page {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman',
     serif;;
 }
+
 .status_left h5 small {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman',
     serif;
     color: #938d8d;
 }
-.status_left h5 small:hover{
+
+.status_left h5 small:hover {
     color: #09cbee;
 }
+
 .status_left h5 div {
     display: inline-block;
     min-width: 180px;
 }
-.title-Page:hover{
+
+.title-Page:hover {
     color: #4fecb4;
 }
-.btnSortMark{
+
+.btnSortMark {
     display: flex;
     justify-content: right;
-    padding: 20px 50px 0 0 ;
+    padding: 20px 50px 0 0;
 }
-.headerMark{
+
+.headerMark {
     background-color: #3d899b;
     background-image: linear-gradient(90deg, #3d899b 0%, #7ecec5 50%);
 
 
 }
-.navbar-expand-lg .navbar-nav .nav-link{
+
+.navbar-expand-lg .navbar-nav .nav-link {
     margin: 1px;
 }
-.use_Student{
+
+.use_Student {
     color: #0e0e0e;
     margin: 0;
 }
-.custom-table tbody td small{
+
+.custom-table tbody td small {
     font-size: 16px;
 }
-.tableInfo{
+
+.tableInfo {
     font-size: 18.5px;
     font-family: 'Times New Roman', Times, serif;
 }
-.footer{
+
+.footer {
     margin-top: 30px;
     background-color: #f8f8f8;
 }
-.btnSortLeft{
+
+.btnSortLeft {
     margin-right: 10px;
 }
-.reviewLink{
+
+.reviewLink {
     color: black;
     opacity: 0.5;
 }
-.reviewLink:hover{
+
+.reviewLink:hover {
     opacity: 1;
 }
+
 .nav_iconPerson {
     padding-left: 20px;
 }
-.dashboard_Static{
+
+.dashboard_Static {
     padding: 25px 0 5px;
     height: 100px;
     padding-left: 80px;
 }
-.card-body{
+
+.card-body {
     padding: 20px 20px;
     box-sizing: border-box;
 }
 
-.body_Static_Low:hover{
+.body_Static_Low:hover {
     background-color: #ee8c8c;
 }
-.body_Static_Medium:hover{
+
+.body_Static_Medium:hover {
     background-color: #fdfda6;
 }
-.body_Static_High:hover{
+
+.body_Static_High:hover {
     background-color: #49cb4b;
 }
-.copyright-text{
+
+.copyright-text {
     color: black;
 }
-.btnAddClass{
-padding-left : 50px;
+
+.btnAddClass {
+    padding-left: 50px;
 }
+
 .filter-options span:hover {
     text-decoration: underline;
 }
+
 .nav-link:hover {
     /* Thêm các thuộc tính CSS khi di chuột qua liên kết tại đây */
     text-decoration: underline; /* Ví dụ: làm cho văn bản có gạch chân khi di chuột qua */
 }
+
 #submitMessage {
     position: absolute;
     top: 80%;
@@ -407,51 +455,104 @@ padding-left : 50px;
     color: black;
     border-radius: 5px;
 }
-.navbar-expand-lg .navbar-nav .nav-link{
+
+.navbar-expand-lg .navbar-nav .nav-link {
     margin: 1px;
 }
-.buttonAddClass{
+
+.buttonAddClass {
     padding: 0 10px;
 }
-.fromSearchClass{
+
+.fromSearchClass {
     margin-right: 0;
 }
-.inline-block-div{
+
+.inline-block-div {
     padding: 0 10px;
 }
-nav{
+
+nav {
     min-height: 121px;
 }
-.searchButtonQuestion{
+
+.searchButtonQuestion {
     padding: 0 5px;
 }
-#questionSearch{
+
+#questionSearch {
     margin: 0;
 }
-.listQuizTitle{
+
+.listQuizTitle {
     padding-top: 50px;
 }
-.hero-section{
+
+.hero-section {
     padding-top: 30px;
 }
+
 .my-custom-scrollbar {
     position: relative;
     height: 100px;
     overflow: auto;
 }
+
 .table-wrapper-scroll-y {
     display: block;
 }
-.tableListQuiz{
+
+.tableListQuiz {
     width: 15%;
     position: absolute;
     right: 0;
 
 }
-.containerTableListQuiz{
+
+.containerTableListQuiz {
     margin-top: 20px;
 }
-.buttonAddQuiz{
+
+.buttonAddQuiz {
     margin-left: 10px;
     padding: 0 20px;
+}
+
+/* Style cho nội dung của dropdown */
+.dropdown-menu {
+    border-radius: 0;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Style cho mỗi mục trong dropdown */
+.dropdown-menu a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+
+}
+.dropdown-menu .dropdown-item{
+    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";!important;
+
+}
+
+/* Hover style cho mỗi mục trong dropdown */
+.dropdown-menu a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Hiển thị dropdown khi hover */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.list-Classes {
+    display: flex;
+
 }
