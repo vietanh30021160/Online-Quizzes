@@ -26,6 +26,15 @@ public class GlobalExceptionHandler {
         return "notFoundQuiz";
     }
 
+    @ExceptionHandler(value = NullPointerException.class)
+    public String handleINullPointerException(HttpServletRequest req, NullPointerException e) {
+        String errorMessage = e.getMessage();
+        if (errorMessage.equals("File excel not follow template")) {
+            req.setAttribute("errorMessage", errorMessage);
+        }
+        return "notFoundQuiz";
+    }
+
     @ExceptionHandler(value = Exception.class)
     public String defaultErrorHandler(HttpServletRequest req, Exception e) {
         return "notFoundQuiz";
