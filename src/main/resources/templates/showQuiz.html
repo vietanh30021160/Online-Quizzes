@@ -115,6 +115,7 @@
                     <th>ID</th>
                     <th>Teacher</th>
                     <th>Subject</th>
+                    <th>Class</th>
                     <th>Name</th>
                     <th>Time Limit</th>
                     <th>Update</th>
@@ -126,6 +127,12 @@
                     <td th:text="${quizIndex.index + 1}"></td>
                     <td th:text="${quiz.teacher.username}"></td>
                     <td th:text="${quiz.subject.subjectName}"></td>
+                    <td>
+                           <span th:each="classQuizz : ${quiz.classQuizzes}">
+                            <span th:text="${classQuizz.classes.className}"></span>
+                            <br> <!-- Add line break for multiple class names -->
+                        </span>
+                    </td>
                     <td th:text="${quiz.quizName}"></td>
                     <td th:text="${quiz.timeLimit}"></td>
                     <td><a class="button" th:href="@{'/quizzes/showUpdateQuizPage/' + ${quiz.quizId}}">Update</a></td>
