@@ -350,21 +350,26 @@ public class QuizService implements IQuizzesService {
 
     @Override
     public boolean checkUserAndQuiz(List<Classes> listClassesInUser, Integer quizId) {
-        // Duyệt qua tất cả các lớp học
-        for (Classes classItem : listClassesInUser) {
-            // Lấy danh sách tất cả các bài kiểm tra trong lớp
-            Set<ClassQuizz> classQuizzes = classItem.getClassQuizzes();
+         List<Quiz> quizzesNotInAnyClass = quizRepository.findQuizzesNotInAnyClass();
+        Quiz quiz = quizRepository.getReferenceById(quizId);
+        if (quizzesNotInAnyClass != null && !quizzesNotInAnyClass.isEmpty() && quizzesNotInAnyClass.contains(quiz)) {
+            return true;
+        } else {
+            // Duyệt qua tất cả các lớp học
+            for (Classes classItem : listClassesInUser) {
+                // Lấy danh sách tất cả các bài kiểm tra trong lớp
+                Set<ClassQuizz> classQuizzes = classItem.getClassQuizzes();
 
-            // Duyệt qua tất cả các bài kiểm tra trong lớp
-            for (ClassQuizz classQuizz : classQuizzes) {
-                // Kiểm tra xem bài kiểm tra có phải là bài kiểm tra cần kiểm tra hay không
-                if (classQuizz.getQuiz().getQuizId().equals(quizId)) {
-                    // Nếu có, trả về true
-                    return true;
+                // Duyệt qua tất cả các bài kiểm tra trong lớp
+                for (ClassQuizz classQuizz : classQuizzes) {
+                    // Kiểm tra xem bài kiểm tra có phải là bài kiểm tra cần kiểm tra hay không
+                    if (classQuizz.getQuiz().getQuizId().equals(quizId)) {
+                        // Nếu có, trả về true
+                        return true;
+                    }
                 }
             }
         }
-
         // Nếu không tìm thấy bài kiểm tra trong bất kỳ lớp nào, trả về false
         return false;
     }
