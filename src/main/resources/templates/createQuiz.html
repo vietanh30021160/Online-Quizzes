@@ -221,7 +221,7 @@
              <div class="question-wrapper">
             <label for="questionContent"><h8>Question Content:</h8></label>
             <input type="text" th:id="${'listQuestions[' + questionIndex + '].questionContent'}"
-                   name="${'listQuestions[' + questionIndex + '].questionContent'}" required>
+                   name="${'listQuestions[' + questionIndex + '].questionContent'}" class="questionContent" required>
 
             <button type="button" class="delete-question" onclick="deleteQuestion(this)">X</button>
         </div>
