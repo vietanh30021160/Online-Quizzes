@@ -223,24 +223,34 @@ public class QuizzesController {
         iQuizzesService.updateQuizByQuizId1(quizId, updatedQuiz);
 
         for (Question updatedQuestion : updatedQuiz.getListQuestions()) {
-            Question existingQuestion = iQuestionsService.findQuestionById(updatedQuestion.getQuestionId());
-
-            if (existingQuestion != null) {
-                iQuestionsService.updateQuestion1(existingQuestion.getQuestionId(), updatedQuestion);
-            } else {
+            if (updatedQuestion.getQuestionId() == null) {
+                // Nếu questionId null, tạo câu hỏi mới
                 updatedQuestion.setQuiz(updatedQuiz);
                 iQuestionsService.createQuestion1(updatedQuestion);
+            } else {
+                // Nếu questionId không null, cập nhật câu hỏi tồn tại
+                Question existingQuestion = iQuestionsService.findQuestionById(updatedQuestion.getQuestionId());
+
+                if (existingQuestion != null) {
+                    iQuestionsService.updateQuestion1(existingQuestion.getQuestionId(), updatedQuestion);
+                }
             }
 
             for (Answer updatedAnswer : updatedQuestion.getListAnswer()) {
-                Answer existingAnswer = iAnswerService.getAnswerById(updatedAnswer.getAnswerId());
+                for(Answer updateAnswer : updatedQuestion.getListAnswer()){
+                    if(updateAnswer.getAnswerId() == null){
+                        updateAnswer.setQuestion(updatedQuestion);
+                        iAnswerService.createAnswer1(updateAnswer,updatedQuestion.getQuestionId());
+                    }
+                    else{
+                        Answer existingAnswer = iAnswerService.getAnswerById(updatedAnswer.getAnswerId());
 
-                if (existingAnswer != null) {
-                    iAnswerService.updateAnswer1(existingAnswer.getAnswerId(), updatedAnswer);
-                } else {
-                    updatedAnswer.setQuestion(updatedQuestion);
-                    iAnswerService.createAnswer1(updatedAnswer, updatedQuestion.getQuestionId());
+                        if (existingAnswer != null) {
+                            iAnswerService.updateAnswer1(existingAnswer.getAnswerId(), updatedAnswer);
+                        }
+                    }
                 }
+
             }
         }
 
