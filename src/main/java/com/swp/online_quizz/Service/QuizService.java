@@ -350,6 +350,12 @@ public class QuizService implements IQuizzesService {
 
     @Override
     public boolean checkUserAndQuiz(List<Classes> listClassesInUser, Integer quizId) {
+        // Kiểm tra xem quizId có thuộc về bất kỳ lớp học nào không
+        List<ClassQuizz> classQuizzess = classQuizzRepository.findByQuizQuizId(quizId);
+        if (classQuizzess.isEmpty()) {
+            // Nếu quizId không thuộc về bất kỳ lớp học nào, trả về true
+            return true;
+        }
         // Duyệt qua tất cả các lớp học
         for (Classes classItem : listClassesInUser) {
             // Lấy danh sách tất cả các bài kiểm tra trong lớp
