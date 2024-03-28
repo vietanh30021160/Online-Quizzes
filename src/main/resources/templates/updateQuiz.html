@@ -113,14 +113,14 @@
 
 <form id="quizForm" action="/quizzes/updateAll/${quiz.quizId}" th:action="@{'/quizzes/updateAll/' + ${quiz.quizId}}" th:object="${quiz}" method="post">
     <label for="quizName">Quiz Name:</label>
-    <input type="text" id="quizName" name="quizName" th:value="${quiz.quizName}" required>
+    <input type="text" id="quizName" name="quizName" th:value="${quiz.quizName}" required style="width: 100%;">
 
     <label for="timeLimit">Time Limit:</label>
-    <input type="number" id="timeLimit" name="timeLimit" th:value="${quiz.timeLimit}" required>
+    <input type="number" id="timeLimit" name="timeLimit" th:value="${quiz.timeLimit}" required style="width: 100%;">
     <div id="timeLimitError" style="color: red;"></div>
 
     <label for="subjectName">Subject Name:</label>
-    <input type="text" id="subjectName" name="subjectName" th:value="${quiz.subject.subjectName}" required>
+    <input type="text" id="subjectName" name="subjectName" th:value="${quiz.subject.subjectName}" required style="width: 100%;">
 
     <hr>
 
@@ -128,12 +128,14 @@
 
     <div id="questionsContainer">
         <div th:each="question, questionIndex : ${quiz.listQuestions}" class="question">
-            <div class="question-wrapper">
+
             <label th:for="${'listQuestions[' + questionIndex.index + '].questionContent'}">
                 <h8>Question Content:</h8>
+
                 <input type="hidden" th:id="${'listQuestions[' + questionIndex.index + '].questionId'}"
                        th:field="*{listQuestions[__${questionIndex.index}__].questionId}" th:value="${question.questionId}" required>
             </label>
+            <div class="question-wrapper">
             <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].questionContent'}"
                    th:field="*{listQuestions[__${questionIndex.index}__].questionContent}" th:value="${question.questionContent}" class="questionContent" required>
 <!--                <button type="button" class="delete-question" onclick="deleteQuestion(this)">X</button>-->
@@ -154,11 +156,11 @@
                 <div th:each="answer, answerIndex : ${question.listAnswer}" class="answer">
                     <input type="hidden" th:id="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].answerId'}"
                            th:field="*{listQuestions[__${questionIndex.index}__].listAnswer[__${answerIndex.index}__].answerId}" th:value="${answer.answerId}" required>
-                    <label th:for="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].answerContent'}">Answer Content:</label>
+                    <label th:for="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].answerContent'}">Content:</label>
                     <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].answerContent'}"
-                           th:field="*{listQuestions[__${questionIndex.index}__].listAnswer[__${answerIndex.index}__].answerContent}" th:value="${answer.answerContent}" required>
+                           th:field="*{listQuestions[__${questionIndex.index}__].listAnswer[__${answerIndex.index}__].answerContent}" class="answerContent"  th:value="${answer.answerContent}" required>
 
-                    <label th:for="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].isCorrect'}">Is Correct:</label>
+                    <label th:for="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].isCorrect'}">Correct:</label>
                     <input type="checkbox" th:id="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].isCorrect'}"
                            th:field="*{listQuestions[__${questionIndex.index}__].listAnswer[__${answerIndex.index}__].isCorrect}" th:checked="${answer.isCorrect}">
 <!--                    <button type="button" class="delete-answer" onClick="deleteAnswer(this, ${questionIndex})">X</button>-->
@@ -177,7 +179,16 @@
 
     <button type="button" onclick="validateAndSubmit()">Update Quiz</button>
 </form>
+<div class="footer">
+    <div th:replace="HomeFooter :: footer"></div>
+</div>
 
+<div th:replace="HomeScript :: script"></div>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 <script th:inline="javascript">
     function validateAndSubmit() {
         // Validate time limit
