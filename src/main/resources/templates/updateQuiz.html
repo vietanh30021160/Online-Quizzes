@@ -31,11 +31,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-lg-5 me-lg-auto">
                     <li class="nav-item">
-                        <a class="nav-link click-scroll" href="#section_1">Home</a>
+                        <a class="nav-link click-scroll" th:href="@{/}">Home</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link click-scroll" href="#section_2">List Quizzes</a>
+                        <a class="nav-link click-scroll" th:href="@{/}">List Quizzes</a>
                     </li>
 
                     <li class="nav-item">
@@ -117,6 +117,7 @@
 
     <label for="timeLimit">Time Limit:</label>
     <input type="number" id="timeLimit" name="timeLimit" th:value="${quiz.timeLimit}" required>
+    <div id="timeLimitError" style="color: red;"></div>
 
     <label for="subjectName">Subject Name:</label>
     <input type="text" id="subjectName" name="subjectName" th:value="${quiz.subject.subjectName}" required>
@@ -127,14 +128,16 @@
 
     <div id="questionsContainer">
         <div th:each="question, questionIndex : ${quiz.listQuestions}" class="question">
+            <div class="question-wrapper">
             <label th:for="${'listQuestions[' + questionIndex.index + '].questionContent'}">
-                <h4>Question Content:</h4>
+                <h8>Question Content:</h8>
                 <input type="hidden" th:id="${'listQuestions[' + questionIndex.index + '].questionId'}"
                        th:field="*{listQuestions[__${questionIndex.index}__].questionId}" th:value="${question.questionId}" required>
             </label>
             <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].questionContent'}"
-                   th:field="*{listQuestions[__${questionIndex.index}__].questionContent}" th:value="${question.questionContent}" required>
-
+                   th:field="*{listQuestions[__${questionIndex.index}__].questionContent}" th:value="${question.questionContent}" class="questionContent" required>
+<!--                <button type="button" class="delete-question" onclick="deleteQuestion(this)">X</button>-->
+            </div>
             <label th:for="${'listQuestions[' + questionIndex.index + '].questionType'}">Question Type:</label>
             <select th:id="${'listQuestions[' + questionIndex.index + '].questionType'}"
                     th:field="*{listQuestions[__${questionIndex.index}__].questionType}" required>
@@ -143,13 +146,6 @@
                 <option value="shortanswer" th:selected="${question.questionType == 'shortanswer'}">shortanswer</option>
             </select>
 
-<!--            <label th:for="${'listQuestions[' + questionIndex.index + '].imageUrl'}">Image URL:</label>-->
-<!--            <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].imageUrl'}"-->
-<!--                   th:field="*{listQuestions[__${questionIndex.index}__].imageUrl}" th:value="${question.imageUrl}">-->
-
-<!--            <label th:for="${'listQuestions[' + questionIndex.index + '].videoUrl'}">Video URL:</label>-->
-<!--            <input type="text" th:id="${'listQuestions[' + questionIndex.index + '].videoUrl'}"-->
-<!--                   th:field="*{listQuestions[__${questionIndex.index}__].videoUrl}" th:value="${question.videoUrl}">-->
             <hr>
 
             <h4>Answers</h4>
@@ -165,22 +161,128 @@
                     <label th:for="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].isCorrect'}">Is Correct:</label>
                     <input type="checkbox" th:id="${'listQuestions[' + questionIndex.index + '].listAnswer[' + answerIndex.index + '].isCorrect'}"
                            th:field="*{listQuestions[__${questionIndex.index}__].listAnswer[__${answerIndex.index}__].isCorrect}" th:checked="${answer.isCorrect}">
+<!--                    <button type="button" class="delete-answer" onClick="deleteAnswer(this, ${questionIndex})">X</button>-->
                 </div>
             </div>
+
+<!--            <button type="button" onclick="addAnswer(this, ${questionIndex.index})">Add Answer</button>-->
 
         </div>
     </div>
 
+<!--    <button type="button" onclick="addQuestion()">Add Question</button>-->
+
+
     <hr>
 
-    <button type="button" onclick="submitForms()">Update Quiz</button>
+    <button type="button" onclick="validateAndSubmit()">Update Quiz</button>
 </form>
 
 <script th:inline="javascript">
-    function submitForms() {
+    function validateAndSubmit() {
+        // Validate time limit
+        var timeLimitInput = document.getElementById("timeLimit");
+        var timeLimitValue = parseInt(timeLimitInput.value);
+        var timeLimitError = document.getElementById("timeLimitError");
+
+        if (timeLimitValue < 0 || isNaN(timeLimitValue)) {
+            timeLimitError.innerText = "Time limit must be a non-negative number."; // Hiển thị thông báo lỗi
+            return;
+        } else {
+            timeLimitError.innerText = ""; // Xóa thông báo lỗi nếu có
+        }
+
         // Submit the main quiz form
         document.getElementById('quizForm').submit();
     }
+    function addAnswer(button, questionIndex) {
+        var questionDiv = button.closest('.question');
+        var answersContainer = questionDiv.querySelector('.answersContainer');
+
+        var answerDiv = document.createElement('div');
+        answerDiv.classList.add('answer');
+
+        var nextAnswerIndex = answersContainer.childElementCount;
+        answerDiv.innerHTML = `
+        <input type="hidden" th:id="${'listQuestions[' + questionIndex + '].listAnswer[' + nextAnswerIndex + '].answerId'}"
+            th:field="*{listQuestions[__${questionIndex}__].listAnswer[__${nextAnswerIndex}__].answerId}" required>
+        <label for="answerContent">Answer Content:</label>
+        <input type="text" th:id="${'listQuestions[' + questionIndex + '].listAnswer[' + nextAnswerIndex + '].answerContent'}"
+               name="${'listQuestions[' + questionIndex + '].listAnswer[' + nextAnswerIndex + '].answerContent'}" required>
+
+        <label for="isCorrect">Is Correct:</label>
+        <input type="checkbox" th:id="${'listQuestions[' + questionIndex + '].listAnswer[' + nextAnswerIndex + '].isCorrect'}"
+               name="${'listQuestions[' + questionIndex + '].listAnswer[' + nextAnswerIndex + '].isCorrect'}">
+                <button type="button" class="delete-answer" onClick="deleteAnswer(this, ${questionIndex})">X</button>
+    `;
+
+
+        answersContainer.appendChild(answerDiv);
+    }
+
+
+
+    function addQuestion() {
+        var questionsContainer = document.getElementById('questionsContainer');
+        var questionIndex = questionsContainer.childElementCount;
+
+        var newQuestionDiv = document.createElement('div');
+        newQuestionDiv.classList.add('question');
+
+        newQuestionDiv.innerHTML = `
+             <div class="question-wrapper">
+            <label for="questionContent"><h8>Question Content:</h8></label>
+            <input type="text" th:id="${'listQuestions[' + questionIndex + '].questionContent'}"
+                   name="${'listQuestions[' + questionIndex + '].questionContent'}" required>
+
+            <button type="button" class="delete-question" onclick="deleteQuestion(this)">X</button>
+        </div>
+        <label th:for="${'listQuestions[' + questionIndex + '].questionType'}">Question Type:</label>
+        <select th:id="${'listQuestions[' + questionIndex + '].questionType'}"
+            th:field="*{listQuestions[__${questionIndex}__].questionType}" required>
+
+            <option th:value="multiplechoice">multiplechoice</option>
+            <option value="yesno">yes/no</option>
+        </select>
+
+        <hr>
+
+        <h4>Answers</h4>
+
+        <div class="answersContainer">
+            <div class="answer">
+                <input type="hidden" th:id="${'listQuestions[' + questionIndex + '].listAnswer[0].answerId'}"
+                    name="${'listQuestions[' + questionIndex + '].listAnswer[0].answerId'}">
+                <label for="answerContent">Answer Content:</label>
+                <input type="text" th:id="${'listQuestions[' + questionIndex + '].listAnswer[0].answerContent'}"
+                    name="${'listQuestions[' + questionIndex + '].listAnswer[0].answerContent'}" required>
+
+                <label for="isCorrect">Is Correct:</label>
+                <input type="checkbox" th:id="${'listQuestions[' + questionIndex + '].listAnswer[0].isCorrect'}"
+                    name="${'listQuestions[' + questionIndex + '].listAnswer[0].isCorrect'}">
+                <button type="button" class="delete-answer" onClick="deleteAnswer(this, ${questionIndex})">X</button>
+            </div>
+        </div>
+
+        <button type="button" onclick="addAnswer(this, ${questionIndex})">Add Answer</button>
+        <hr>
+
+    `;
+
+        questionsContainer.appendChild(newQuestionDiv);
+    }
+
+    function deleteQuestion(button) {
+            var questionDiv = button.closest('.question');
+            questionDiv.remove();
+        }
+
+        function deleteAnswer(deleteButton, questionIndex) {
+            var answerDiv = deleteButton.closest('.answer');
+            answerDiv.remove();
+
+            // If needed, you can adjust other elements or perform additional actions here.
+        }
 </script>
 
 </body>
