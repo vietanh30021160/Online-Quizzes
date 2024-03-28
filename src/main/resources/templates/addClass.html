@@ -13,10 +13,59 @@
 </head>
 <body id="top">
 <div class="headerMark">
-    <div th:replace="HomeHeader :: header"></div>
+    <nav class="navbar navbar-expand-lg" th:fragment="header">
+
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="bi-back"></i>
+                <span>QuizTest</span>
+            </a>
+
+            <div class="d-lg-none ms-auto me-4">
+                <a href="#top" class="navbar-icon bi-person smoothscroll nav_iconPerson"></a>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" th:href="@{/}">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_2">List Quizzes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" th:href="@{'/quizzes/list'}">Manager Quizzes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" th:href="@{'/Classes/listClasses'}">Manager Class</a>
+                    </li>
+
+                </ul>
+
+                <div class="dropdown">
+                    <button class="navbar-icon bi-person smoothscroll"></button>
+                    <div class="dropdown-menu">
+                        <a th:href="@{/information}" class="btn btn-default btn-flat dropdown-item">Profile</a>
+                        <a class="btn btn-default btn-flat dropdown-item" href="/logout">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
 </div>
-<h1 class="d-flex justify-content-center p-3 title-Page">Add Classes</h1>
-<div class="container  d-flex justify-content-center">
+<div class="bg-danger text-center " th:if="${not #strings.isEmpty(err)}">
+    <button type="button" class="btn bg-danger " th:text="${err}"></button>
+</div>
+<h1 class="d-flex justify-content-center p-3 title-Page ">Add Classes</h1>
+<div class="container  d-flex justify-content-center body_add">
     <form class="w-25" th:object="${classes}" th:action="@{/Classes/addClass}" method="post">
         <div class="form-group input-group mt-9">
             <div class="input-group-prepend">

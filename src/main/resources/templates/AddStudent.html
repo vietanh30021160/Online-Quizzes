@@ -49,10 +49,6 @@
                     </li>
 
                 </ul>
-                <div class="d-none d-lg-block inline-block-div">
-                    <a href="#top" class="navbar-icon bi bi-bell smoothscroll"></a>
-                </div>
-
                 <div class="dropdown" >
                     <!-- Button của dropdown -->
                     <button class="navbar-icon bi-person smoothscroll"></button>
@@ -101,8 +97,11 @@
         </div>
     </nav>
 </div>
+<div class="bg-danger text-center " th:if="${not #strings.isEmpty(err)}">
+    <button type="button" class="btn bg-danger " th:text="${err}"></button>
+</div>
 <h1 class="d-flex justify-content-center p-3 title-Page">Add Student</h1>
-<div class="container  d-flex justify-content-center">
+<div class="container  d-flex justify-content-center body_add">
     <form class="w-25" th:object="${userStudent}" th:action="@{'../../listClasses/'+${classId}+'/addStudent'}" method="post">
         <div class="form-group input-group mt-9">
             <div class="input-group-prepend">

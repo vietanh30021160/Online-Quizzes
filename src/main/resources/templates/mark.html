@@ -217,7 +217,7 @@
                             <span aria-hidden="true">«</span>
                         </a>
                     </li>
-                    <li class="page-item " th:each="i:${#numbers.sequence(1,totalPage)}"
+                    <li class="page-item " th:each="i:${totalPage != 1 && currentPage!=1 ? #numbers.sequence(1,totalPage) :1}"
                         th:classappend="${i == currentPage ? 'active' : ''}"><a class="page-link"
                                                                                 th:href="@{${username != null && username != '' ? '?username=' + username + '&' : '?'} + 'pageNo='+${i}}"
                                                                                 th:text="${i}"></a></li>
