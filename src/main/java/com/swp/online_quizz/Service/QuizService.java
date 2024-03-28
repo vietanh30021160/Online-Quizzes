@@ -350,6 +350,7 @@ public class QuizService implements IQuizzesService {
 
     @Override
     public boolean checkUserAndQuiz(List<Classes> listClassesInUser, Integer quizId) {
+
         // Kiểm tra xem quizId có thuộc về bất kỳ lớp học nào không
         List<ClassQuizz> classQuizzess = classQuizzRepository.findByQuizQuizId(quizId);
         if (classQuizzess.isEmpty()) {
@@ -367,10 +368,10 @@ public class QuizService implements IQuizzesService {
                 if (classQuizz.getQuiz().getQuizId().equals(quizId)) {
                     // Nếu có, trả về true
                     return true;
+
                 }
             }
         }
-
         // Nếu không tìm thấy bài kiểm tra trong bất kỳ lớp nào, trả về false
         return false;
     }

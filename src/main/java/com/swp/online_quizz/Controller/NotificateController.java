@@ -43,6 +43,7 @@ public class NotificateController {
             messageRecipient.setIsSeen(true);
             messageRecipientsRepository.save(messageRecipient);
         }
+        
         return "HomeHeader";
     }
 
