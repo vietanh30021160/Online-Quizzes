@@ -73,13 +73,13 @@
 <form id="quizForm" th:action="@{'/quizzes/createQuizByListQuestion'}"
       th:object="${formObject}" method="post">
     <label for="quizName">Quiz Name:</label>
-    <input type="text" id="quizName" name="quizName" th:field="*{quiz.quizName}" required>
+    <input type="text" id="quizName" name="quizName" th:field="*{quiz.quizName}" required style="width: 100%;">
 
     <label for="timeLimit">Time Limit:</label>
-    <input type="number" id="timeLimit" name="timeLimit" th:field="*{quiz.timeLimit}" required>
+    <input type="number" id="timeLimit" name="timeLimit" th:field="*{quiz.timeLimit}" required style="width: 100%;">
 
     <label for="subjectName">Subject Name:</label>
-    <input type="text" id="subjectName" name="subjectName" th:field="*{quiz.subjectName}" required>
+    <input type="text" id="subjectName" name="subjectName" th:field="*{quiz.subjectName}" required style="width: 100%;">
     <hr>
     <div class="container">
         <h2>Questions</h2>
