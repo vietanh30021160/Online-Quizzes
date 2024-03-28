@@ -28,12 +28,13 @@ label {
 }
 
 input, select, textarea {
-    width: 100%;
+    /*width: 90%;*/
     padding: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+    margin-left: 10px;
 }
 
 hr {
@@ -75,6 +76,8 @@ button.delete-answer {
     display: flex; /* Sử dụng flexbox */
     align-items: center; /* Căn giữa theo chiều dọc */
     justify-content: center; /* Căn giữa theo chiều ngang */
+    margin-left: 30px;
+    margin-bottom: 10px;
 }
 
 button.delete-answer:hover {
@@ -109,18 +112,26 @@ button.delete-question:hover {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    margin-right: 5px;
+    width: 100%;
 }
+
 .answer {
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-bottom: 30px;
+    margin-right: 5px;
+    width: 100%;
 }
-
+.answerContent {
+    flex-grow: 1; /* Phần tử questionContent sẽ mở rộng để lấp đầy không gian còn lại */
+    margin-right: 10px; /* Tạo khoảng cách giữa questionContent và delete button */
+}
 .answer label {
     display: inline-block;
-    margin-right: 20px;
-    margin-left: 30px;
+    margin-right: 10px;
+    margin-left: 10px;
 }
 .buttonContainer {
     display: flex;

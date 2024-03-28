@@ -68,7 +68,7 @@ label {
 }
 
 input, select, textarea {
-    width: 100%;
+    /*width: 100%;*/
     padding: 8px;
     margin-bottom: 16px;
     border: 1px solid #ccc;
@@ -116,18 +116,26 @@ h2 {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    margin-right: 5px;
+    width: 100%;
 }
+
 .answer {
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-bottom: 30px;
+    margin-right: 5px;
+    width: 100%;
 }
-
+.answerContent {
+    flex-grow: 1; /* Phần tử questionContent sẽ mở rộng để lấp đầy không gian còn lại */
+    margin-right: 10px; /* Tạo khoảng cách giữa questionContent và delete button */
+}
 .answer label {
     display: inline-block;
-    margin-right: 20px;
-    margin-left: 30px;
+    margin-right: 10px;
+    margin-left: 10px;
 }
 .buttonContainer {
     display: flex;

@@ -4,7 +4,7 @@
     <div th:replace="HomeHead :: head"></div>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>QuizTest</title>
     <link th:href="@{../../css/listClasses.css}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="all"
           href="/css/showQuiz.css" th:href="@{/css/showQuiz.css}">
@@ -147,5 +147,15 @@
             </table>
         </div>
     </div>
+    <div class="footer">
+        <div th:replace="HomeFooter :: footer"></div>
+    </div>
+
+    <div th:replace="HomeScript :: script"></div>
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
 </body>
 </html>
