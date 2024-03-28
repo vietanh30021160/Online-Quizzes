@@ -115,10 +115,11 @@
                     <li class="page-item  "><a class="page-link p-0 m-0" th:href="'#'+${indexNoQuestion.index+1}" th:text="${indexNoQuestion.index+1}"></a></li>
                 </ul>
 <!--                Role teacher-->
-                <div th:if="${useRole == 'ROLE_TEACHER'}">
-                <a class="finishReview" th:object="${QuizAttempts}" th:href="'../../'+*{quiz.quizId}">Finish review</a>
-                </div>
+
             </nav>
+            <div th:if="${useRole == 'ROLE_TEACHER'}">
+                <a class="finishReview" th:object="${QuizAttempts}" th:href="'../../'+*{quiz.quizId}">Finish review</a>
+            </div>
         </div>
 
     </div>
