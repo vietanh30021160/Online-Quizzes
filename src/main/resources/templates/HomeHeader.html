@@ -22,16 +22,15 @@
                 </li>
                 <!-- Kiểm tra nếu có người dùng đăng nhập -->
                 <li class="nav-item" th:if="${user != null}">
-                    <a class="nav-link click-scroll" href="#section_2" onclick="navigateToSection('section_2')">List
+                    <a class="nav-link click-scroll" href="/#section_2" >List
                         Classes</a>
                 </li>
                 <li class="nav-item" th:if="${user != null}">
-                    <a class="nav-link click-scroll" href="#section_3" onclick="navigateToSection('section_3')">List
+                    <a class="nav-link click-scroll" href="/#section_3" >List
                         Quizzes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link click-scroll" href="#section_5" onclick="navigateToSection('section_5')">How it
-                        works</a>
+                    <a class="nav-link click-scroll" href="/#section_5" >How it works</a>
                 </li>
             </ul>
             <form method="get"

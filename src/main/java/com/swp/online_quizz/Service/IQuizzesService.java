@@ -2,6 +2,7 @@ package com.swp.online_quizz.Service;
 
 import java.util.List;
 
+import com.swp.online_quizz.Entity.Classes;
 import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +12,7 @@ import com.swp.online_quizz.Entity.Subject;
 public interface IQuizzesService {
     List<Quiz> getAll();
 
-    boolean checkUserAndQuiz(Integer userId, Integer quizId);
+
 
     List<Quiz> getQuizByUserId(Integer userId);
 
@@ -57,4 +58,5 @@ public interface IQuizzesService {
     Page<Quiz> CombineQuizzes(String keyword, Integer pageNo, Integer min, Integer max, String subject,
             List<Integer> quizIds, String className);
 
+    boolean checkUserAndQuiz(List<Classes> listClassesInUser, Integer quizId);
 }

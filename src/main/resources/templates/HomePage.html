@@ -64,7 +64,7 @@
                     <div class="list-Classes" style="justify-content: center">
                         <div class="grid-container">
                             <p class="mb-0" th:each="listClasses : ${listClasses}">
-                                <a type="button" th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'className=' + ${listClasses.className}+${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max:''}+${subject!= null&& subject!=''?'&subject='+ subject:''}+'#section_3'}"
+                                <a type="button" th:href="@{'?className=' + ${listClasses.className}+'#section_3'}"
                                    class="btn btn-secondary mb-2" th:text="${listClasses.className}"></a>
                             </p>
                         </div>
@@ -129,8 +129,9 @@
                                                     <div class="list-Classes">
                                                         <p th:text="'Classes:'"></p>
                                                         <p class="mb-0 mr-2" th:each="classQuizz, iterStat : ${quizzes.classQuizzes}">
-                                                            <span th:text="${classQuizz.classes.className}"></span>
-                                                            <span th:unless="${iterStat.last}" class="comma">,</span>
+                                                            <span th:if="${classQuizz.classes.className != null && iterStat.index < 2}" th:text="${classQuizz.classes.className}"></span>
+                                                            <span th:if="${iterStat.index == 2}" th:text="'...'"></span>
+                                                            <span th:unless="${iterStat.last || iterStat.index >= 2}" class="comma">,</span>
                                                         </p>
 
                                                     </div>
@@ -152,9 +153,10 @@
                 <li th:if="${currentPage>1}"><a
                         th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo='+ ${currentPage-1} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max:''}+${subject!=null && subject!='' ? '&subject='+subject:''}+${className != null && className != '' ? '&className='+className:''}+ '#section_3'}">«</a>
                 </li>
-                <li th:each="i:${totalPage != 1 && currentPage!=1 ? #numbers.sequence(1,totalPage) :1}" th:classappend="${currentPage == i ? 'active' : ''}">
+                <li th:each="i:${totalPage > 0 ? #numbers.sequence(1,totalPage) : 1}" th:classappend="${currentPage == i ? 'active' : ''}">
                     <a th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo='+ ${i} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max:''}+${subject!=null && subject!='' ? '&subject='+subject:''}+${className != null && className != '' ? '&className='+className:''}+ '#section_3'}"
-                       th:text="${i}"></a></li>
+                       th:text="${i}"></a>
+                </li>
                 <li th:if="${currentPage<totalPage}"><a
                         th:href="@{${keyword!=null && keyword!='' ? '?keyword='+keyword+'&':'?' }+'pageNo='+ ${currentPage+1} +${min!= null && min!=''&&max!= null && max!=''?'&min='+min+'&max='+max:''}+${subject!=null && subject!='' ? '&subject='+subject:''}+${className != null && className != '' ? '&className='+className:''}+ '#section_3'}">»</a>
                 </li>
