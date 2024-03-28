@@ -106,7 +106,9 @@
                 <h5><div>Grade   </div>: <small th:text="*{marks}" ></small><small >
                     </small></h5>
             </div>
-
+            <button th:if="${useRole == 'ROLE_TEACHER'}">
+                <a class="finishReview" th:object="${QuizAttempts}" th:href="'../../'+*{quiz.quizId}">Finish review</a>
+            </button>
 
         </div>
         <div class="demo col-md-4">
@@ -118,9 +120,7 @@
 <!--                Role teacher-->
 
             </nav>
-            <div th:if="${useRole == 'ROLE_TEACHER'}">
-                <a class="finishReview" th:object="${QuizAttempts}" th:href="'../../'+*{quiz.quizId}">Finish review</a>
-            </div>
+
         </div>
 
     </div>
