@@ -129,8 +129,9 @@
                                                     <div class="list-Classes">
                                                         <p th:text="'Classes:'"></p>
                                                         <p class="mb-0 mr-2" th:each="classQuizz, iterStat : ${quizzes.classQuizzes}">
-                                                            <span th:text="${classQuizz.classes.className}"></span>
-                                                            <span th:unless="${iterStat.last}" class="comma">,</span>
+                                                            <span th:if="${classQuizz.classes.className != null && iterStat.index < 2}" th:text="${classQuizz.classes.className}"></span>
+                                                            <span th:if="${iterStat.index == 2}" th:text="'...'"></span>
+                                                            <span th:unless="${iterStat.last || iterStat.index >= 2}" class="comma">,</span>
                                                         </p>
 
                                                     </div>
