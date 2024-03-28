@@ -3,6 +3,7 @@ package com.swp.online_quizz.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -348,25 +349,23 @@ public class QuizService implements IQuizzesService {
     }
 
     @Override
-    public boolean checkUserAndQuiz(Integer userId, Integer quizId) {
-        List<Quiz> quizzesNotInAnyClass = quizRepository.findQuizzesNotInAnyClass();
-        Quiz quiz = quizRepository.getReferenceById(quizId);
-        if (quizzesNotInAnyClass != null && !quizzesNotInAnyClass.isEmpty() && quizzesNotInAnyClass.contains(quiz)) {
-            return true;
-        } else {
-            List<Classes> classesByUser = classesRepository.getAllClassByUserId(userId);
-            List<ClassQuizz> classesByQuiz = quiz.getClassQuizzes();
-            List<Classes> classes = new ArrayList<>();
-            for (ClassQuizz classQuizz : classesByQuiz) {
-                if (classesByUser.contains(classQuizz.getClasses())) {
-                    classes.add(classQuizz.getClasses());
+    public boolean checkUserAndQuiz(List<Classes> listClassesInUser, Integer quizId) {
+        // Duyệt qua tất cả các lớp học
+        for (Classes classItem : listClassesInUser) {
+            // Lấy danh sách tất cả các bài kiểm tra trong lớp
+            Set<ClassQuizz> classQuizzes = classItem.getClassQuizzes();
+
+            // Duyệt qua tất cả các bài kiểm tra trong lớp
+            for (ClassQuizz classQuizz : classQuizzes) {
+                // Kiểm tra xem bài kiểm tra có phải là bài kiểm tra cần kiểm tra hay không
+                if (classQuizz.getQuiz().getQuizId().equals(quizId)) {
+                    // Nếu có, trả về true
+                    return true;
                 }
             }
-            if (classes != null && !classes.isEmpty()) {
-                return true;
-            } else {
-                return false;
-            }
         }
+
+        // Nếu không tìm thấy bài kiểm tra trong bất kỳ lớp nào, trả về false
+        return false;
     }
 }
