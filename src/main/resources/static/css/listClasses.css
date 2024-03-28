@@ -363,7 +363,6 @@ h2 {
     background-color: #3d899b;
     background-image: linear-gradient(90deg, #3d899b 0%, #7ecec5 50%);
 
-
 }
 
 .navbar-expand-lg .navbar-nav .nav-link {
@@ -494,16 +493,36 @@ nav {
 
 .my-custom-scrollbar {
     position: relative;
-    height: 100px;
+    height: 120px;
     overflow: auto;
 }
 
 .table-wrapper-scroll-y {
     display: block;
 }
+.table-borderless{
+    width: 100%;
+}
+.textQuizName{
+    margin-left: 70px;
+    display: inline-block;
+    width: 60%;
+}
+.textQuizName:hover {
+    color: chartreuse;
+}
+input {
+    width: 100%;
+}
+.titleQuizName{
+    padding-left: 40px !important;
+}
 
+.thDetail{
+    width: 100%;
+}
 .tableListQuiz {
-    width: 15%;
+    width: 20%;
     position: absolute;
     right: 0;
 
@@ -555,4 +574,7 @@ nav {
 .list-Classes {
     display: flex;
 
+}
+.body_add{
+    height: 430px;
 }

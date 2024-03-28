@@ -8,7 +8,99 @@
 </head>
 <body id="top">
 <div class="headerMark">
-    <div th:replace="HomeHeader :: header"></div>
+    <nav class="navbar navbar-expand-lg" th:fragment="header">
+
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="bi-back"></i>
+                <span>QuizTest</span>
+            </a>
+
+            <div class="d-lg-none ms-auto me-4">
+                <a href="#top" class="navbar-icon bi-person smoothscroll nav_iconPerson"></a>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-lg-5 me-lg-auto">
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" th:href="@{/}">Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" href="#section_2">List Quizzes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" th:href="@{'/quizzes/list'}">Manager Quizzes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link click-scroll" th:href="@{'/Classes/listClasses'}">Manager Class</a>
+                    </li>
+
+                </ul>
+                <!--                <form method="get" th:action="@{'/' + '?keyword=' + ${keyword} + (${subject != null ? '&subject=' + subject : ''}) + '#section_2'}" class="custom-form mt-4 pt-2 mb-lg-0 mb-5 inline-block-div" role="search">-->
+                <!--                    <div class="input-group input-group-sm hidden-xs" style="width: 400px;">-->
+                <!--                        <input type="text" name="keyword" class="form-control pull-right" placeholder="Search">-->
+                <!--                        <input type="hidden" th:if="${subject != null}" name="subject" th:value="${subject}">-->
+                <!--                        <div class="input-group-btn">-->
+                <!--                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i> Search</button>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </form>-->
+                <div class="dropdown" >
+                    <!-- Button của dropdown -->
+                    <button class="navbar-icon bi-person smoothscroll"></button>
+                    <div class="dropdown-content">
+                        <!-- Hiển thị thông tin người đăng nhập -->
+                        <a th:href="@{/information}" class="btn btn-default btn-flat">Profile</a>
+                        <a class="btn btn-default btn-flat" href="/logout">Logout</a>
+                    </div>
+                </div>
+                <style>
+                    /* Style cho dropdown */
+                    .dropdown {
+                        position: relative;
+                        display: inline-block;
+                    }
+
+                    /* Style cho nội dung của dropdown */
+                    .dropdown-content {
+                        display: none;
+                        position: absolute;
+                        background-color: #f9f9f9;
+                        min-width: 160px;
+                        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                        z-index: 1;
+                    }
+
+                    /* Style cho mỗi mục trong dropdown */
+                    .dropdown-content a {
+                        color: black;
+                        padding: 12px 16px;
+                        text-decoration: none;
+                        display: block;
+                    }
+
+                    /* Hover style cho mỗi mục trong dropdown */
+                    .dropdown-content a:hover {
+                        background-color: #f1f1f1;
+                    }
+
+                    /* Hiển thị dropdown khi hover */
+                    .dropdown:hover .dropdown-content {
+                        display: block;
+                    }
+                </style>
+
+            </div>
+        </div>
+    </nav>
 </div>
 <h1 class="d-flex justify-content-center p-3 title-Page">Mark Class</h1>
 <div class="container">
@@ -71,7 +163,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class=" font-weight-bold text-danger  mb-1">
-                                Scores range from (0-4)
+                                Scores range from (0-40)
                             </div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
@@ -102,7 +194,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
-                                Scores range from (4-8)
+                                Scores range from (40-80)
                             </div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
@@ -134,7 +226,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Scores range from
-                                (8-10)
+                                (80-100)
                             </div>
                             <div class="row no-gutters align-items-center">
                                 <div class="col-auto">
@@ -217,7 +309,7 @@
                             <span aria-hidden="true">«</span>
                         </a>
                     </li>
-                    <li class="page-item " th:each="i:${#numbers.sequence(1,totalPage)}"
+                    <li class="page-item " th:each="i:${totalPage != 1 && currentPage!=1 ? #numbers.sequence(1,totalPage) :1}"
                         th:classappend="${i == currentPage ? 'active' : ''}"><a class="page-link"
                                                                                 th:href="@{${username != null && username != '' ? '?username=' + username + '&' : '?'} + 'pageNo='+${i}}"
                                                                                 th:text="${i}"></a></li>
