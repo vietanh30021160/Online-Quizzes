@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.swp.online_quizz.Entity.*;
+import com.swp.online_quizz.Service.*;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -25,26 +27,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.swp.online_quizz.Dto.CreateQuizzByQuestionBank;
-import com.swp.online_quizz.Entity.Answer;
-import com.swp.online_quizz.Entity.Question;
-import com.swp.online_quizz.Entity.Quiz;
-import com.swp.online_quizz.Entity.QuizAttempt;
-import com.swp.online_quizz.Entity.Subject;
-import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Repository.QuizRepository;
 import com.swp.online_quizz.Repository.UsersRepository;
-import com.swp.online_quizz.Service.ClassesService;
-import com.swp.online_quizz.Service.ExcelUploadService;
-import com.swp.online_quizz.Service.IAnswerService;
-import com.swp.online_quizz.Service.IClassQuizzService;
-import com.swp.online_quizz.Service.IFeedbackService;
-import com.swp.online_quizz.Service.IQuestionAttemptsService;
-import com.swp.online_quizz.Service.IQuestionsService;
-import com.swp.online_quizz.Service.IQuizAttemptsService;
-import com.swp.online_quizz.Service.IQuizProgressService;
-import com.swp.online_quizz.Service.IQuizzesService;
-import com.swp.online_quizz.Service.ISubjectService;
-import com.swp.online_quizz.Service.IUsersService;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -83,6 +67,8 @@ public class QuizzesController {
     private ISubjectService iSubjectService;
     @Autowired
     private ClassesService classesService;
+    @Autowired
+    private IClassesService iClassesService;
 
     @GetMapping("/all")
     public List<Quiz> getAll() {
@@ -325,7 +311,8 @@ public class QuizzesController {
             } catch (Exception e) {
                 throw new EntityNotFoundException("Quiz not found");
             }
-            if (!iQuizService.checkUserAndQuiz(user1.getUserId(), quizID)) {
+            List<Classes> listClassesInUser = iClassesService.getClassesByStudentID(userOptional.get().getUserId());
+            if (!iQuizService.checkUserAndQuiz(listClassesInUser, quizID)) {
                 throw new IllegalArgumentException("Cannot access this quiz");
             }
             if (flag) {
