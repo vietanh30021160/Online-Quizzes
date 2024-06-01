@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.swp.online_quizz.Entity.ClassEnrollment;
-import com.swp.online_quizz.Entity.User;
 
 public interface ClassEnrollmentRepository extends JpaRepository<ClassEnrollment, Integer> {
     @Query("SELECT ce FROM ClassEnrollment ce WHERE ce.studentID.userId = :studentID")
@@ -33,5 +32,4 @@ public interface ClassEnrollmentRepository extends JpaRepository<ClassEnrollment
     @Query("select COUNT(ce.studentID) from ClassEnrollment ce join fetch User u on ce.studentID.userId = u.userId and ce.classes.classId = ?1 and u.firstName like %?2%")
     Long getSizeListStudentBySearch(Integer classId, String firstName);
 
-    List<ClassEnrollment> findByUser(User user);
 }
