@@ -52,6 +52,12 @@ public class QuizAttemptController {
     @Autowired
     private UsersRepository usersRepository;
 
+    private final QuizCompletionTask quizCompletionTask;
+
+    public QuizAttemptController(QuizCompletionTask quizCompletionTask) {
+        this.quizCompletionTask = quizCompletionTask;
+    }
+
     @GetMapping("/question")
     public List<Question> getAllQuestions() {
         return iQuestionsService.getAllQuestions();
@@ -97,6 +103,7 @@ public class QuizAttemptController {
                 listQProg.add(qp);
                 iQuizProgressService.createQuizProgress(qp);
             }
+            quizCompletionTask.setHasNewQuizAttempts(true);
             return new RedirectView("/attempt/attemptQuiz/" + quizId + "/" + attemp.getAttemptId() + "/1");
         } else {
             return new RedirectView("redirect:/login");
@@ -260,19 +267,7 @@ public class QuizAttemptController {
 
     @GetMapping("/attemptQuiz/{quizId}/{attemptID}/finish")
     public RedirectView finishQuizAttempt(@PathVariable Integer quizId, @PathVariable Integer attemptID) {
-        QuizAttempt attempt = iQuizAttemptsService.getQuizAttempts(attemptID);
-        attempt.setIsCompleted(true);
-        Timestamp endTime = new Timestamp(System.currentTimeMillis());
-        attempt.setEndTime(endTime);
-        int count = 0;
-        for (QuestionAttempt questionAttempts : attempt.getListQuestionAttempts()) {
-            if (questionAttempts.getIsCorrect() == true) {
-                count++;
-            }
-        }
-        double mark = ((double) count / attempt.getListQuestionAttempts().size()) * 100;
-        attempt.setMarks((int) mark);
-        iQuizAttemptsService.updateAttempts(attemptID, attempt);
+        iQuizAttemptsService.finishQuizAttempt(quizId, attemptID);
         return new RedirectView("/quizzes/{quizId}");
     }
 

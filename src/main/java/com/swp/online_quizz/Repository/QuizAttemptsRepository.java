@@ -30,6 +30,7 @@ public interface QuizAttemptsRepository extends JpaRepository<QuizAttempt, Integ
     List<QuizAttempt> findByQuizIdAndUserIdAndStartTime(@Param("quizId") Integer quizId,
             @Param("userId") Integer userId, @Param("startTime") Timestamp startTime);
 
-    @Query("SELECT q FROM QuizAttempt q WHERE q.isComplete = false AND q.deadline < CURRENT_TIMESTAMP")
-    List<QuizAttempt> findExpiredIncompleteQuizzes();
+    @Query("SELECT q FROM QuizAttempt q WHERE q.isCompleted = :isCompleted AND q.endTime <= :endTime")
+    List<QuizAttempt> findExpiredIncompleteQuizzes(@Param("isCompleted") boolean isCompleted,
+            @Param("endTime") Timestamp endTime);
 }

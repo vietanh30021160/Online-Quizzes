@@ -1,33 +1,41 @@
 package com.swp.online_quizz.Service;
 
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.swp.online_quizz.Entity.QuestionAttempt;
 import com.swp.online_quizz.Entity.Quiz;
 import com.swp.online_quizz.Entity.QuizAttempt;
 import com.swp.online_quizz.Entity.User;
 import com.swp.online_quizz.Repository.QuizAttemptsRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
-import java.util.List;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class QuizAttemptsService implements IQuizAttemptsService {
     @Autowired
     private QuizAttemptsRepository quizAttemptsRepository;
+
     @Override
     @Transactional
     public void deleteQuizAttemptsByQuizId(Integer quizId) {
         List<QuizAttempt> attempts = quizAttemptsRepository.findByQuizQuizId(quizId);
         quizAttemptsRepository.deleteAll(attempts);
     }
+
     @Override
     public List<QuizAttempt> getQuizAttemptsByQuizId(Integer quizId) {
         return quizAttemptsRepository.findByQuizQuizId(quizId);
     }
-
 
     @Override
     public List<QuizAttempt> getAll() {
@@ -39,7 +47,7 @@ public class QuizAttemptsService implements IQuizAttemptsService {
         try {
             this.quizAttemptsRepository.save(quizAttempts);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
@@ -49,7 +57,6 @@ public class QuizAttemptsService implements IQuizAttemptsService {
     public QuizAttempt findById(Integer AttemptsID) {
         return this.quizAttemptsRepository.findById(AttemptsID).orElse(null);
     }
-
 
     @Override
     public Boolean update(QuizAttempt quizAttempts) {
@@ -62,39 +69,45 @@ public class QuizAttemptsService implements IQuizAttemptsService {
     }
 
     @Override
-    public List<QuizAttempt> findQuizAttemptsByQuizID(Integer QuizID , Sort sort) {
-        return this.quizAttemptsRepository.findQuizAttemptsByQuizID(QuizID,sort);
+    public List<QuizAttempt> findQuizAttemptsByQuizID(Integer QuizID, Sort sort) {
+        return this.quizAttemptsRepository.findQuizAttemptsByQuizID(QuizID, sort);
     }
 
     @Override
-    public Page<QuizAttempt> findQuizAttemptsByQuizID(Integer QuizzID, Integer pageNo,Sort sort) {
-        List<QuizAttempt> quizAttempts = this.quizAttemptsRepository.findQuizAttemptsByQuizID(QuizzID,sort);
+    public Page<QuizAttempt> findQuizAttemptsByQuizID(Integer QuizzID, Integer pageNo, Sort sort) {
+        List<QuizAttempt> quizAttempts = this.quizAttemptsRepository.findQuizAttemptsByQuizID(QuizzID, sort);
         Pageable pageable = PageRequest.of(pageNo - 1, 5);
         Integer start = (int) pageable.getOffset();
-        Integer end = ( start +pageable.getPageSize()) > quizAttempts.size() ? quizAttempts.size() : ( start +pageable.getPageSize());
-        quizAttempts  = quizAttempts.subList(start,end);
-        return new PageImpl<QuizAttempt>(quizAttempts,pageable,this.quizAttemptsRepository.findQuizAttemptsByQuizID(QuizzID,sort).size());
+        Integer end = (start + pageable.getPageSize()) > quizAttempts.size() ? quizAttempts.size()
+                : (start + pageable.getPageSize());
+        quizAttempts = quizAttempts.subList(start, end);
+        return new PageImpl<QuizAttempt>(quizAttempts, pageable,
+                this.quizAttemptsRepository.findQuizAttemptsByQuizID(QuizzID, sort).size());
     }
 
     @Override
     public List<QuizAttempt> searchUseByName(String username, Integer quizzID) {
-        return this.quizAttemptsRepository.searchUseByName(username,quizzID);
+        return this.quizAttemptsRepository.searchUseByName(username, quizzID);
     }
+
     @Override
     public Page<QuizAttempt> searchUseByName(String username, Integer QuizzID, Integer pageNo) {
-        List<QuizAttempt> quizAttempts = quizAttemptsRepository.searchUseByName(username,QuizzID);
-        Pageable pageable = PageRequest.of(pageNo-1,5);
+        List<QuizAttempt> quizAttempts = quizAttemptsRepository.searchUseByName(username, QuizzID);
+        Pageable pageable = PageRequest.of(pageNo - 1, 5);
         Integer start = (int) pageable.getOffset();
-        Integer end = ( start + pageable.getPageSize()) > quizAttempts.size() ? quizAttempts.size() : ( start + pageable.getPageSize());
-        quizAttempts  = quizAttempts.subList(start,end);
-        return new PageImpl<QuizAttempt>(quizAttempts,pageable,quizAttemptsRepository.searchUseByName(username,QuizzID).size());
+        Integer end = (start + pageable.getPageSize()) > quizAttempts.size() ? quizAttempts.size()
+                : (start + pageable.getPageSize());
+        quizAttempts = quizAttempts.subList(start, end);
+        return new PageImpl<QuizAttempt>(quizAttempts, pageable,
+                quizAttemptsRepository.searchUseByName(username, QuizzID).size());
     }
 
     @Override
     public Page<QuizAttempt> getAll(Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNo-1,5);
+        Pageable pageable = PageRequest.of(pageNo - 1, 5);
         return this.quizAttemptsRepository.findAll(pageable);
     }
+
     @Override
     public QuizAttempt getQuizAttempts(Integer quizAttemptID) {
         return quizAttemptsRepository.getReferenceById(quizAttemptID);
@@ -134,5 +147,20 @@ public class QuizAttemptsService implements IQuizAttemptsService {
         }
     }
 
-
+    @Override
+    public void finishQuizAttempt(Integer quizId, Integer attemptId) {
+        QuizAttempt attempt = getQuizAttempts(attemptId);
+        attempt.setIsCompleted(true);
+        Timestamp endTime = new Timestamp(System.currentTimeMillis());
+        attempt.setEndTime(endTime);
+        int count = 0;
+        for (QuestionAttempt questionAttempts : attempt.getListQuestionAttempts()) {
+            if (questionAttempts.getIsCorrect() == true) {
+                count++;
+            }
+        }
+        double mark = ((double) count / attempt.getListQuestionAttempts().size()) * 100;
+        attempt.setMarks((int) mark);
+        updateAttempts(attemptId, attempt);
+    }
 }
