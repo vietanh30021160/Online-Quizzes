@@ -259,9 +259,7 @@ public class QuizAttemptController {
     }
 
     @GetMapping("/attemptQuiz/{quizId}/{attemptID}/finish")
-    public RedirectView finishQuizAttempt(@PathVariable Integer quizId, @PathVariable Integer attemptID,
-            HttpSession session,
-            Model model) {
+    public RedirectView finishQuizAttempt(@PathVariable Integer quizId, @PathVariable Integer attemptID) {
         QuizAttempt attempt = iQuizAttemptsService.getQuizAttempts(attemptID);
         attempt.setIsCompleted(true);
         Timestamp endTime = new Timestamp(System.currentTimeMillis());
