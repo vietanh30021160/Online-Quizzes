@@ -3,6 +3,7 @@ package com.swp.online_quizz.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -202,6 +203,7 @@ public class QuizService implements IQuizzesService {
         return quizRepository.findAll(spec, pageable);
     }
 
+
     @Override
     public Page<Quiz> searchAndFilterAndSubjectAndQuizIds(String keyword, Integer pageNo, Integer min, Integer max,
             String subject, List<Integer> quizIds, String className) {
@@ -255,25 +257,21 @@ public class QuizService implements IQuizzesService {
         }
         return filteredQuiz;
         // Lấy tất cả kết quả từ quizzesNotInClasses
-        // Page<Quiz> quizzesNotInClasses =
-        // quizRepositoryCustom.findQuizzesNotInAnyClass(spec, PageRequest.of(0,
-        // Integer.MAX_VALUE));
-        //
-        // // Kết hợp các kết quả từ filteredQuiz và quizzesNotInClasses thành một danh
-        // sách duy nhất
-        // List<Quiz> combinedList = new ArrayList<>();
-        // combinedList.addAll(filteredQuiz.getContent());
-        // combinedList.addAll(quizzesNotInClasses.getContent());
-        //
-        // // Tạo một Page mới từ danh sách kết quả kết hợp và trả về
-        // int pageSize = 3; // Kích thước trang mong muốn
-        // int totalSize = combinedList.size();
-        // int startIndex = (pageNo - 1) * pageSize;
-        // int endIndex = Math.min(startIndex + pageSize, totalSize);
-        // List<Quiz> pageContent = combinedList.subList(startIndex, endIndex);
-        //
-        // return new PageImpl<>(pageContent, PageRequest.of(pageNo - 1, pageSize),
-        // totalSize);
+//        Page<Quiz> quizzesNotInClasses = quizRepositoryCustom.findQuizzesNotInAnyClass(spec, PageRequest.of(0, Integer.MAX_VALUE));
+//
+//        // Kết hợp các kết quả từ filteredQuiz và quizzesNotInClasses thành một danh sách duy nhất
+//        List<Quiz> combinedList = new ArrayList<>();
+//        combinedList.addAll(filteredQuiz.getContent());
+//        combinedList.addAll(quizzesNotInClasses.getContent());
+//
+//        // Tạo một Page mới từ danh sách kết quả kết hợp và trả về
+//        int pageSize = 3; // Kích thước trang mong muốn
+//        int totalSize = combinedList.size();
+//        int startIndex = (pageNo - 1) * pageSize;
+//        int endIndex = Math.min(startIndex + pageSize, totalSize);
+//        List<Quiz> pageContent = combinedList.subList(startIndex, endIndex);
+//
+//        return new PageImpl<>(pageContent, PageRequest.of(pageNo - 1, pageSize), totalSize);
     }
 
     @Override
@@ -320,6 +318,7 @@ public class QuizService implements IQuizzesService {
         Pageable pageable = PageRequest.of(pageNo - 1, 3);
         Page<Quiz> quizzesNotInClasses = quizRepositoryCustom.findQuizzesNotInAnyClass(spec, pageable);
 
+
         return quizzesNotInClasses;
 
     }
@@ -350,25 +349,30 @@ public class QuizService implements IQuizzesService {
     }
 
     @Override
-    public boolean checkUserAndQuiz(Integer userId, Integer quizId) {
-        List<Quiz> quizzesNotInAnyClass = quizRepository.findQuizzesNotInAnyClass();
-        Quiz quiz = quizRepository.getReferenceById(quizId);
-        if (quizzesNotInAnyClass != null && !quizzesNotInAnyClass.isEmpty() && quizzesNotInAnyClass.contains(quiz)) {
+    public boolean checkUserAndQuiz(List<Classes> listClassesInUser, Integer quizId) {
+
+        // Kiểm tra xem quizId có thuộc về bất kỳ lớp học nào không
+        List<ClassQuizz> classQuizzess = classQuizzRepository.findByQuizQuizId(quizId);
+        if (classQuizzess.isEmpty()) {
+            // Nếu quizId không thuộc về bất kỳ lớp học nào, trả về true
             return true;
-        } else {
-            List<Classes> classesByUser = classesRepository.getAllClassByUserId(userId);
-            List<ClassQuizz> classesByQuiz = quiz.getClassQuizzes();
-            List<Classes> classes = new ArrayList<>();
-            for (ClassQuizz classQuizz : classesByQuiz) {
-                if (classesByUser.contains(classQuizz.getClasses())) {
-                    classes.add(classQuizz.getClasses());
+        }
+        // Duyệt qua tất cả các lớp học
+        for (Classes classItem : listClassesInUser) {
+            // Lấy danh sách tất cả các bài kiểm tra trong lớp
+            Set<ClassQuizz> classQuizzes = classItem.getClassQuizzes();
+
+            // Duyệt qua tất cả các bài kiểm tra trong lớp
+            for (ClassQuizz classQuizz : classQuizzes) {
+                // Kiểm tra xem bài kiểm tra có phải là bài kiểm tra cần kiểm tra hay không
+                if (classQuizz.getQuiz().getQuizId().equals(quizId)) {
+                    // Nếu có, trả về true
+                    return true;
+
                 }
             }
-            if (classes != null && !classes.isEmpty()) {
-                return true;
-            } else {
-                return false;
-            }
         }
+        // Nếu không tìm thấy bài kiểm tra trong bất kỳ lớp nào, trả về false
+        return false;
     }
 }

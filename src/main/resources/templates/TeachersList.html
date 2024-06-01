@@ -103,7 +103,16 @@
 </div>
 
 <!-- jQuery 3 -->
+<div class="footer">
+    <div th:replace="HomeFooter :: footer"></div>
+</div>
 
+<div th:replace="HomeScript :: script"></div>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 <div th:replace="~{ AdminScript :: script}"></div>
 </body>
 </html>

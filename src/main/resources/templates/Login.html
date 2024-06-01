@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/css/Login.css}">
-    <title>Title</title>
+    <link rel="shortcut icon" type="image/png" href="/images/bi--back.png"/>
+    <title>QuizTest</title>
 </head>
 <body>
 <div class="login-card">
     <div class="column">
+
         <h1>Login</h1>
         <form th:action="@{/login}" method="POST" th:object="${userLoginDtoRequest}">
             <div class="form-item">
@@ -51,7 +53,7 @@
     <div class="column">
         <h2> Welcome to Quiz Test</h2>
         <p>If you don't have any account, would you like to register right now?</p>
-        <a th:href="@{/register}">Sign up</a>
+        <a th:href="@{/register}">Sign up</a>or<a th:href="@{/}">Home</a>
     </div>
 </div>
 </body>

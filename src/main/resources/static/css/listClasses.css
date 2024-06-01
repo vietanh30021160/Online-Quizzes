@@ -363,7 +363,6 @@ h2 {
     background-color: #3d899b;
     background-image: linear-gradient(90deg, #3d899b 0%, #7ecec5 50%);
 
-
 }
 
 .navbar-expand-lg .navbar-nav .nav-link {
@@ -494,21 +493,46 @@ nav {
 
 .my-custom-scrollbar {
     position: relative;
-    height: 100px;
+    height: 120px;
     overflow: auto;
 }
 
 .table-wrapper-scroll-y {
     display: block;
 }
+.table-borderless{
+    width: 100%;
+}
+.textQuizName{
+    margin-left: 70px;
+    display: inline-block;
+    width: 70%;
+}
+.textQuizName:hover {
+    color: chartreuse;
+}
+input {
+    width: 100%;
+}
 
+
+.thDetail{
+    width: 100%;
+}
 .tableListQuiz {
-    width: 15%;
+    width: 30%;
     position: absolute;
     right: 0;
 
 }
-
+.full-width-table{
+    width: 300px !important;
+}
+.titleQuizName{
+    width: 100%;
+    margin-left: -50px;
+    display: inline-block;
+}
 .containerTableListQuiz {
     margin-top: 20px;
 }
@@ -555,4 +579,7 @@ nav {
 .list-Classes {
     display: flex;
 
+}
+.body_add{
+    height: 430px;
 }

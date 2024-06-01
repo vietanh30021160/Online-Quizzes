@@ -56,9 +56,9 @@ public class MarkController {
         int mark_low = 0, mark_medium = 0, mark_high = 0, index = 0;
         for (QuizAttempt quizAttempt : ListQuizAttemptsSatic) {
             index = index + 1;
-            if (quizAttempt.getMarks() >= 0 && quizAttempt.getMarks() < 4) {
+            if (quizAttempt.getMarks() >= 10 && quizAttempt.getMarks() < 40) {
                 mark_low += 1;
-            } else if (quizAttempt.getMarks() >= 4 && quizAttempt.getMarks() < 8) {
+            } else if (quizAttempt.getMarks() >= 40 && quizAttempt.getMarks() < 80) {
                 mark_medium += 1;
             } else {
                 mark_high += 1;
@@ -66,7 +66,7 @@ public class MarkController {
         }
         double pec_low = Math.round((double) mark_low * 100 / index * 100.0) / 100.0;
         double pec_medium = Math.round((double) mark_medium * 100 / index * 100.0) / 100.0;
-        double pec_high = (double) 100 - pec_low - pec_medium;
+        double pec_high = Math.round((double) mark_high * 100 / index * 100.0) / 100.0;
 
         if (username != null) {
             listQuizAttempts = this.quizAttemptsService.searchUseByName(username, quizzId, pageNo);

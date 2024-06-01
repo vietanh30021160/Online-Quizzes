@@ -123,7 +123,8 @@ public class ClassController {
             redirectAttributes.addFlashAttribute("mss", "Add Classes Success");
             return "redirect:/Classes/listClasses";
         } else {
-            return "addClass";
+            redirectAttributes.addFlashAttribute("err", "Add Classes UnSuccess!! Try Again");
+            return "redirect:/Classes/addClass";
         }
     }
 
@@ -233,7 +234,9 @@ public class ClassController {
             redirectAttributes.addFlashAttribute("mss", "Update Student Success");
             return "redirect:/Classes/listClasses/{classId}";
         } else {
-            return "addStudent";
+            redirectAttributes.addFlashAttribute("err", "Update Student UnSuccess!!! Try Again");
+
+            return "redirect:/Classes/listClasses/{classId}/addStudent";
         }
 
     }

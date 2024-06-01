@@ -49,12 +49,9 @@
                     </li>
 
                 </ul>
-                <div class="d-none d-lg-block inline-block-div">
-                    <a href="#top" class="navbar-icon bi bi-bell smoothscroll"></a>
-                </div>
 
 
-                <div class="dropdown" >
+                <div class="dropdown">
                     <!-- Button của dropdown -->
                     <button class="navbar-icon bi-person smoothscroll"></button>
                     <div class="dropdown-menu">
@@ -82,7 +79,8 @@
         <div class="price-range col-sm-5 d-flex align-items-end">
             <form method="get" class="mx-sm-3 fromSearchClass">
                 <div class="input-group">
-                    <input style="border-radius: 10px ; box-sizing: border-box;max-width: 360px" name="firstName" th:value="${firstName}"
+                    <input style="border-radius: 10px ; box-sizing: border-box;max-width: 360px" name="firstName"
+                           th:value="${firstName}"
                            class="form-control form-control-lg" type="text" placeholder="Search Student ..."
                            aria-describedby="button-addon2" autofocus>
                     <button style="border-radius: 10px" class="btn btn-secondary" id="button-addon2" type="submit">
@@ -107,19 +105,21 @@
 
             </thead>
             <tbody>
-            <td colspan="1" class="p-0">
-                <table class="table table-borderless ">
-                    <tbody >
-                    <tr>
+            <td >
+                <table class="table full-width-table" style="width: 200px">
+                    <tbody>
+                    <tr class="titleListQuiz">
                         <th scope="col">No</th>
-                        <th scope="col" class="text-end">Quizz Name</th>
-
+                        <th scope="col" class="text-end titleQuizName">Quizz Name</th>
                     </tr>
-                    <tr th:each="listQuiz,index:${listQuizInClass}">
-                        <td th:text="${index.count}"></td>
-                        <td class="textQuizName text-end text-center" >
-                            <a th:href="@{/class/mark/{quizID}(quizID = ${listQuiz.quiz.getQuizId()})}" th:text="${listQuiz.quiz.quizName}"></a>
+                    <tr th:each="listQuiz,index:${listQuizInClass}" class="thDetail">
+                        <td class="thDetail-No" th:text="${index.count}"></td>
+
+                        <td class="textQuizName text-end text-center margin-r-5">
+                            <a th:href="@{/class/mark/{quizID}(quizID = ${listQuiz.quiz.getQuizId()})}"
+                               th:text="${listQuiz.quiz.quizName}"></a>
                         </td>
+
                     </tr>
 
                     </tbody>
@@ -219,7 +219,7 @@
     $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
-    $('.dropdown').hover(function(){
+    $('.dropdown').hover(function () {
         $('.dropdown-toggle', this).trigger('click');
     });
 </script>
