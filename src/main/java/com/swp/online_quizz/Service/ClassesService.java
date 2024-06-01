@@ -128,7 +128,6 @@ public class ClassesService implements IClassesService {
     public Page<Classes> getAllClassByUserId(Integer userID, Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo - 1, 8);
         List<Classes> allClasseById = this.classesRepository.getAllByTeacherId(userID, pageable);
-//           List<Classes> list = allClasseById.subList((pageNo-1)*2, Integer.min((pageNo-1)*2+2, allClasseById.size()));
         return new PageImpl<Classes>(allClasseById, pageable, classesRepository.getSizeAllClassByUserId(userID));
     }
     @Override

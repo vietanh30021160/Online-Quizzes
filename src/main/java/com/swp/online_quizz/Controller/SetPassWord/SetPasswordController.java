@@ -49,7 +49,7 @@ public class SetPasswordController {
             model.addAttribute("pw", "Password can not null");
             check = true;
         }else if(!matcher.matches()){
-            model.addAttribute("pw", "At least a digit, a lowercase word, a uppercase word and a special character");
+            model.addAttribute("pw", "At least a digit, a lowercase word, an uppercase word and a special character");
             check = true;
         }
         if(!reNewPassword.equals(newPassword)){

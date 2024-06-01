@@ -46,4 +46,8 @@ public class Classes {
 
     @OneToMany(mappedBy = "classes",cascade = CascadeType.ALL)
     Set<ClassQuizz> idClassQuizzs;
+
+    public Set<ClassQuizz> getClassQuizzes() {
+        return this.idClassQuizzs;
+    }
 }

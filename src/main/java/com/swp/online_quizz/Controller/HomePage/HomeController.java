@@ -48,10 +48,6 @@ public class HomeController {
     @Autowired
     private UsersRepository usersRepository;
     @Autowired
-    private ClassEnrollmentRepository classEnrollmentRepository;
-    @Autowired
-    private ClassesRepository classesRepository;
-    @Autowired
     private IUsersService iUsersService;
 
     @RequestMapping("")
@@ -66,7 +62,7 @@ public class HomeController {
         Optional<User> userOptional = getUserFromSession(request);
         User user = null;
 
-
+        
         if (userOptional.isPresent()) {
             user = userOptional.get();
             String role = user.getRole();
